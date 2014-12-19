@@ -1,0 +1,11 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.BaseTaskDetalizationBlock
+
+@if (Model == null)
+{
+    return;
+}
+
+<div>
+    <h5>@Html.DisplayFor(m => m.InternalName)</h5>
+    @Html.DisplayForModel()
+</div>

@@ -1,0 +1,20 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts.BasePartTaskDetalizationBlock
+
+@if (Model == null)
+{
+    return;
+}
+
+<div>
+    <h5>@Html.DisplayFor(m => m.BlockDisclamer)</h5>
+    <h5>@Html.DisplayFor(m => m.IsCurrent)</h5>
+    <h5>@Html.DisplayFor(m => m.IsExists)</h5>
+    <h5>@Html.DisplayFor(m => m.PartBeginDate)</h5>
+    <h5>@Html.DisplayFor(m => m.PartEndDate)</h5>
+    <h5>@Html.DisplayFor(m => m.PartDueDays)</h5>
+    @foreach (var user in Model.PartUsers)
+    {
+        <h6>@Html.Display(user)</h6>
+    }
+    @Html.DisplayForModel()
+</div>

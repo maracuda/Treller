@@ -1,0 +1,9 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks.BoardsBlock
+
+<h4>
+    Доступные доски: 
+    @foreach (var board in Model.Boards)
+    {
+        <label><a href="@board.Url">@board.Name</a>  </label>
+    }
+</h4>

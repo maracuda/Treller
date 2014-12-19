@@ -1,0 +1,11 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.ViewModels.TaskDetalizationViewModel
+
+@{
+    ViewBag.Title = "Детализация задачи";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<h2>Детализация карточки</h2>
+
+@Html.Partial("DetalizationCommonBlocks/Blocks", Model.CommonBlocks)
+@Html.Partial("DetalizationPartBlocks/Blocks", Model.PartBlocks)

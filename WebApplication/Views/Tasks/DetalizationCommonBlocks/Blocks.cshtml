@@ -1,0 +1,7 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.BaseTaskDetalizationBlock[]
+
+<h4>Общая информация</h4>
+@foreach (var block in Model)
+{
+    @Html.Partial("DetalizationCommonBlocks/BaseTaskDetalizationBlock", block)
+}
