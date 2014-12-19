@@ -1,0 +1,22 @@
+﻿# git ignore file
+*.user
+*.suo
+[Bb]in
+obj
+_ReSharper*/
+*.orig
+*.rej
+[Ll]ogs
+*/logs/*
+*/_UpgradeReport_Files/*
+*/Backup/*
+*UpgradeLog.*
+*.DotSettings
+/UnitTestResult/Result.xml
+/NUnit30Settings.xml
+/UnitTestResult/AccountingResult.xml
+/UnitTestResult/AdministrationResult.xml
+/UnitTestResult/BillingResult.xml
+/UnitTestResult/CoreResult.xml
+/UnitTestResult/CoreServicesResult.xml
+/UnitTestResult/PartnersResult.xml
