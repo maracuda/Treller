@@ -51,6 +51,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionConverter.cs" />
+    <Compile Include="BusinessObjects\Card.cs" />
+    <Compile Include="BusinessObjects\CheckItem.cs" />
+    <Compile Include="BusinessObjects\Checklist.cs" />
+    <Compile Include="BusinessObjects\CardOverall.cs" />
+    <Compile Include="BusinessObjects\Label.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrelloClient.cs" />
   </ItemGroup>

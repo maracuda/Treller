@@ -4,9 +4,12 @@ using System.Linq;
 using SKBKontur.HttpInfrastructure.Clients;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.Treller.TrelloClient.BusinessObjects;
 using TrelloNet;
 using Action = TrelloNet.Action;
 using Board = SKBKontur.TaskManagerClient.BusinessObjects.Board;
+using Card = SKBKontur.Treller.TrelloClient.BusinessObjects.Card;
+using Checklist = SKBKontur.Treller.TrelloClient.BusinessObjects.Checklist;
 
 namespace SKBKontur.Treller.TrelloClient
 {
@@ -73,47 +76,33 @@ namespace SKBKontur.Treller.TrelloClient
             return boardIds.SelectMany(id => GetTrelloData<Card[]>(id, "boards/{0}/cards")).Select(CreateBoardCard);
         }
 
-        private static BoardCard CreateBoardCard(Card x)
+        private static BoardCard CreateBoardCard(Card card)
         {
-            var checklists = x.Checklists != null ? x.Checklists.Select(c => new CardChecklist
-                                                          {
-                                                              Id = c.Id,
-                                                              Name = c.Name,
-                                                              CardId = x.Id,
-                                                              Position = c.Pos,
-                                                              Items = c.CheckItems.Select(i => new ChecklistItem
-                                                                                                   {
-                                                                                                       Id = i.Id,
-                                                                                                       Description =
-                                                                                                           i.Name,
-                                                                                                       Position = i.Pos,
-                                                                                                       IsChecked =
-                                                                                                           i.Checked
-                                                                                                   }).ToArray()
-                                                          }).ToArray() : new CardChecklist[0];
             return new BoardCard
                        {
-                           Id = x.Id,
-                           Url = x.Url,
-                           DueDate = x.Due,
-                           BoardId = x.IdBoard,
-                           Name = x.Name,
-                           Position = x.Pos,
-                           BoardListId = x.IdList,
-                           Description = x.Desc,
-                           Labels = x.Labels.Select(l => new CardLabel { Name = l.Name, Color = Cast(l.Color) }).ToArray(),
-                           LastActivity = x.DateLastActivity,
-                           UserIds = x.IdMembers.ToArray(),
-                           CheckLists = checklists
+                           Id = card.Id,
+                           Url = card.Url,
+                           DueDate = card.Due,
+                           BoardId = card.IdBoard,
+                           Name = card.Name,
+                           Position = card.Pos,
+                           BoardListId = card.IdList,
+                           Description = card.Desc,
+                           Labels = card.Labels.Select(CreateCardLabel).ToArray(),
+                           LastActivity = card.DateLastActivity,
+                           UserIds = card.IdMembers.ToArray(),
+                           CheckListIds = card.IdCheckLists
                        };
         }
 
-        private static CardLabelColor Cast(Color cardColor)
+        private static CardLabel CreateCardLabel(Label label)
         {
             CardLabelColor result;
-            return Enum.TryParse(cardColor.ColorName, true, out result) 
-                    ? result 
-                    : CardLabelColor.Undefined;
+            return new CardLabel
+                       {
+                           Name = label.Name,
+                           Color = Enum.TryParse(label.ColorName, true, out result) ? result : CardLabelColor.Undefined
+                       };
         }
 
         public IEnumerable<User> GetBoardUsers(string[] boardIds)
@@ -124,10 +113,16 @@ namespace SKBKontur.Treller.TrelloClient
                            .Select(CreateUser);
         }
 
+        public IEnumerable<CardChecklist> GetBoardChecklists(string[] boardIds)
+        {
+            return boardIds.SelectMany(id => GetTrelloData<Checklist[]>(id, "boards/{0}/checklists").Select(CreateChecklist));
+        }
+
         public IEnumerable<CardAction> GetCardActions(string cardId)
         {
             //GetTrelloData<Action[]>(cardId, "cards/{0}/actions")
-            return trello.Value.Actions.ForCard(new CardId(cardId)).Select(CreateCardAction).Where(x => x != null);
+            var filter = new[] { ActionType.AddAttachmentToCard, ActionType.AddChecklistToCard, ActionType.AddMemberToCard, ActionType.CommentCard, ActionType.ConvertToCardFromCheckItem, ActionType.CopyCard, ActionType.CreateCard, ActionType.MoveCardFromBoard, ActionType.MoveCardToBoard, ActionType.RemoveChecklistFromCard, ActionType.RemoveMemberFromCard, ActionType.UpdateCard, ActionType.UpdateCheckItemStateOnCard };
+            return trello.Value.Actions.ForCard(new CardId(cardId), filter, null, new Paging(500, 0)).Select(CreateCardAction).Where(x => x != null);
         }
 
         private static CardAction CreateCardAction(Action action)
@@ -164,6 +159,13 @@ namespace SKBKontur.Treller.TrelloClient
                 result.ListId = move.Data.List.Id;
                 return result;
             }
+
+            var addChecklistAction = action as AddChecklistToCardAction;
+            if (addChecklistAction != null)
+            {
+                result.CreatedCheckListId = addChecklistAction.Data.Checklist.Id;
+                return result;
+            }
             
             var addMemberAction = action as AddMemberToCardAction;
             if (addMemberAction != null)
@@ -193,7 +195,7 @@ namespace SKBKontur.Treller.TrelloClient
         public IEnumerable<CardAction> GetActionsForBoardCards(string[] boardIds)
         {
             //GetTrelloData<Action[]>(id, "boards/{0}/actions")
-            return boardIds.SelectMany(id => trello.Value.Actions.ForBoard(new BoardId(id))).Select(CreateCardAction).Where(x => x != null);
+            return boardIds.SelectMany(id => trello.Value.Actions.ForBoard(new BoardId(id), null, null, new Paging(1000, 0))).Select(CreateCardAction).Where(x => x != null);
         }
 
         private static User CreateUser(Member b)
@@ -229,6 +231,29 @@ namespace SKBKontur.Treller.TrelloClient
         public IEnumerable<User> GetCardUsers(string cardId)
         {
             return GetTrelloData<Member[]>(cardId, "cards/{0}/members").Select(CreateUser);
+        }
+
+        public IEnumerable<CardChecklist> GetCardChecklists(string cardId)
+        {
+            return GetTrelloData<Checklist[]>(cardId, "cards/{0}/checklists").Select(CreateChecklist);
+        }
+
+        private static CardChecklist CreateChecklist(Checklist list)
+        {
+            return new CardChecklist
+                       {
+                            Id = list.Id,
+                            Name = list.Name,
+                            CardId = list.IdCard,
+                            Position = list.Pos,
+                            Items = list.CheckItems.Select(i => new ChecklistItem
+                                                                {
+                                                                    Id = i.Id,
+                                                                    Description = i.Name,
+                                                                    Position = i.Pos,
+                                                                    IsChecked = i.IsChecked,
+                                                                }).ToArray()
+                       };
         }
 
         private T GetTrelloData<T>(string id, string format)

@@ -12,8 +12,8 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects
         public string Description { get; set; }
         public CardLabel[] Labels { get; set; }
         public DateTime LastActivity { get; set; }
+        public string[] CheckListIds { get; set; }
         public string[] UserIds { get; set; }
-        public CardChecklist[] CheckLists { get; set; }
         public string Url { get; set; }
         public DateTime? DueDate { get; set; }
     }
