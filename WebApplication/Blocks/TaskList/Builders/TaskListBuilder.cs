@@ -80,8 +80,15 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+        private ILookup<string, CardChecklist> BuildCardChecklists([BlockModelParameter("boardIds")] string[] boardIds)
+        {
+            return taskManagerClient.GetBoardChecklists(boardIds).ToLookup(x => x.CardId);
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
         private CardListItemViewModel[] BuildCards(BoardCard[] cards, Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
-                                                   Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions)
+                                                   Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
+                                                   ILookup<string, CardChecklist> cardChecklists)
         {
             return cards.Select(card =>
                                     {
@@ -92,7 +99,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                                                            CardName = card.Name,
                                                            Labels = card.Labels,
                                                            Avatars = card.UserIds.Select(id => users[id]).Select(userAvatarViewModelBuilder.Build).ToArray(),
-                                                           StageInfo = GetStageInfo(card, state, cardActions[card.Id].ToArray()),
+                                                           StageInfo = GetStageInfo(card, state, cardActions[card.Id].ToArray(), cardChecklists[card.Id].ToArray()),
                                                            CardUrl = card.Url,
                                                            State = state
                                                        };
@@ -101,12 +108,30 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                         .ToArray();
         }
 
-        private static string GetStageInfo(BoardCard card, CardState state, CardAction[] actions)
+        private static string GetStageInfo(BoardCard card, CardState state, CardAction[] actions, CardChecklist[] checklists)
         {
             var lastListChangedDate = actions.FirstOrDefault(x => x.ToListId == card.BoardListId);
             var totalDays = (int) (lastListChangedDate != null ? (DateTime.Now.Date - lastListChangedDate.Date).TotalDays : 0);
-            var percent = card.CheckLists.Any(cl => cl.Items.Any(i => i.IsChecked)) 
-                            ? card.CheckLists.Sum(l => l.Items.Count(i => i.IsChecked)) / card.CheckLists.Sum(l => l.Items.Length)
+
+            var cardChecklists = new LinkedList<string>();
+            var isStarted = false;
+            foreach (var action in actions)
+            {
+                if (action.ToListId == card.BoardListId)
+                {
+                    isStarted = true;
+                }
+
+                if (isStarted && !string.IsNullOrEmpty(action.CreatedCheckListId))
+                {
+                    cardChecklists.AddLast(action.CreatedCheckListId);
+                }
+            }
+            var lists = checklists.ToDictionary(x => x.Id);
+            var resultLists = cardChecklists.Select(x => lists[x]).ToArray();
+
+            var percent = resultLists.Any(cl => cl.Items.Any(i => i.IsChecked)) 
+                            ? resultLists.Sum(l => l.Items.Count(i => i.IsChecked)) / resultLists.Sum(l => l.Items.Length)
                             : 0;
 
             return string.Format("Стадия:{0}, {1} дн., {2:P}", state.GetEnumDescription(), totalDays, percent);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using SKBKontur.Billy.Core.BlocksMapping.Attributes;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects;
@@ -59,6 +60,12 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
+        private Dictionary<string, CardChecklist> BuildCardChecklists(string cardId)
+        {
+            return taskManagerClient.GetCardChecklists(cardId).ToArray().ToDictionary(x => x.Id);
+        }
+
+        [BlockModel(ContextKeys.TaskDetalizationKey)]
         private Dictionary<string, BoardList[]> BuildBoardLists(BoardCard card)
         {
             return taskManagerClient.GetBoardLists(card.BoardId).GroupBy(x => x.BoardId).ToDictionary(x => x.Key, x => x.ToArray(), StringComparer.OrdinalIgnoreCase);
@@ -94,69 +101,134 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardBeforeDevelopPartBlock BuildBeforeDevelopingBlock(CardStateInfo stateInfo, BoardCard card)
+        private CardBeforeDevelopPartBlock BuildBeforeDevelopingBlock(CardStateInfo stateInfo)
         {
-            var result = CreateBasePart<CardBeforeDevelopPartBlock>(stateInfo, CardState.BeforeDevelop, card);
-
+            var result = CreateBasePart<CardBeforeDevelopPartBlock>(stateInfo, CardState.BeforeDevelop);
+            if (result != null && stateInfo.States.Any(x => x.Key >= CardState.Develop))
+            {
+                result.Description = " арточка ушла на доработку в аналитику";
+            }
             
             return result;
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardDevelopPartBlock BuildDevelopingBlock(CardStateInfo stateInfo, BoardCard card)
+        private CardDevelopPartBlock BuildDevelopingBlock(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists)
         {
-            var result = CreateBasePart<CardDevelopPartBlock>(stateInfo, CardState.Develop, card);
+            var result = CreateBasePart<CardDevelopPartBlock>(stateInfo, CardState.Develop);
+            if (result == null)
+            {
+                return null;
+            }
 
+            foreach (var listItem in stateInfo.States[CardState.Develop].CheckListIds.SelectMany(x => checklists[x].Items))
+            {
+                var completeCount = 1;
+                var isMatch = Regex.Match(listItem.Description, @"(\d+/\d+)$", RegexOptions.IgnoreCase);
+                if (isMatch.Success)
+                {
+                    var matchResult = isMatch.Value.Trim('(', ')').Split('/');
+                    result.ParrotsCount += int.Parse(matchResult[1]);
+                    completeCount = int.Parse(matchResult[0]);
+                }
+                else
+                {
+                    result.ParrotsCount += 1;
+                }
+
+                if (listItem.IsChecked)
+                {
+                    result.CompleteParrotsCount += completeCount;
+                }
+            }
 
             return result;
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardPresentationPartBlock BuildPresentationBlock(CardStateInfo stateInfo, BoardCard card)
+        private CardPresentationPartBlock BuildPresentationBlock(CardStateInfo stateInfo)
         {
-            var result = CreateBasePart<CardPresentationPartBlock>(stateInfo, CardState.Presentation, card);
+            var result = CreateBasePart<CardPresentationPartBlock>(stateInfo, CardState.Presentation);
+            if (result == null)
+            {
+                return null;
+            }
 
+            // TODO: Integration with what ?) Outlook ? May be comment or descrption parse ?
+            result.PresentationTime = DateTime.Now;
 
             return result;
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardArchivePartBlock BuildArchiveBlock(CardStateInfo stateInfo, BoardCard card)
+        private CardArchivePartBlock BuildArchiveBlock(CardStateInfo stateInfo)
         {
-            var result = CreateBasePart<CardArchivePartBlock>(stateInfo, CardState.Archived, card);
+            return CreateBasePart<CardArchivePartBlock>(stateInfo, CardState.Archived);
+        }
 
+        [BlockModel(ContextKeys.TaskDetalizationKey)]
+        private CardReleaseWaitingPartBlock BuildReleaseWaitingBlock(CardStateInfo stateInfo)
+        {
+            var result = CreateBasePart<CardReleaseWaitingPartBlock>(stateInfo, CardState.ReleaseWaiting);
+            if (result == null)
+            {
+                return null;
+            }
 
+            // TODO: Integration with control version system (git)
+            result.InCandidateRelease = false;
             return result;
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardReleaseWaitingPartBlock BuildReleaseWaitingBlock(CardStateInfo stateInfo, BoardCard card)
+        private CardReviewPartBlock BuildReviewBlock(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists)
         {
-            var result = CreateBasePart<CardReleaseWaitingPartBlock>(stateInfo, CardState.ReleaseWaiting, card);
+            var result = CreateBasePart<CardReviewPartBlock>(stateInfo, CardState.Review);
+            if (result == null)
+            {
+                return null;
+            }
 
-
+            result.ReviewToDoListsViewModel = BuildToDoListsViewModels(stateInfo, checklists, CardState.Review);
             return result;
+        }
+
+        private static ToDoItemsListViewModel[] BuildToDoListsViewModels(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists, CardState state)
+        {
+            return stateInfo.States[state].CheckListIds.Select(x => checklists[x]).Select(CreateToDoItemsListViewModel).ToArray();
+        }
+
+        private static ToDoItemsListViewModel CreateToDoItemsListViewModel(CardChecklist checkList)
+        {
+            var lastIncomplete = checkList.Items.FirstOrDefault(i => !i.IsChecked);
+            return new ToDoItemsListViewModel
+                       {
+                           Count = checkList.Items.Length,
+                           CompleteCount = checkList.Items.Count(i => i.IsChecked),
+                           ListName = checkList.Name,
+                           LastIncompletedDescription = lastIncomplete != null ? lastIncomplete.Description : null
+                       };
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardReviewPartBlock BuildReviewBlock(CardStateInfo stateInfo, BoardCard card)
+        private CardTestingPartBlock BuildTestingBlock(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists)
         {
-            var result = CreateBasePart<CardReviewPartBlock>(stateInfo, CardState.Review, card);
+            if (!stateInfo.States.ContainsKey(CardState.Testing))
+            {
+                return null;
+            }
 
+            var result = CreateBasePart<CardTestingPartBlock>(stateInfo, CardState.Testing);
+            result.TestingToDoListsViewModel = BuildToDoListsViewModels(stateInfo, checklists, CardState.Testing);
+
+            // TODO: integration with bugtracker (youtrack, jira)
+            result.FixedBugsCount = 0;
+            result.OverallBugsCount = 0;
 
             return result;
         }
 
-        [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardTestingPartBlock BuildTestingBlock(CardStateInfo stateInfo, BoardCard card)
-        {
-            var result = CreateBasePart<CardTestingPartBlock>(stateInfo, CardState.Testing, card);
-
-
-            return result;
-        }
-
-        private static T CreateBasePart<T>(CardStateInfo state, CardState baseState, BoardCard card) where T : BasePartTaskDetalizationBlock
+        private static T CreateBasePart<T>(CardStateInfo state, CardState baseState) where T : BasePartTaskDetalizationBlock
         {
             if (!state.States.ContainsKey(baseState))
             {
@@ -166,7 +238,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
             var stateInfo = state.States[baseState];
             var result = Activator.CreateInstance<T>();
 
-//            result.CardId = card.Id;
             result.IsExists = true;
             result.IsCurrent = stateInfo.State == state.CurrentState;
             result.BlockDisclamer = stateInfo.State.GetEnumDescription();

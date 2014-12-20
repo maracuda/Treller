@@ -68,6 +68,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 {
                     states[currentState].NewStateUsers.AddLast(action.AddedUser);
                 }
+
+                if (!string.IsNullOrEmpty(action.CreatedCheckListId))
+                {
+                    states[currentState].CheckListIds.AddLast(action.CreatedCheckListId);
+                }
             }
 
             return new CardStateInfo(states, currentState);

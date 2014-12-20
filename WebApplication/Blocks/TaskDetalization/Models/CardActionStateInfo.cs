@@ -13,6 +13,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models
             StateInitiator = initiator;
             NewStateUsers = new LinkedList<User>();
             StateComments = new LinkedList<string>();
+            CheckListIds = new LinkedList<string>();
         }
 
         public CardState State { get; private set; }
@@ -21,5 +22,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models
         public DateTime? EndDate { get; set; }
         public LinkedList<User> NewStateUsers { get; set; }
         public LinkedList<string> StateComments { get; set; }
+        public LinkedList<string> CheckListIds { get; set; }
     }
 }
