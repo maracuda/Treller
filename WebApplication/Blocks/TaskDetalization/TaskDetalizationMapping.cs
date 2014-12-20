@@ -22,8 +22,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization
 
                     BlockMapper.Declare<CardBranchBlock, BoardCard, string>(x => x.ControlVersionSystemBranchName, x => GetCardBrunchName(x)),
                     BlockMapper.Declare<CardBranchBlock, string>(x => x.ControlVersionSystemBranchUrl, value: "Can't retrieve branchUrl"),
-
-                    BlockMapper.Declare<CardCommentBlock, CardStateInfo, string[]>(x => x.Comments, x => x.States.SelectMany(s => s.Value.StateComments).ToArray()),
                     
                     BlockMapper.Declare<CardDescriptionBlock, BoardCard, string>(x => x.Description, x => x.Description),
                     BlockMapper.Declare<CardDescriptionBlock, BoardCard, string>(x => x.Preview, x => new string((x.Description ?? string.Empty).Take(10).ToArray()) + ".."),
@@ -41,13 +39,13 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization
                     BlockMapper.Declare<CardWorkBlock, CardStateInfo, int>(x => x.DueDays, x => (DateTime.Now.Date - x.States[x.CurrentState].BeginDate.Date).Days),
                     BlockMapper.Declare<CardWorkBlock, CardStateInfo, string[]>(x => x.CurrentUserNames, x => x.States[x.CurrentState].NewStateUsers.Select(s => s.FullName).ToArray()),
 
-                    BlockMapper.Declare<TaskDetalizationPartsBlock, CardArchivePartBlock>(x => x.Archive),
-                    BlockMapper.Declare<TaskDetalizationPartsBlock, CardBeforeDevelopPartBlock>(x => x.BeforeDevelop),
-                    BlockMapper.Declare<TaskDetalizationPartsBlock, CardDevelopPartBlock>(x => x.Develop),
-                    BlockMapper.Declare<TaskDetalizationPartsBlock, CardPresentationPartBlock>(x => x.Presentation),
-                    BlockMapper.Declare<TaskDetalizationPartsBlock, CardReleaseWaitingPartBlock>(x => x.ReleaseWaiting),
-                    BlockMapper.Declare<TaskDetalizationPartsBlock, CardReviewPartBlock>(x => x.Review),
-                    BlockMapper.Declare<TaskDetalizationPartsBlock, CardTestingPartBlock>(x => x.Testing),
+                    BlockMapper.Declare<CardDetalizationPartsBlock, CardArchivePartBlock>(x => x.Archive),
+                    BlockMapper.Declare<CardDetalizationPartsBlock, CardBeforeDevelopPartBlock>(x => x.BeforeDevelop),
+                    BlockMapper.Declare<CardDetalizationPartsBlock, CardDevelopPartBlock>(x => x.Develop),
+                    BlockMapper.Declare<CardDetalizationPartsBlock, CardPresentationPartBlock>(x => x.Presentation),
+                    BlockMapper.Declare<CardDetalizationPartsBlock, CardReleaseWaitingPartBlock>(x => x.ReleaseWaiting),
+                    BlockMapper.Declare<CardDetalizationPartsBlock, CardReviewPartBlock>(x => x.Review),
+                    BlockMapper.Declare<CardDetalizationPartsBlock, CardTestingPartBlock>(x => x.Testing),
                 };
 
         // TODO: Move to builder

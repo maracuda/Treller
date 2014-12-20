@@ -7,6 +7,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.ViewModels
     {
         public string CardId { get; set; }
         public BaseTaskDetalizationBlock[] CommonBlocks { get; set; }
-        public BasePartTaskDetalizationBlock[] PartBlocks { get; set; }
+        public CardDetalizationPartsBlock Detalization { get; set; }
     }
 }

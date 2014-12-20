@@ -1,20 +1,18 @@
 ﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts.BasePartTaskDetalizationBlock
 
-@if (Model == null)
+@if (Model == null || !Model.IsExists)
 {
     return;
 }
 
 <div>
-    <h5>@Html.DisplayFor(m => m.BlockDisclamer)</h5>
-    <h5>@Html.DisplayFor(m => m.IsCurrent)</h5>
-    <h5>@Html.DisplayFor(m => m.IsExists)</h5>
-    <h5>@Html.DisplayFor(m => m.PartBeginDate)</h5>
-    <h5>@Html.DisplayFor(m => m.PartEndDate)</h5>
-    <h5>@Html.DisplayFor(m => m.PartDueDays)</h5>
-    @foreach (var user in Model.PartUsers)
+    <span>@Model.BlockDisclamer</span>
+    @if (Model.IsCurrent)
     {
-        <h6>@Html.Display(user)</h6>
+        <h6>Текущая стадия</h6>
     }
+    <span>@string.Format("Этап начался:{0:dd.MM.yyyy}, закончился:{1:dd.MM.yyyy}, длится:{2}", Model.PartBeginDate, Model.PartEndDate, Model.PartDueDays)</span>
+    <span>Ответственные за этап:@string.Join(",", Model.PartUsers.Select(x => x))</span>
+
     @Html.DisplayForModel()
 </div>

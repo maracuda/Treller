@@ -105,7 +105,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private CardDevelopPartBlock BuildDevelopingBlock(CardStateInfo stateInfo, BoardCard card)
         {
-            var result = CreateBasePart<CardDevelopPartBlock>(stateInfo, CardState.BeforeDevelop, card);
+            var result = CreateBasePart<CardDevelopPartBlock>(stateInfo, CardState.Develop, card);
 
 
             return result;
@@ -114,7 +114,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private CardPresentationPartBlock BuildPresentationBlock(CardStateInfo stateInfo, BoardCard card)
         {
-            var result = CreateBasePart<CardPresentationPartBlock>(stateInfo, CardState.BeforeDevelop, card);
+            var result = CreateBasePart<CardPresentationPartBlock>(stateInfo, CardState.Presentation, card);
 
 
             return result;
@@ -123,7 +123,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private CardArchivePartBlock BuildArchiveBlock(CardStateInfo stateInfo, BoardCard card)
         {
-            var result = CreateBasePart<CardArchivePartBlock>(stateInfo, CardState.BeforeDevelop, card);
+            var result = CreateBasePart<CardArchivePartBlock>(stateInfo, CardState.Archived, card);
 
 
             return result;
@@ -132,7 +132,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private CardReleaseWaitingPartBlock BuildReleaseWaitingBlock(CardStateInfo stateInfo, BoardCard card)
         {
-            var result = CreateBasePart<CardReleaseWaitingPartBlock>(stateInfo, CardState.BeforeDevelop, card);
+            var result = CreateBasePart<CardReleaseWaitingPartBlock>(stateInfo, CardState.ReleaseWaiting, card);
 
 
             return result;
@@ -141,7 +141,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private CardReviewPartBlock BuildReviewBlock(CardStateInfo stateInfo, BoardCard card)
         {
-            var result = CreateBasePart<CardReviewPartBlock>(stateInfo, CardState.BeforeDevelop, card);
+            var result = CreateBasePart<CardReviewPartBlock>(stateInfo, CardState.Review, card);
 
 
             return result;
@@ -150,7 +150,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private CardTestingPartBlock BuildTestingBlock(CardStateInfo stateInfo, BoardCard card)
         {
-            var result = CreateBasePart<CardTestingPartBlock>(stateInfo, CardState.BeforeDevelop, card);
+            var result = CreateBasePart<CardTestingPartBlock>(stateInfo, CardState.Testing, card);
 
 
             return result;
@@ -173,7 +173,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
             result.PartUsers = stateInfo.NewStateUsers.Select(x => x.FullName).ToArray();
             result.PartBeginDate = stateInfo.BeginDate;
             result.PartEndDate = stateInfo.EndDate;
-            result.PartDueDays = 0; // Эта вроде была идея сделать нашей настройкой
+            result.PartDueDays = (DateTime.Now.Date - stateInfo.BeginDate.Date).Days;
             return result;
         }
     }

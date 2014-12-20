@@ -1,0 +1,10 @@
+﻿@using SKBKontur.Infrastructure.CommonExtenssions
+@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.CardStateBlock
+
+<h4>Статус: @Model.State.GetEnumDescription()
+    
+    @if (Model.DueDate.HasValue)
+    {
+        string.Format("Карточка нужна к {0:dd.MM.yyyy}", @Model.DueDate.Value);
+    }
+</h4>

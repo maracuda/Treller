@@ -1,6 +1,6 @@
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts
 {
-    public class TaskDetalizationPartsBlock : BaseTaskDetalizationBlock
+    public class CardDetalizationPartsBlock : BaseTaskDetalizationBlock
     {
         public CardBeforeDevelopPartBlock BeforeDevelop { get; set; }
         public CardDevelopPartBlock Develop { get; set; }

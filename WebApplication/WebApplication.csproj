@@ -159,7 +159,6 @@
     <Compile Include="Blocks\TaskDetalization\Blocks\BaseTaskDetalizationBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardAvatarBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardBranchBlock.cs" />
-    <Compile Include="Blocks\TaskDetalization\Blocks\CardCommentBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardDescriptionBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardLabelsBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardStateBlock.cs" />
@@ -172,7 +171,7 @@
     <Compile Include="Blocks\TaskDetalization\Blocks\Parts\CardReviewPartBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\Parts\CardTestingPartBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\Parts\BasePartTaskDetalizationBlock.cs" />
-    <Compile Include="Blocks\TaskDetalization\Blocks\Parts\TaskDetalizationPartsBlock.cs" />
+    <Compile Include="Blocks\TaskDetalization\Blocks\Parts\CardDetalizationPartsBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Builders\TasksBuilder.cs" />
     <Compile Include="Blocks\TaskDetalization\Models\CardActionStateInfo.cs" />
     <Compile Include="Blocks\TaskDetalization\Models\CardState.cs" />
@@ -300,6 +299,20 @@
     <Content Include="Views\Tasks\DisplayTemplates\CardOverallBlock.cshtml" />
     <Content Include="Views\Tasks\DisplayTemplates\CardListBlock.cshtml" />
     <Content Include="Views\Tasks\TaskListBlocks\Card.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardAvatarBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardBranchBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardDescriptionBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardLabelsBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardStateBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardWorkBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardNameBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardArchivePartBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardBeforeDevelopPartBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardDevelopPartBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardPresentationPartBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardReleaseWaitingPartBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardReviewPartBlock.cshtml" />
+    <Content Include="Views\Tasks\DisplayTemplates\CardTestingPartBlock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

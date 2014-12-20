@@ -104,12 +104,12 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         private static string GetStageInfo(BoardCard card, CardState state, CardAction[] actions)
         {
             var lastListChangedDate = actions.FirstOrDefault(x => x.ToListId == card.BoardListId);
-            var totalDays = lastListChangedDate != null ? (DateTime.Now.Date - lastListChangedDate.Date).TotalDays : 0;
+            var totalDays = (int) (lastListChangedDate != null ? (DateTime.Now.Date - lastListChangedDate.Date).TotalDays : 0);
             var percent = card.CheckLists.Any(cl => cl.Items.Any(i => i.IsChecked)) 
                             ? card.CheckLists.Sum(l => l.Items.Count(i => i.IsChecked)) / card.CheckLists.Sum(l => l.Items.Length)
                             : 0;
 
-            return string.Format("Стадия:{0}, {1} дн., {2:P},. Последняя активность:{3:F}", state.GetEnumDescription(), totalDays, percent, card.LastActivity);
+            return string.Format("Стадия:{0}, {1} дн., {2:P}", state.GetEnumDescription(), totalDays, percent);
         }
     }
 }

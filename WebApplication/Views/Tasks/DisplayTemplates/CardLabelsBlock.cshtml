@@ -1,0 +1,3 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.CardLabelsBlock
+
+<h4>@string.Join(",", @Model.Labels.Select(x => x.Name))</h4>

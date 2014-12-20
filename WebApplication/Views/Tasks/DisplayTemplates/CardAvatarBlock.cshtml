@@ -1,0 +1,6 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.CardAvatarBlock
+
+<h4>
+    Кто занимается текущим этапом: @string.Join(",", @Model.SuggestedActiveAvatars.Select(x => x.UserFullName))
+    Остальные: @string.Join(",", @Model.SuggestedNotActiveAvatars.Select(x => x.UserFullName))
+</h4>

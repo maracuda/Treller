@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using SKBKontur.Billy.Core.BlocksMapping.Blocks;
-using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.WebApplication.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts;
@@ -15,12 +14,10 @@ namespace SKBKontur.Treller.WebApplication.Controllers
     public class TasksController : Controller
     {
         private readonly IBlocksBuilder blocksBuilder;
-        private readonly IAssemblyService assemblyService;
 
-        public TasksController(IBlocksBuilder blocksBuilder, IAssemblyService assemblyService)
+        public TasksController(IBlocksBuilder blocksBuilder)
         {
             this.blocksBuilder = blocksBuilder;
-            this.assemblyService = assemblyService;
         }
 
         public async Task<ActionResult> Index()
@@ -33,16 +30,19 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public async Task<ActionResult> GetDetalization(string cardId)
         {
-            var blocks = assemblyService.GetAllDerivedTypes(typeof(BaseTaskDetalizationBlock)).Where(x => x != typeof(BasePartTaskDetalizationBlock)).ToArray();
+            var blocks = new[]
+                            {
+                                typeof (CardAvatarBlock), typeof (CardDescriptionBlock), typeof (CardBranchBlock), typeof (CardNameBlock), typeof (CardLabelsBlock), typeof (CardStateBlock), typeof (CardWorkBlock), typeof (CardDetalizationPartsBlock)
+                            };
             var result = (await blocksBuilder.BuildBlocks(ContextKeys.TaskDetalizationKey, blocks, cardId)).Cast<BaseTaskDetalizationBlock>().ToArray();
-            var partBlocks = result.Where(x => x.GetType().IsSubclassOf(typeof (BasePartTaskDetalizationBlock))).ToArray();
-            var commonBlocks = result.Except(partBlocks).ToArray();
+            var detalizationBlock = (CardDetalizationPartsBlock)result.First(x => x is CardDetalizationPartsBlock);
+            var commonBlocks = result.Where(x => x != detalizationBlock).ToArray();
 
             return View("TaskDetalization", new TaskDetalizationViewModel
                                                 {
                                                     CardId = cardId,
                                                     CommonBlocks = commonBlocks,
-                                                    PartBlocks = partBlocks.Cast<BasePartTaskDetalizationBlock>().ToArray()
+                                                    Detalization = detalizationBlock
                                                 });
         }
     }
