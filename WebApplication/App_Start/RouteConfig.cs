@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace SKBKontur.Treller.WebApplication
+namespace SKBKontur.Treller.WebApplication.App_Start
 {
     public class RouteConfig
     {

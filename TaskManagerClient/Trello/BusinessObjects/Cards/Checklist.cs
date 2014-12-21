@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.TrelloClient.BusinessObjects
+namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Cards
 {
     public class Checklist
     {

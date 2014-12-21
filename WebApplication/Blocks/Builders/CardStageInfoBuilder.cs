@@ -4,6 +4,7 @@ using System.Linq;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using SKBKontur.Treller.WebApplication.Services.Settings;
+using SKBKontur.Billy.Core.BlocksMapping.BlockExtenssions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {
@@ -21,7 +22,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
             var state = cardStateBuilder.GetState(card.BoardListId, boardSetting, boardLists);
 
             DateTime? lastListChangedDate = null;
-            var cardChecklists = new LinkedList<string>();
+            var cardChecklists = new HashSet<string>();
             foreach (var action in actions)
             {
                 if (action.ToListId == card.BoardListId)
@@ -30,11 +31,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 }
                 if (lastListChangedDate.HasValue && !string.IsNullOrEmpty(action.CreatedCheckListId))
                 {
-                    cardChecklists.AddLast(action.CreatedCheckListId);
+                    cardChecklists.Add(action.CreatedCheckListId);
                 }
             }
             var lists = checklists.ToDictionary(x => x.Id);
-            var resultLists = cardChecklists.Select(x => lists[x]).ToArray();
+            var resultLists = cardChecklists.Select(x => lists.SafeGet(x)).Where(x => x != null).ToArray();
             
             var totalDays = (int)(lastListChangedDate != null ? (DateTime.Now.Date - lastListChangedDate.Value.Date).TotalDays : 0);
 

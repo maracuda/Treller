@@ -3,6 +3,7 @@ using System.Reflection;
 using RestSharp.Serializers;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using SKBKontur.TaskManagerClient;
+using SKBKontur.TaskManagerClient.Trello;
 using TrelloNet;
 
 namespace SKBKontur.Treller.TestTreller
@@ -11,7 +12,7 @@ namespace SKBKontur.Treller.TestTreller
     {
         public void Customize(IContainer container)
         {
-            container.RegisterType<TrelloClient.TrelloClient>();
+            container.RegisterType<TrelloClient>();
         }
     }
 

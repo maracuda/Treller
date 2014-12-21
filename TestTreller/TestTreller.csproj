@@ -79,10 +79,6 @@
       <Project>{4a46c69f-d586-40d6-9e41-8eae7e0d0935}</Project>
       <Name>TaskManagerClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrelloClient\TrelloClient.csproj">
-      <Project>{122b63f8-5eaa-447e-ae65-c9a9c23448e4}</Project>
-      <Name>TrelloClient</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

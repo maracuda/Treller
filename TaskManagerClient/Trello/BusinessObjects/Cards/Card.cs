@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace SKBKontur.Treller.TrelloClient.BusinessObjects
+namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Cards
 {
     public class Card
     {
@@ -19,7 +19,7 @@ namespace SKBKontur.Treller.TrelloClient.BusinessObjects
         public string IdList { get; set; }
         public string[] IdMembers { get; set; }
         public string[] IdCheckLists { get; set; }
-        public Label[] Labels { get; set; }
+        public CardLabel[] Labels { get; set; }
     }
 }
 

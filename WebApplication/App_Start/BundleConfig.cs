@@ -1,6 +1,6 @@
 ﻿using System.Web.Optimization;
 
-namespace SKBKontur.Treller.WebApplication
+namespace SKBKontur.Treller.WebApplication.App_Start
 {
     public static class BundleConfig
     {

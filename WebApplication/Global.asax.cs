@@ -3,11 +3,9 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using LightInject;
-using Newtonsoft.Json;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
-using SKBKontur.Treller.TrelloClient;
-using SKBKontur.Treller.WebApplication.Services.Abstractions;
+using SKBKontur.Treller.WebApplication.App_Start;
 using System.Linq;
 
 namespace SKBKontur.Treller.WebApplication
@@ -16,7 +14,7 @@ namespace SKBKontur.Treller.WebApplication
     {
         protected void Application_Start()
         {
-            var container = new ContainerConfigurator(new TrelloClientCustomizer()).Configure();
+            var container = new ContainerConfigurator().Configure();
             var serviceContainer = container.Get<IServiceContainer>();
             var assemblyService = container.Get<IAssemblyService>();
 
@@ -31,14 +29,6 @@ namespace SKBKontur.Treller.WebApplication
 
             BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            
-
-            JsonConvert.DefaultSettings = (() =>
-            {
-                var settings = new JsonSerializerSettings();
-                settings.Converters.Add(new ActionConverter());
-                return settings;
-            });
         }
     }
 }

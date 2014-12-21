@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstractions\IHttpRequester.cs" />
+    <Compile Include="BusinessObjects\ActionType.cs" />
     <Compile Include="BusinessObjects\Board.cs" />
     <Compile Include="BusinessObjects\CardAction.cs" />
     <Compile Include="BusinessObjects\BoardCard.cs" />
@@ -50,6 +52,26 @@
     <Compile Include="BusinessObjects\User.cs" />
     <Compile Include="ITaskManagerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\Action.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\ActionAttachment.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\ActionBoard.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\ActionCard.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\ActionChecklist.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\ActionChecklistItem.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\ActionData.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\ActionList.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\ActionMember.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\ActionOrganization.cs" />
+    <Compile Include="Trello\BusinessObjects\Actions\OldUpdatedValue.cs" />
+    <Compile Include="Trello\BusinessObjects\Boards\Board.cs" />
+    <Compile Include="Trello\BusinessObjects\Boards\BoardList.cs" />
+    <Compile Include="Trello\BusinessObjects\Boards\BoardMember.cs" />
+    <Compile Include="Trello\BusinessObjects\Cards\Card.cs" />
+    <Compile Include="Trello\BusinessObjects\Cards\CardLabel.cs" />
+    <Compile Include="Trello\BusinessObjects\Cards\CardOverall.cs" />
+    <Compile Include="Trello\BusinessObjects\Cards\CheckItem.cs" />
+    <Compile Include="Trello\BusinessObjects\Cards\Checklist.cs" />
+    <Compile Include="Trello\TrelloClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

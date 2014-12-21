@@ -14,7 +14,9 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects
 
         public string BoardId { get; set; }
         public string ListId { get; set; }
+        public string FromListId { get; set; }
         public string ToListId { get; set; }
         public string CreatedCheckListId { get; set; }
+        public ActionType Type { get; set; }
     }
 }

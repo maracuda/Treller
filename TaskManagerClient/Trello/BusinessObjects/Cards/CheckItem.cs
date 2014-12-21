@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace SKBKontur.Treller.TrelloClient.BusinessObjects
+namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Cards
 {
     public class CheckItem
     {

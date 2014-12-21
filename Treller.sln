@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiInfrastructure", "Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{964C7D15-D146-4482-8B80-28F9971BACD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrelloClient", "TrelloClient\TrelloClient.csproj", "{122B63F8-5EAA-447E-AE65-C9A9C23448E4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTreller", "TestTreller\TestTreller.csproj", "{6C71A3E6-9D2D-47AD-ACF7-ACDA3330E783}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpInfrastructure", "HttpInfrastructure\HttpInfrastructure.csproj", "{EFA14151-08F6-4647-BCED-C891CB1E53F5}"
@@ -39,10 +37,6 @@ Global
 		{964C7D15-D146-4482-8B80-28F9971BACD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{964C7D15-D146-4482-8B80-28F9971BACD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{964C7D15-D146-4482-8B80-28F9971BACD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{122B63F8-5EAA-447E-AE65-C9A9C23448E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{122B63F8-5EAA-447E-AE65-C9A9C23448E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{122B63F8-5EAA-447E-AE65-C9A9C23448E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{122B63F8-5EAA-447E-AE65-C9A9C23448E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C71A3E6-9D2D-47AD-ACF7-ACDA3330E783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C71A3E6-9D2D-47AD-ACF7-ACDA3330E783}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C71A3E6-9D2D-47AD-ACF7-ACDA3330E783}.Release|Any CPU.ActiveCfg = Release|Any CPU

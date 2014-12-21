@@ -1,12 +1,22 @@
-﻿using SKBKontur.Infrastructure.ContainerConfiguration;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SKBKontur.HttpInfrastructure.Clients;
+using SKBKontur.TaskManagerClient.Abstractions;
 
 namespace SKBKontur.Treller.WebApplication.Services.Abstractions
 {
-    public class TrelloClientCustomizer : IContainerCustomizer
+    public class HttpRequester : IHttpRequester
     {
-        public void Customize(IContainer container)
+        private readonly IHttpClient httpClient;
+
+        public HttpRequester(IHttpClient httpClient)
         {
-            container.RegisterType<TrelloClient.TrelloClient>();
+            this.httpClient = httpClient;
+        }
+
+        public Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null)
+        {
+            return httpClient.SendGetAsync<T>(url, queryParameters);
         }
     }
 }
