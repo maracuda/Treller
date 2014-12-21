@@ -1,0 +1,4 @@
+﻿@using SKBKontur.Infrastructure.CommonExtenssions
+@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardStageInfoViewModel
+
+<span>Стадия:@Model.State.GetEnumDescription(), @Model.DaysInState дн., (@Model.CurrentStateParrots/@Model.TotalStateParrots), Общий прогресс: (@Model.CurrentCardParrots/@Model.TotalCardParrots)</span>
