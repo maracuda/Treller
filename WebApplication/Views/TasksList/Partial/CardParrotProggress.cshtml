@@ -2,11 +2,11 @@
 @model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardStageInfoViewModel
 
 @{
-    var accomplishedInPercent = Model.TotalCardParrots > 0 ? Model.CurrentCardParrots / (decimal)Model.TotalCardParrots * 100M : 100;
+    var accomplishedInPercent = Model.TotalCardParrots > 0 ? Model.CurrentCardParrots / (decimal)Model.TotalCardParrots * 100M : 0;
 }
 
 <section class="task-progress-block" title="Общий прогресс: (@Model.CurrentCardParrots/@Model.TotalCardParrots)">
-    <div class="task-progress-legend">@accomplishedInPercent.ToString("##")% (@Model.CurrentCardParrots/@Model.TotalCardParrots)</div>
+    <div class="task-progress-legend">@accomplishedInPercent.ToString("#0")% (@Model.CurrentCardParrots/@Model.TotalCardParrots)</div>
     <div class="task-progress-line total"></div>
     <div class="task-progress-line accomplished" style="width: @accomplishedInPercent.HtmlPercentFormat()"></div>
 </section>
