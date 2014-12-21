@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using SKBKontur.Treller.TrelloClient;
-using SKBKontur.Treller.WebApplication.App_Start;
 using SKBKontur.Treller.WebApplication.Services.Abstractions;
 using System.Linq;
 
@@ -29,7 +28,10 @@ namespace SKBKontur.Treller.WebApplication
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            
 
             JsonConvert.DefaultSettings = (() =>
             {

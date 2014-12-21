@@ -1,8 +1,8 @@
 ﻿using System.Web.Optimization;
 
-namespace SKBKontur.Treller.WebApplication.App_Start
+namespace SKBKontur.Treller.WebApplication
 {
-    public class BundleConfig
+    public static class BundleConfig
     {
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
@@ -22,7 +22,11 @@ namespace SKBKontur.Treller.WebApplication.App_Start
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+            bundles.Add(
+                new StyleBundle("~/bundles/styles/layout")
+                .IncludeDirectory("~/Content/Bootstrap", "*.css")
+                .Include("~/Content/normalize.css")
+                .Include("~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
