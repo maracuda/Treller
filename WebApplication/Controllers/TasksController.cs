@@ -38,12 +38,12 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             var detalizationBlock = (CardDetalizationPartsBlock)result.First(x => x is CardDetalizationPartsBlock);
             var commonBlocks = result.Where(x => x != detalizationBlock).ToArray();
 
-            return View("TaskDetalization", new TaskDetalizationViewModel
-                                                {
-                                                    CardId = cardId,
-                                                    CommonBlocks = commonBlocks,
-                                                    Detalization = detalizationBlock
-                                                });
+            return PartialView("TaskDetalization", new TaskDetalizationViewModel
+            {
+                CardId = cardId,
+                CommonBlocks = commonBlocks,
+                Detalization = detalizationBlock
+            });
         }
     }
 }

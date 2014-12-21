@@ -4,13 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/bundles/styles/layout")
+    @Styles.Render("~/bundles/layout")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
     @RenderBody()
 
-    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/base-libraries")
     @RenderSection("scripts", false)
+    
+    <script>
+        $(function () {
+            $(".colorbox-link").colorbox();
+        })
+    </script>
 </body>
 </html>
