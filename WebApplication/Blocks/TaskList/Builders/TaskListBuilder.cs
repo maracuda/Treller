@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.Billy.Core.BlocksMapping.Attributes;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
-using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using SKBKontur.Treller.WebApplication.Services.Settings;
-using SKBKontur.Infrastructure.CommonExtenssions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
 {
@@ -16,18 +13,18 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
     {
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ISettingService settingService;
-        private readonly ICardStateBuilder cardStateBuilder;
         private readonly IUserAvatarViewModelBuilder userAvatarViewModelBuilder;
+        private readonly ICardStageInfoBuilder cardStageInfoBuilder;
 
         public TaskListBuilder(ITaskManagerClient taskManagerClient,
-                               ISettingService settingService, 
-                               ICardStateBuilder cardStateBuilder,
-                               IUserAvatarViewModelBuilder userAvatarViewModelBuilder)
+                               ISettingService settingService,
+                               IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
+                               ICardStageInfoBuilder cardStageInfoBuilder)
         {
             this.taskManagerClient = taskManagerClient;
             this.settingService = settingService;
-            this.cardStateBuilder = cardStateBuilder;
             this.userAvatarViewModelBuilder = userAvatarViewModelBuilder;
+            this.cardStageInfoBuilder = cardStageInfoBuilder;
         }
 
         [BlockModel(ContextKeys.TasksKey)]
@@ -90,51 +87,21 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                                                    Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
                                                    ILookup<string, CardChecklist> cardChecklists)
         {
-            return cards.Select(card =>
-                                    {
-                                        var state = cardStateBuilder.GetState(card.BoardListId, boardSettings[card.BoardId], boardLists[card.BoardId].ToArray());
-                                        return new CardListItemViewModel
-                                                       {
-                                                           CardId = card.Id,
-                                                           CardName = card.Name,
-                                                           Labels = card.Labels,
-                                                           Avatars = card.UserIds.Select(id => users[id]).Select(userAvatarViewModelBuilder.Build).ToArray(),
-                                                           StageInfo = GetStageInfo(card, state, cardActions[card.Id].ToArray(), cardChecklists[card.Id].ToArray()),
-                                                           CardUrl = card.Url,
-                                                           State = state
-                                                       };
-                                    })
-                        .OrderByDescending(x => x.State)
+            return cards.Select(card => new CardListItemViewModel
+                                            {
+                                                CardId = card.Id,
+                                                CardName = card.Name,
+                                                Labels = card.Labels,
+                                                Avatars = card.UserIds.Select(id => users[id]).Select(userAvatarViewModelBuilder.Build).ToArray(),
+                                                CardUrl = card.Url,
+                                                StageInfo = cardStageInfoBuilder.Build(card,
+                                                                                       cardActions[card.Id].ToArray(),
+                                                                                       cardChecklists[card.Id].ToArray(),
+                                                                                       boardSettings[card.BoardId],
+                                                                                       boardLists[card.BoardId].ToArray())
+                                            })
+                        .OrderByDescending(x => x.StageInfo.State)
                         .ToArray();
-        }
-
-        private static string GetStageInfo(BoardCard card, CardState state, CardAction[] actions, CardChecklist[] checklists)
-        {
-            var lastListChangedDate = actions.FirstOrDefault(x => x.ToListId == card.BoardListId);
-            var totalDays = (int) (lastListChangedDate != null ? (DateTime.Now.Date - lastListChangedDate.Date).TotalDays : 0);
-
-            var cardChecklists = new LinkedList<string>();
-            var isStarted = false;
-            foreach (var action in actions)
-            {
-                if (action.ToListId == card.BoardListId)
-                {
-                    isStarted = true;
-                }
-
-                if (isStarted && !string.IsNullOrEmpty(action.CreatedCheckListId))
-                {
-                    cardChecklists.AddLast(action.CreatedCheckListId);
-                }
-            }
-            var lists = checklists.ToDictionary(x => x.Id);
-            var resultLists = cardChecklists.Select(x => lists[x]).ToArray();
-
-            var percent = resultLists.Any(cl => cl.Items.Any(i => i.IsChecked)) 
-                            ? resultLists.Sum(l => l.Items.Count(i => i.IsChecked)) / resultLists.Sum(l => l.Items.Length)
-                            : 0;
-
-            return string.Format("Стадия:{0}, {1} дн., {2:P}", state.GetEnumDescription(), totalDays, percent);
         }
     }
 }

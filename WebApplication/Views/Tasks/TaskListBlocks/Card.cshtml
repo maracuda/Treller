@@ -4,5 +4,5 @@
 @Html.ActionLink(@Model.CardName, "GetDetalization", "Tasks", new RouteValueDictionary{{"cardId", Model.CardId}}, new Dictionary<string, object>()) 
 <a href="@Model.CardUrl">-> посмотреть в Trello</a>
 <br/>
-<span>@Model.StageInfo.  Назначенные: @string.Join(",", Model.Avatars.Select(x => x.UserFullName))</span>
+@Html.Partial("TaskListBlocks/CardStageInfo", Model.StageInfo)
 <br/>

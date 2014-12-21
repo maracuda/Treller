@@ -149,8 +149,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Blocks\BaseBlock.cs" />
+    <Compile Include="Blocks\Builders\CardStageInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\CardStateBuilder.cs" />
     <Compile Include="Blocks\Builders\CardStateInfoBuilder.cs" />
+    <Compile Include="Blocks\Builders\ICardStageInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\ICardStateBuilder.cs" />
     <Compile Include="Blocks\Builders\ICardStateInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\IUserAvatarViewModelBuilder.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="Blocks\TaskList\TasksListInitialNamer.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardListEnterModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardListItemViewModel.cs" />
+    <Compile Include="Blocks\TaskList\ViewModels\CardStageInfoViewModel.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -330,6 +333,7 @@
     <Content Include="Views\Tasks\DisplayTemplates\CardReleaseWaitingPartBlock.cshtml" />
     <Content Include="Views\Tasks\DisplayTemplates\CardReviewPartBlock.cshtml" />
     <Content Include="Views\Tasks\DisplayTemplates\CardTestingPartBlock.cshtml" />
+    <Content Include="Views\Tasks\TaskListBlocks\CardStageInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
