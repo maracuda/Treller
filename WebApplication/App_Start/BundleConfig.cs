@@ -31,7 +31,13 @@ namespace SKBKontur.Treller.WebApplication
                 .Include("~/Content/Bootstrap/bootstrap.css")
                 .Include("~/Content/Bootstrap/bootstrap-theme.css")
                 .Include("~/Content/Colorbox/colorbox.css")
-                .Include("~/Content/site.css"));
+                .Include("~/Content/site.css")
+                .IncludeDirectory("~/Content/Layout/", "*.css"));
+
+            bundles.Add(
+                new StyleBundle("~/bundles/tasklist")
+                .IncludeDirectory("~/Content/TaskList", "*.css")
+                .IncludeDirectory("~/Content/TaskInfo", "*.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

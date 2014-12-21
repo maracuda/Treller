@@ -1,9 +1,20 @@
-﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks.BaseCardListBlock[]
+﻿@using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks
+@model SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks.BaseCardListBlock[]
 
 @{
-    ViewBag.Title = "информация по задачам в трелло";
+    ViewBag.Title = "Информация по задачам в трелло";
     Layout = "../Shared/_Layout.cshtml";
 }
 
-<h2>Информация по задачам в трелло</h2>
-@Html.Partial("Partial/BaseBlocks", Model)
+@section Header
+{
+    @Styles.Render("~/bundles/tasklist")
+}
+
+@section LayoutHeader
+{
+    @Html.Partial("Partial/BaseBlocks", Model.Where(m => !(m is CardListBlock)).ToArray())
+    
+}
+
+@Html.Partial("Partial/BaseBlocks", Model.Where(m => m is CardListBlock).ToArray())

@@ -5,18 +5,26 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/bundles/layout")
+    @RenderSection("Header", false)
+
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
-    @RenderBody()
+    <body class="layout-body">
+        <header class="layout-header">
+            <h1 class="layout-title">@ViewBag.Title</h1>
+            
+            @RenderSection("LayoutHeader", false)
+        </header>
 
-    @Scripts.Render("~/bundles/base-libraries")
-    @RenderSection("scripts", false)
+        @RenderBody()
+
+        @Scripts.Render("~/bundles/base-libraries")
+        @RenderSection("scripts", false)
     
-    <script>
-        $(function () {
-            $(".colorbox-link").colorbox();
-        })
-    </script>
-</body>
+        <script>
+            $(function () {
+                $(".colorbox-link").colorbox();
+            })
+        </script>
+    </body>
 </html>

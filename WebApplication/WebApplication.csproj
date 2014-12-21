@@ -196,6 +196,7 @@
     <Compile Include="Blocks\TaskList\ViewModels\CardStageInfoViewModel.cs" />
     <Compile Include="Controllers\TaskInfoController.cs" />
     <Compile Include="Controllers\TasksListController.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -217,7 +218,10 @@
     <Content Include="Content\Colorbox\images\border1.png" />
     <Content Include="Content\Colorbox\images\border2.png" />
     <Content Include="Content\Colorbox\images\loading.gif" />
+    <Content Include="Content\Layout\Layout.css" />
     <Content Include="Content\normalize.css" />
+    <Content Include="Content\TaskList\TaskBlock.css" />
+    <Content Include="Content\TaskList\TaskLabelList.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -345,6 +349,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Blocks\Users\" />
+    <Folder Include="Content\TaskInfo\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
