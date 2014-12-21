@@ -1,0 +1,42 @@
+﻿.layout-body {
+    padding: 30px;
+    background-color: #e3e3e3;
+}
+
+.layout-header {
+    background-color: #0c6395;
+
+    padding: 10px 30px;
+    margin: -30px -30px 0;
+
+    color: #f2f2f2;
+}
+
+.layout-title {
+    margin-top: 10px;
+}
+
+.layout-header a {
+    display: inline-block;
+    color: #f6f6f6;
+    
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+
+    text-decoration: underline;
+}
+
+.layout-header a:hover {
+    color: #cee0ea;
+    text-decoration: none;
+
+    -webkit-transition: color .2s ease-out;
+    -moz-transition: color .2s ease-out;
+    -ms-transition: color .2s ease-out;
+    -o-transition: color .2s ease-out;
+    transition: color .2s ease-out;
+}
+
+a.fa {
+    text-decoration: none;
+}

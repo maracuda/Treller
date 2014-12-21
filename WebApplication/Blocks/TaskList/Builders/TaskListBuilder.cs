@@ -91,7 +91,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                                             {
                                                 CardId = card.Id,
                                                 CardName = card.Name,
-                                                Labels = card.Labels,
+                                                Labels = card.Labels.OrderBy(x => x.Color).ToArray(),
                                                 Avatars = card.UserIds.Select(id => users[id]).Select(userAvatarViewModelBuilder.Build).ToArray(),
                                                 CardUrl = card.Url,
                                                 StageInfo = cardStageInfoBuilder.Build(card,
