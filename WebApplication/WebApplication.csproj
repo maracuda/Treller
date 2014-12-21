@@ -41,7 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Billy.Core.BlocksMapping">
-      <HintPath>..\..\Assemblies\Billy.Core.BlocksMapping.dll</HintPath>
+      <HintPath>..\Assemblies\Billy.Core.BlocksMapping.dll</HintPath>
     </Reference>
     <Reference Include="LightInject, Version=3.0.2.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -280,6 +280,7 @@
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
