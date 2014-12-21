@@ -7,5 +7,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.ViewModels
         public string UserUrl { get; set; }
         public string Initials { get; set; }
         public string Base64Image { get; set; }
+        public string AvatarSrc { get; set; }
     }
 }

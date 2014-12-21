@@ -205,7 +205,7 @@ namespace SKBKontur.Treller.TrelloClient
                            Id = b.Id,
                            Name = b.Username,
                            FullName = b.FullName,
-                           AvatarInfo = b.AvatarHash,
+                           AvatarHash = b.AvatarHash,
                            Initials = b.Initials,
                            UserUrl = b.Url
                        };
@@ -218,7 +218,7 @@ namespace SKBKontur.Treller.TrelloClient
                 Id = actionUser.Id,
                 Name = actionUser.Username,
                 FullName = actionUser.FullName,
-                AvatarInfo = actionUser.AvatarHash,
+                AvatarHash = actionUser.AvatarHash,
                 Initials = actionUser.Initials
             };
         }

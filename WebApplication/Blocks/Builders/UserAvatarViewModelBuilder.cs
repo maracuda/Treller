@@ -13,7 +13,8 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                            Initials = user.Initials,
                            UserName = user.Name,
                            UserFullName = user.FullName,
-                           Base64Image = user.AvatarInfo
+                           Base64Image = user.AvatarHash,
+                           AvatarSrc = user.AvatarSrc
                        };
         }
     }
