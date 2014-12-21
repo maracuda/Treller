@@ -1,0 +1,31 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts.CardDetalizationPartsBlock
+
+<h4>Информация по статусам</h4>
+@if (Model.BeforeDevelop != null)
+{
+    @Html.Partial("Partial/BasePartTaskDetalizationBlock", Model.BeforeDevelop)
+}
+@if (Model.Develop != null)
+{
+    @Html.Partial("Partial/BasePartTaskDetalizationBlock", Model.Develop)
+}
+@if (Model.Review != null)
+{
+    @Html.Partial("Partial/BasePartTaskDetalizationBlock", Model.Review)
+}
+@if (Model.Presentation != null)
+{
+    @Html.Partial("Partial/BasePartTaskDetalizationBlock", Model.Presentation)
+}
+@if (Model.Testing != null)
+{
+    @Html.Partial("Partial/BasePartTaskDetalizationBlock", Model.Testing)
+}
+@if (Model.ReleaseWaiting != null)
+{
+    @Html.Partial("Partial/BasePartTaskDetalizationBlock", Model.ReleaseWaiting)
+}
+@if (Model.Archive != null)
+{
+    @Html.Partial("Partial/BasePartTaskDetalizationBlock", Model.Archive)
+}

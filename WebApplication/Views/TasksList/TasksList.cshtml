@@ -1,0 +1,9 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks.BaseCardListBlock[]
+
+@{
+    ViewBag.Title = "информация по задачам в трелло";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<h2>Информация по задачам в трелло</h2>
+@Html.Partial("Partial/BaseBlocks", Model)

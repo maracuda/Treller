@@ -1,0 +1,6 @@
+﻿@model SKBKontur.Treller.WebApplication.Blocks.BaseBlock[]
+
+@foreach (var block in Model)
+{
+    @Html.Partial("Partial/BaseBlock", block)
+}

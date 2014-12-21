@@ -1,7 +1,7 @@
 ﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardListItemViewModel
 
 <span>@string.Join(",", Model.Labels.Select(x => x.Name))</span>
-@Html.ActionLink(Model.CardName, "GetDetalization", "Tasks", new RouteValueDictionary{{"cardId", Model.CardId}}, new Dictionary<string, object>
+@Html.ActionLink(Model.CardName, "TaskInfo", "TaskInfo", new RouteValueDictionary{{"cardId", Model.CardId}}, new Dictionary<string, object>
 {
     {"class", "colorbox-link"},
 }) 
@@ -9,5 +9,5 @@
 <a href="#@Model.CardUrl">-> посмотреть в Trello</a>
 
 <br/>
-@Html.Partial("TaskListBlocks/CardStageInfo", Model.StageInfo)
+@Html.Partial("Partial/CardStageInfo", Model.StageInfo)
 <br/>
