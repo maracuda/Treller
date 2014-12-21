@@ -1,0 +1,29 @@
+﻿.task-progress-block {
+    width: 100%;
+    margin: -10px -10px 0;
+    height: 5px;
+}
+
+.task-progress-line {
+    height: 5px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.task-progress-line.total {
+    background-color: #cee0ea;
+}
+
+.task-progress-line.accomplished {
+    background-color: #0e74af;
+}
+
+.task-progress-legend {
+    font-size: 11px;
+    position: absolute;
+    top: -15px;
+    left: 0;
+}

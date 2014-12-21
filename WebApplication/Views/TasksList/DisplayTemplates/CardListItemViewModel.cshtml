@@ -2,25 +2,23 @@
 @model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardListItemViewModel
 
 <div class="task-list-block">
-    @Html.ActionLink(Model.CardName, "TaskInfo", "TaskInfo", new RouteValueDictionary{{"cardId", Model.CardId}}, new Dictionary<string, object>
-    {
-        {"class", "colorbox-link"},
-    })
+    @Html.Partial("Partial/CardParrotProggress", Model.StageInfo)
     
+    <header class="task-block-header">
+        <a href="@Model.CardUrl" class="fa fa-external-link" title="посмотреть в Trello" target="_blank"></a>
 
-
-    <a href="@Model.CardUrl">-> посмотреть в Trello</a>
-
-    <br/>
-        @Html.Partial("Partial/CardStageInfo", Model.StageInfo)
-    <br/>    
+        @Html.ActionLink(Model.CardName, "TaskInfo", "TaskInfo", new RouteValueDictionary{{"cardId", Model.CardId}}, new Dictionary<string, object>
+        {
+            {"class", "colorbox-link"},
+        })    
+    </header>
+    
+    @Html.Partial("Partial/CardStageInfo", Model.StageInfo)
     
     <div class="task-block-label-list">
         @foreach (var label in Model.Labels)
         {
-            <span class="task-block-label @label.Color.ToLowerString()" title="@label.Name">
-                @*label.Name *@
-            </span>
+            <span class="task-block-label @label.Color.ToLowerString()" title="@label.Name"></span>
         }    
     </div>
 </div>

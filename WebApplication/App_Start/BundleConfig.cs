@@ -32,6 +32,7 @@ namespace SKBKontur.Treller.WebApplication
                 .Include("~/Content/Bootstrap/bootstrap-theme.css")
                 .Include("~/Content/Colorbox/colorbox.css")
                 .Include("~/Content/site.css")
+                .Include("~/fonts/font-awesome/css/font-awesome.css")
                 .IncludeDirectory("~/Content/Layout/", "*.css"));
 
             bundles.Add(

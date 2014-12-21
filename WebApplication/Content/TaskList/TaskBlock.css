@@ -13,3 +13,8 @@
 .task-list-block:first-child {
     margin-top: 30px;
 }
+
+.task-block-header {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
