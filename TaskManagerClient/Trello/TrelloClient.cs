@@ -31,51 +31,65 @@ namespace SKBKontur.TaskManagerClient.Trello
             this.httpClient = httpClient;
         }
 
-        public IEnumerable<Board> GetBoards(string[] boardIds)
+        public Board[] GetBoards(string[] boardIds)
         {
             return boardIds.Select(id => GetTrelloData<BusinessObjects.Boards.Board>(id, "boards/{0}"))
-                           .Select(x => new Board{ Id = x.Id, OrganizationId = x.IdOrganization, Name = x.Name, Url = x.Url });
+                           .Select(x => new Board{ Id = x.Id, OrganizationId = x.IdOrganization, Name = x.Name, Url = x.Url })
+                           .ToArray();
         }
 
-        public IEnumerable<BoardList> GetBoardLists(string[] boardIds)
+        public BoardList[] GetBoardLists(params string[] boardIds)
         {
             return boardIds.SelectMany(id => GetTrelloData<BusinessObjects.Boards.BoardList[]>(id, "boards/{0}/lists"))
-                           .Select(x => new BoardList { Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos });
+                           .Select(x => new BoardList { Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos })
+                           .ToArray();
 
         }
 
-        public IEnumerable<BoardCard> GetBoardCards(string[] boardIds)
+        public BoardCard[] GetBoardCards(string[] boardIds)
         {
-            return boardIds.SelectMany(id => GetTrelloData<Card[]>(id, "boards/{0}/cards")).Select(CreateBoardCard);
+            return boardIds.SelectMany(id => GetTrelloData<Card[]>(id, "boards/{0}/cards")).Select(CreateBoardCard)
+                           .ToArray();
         }
 
-        public IEnumerable<User> GetBoardUsers(string[] boardIds)
+        public User[] GetBoardUsers(string[] boardIds)
         {
-            return boardIds.SelectMany(id => GetTrelloData<BoardMember[]>(id, "boards/{0}/members"))
+            var queryString = new Dictionary<string, string>
+                                  {
+                                      { "fields", string.Join(";", typeof(User).GetProperties().Select(x => x.Name)) }
+                                  };
+            return boardIds.SelectMany(id => GetTrelloData<BoardMember[]>(id, "boards/{0}/members", queryString))
                            .GroupBy(x => x.Id, StringComparer.OrdinalIgnoreCase)
                            .Select(x => x.First())
-                           .Select(CreateUser);
+                           .Select(CreateUser)
+                           .ToArray();
         }
 
-        public IEnumerable<CardChecklist> GetBoardChecklists(string[] boardIds)
+        public CardChecklist[] GetBoardChecklists(string[] boardIds)
         {
-            return boardIds.SelectMany(id => GetTrelloData<Checklist[]>(id, "boards/{0}/checklists").Select(CreateChecklist));
+            return boardIds.SelectMany(id => GetTrelloData<Checklist[]>(id, "boards/{0}/checklists").Select(CreateChecklist)).ToArray();
         }
 
-        public IEnumerable<CardAction> GetCardActions(string cardId)
+        public CardAction[] GetCardActions(string cardId)
         {
             var queryString = new Dictionary<string, string> {{"filter", "all"}, {"limit", "1000"}};
             return GetTrelloData<Action[]>(cardId, "cards/{0}/actions", queryString)
                         .Select(CreateCardAction)
-                        .Where(x => x != null);
+                        .Where(x => x != null)
+                        .ToArray();
         }
 
-        public IEnumerable<CardAction> GetActionsForBoardCards(string[] boardIds)
+        public CardAction[] GetActionsForBoardCards(string[] boardIds, DateTime? fromUtc = null)
         {
             var queryString = new Dictionary<string, string> {{"limit", "1000"}};
+            if (fromUtc.HasValue)
+            {
+                queryString.Add("since", fromUtc.Value.ToString("O"));
+            }
             return boardIds.SelectMany(id => GetTrelloData<Action[]>(id, "boards/{0}/actions", queryString))
                            .Select(CreateCardAction)
-                           .Where(x => x != null);
+                           .Where(x => x != null)
+                           .ToArray();
         }
 
         public BoardCard GetCard(string cardId)
@@ -83,14 +97,14 @@ namespace SKBKontur.TaskManagerClient.Trello
             return CreateBoardCard(GetTrelloData<Card>(cardId, "cards/{0}"));
         }
 
-        public IEnumerable<User> GetCardUsers(string cardId)
+        public User[] GetCardUsers(string cardId)
         {
-            return GetTrelloData<BoardMember[]>(cardId, "cards/{0}/members").Select(CreateUser);
+            return GetTrelloData<BoardMember[]>(cardId, "cards/{0}/members").Select(CreateUser).ToArray();
         }
 
-        public IEnumerable<CardChecklist> GetCardChecklists(string cardId)
+        public CardChecklist[] GetCardChecklists(string cardId)
         {
-            return GetTrelloData<Checklist[]>(cardId, "cards/{0}/checklists").Select(CreateChecklist);
+            return GetTrelloData<Checklist[]>(cardId, "cards/{0}/checklists").Select(CreateChecklist).ToArray();
         }
 
         private T GetTrelloData<T>(string id, string format, Dictionary<string, string> queryString = null)

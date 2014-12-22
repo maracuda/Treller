@@ -200,6 +200,9 @@
     <Compile Include="Services\Settings\BoardSettings.cs" />
     <Compile Include="Services\Settings\ISettingService.cs" />
     <Compile Include="Services\Settings\SettingService.cs" />
+    <Compile Include="Services\TaskCacher\ITaskCacher.cs" />
+    <Compile Include="Services\TaskCacher\TaskCacher.cs" />
+    <Compile Include="Services\TaskCacher\TaskCacherStoredTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Bootstrap\bootstrap-theme.css" />

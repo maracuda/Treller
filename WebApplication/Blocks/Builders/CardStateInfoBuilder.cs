@@ -38,7 +38,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 
                 if (action.ToListId != null || action.ListId != null)
                 {
-                    var newState = cardStateBuilder.GetState(action.ToListId ?? action.ListId, setting, boardLists[action.BoardId]);
+                    var newState = boardLists.ContainsKey(action.BoardId) ? cardStateBuilder.GetState(action.ToListId ?? action.ListId, setting, boardLists[action.BoardId]) : CardState.BeforeDevelop;
                     if (newState != currentState)
                     {
                         if (states.ContainsKey(currentState))

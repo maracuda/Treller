@@ -11,6 +11,7 @@ using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.ViewModels;
 using SKBKontur.Treller.WebApplication.Services.Settings;
 using System.Linq;
 using SKBKontur.Infrastructure.CommonExtenssions;
+using SKBKontur.Treller.WebApplication.Services.TaskCacher;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
 {
@@ -21,18 +22,21 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
         private readonly IUserAvatarViewModelBuilder userAvatarViewModelBuilder;
         private readonly ICardStateBuilder cardStateBuilder;
+        private readonly ITaskCacher taskCacher;
 
         public TasksBuilder(ITaskManagerClient taskManagerClient, 
                             ISettingService settingService,
                             ICardStateInfoBuilder cardStateInfoBuilder,
                             IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
-                            ICardStateBuilder cardStateBuilder)
+                            ICardStateBuilder cardStateBuilder,
+                            ITaskCacher taskCacher)
         {
             this.taskManagerClient = taskManagerClient;
             this.settingService = settingService;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
             this.userAvatarViewModelBuilder = userAvatarViewModelBuilder;
             this.cardStateBuilder = cardStateBuilder;
+            this.taskCacher = taskCacher;
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
@@ -44,31 +48,65 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private BoardCard BuildCard(string cardId)
         {
-            return taskManagerClient.GetCard(cardId);
+            return FindCard(cardId)
+                   ?? taskManagerClient.GetCard(cardId);
+        }
+
+        private BoardCard FindCard(string cardId)
+        {
+            return taskCacher.GetBuilded<BoardCard>().FirstOrDefault(x => string.Equals(x.Id, cardId, StringComparison.OrdinalIgnoreCase));
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private Dictionary<string, User> BuildCardUsers(string cardId)
         {
+            var card = FindCard(cardId);
+            if (card != null)
+            {
+                if (card.UserIds.Length == 0)
+                {
+                    return new Dictionary<string, User>(0);
+                }
+
+                var result = taskCacher.GetBuilded<User>()
+                                 .Where(x => card.UserIds.Contains(x.Id, StringComparer.OrdinalIgnoreCase))
+                                 .ToDictionary(x => x.Id);
+                if (result.Count > 0)
+                {
+                    return result;
+                }
+            }
+
             return taskManagerClient.GetCardUsers(cardId).ToDictionary(x => x.Id, StringComparer.OrdinalIgnoreCase);
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private CardAction[] BuildCardActions(string cardId)
         {
-            return taskManagerClient.GetCardActions(cardId).ToArray();
+            var actions = taskCacher.GetBuilded<CardAction>();
+            return actions.Length > 0 
+                    ? actions.Where(x => string.Equals(x.CardId, cardId, StringComparison.OrdinalIgnoreCase)).ToArray()
+                    : taskManagerClient.GetCardActions(cardId);
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private Dictionary<string, CardChecklist> BuildCardChecklists(string cardId)
         {
-            return taskManagerClient.GetCardChecklists(cardId).ToArray().ToDictionary(x => x.Id);
+            var checklists = taskCacher.GetBuilded<CardChecklist>();
+            return (checklists.Length > 0 
+                   ? checklists.Where(x => string.Equals(x.CardId, cardId, StringComparison.OrdinalIgnoreCase))
+                   : taskManagerClient.GetCardChecklists(cardId)).ToDictionary(x => x.Id);
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private Dictionary<string, BoardList[]> BuildBoardLists(BoardCard card)
         {
-            return taskManagerClient.GetBoardLists(card.BoardId).GroupBy(x => x.BoardId).ToDictionary(x => x.Key, x => x.ToArray(), StringComparer.OrdinalIgnoreCase);
+            var lists = taskCacher.GetBuilded<BoardList>();
+            return (lists.Length > 0 
+                            ? lists.Where(x => string.Equals(x.BoardId, card.BoardId, StringComparison.OrdinalIgnoreCase))
+                            : taskManagerClient.GetBoardLists(card.BoardId))
+                        .GroupBy(x => x.BoardId)
+                        .ToDictionary(x => x.Key, x => x.ToArray(), StringComparer.OrdinalIgnoreCase);
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]

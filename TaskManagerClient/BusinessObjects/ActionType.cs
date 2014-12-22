@@ -23,14 +23,14 @@
         CreateList = 100,
         UpdateList,
 
-        CreateBoard,
+        CreateBoard = 200,
         UpdateBoard,
         AddMemberToBoard,
         RemoveMemberFromBoard,
         AddToOrganizationBoard,
         RemoveFromOrganizationBoard,
 
-        CreateOrganization,
+        CreateOrganization = 300,
         UpdateOrganization,
     }
 }

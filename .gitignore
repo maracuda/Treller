@@ -1,6 +1,7 @@
 ﻿# git ignore file
 *.user
 *.suo
+*.json
 [Bb]in
 obj
 _ReSharper*/

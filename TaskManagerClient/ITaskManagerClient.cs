@@ -1,20 +1,20 @@
-using System.Collections.Generic;
+using System;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 
 namespace SKBKontur.TaskManagerClient
 {
     public interface ITaskManagerClient
     {
-        IEnumerable<Board> GetBoards(string[] boardIds);
-        IEnumerable<BoardList> GetBoardLists(params string[] boardIds);
-        IEnumerable<BoardCard> GetBoardCards(string[] boardIds);
-        IEnumerable<User> GetBoardUsers(string[] boardIds);
-        IEnumerable<CardChecklist> GetBoardChecklists(string[] boardIds);
-        IEnumerable<CardAction> GetCardActions(string cardId);
-        IEnumerable<CardAction> GetActionsForBoardCards(string[] boardIds);
+        Board[] GetBoards(string[] boardIds);
+        BoardList[] GetBoardLists(params string[] boardIds);
+        BoardCard[] GetBoardCards(string[] boardIds);
+        User[] GetBoardUsers(string[] boardIds);
+        CardChecklist[] GetBoardChecklists(string[] boardIds);
+        CardAction[] GetActionsForBoardCards(string[] boardIds, DateTime? fromUtc = null);
 
+        CardAction[] GetCardActions(string cardId);
         BoardCard GetCard(string cardId);
-        IEnumerable<User> GetCardUsers(string cardId);
-        IEnumerable<CardChecklist> GetCardChecklists(string cardId);
+        User[] GetCardUsers(string cardId);
+        CardChecklist[] GetCardChecklists(string cardId);
     }
 }
