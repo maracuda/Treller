@@ -18,7 +18,7 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
         private readonly ConcurrentDictionary<CacheKey, CacheResult> cache;
         private bool isTimerInProgress;
         private readonly Timer timer;
-        private DateTime lastUpdateUtc = DateTime.UtcNow;
+        private DateTime lastUpdateUtc = DateTime.UtcNow.AddDays(-2);
         private readonly HashSet<ActionType> checklistActions = new HashSet<ActionType>(new []{ ActionType.AddChecklistToCard, ActionType.ConvertToCardFromCheckItem, ActionType.RemoveChecklistFromCard, ActionType.UpdateCheckItemStateOnCard, ActionType.UpdateChecklist });
         private readonly Dictionary<TaskCacherStoredTypes, Type> storKeys = new Dictionary<TaskCacherStoredTypes, Type>
                                                                                 {
@@ -97,15 +97,20 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
                 var boardIds = keys.SelectMany(x => x.GetBoardIds()).Distinct().ToArray();
 
                 var actions = taskManagerClient.GetActionsForBoardCards(boardIds, lastUpdateUtc).ToArray();
-                lastUpdateUtc = elapsedEventArgs.SignalTime;
+                
 
-                UpdateWhenExists(actions, action => action.Type < ActionType.CreateList, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardCards));
-                UpdateWhenExists(actions, action => action.Type < ActionType.CreateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardActions));
-                UpdateWhenExists(actions, action => action.Type == ActionType.AddMemberToBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardUsers));
-                UpdateWhenExists(actions, action => action.Type == ActionType.CreateList
+                var isSuccessUpdate = UpdateWhenExists(actions, action => action.Type < ActionType.CreateList, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardCards));
+                isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type < ActionType.CreateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardActions));
+                isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.AddMemberToBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardUsers));
+                isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.CreateList
                                                     || action.Type == ActionType.UpdateList, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardLists));
-                UpdateWhenExists(actions, action => action.Type == ActionType.UpdateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.Boards));
-                UpdateWhenExists(actions, action => checklistActions.Contains(action.Type), keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardChecklists));
+                isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.UpdateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.Boards));
+                isSuccessUpdate &= UpdateWhenExists(actions, action => checklistActions.Contains(action.Type), keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardChecklists));
+                
+                if (isSuccessUpdate)
+                {
+                    lastUpdateUtc = elapsedEventArgs.SignalTime;
+                }
             }
             finally
             {
@@ -113,7 +118,7 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
             }
         }
 
-        private void UpdateWhenExists(IEnumerable<CardAction> actions, Func<CardAction, bool> anyPredicate, IEnumerable<CacheKey> keys)
+        private bool UpdateWhenExists(IEnumerable<CardAction> actions, Func<CardAction, bool> anyPredicate, IEnumerable<CacheKey> keys)
         {
             if (actions.Any(anyPredicate))
             {
@@ -124,8 +129,13 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
                     {
                         result.LastResult = result.Loader();
                     }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
+            return true;
         }
 
         public T GetCached<T>(string[] boardIds, Func<string[], T> loadAction, TaskCacherStoredTypes storedType)
