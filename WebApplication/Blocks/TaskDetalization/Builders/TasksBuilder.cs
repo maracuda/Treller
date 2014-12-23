@@ -159,10 +159,10 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
                 return null;
             }
 
-            foreach (var listItem in stateInfo.States[CardState.Develop].CheckListIds.SelectMany(x => checklists[x].Items))
+            foreach (var listItem in stateInfo.States[CardState.Develop].CheckListIds.SelectMany(x => checklists[x].Items).Distinct())
             {
                 var completeCount = 1;
-                var isMatch = Regex.Match(listItem.Description, @"(\d+/\d+)$", RegexOptions.IgnoreCase);
+                var isMatch = Regex.Match(listItem.Description, @"\(\d+/\d+\)$", RegexOptions.IgnoreCase);
                 if (isMatch.Success)
                 {
                     var matchResult = isMatch.Value.Trim('(', ')').Split('/');
@@ -179,6 +179,9 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
                     result.CompleteParrotsCount += completeCount;
                 }
             }
+
+            result.ParrotInDayAverageSpeed = (decimal)result.CompleteParrotsCount/result.PartDueDays;
+            result.SuggetedFinishDate = result.CompleteParrotsCount > 0 ? DateTime.UtcNow.AddDays(((double)result.ParrotsCount * result.PartDueDays / result.CompleteParrotsCount)): (DateTime?) null;
 
             return result;
         }
