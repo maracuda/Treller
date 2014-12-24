@@ -23,13 +23,15 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         private readonly IUserAvatarViewModelBuilder userAvatarViewModelBuilder;
         private readonly ICardStateBuilder cardStateBuilder;
         private readonly ITaskCacher taskCacher;
+        private readonly IChecklistParrotsBuilder checklistParrotsBuilder;
 
         public TasksBuilder(ITaskManagerClient taskManagerClient, 
                             ISettingService settingService,
                             ICardStateInfoBuilder cardStateInfoBuilder,
                             IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
                             ICardStateBuilder cardStateBuilder,
-                            ITaskCacher taskCacher)
+                            ITaskCacher taskCacher,
+                            IChecklistParrotsBuilder checklistParrotsBuilder)
         {
             this.taskManagerClient = taskManagerClient;
             this.settingService = settingService;
@@ -37,6 +39,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
             this.userAvatarViewModelBuilder = userAvatarViewModelBuilder;
             this.cardStateBuilder = cardStateBuilder;
             this.taskCacher = taskCacher;
+            this.checklistParrotsBuilder = checklistParrotsBuilder;
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
@@ -159,30 +162,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
                 return null;
             }
 
-            foreach (var listItem in stateInfo.States[CardState.Develop].CheckListIds.SelectMany(x => checklists[x].Items).Distinct())
-            {
-                var completeCount = 1;
-                var isMatch = Regex.Match(listItem.Description, @"\(\d+/\d+\)$", RegexOptions.IgnoreCase);
-                if (isMatch.Success)
-                {
-                    var matchResult = isMatch.Value.Trim('(', ')').Split('/');
-                    result.ParrotsCount += int.Parse(matchResult[1]);
-                    completeCount = int.Parse(matchResult[0]);
-                }
-                else
-                {
-                    result.ParrotsCount += 1;
-                }
-
-                if (listItem.IsChecked)
-                {
-                    result.CompleteParrotsCount += completeCount;
-                }
-            }
-
-            result.ParrotInDayAverageSpeed = (decimal)result.CompleteParrotsCount/result.PartDueDays;
-            result.SuggetedFinishDate = result.CompleteParrotsCount > 0 ? DateTime.UtcNow.AddDays(((double)result.ParrotsCount * result.PartDueDays / result.CompleteParrotsCount)): (DateTime?) null;
-
+            result.Parrots = checklistParrotsBuilder.Build(stateInfo.States[CardState.Develop].CheckListIds.Distinct().Select(x => checklists[x]), result.PartDueDays);
             return result;
         }
 
@@ -236,7 +216,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
 
         private static ToDoItemsListViewModel[] BuildToDoListsViewModels(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists, CardState state)
         {
-            return stateInfo.States[state].CheckListIds.Select(x => checklists[x]).Select(CreateToDoItemsListViewModel).ToArray();
+            return stateInfo.States[state].CheckListIds.Distinct().Select(x => checklists[x]).Select(CreateToDoItemsListViewModel).ToArray();
         }
 
         private static ToDoItemsListViewModel CreateToDoItemsListViewModel(CardChecklist checkList)

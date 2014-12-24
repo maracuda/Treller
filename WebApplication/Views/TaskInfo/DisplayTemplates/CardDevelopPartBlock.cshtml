@@ -1,3 +1,3 @@
 ﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts.CardDevelopPartBlock
 
-@string.Format("Попугаи: {0}/{1}, Скорость: {2:F2} в день, планируем законить к {3:dd.MM.yyyy}", @Model.CompleteParrotsCount, @Model.ParrotsCount, Model.ParrotInDayAverageSpeed, Model.SuggetedFinishDate)
+@Html.Partial("Partial/Parrots", Model.Parrots)

@@ -4,6 +4,10 @@
     height: 5px;
 }
 
+.task-progress-block-sub {
+    padding: 30px 30px 0;
+}
+
 .task-progress-line {
     height: 5px;
 

@@ -1,6 +1,5 @@
-﻿@using SKBKontur.Infrastructure.CommonExtenssions
-@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardStageInfoViewModel
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardStageInfoViewModel
 
 <div>
-    Стадия: @Model.State.GetEnumDescription(), @Model.DaysInState дн., (@Model.CurrentStateParrots/@Model.TotalStateParrots)
+     @Model.DaysInState дн.,@Html.Partial("Partial/Parrots", Model.Parrots)
 </div>

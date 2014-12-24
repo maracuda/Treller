@@ -11,10 +11,12 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
     public class CardStageInfoBuilder : ICardStageInfoBuilder
     {
         private readonly ICardStateBuilder cardStateBuilder;
+        private readonly IChecklistParrotsBuilder checklistParrotsBuilder;
 
-        public CardStageInfoBuilder(ICardStateBuilder cardStateBuilder)
+        public CardStageInfoBuilder(ICardStateBuilder cardStateBuilder, IChecklistParrotsBuilder checklistParrotsBuilder)
         {
             this.cardStateBuilder = cardStateBuilder;
+            this.checklistParrotsBuilder = checklistParrotsBuilder;
         }
 
         public CardStageInfoViewModel Build(BoardCard card, CardAction[] actions, CardChecklist[] checklists, BoardSettings boardSetting, BoardList[] boardLists)
@@ -38,13 +40,13 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
             var resultLists = cardChecklists.Select(x => lists.SafeGet(x)).Where(x => x != null).ToArray();
             
             var totalDays = (int)(lastListChangedDate != null ? (DateTime.Now.Date - lastListChangedDate.Value.Date).TotalDays : 0);
+            var parrotsInfo = checklistParrotsBuilder.Build(resultLists, totalDays);
 
             return new CardStageInfoViewModel
                        {
                            DaysInState = totalDays,
                            State = state,
-                           CurrentStateParrots = resultLists.Sum(l => l.Items.Count(i => i.IsChecked)),
-                           TotalStateParrots = resultLists.Sum(l => l.Items.Length),
+                           Parrots = parrotsInfo,
                            TotalCardParrots = checklists.Sum(l => l.Items.Length),
                            CurrentCardParrots = checklists.Sum(l => l.Items.Count(i => i.IsChecked)),
                        };

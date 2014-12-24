@@ -54,10 +54,7 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         public User[] GetBoardUsers(string[] boardIds)
         {
-            var queryString = new Dictionary<string, string>
-                                  {
-                                      { "fields", string.Join(";", typeof(User).GetProperties().Select(x => x.Name)) }
-                                  };
+            var queryString = new Dictionary<string, string> { { "fields", "all" } };
             return boardIds.SelectMany(id => GetTrelloData<BoardMember[]>(id, "boards/{0}/members", queryString))
                            .GroupBy(x => x.Id, StringComparer.OrdinalIgnoreCase)
                            .Select(x => x.First())

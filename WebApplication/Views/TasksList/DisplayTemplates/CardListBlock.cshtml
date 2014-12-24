@@ -1,5 +1,25 @@
-﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks.CardListBlock
+﻿@using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models
+@using SKBKontur.Infrastructure.CommonExtenssions
+@model SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks.CardListBlock
 
 <div>
-    @Html.DisplayFor(m => m.Cards)
+    @{
+        var currentState = @Model.Cards.Length > 0 ? @Model.Cards[0].StageInfo.State : CardState.Unknown;
+    }
+    
+    @if (currentState != CardState.Unknown)
+    {
+        <h3>@currentState.GetEnumDescription()</h3>
+    }
+
+    @foreach (var card in @Model.Cards)
+    {
+        if (card.StageInfo.State != currentState)
+        {
+            <h3>@card.StageInfo.State.GetEnumDescription()</h3>
+            currentState = card.StageInfo.State;
+        }
+        
+        @Html.DisplayFor(m => card)
+    }
 </div>

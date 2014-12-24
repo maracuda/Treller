@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -144,10 +144,13 @@
     <Compile Include="Blocks\Builders\CardStageInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\CardStateBuilder.cs" />
     <Compile Include="Blocks\Builders\CardStateInfoBuilder.cs" />
+    <Compile Include="Blocks\Builders\ChecklistParrotsBuilder.cs" />
     <Compile Include="Blocks\Builders\ICardStageInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\ICardStateBuilder.cs" />
     <Compile Include="Blocks\Builders\ICardStateInfoBuilder.cs" />
+    <Compile Include="Blocks\Builders\IChecklistParrotsBuilder.cs" />
     <Compile Include="Blocks\Builders\IUserAvatarViewModelBuilder.cs" />
+    <Compile Include="Blocks\Builders\ParrotsInfo.cs" />
     <Compile Include="Blocks\Builders\UserAvatarViewModelBuilder.cs" />
     <Compile Include="Blocks\ContextKeys.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\BaseTaskDetalizationBlock.cs" />
@@ -350,6 +353,7 @@
     <Content Include="Views\Shared\Partial\BaseBlock.cshtml" />
     <Content Include="Views\TasksList\DisplayTemplates\CardListItemViewModel.cshtml" />
     <Content Include="Views\TasksList\Partial\CardParrotProggress.cshtml" />
+    <Content Include="Views\Shared\Partial\Parrots.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
