@@ -1,0 +1,13 @@
+﻿.parrots-info-block {
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.parrots-info-action {
+    margin-left: 15px;
+}
+
+.parrots-info-action:first-child {
+    margin-left: 0;
+}

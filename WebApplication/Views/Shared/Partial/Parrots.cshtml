@@ -1,16 +1,26 @@
 ﻿@using SKBKontur.Treller.WebApplication.Extensions
 @model SKBKontur.Treller.WebApplication.Blocks.Builders.ParrotsInfoViewModel
 
-<div style="display: inline-block; font-weight: bold; font-size: 16px;">
-    @(Model.PastDays == 0 ? 1 : @Model.PastDays)
-    <span title="Дней прошло" class="fa fa-flag-o" style="color: green; margin-right: 7px;"></span>
+<div class="parrots-info-block">
+    <span class="parrots-info-action" title="Дней прошло">
+        @(Model.PastDays == 0 ? 1 : @Model.PastDays)
+        <span class="fa fa-flag-o text-success"></span>
+    </span>
+    
     @if (Model.AverageDaysRemind != 0)
     {
-        @Model.AverageDaysRemind
-        <span title="Дней осталось" class="fa fa-flag-checkered" style="color: green;  margin-right: 7px;"></span>
+        <span class="parrots-info-action"  title="Дней осталось">
+            @Model.AverageDaysRemind
+            <span class="fa fa-flag-checkered text-success"></span>
+        </span>
     }
-    @Model.AverageSpeedInDay.ToLoanDecimalFormat()
-    <span title="Попугаев в день" class="fa fa-tachometer" style="color: green;  margin-right: 7px;"></span>
-    @Model.ProgressInfo.Progress.ToLoanDecimalFormat(0)
-    <span title="Готово на" style="color: green; font-weight: bold; ">%</span>
+    
+    <span class="parrots-info-action"  title="Попугаев в день">
+        @Model.AverageSpeedInDay.ToLoanDecimalFormat()
+        <span class="fa fa-tachometer text-success"></span>
+    </span>
+
+    <span class="parrots-info-action"  title="Готово на">
+        @Model.ProgressInfo.Progress.ToLoanDecimalFormat(0)<span class="text-success">%</span>
+    </span>
 </div>

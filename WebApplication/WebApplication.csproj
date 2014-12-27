@@ -220,6 +220,7 @@
     <Content Include="Content\Layout\Layout.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Content\Shared\BaseCardLabel.css" />
+    <Content Include="Content\Shared\ParrotsInfo.css" />
     <Content Include="Content\Shared\UserAvatar.css" />
     <Content Include="Content\TaskInfo\TaskInfo.css" />
     <Content Include="Content\TaskInfo\TaskInfoLabelList.css" />
