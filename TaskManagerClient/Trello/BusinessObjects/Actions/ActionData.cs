@@ -11,7 +11,6 @@ namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions
         public ActionChecklist Checklist { get; set; }
         public ActionOrganization Organization { get; set; }
         public string IdMember { get; set; }
-        public ActionMember Member { get; set; }
         public OldUpdatedValue Old { get; set; }
         [Description("Comment")]
         public string Text { get; set; }

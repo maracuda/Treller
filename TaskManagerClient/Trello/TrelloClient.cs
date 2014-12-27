@@ -170,7 +170,7 @@ namespace SKBKontur.TaskManagerClient.Trello
                                  BoardId = action.Data.Board.Id,
                                  CardId = action.Data.Card.Id,
                                  Comment = action.Data.Text,
-                                 AddedUser = action.Data.Member != null ? CreateUser(action.Data.Member) : null,
+                                 AddedUser = action.Member != null ? CreateUser(action.Member) : null,
                                  ListId = action.Data.List != null ? action.Data.List.Id : null,
                                  FromListId = action.Data.ListBefore != null ? action.Data.ListBefore.Id : null,
                                  ToListId = action.Data.ListAfter != null ? action.Data.ListAfter.Id : null,
