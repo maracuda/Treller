@@ -6,55 +6,6 @@
 }
 
 .task-block-label {
-    display: inline-block;
     width: 40px;
     height: 5px;
-
-    white-space: nowrap;
-
-    -moz-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    
-    -ms-text-shadow: 0 0 5px rgba(0, 0, 0, .1), 0 0 2px #000;
-    text-shadow: 0 0 5px rgba(0, 0, 0, .1), 0 0 2px #000;
-}
-
-.task-block-label.black {
-    background-color: #4d4d4d;
-}
-
-.task-block-label.yellow {
-    background-color: #fad900;
-}
-
-.task-block-label.sky {
-    background-color: #00c2e0;
-}
-
-.task-block-label.red {
-    background-color: #eb4646;
-}
-
-.task-block-label.purple {
-    background-color: #a632db;
-}
-
-.task-block-label.pink {
-    background-color: #ff78cb;
-}
-
-.task-block-label.orange {
-    background-color: #ff9f19;
-}
-
-.task-block-label.lime {
-    background-color: #51e898;
-}
-
-.task-block-label.green {
-    background-color: #3cb500;
-}
-
-.task-block-label.blue {
-    background-color: #0079bf;
 }
