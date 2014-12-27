@@ -1,6 +1,17 @@
 ﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.CardAvatarBlock
 
-<h4>
-    Кто занимается текущим этапом: @string.Join(",", @Model.SuggestedActiveAvatars.Select(x => x.UserFullName))
-    Остальные: @string.Join(",", @Model.SuggestedNotActiveAvatars.Select(x => x.UserFullName))
-</h4>
+<section class="task-info-members-container clearfix">
+    @if (Model.SuggestedActiveAvatars.Length > 0)
+    {
+        <div class="task-info-members-list active">
+            @Html.DisplayFor(m => m.SuggestedActiveAvatars)
+        </div>
+    }
+    
+    @if (Model.SuggestedNotActiveAvatars.Length > 0)
+    {
+        <div class="task-info-members-list">
+            @Html.DisplayFor(m => m.SuggestedNotActiveAvatars)
+        </div>
+    }
+</section>

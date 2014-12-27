@@ -1,0 +1,17 @@
+﻿.task-info-members-container {
+    padding: 2px 0 2px 4px;
+    background: #ffffff;
+    
+    position: absolute;
+    top: 0;
+    right: -41px;
+}
+
+.task-info-members-list {
+    margin: 10px auto 0;
+    width: 30px;
+}
+
+.task-info-members-list:first-child {
+    margin-top: 0;
+}

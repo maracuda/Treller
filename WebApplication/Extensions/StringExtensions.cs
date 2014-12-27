@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 namespace SKBKontur.Treller.WebApplication.Extensions
 {
@@ -13,6 +14,11 @@ namespace SKBKontur.Treller.WebApplication.Extensions
         {
             var numberFormatInfo = new NumberFormatInfo { PercentDecimalSeparator = decimalSeparator };
             return string.Format(numberFormatInfo, "{0:0.#####}%", value);
+        }
+
+        public static string Truncate(this string value, int maxLength)
+        {
+            return value.Substring(0, Math.Min(value.Length, maxLength));
         }
     }
 }
