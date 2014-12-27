@@ -5,5 +5,8 @@
         public string OriginalName { get; set; }
         public string ApplicationName { get; set; }
         public string CardUrl { get; set; }
+
+        public string ControlVersionSystemBranchName { get; set; }
+        public string ControlVersionSystemBranchUrl { get; set; }
     }
 }
