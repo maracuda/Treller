@@ -1,19 +1,45 @@
 ﻿using System;
-using System.Reflection;
-using RestSharp.Serializers;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SKBKontur.HttpInfrastructure.Clients;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.Trello;
+using SKBKontur.TaskManagerClient.Abstractions;
 using TrelloNet;
+using JsonSerializer = RestSharp.Serializers.JsonSerializer;
 
 namespace SKBKontur.Treller.TestTreller
 {
-    public class TrelloClientCustomizer : IContainerCustomizer
+    public class HttpRequester : IHttpRequester
     {
-        public void Customize(IContainer container)
+        private readonly IHttpClient httpClient;
+
+        public HttpRequester(IHttpClient httpClient)
         {
-            container.RegisterType<TrelloClient>();
+            this.httpClient = httpClient;
         }
+
+        public Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null)
+        {
+            return httpClient.SendGetAsync<T>(url, queryParameters);
+        }
+    }
+
+    public class TrelloUserCredentialService : ITrelloUserCredentialService
+    {
+        private static readonly string LogInFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LogIn.json");
+
+        public TrelloCredential GetCredentials()
+        {
+            return JsonConvert.DeserializeObject<ClientsIntegrationCredentials>(File.ReadAllText(LogInFilePath)).TrelloClientCredentials;
+        }
+    }
+
+    public class ClientsIntegrationCredentials
+    {
+        public TrelloCredential TrelloClientCredentials { get; set; }
     }
 
     public static class Program
@@ -27,7 +53,9 @@ namespace SKBKontur.Treller.TestTreller
             container = configurator.Configure();
             var trelloClient = container.Get<ITaskManagerClient>();
             jsonSerializer = new JsonSerializer();
-            var trello = ((Lazy<Trello>)trelloClient.GetType().GetField("trello", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(trelloClient)).Value;
+            var trello = new Trello("4349fda675a2a387d7da63a457acdf19");
+            var trelloClientCredentials = container.Get<ITrelloUserCredentialService>();
+            trello.Authorize(trelloClientCredentials.GetCredentials().UserToken);
 
             Do("get authorization uri", CheckAuthorizationUrl, trello);
             Do("authorize", Authorize, trelloClient);
@@ -85,7 +113,7 @@ namespace SKBKontur.Treller.TestTreller
 
         private static void CheckAuthorizationUrl(ITrello trello)
         {
-            var authorizationUri = trello.GetAuthorizationUrl("Treller", Scope.ReadWrite);
+            var authorizationUri = trello.GetAuthorizationUrl("Treller", Scope.ReadWrite, Expiration.Never);
             Console.WriteLine(authorizationUri);
         }
 

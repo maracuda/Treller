@@ -136,6 +136,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstractions\AsyncRunner.cs" />
+    <Compile Include="Abstractions\ClientsIntegrationCredentials.cs" />
+    <Compile Include="Abstractions\DomainService.cs" />
+    <Compile Include="Abstractions\IocContainer.cs" />
+    <Compile Include="Abstractions\TrelloClientCustomizer.cs" />
+    <Compile Include="Abstractions\TrelloUserCredentialService.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -197,10 +203,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Abstractions\AsyncRunner.cs" />
-    <Compile Include="Services\Abstractions\TrelloClientCustomizer.cs" />
-    <Compile Include="Services\Abstractions\DomainService.cs" />
-    <Compile Include="Services\Abstractions\IocContainer.cs" />
     <Compile Include="Services\Settings\BoardSettings.cs" />
     <Compile Include="Services\Settings\ISettingService.cs" />
     <Compile Include="Services\Settings\SettingService.cs" />

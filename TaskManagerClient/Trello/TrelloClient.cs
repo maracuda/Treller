@@ -16,19 +16,17 @@ namespace SKBKontur.TaskManagerClient.Trello
     public class TrelloClient : ITaskManagerClient
     {
         private readonly IHttpRequester httpClient;
+        private readonly Dictionary<string, string> trelloParameters;
 
-        private const string UserKey = "4349fda675a2a387d7da63a457acdf19";
-        private const string TokenKey = "29e9b978138d709e5ab3f5476e70c48a84f30724cc352a5d3d083e04a6ae82da";
-
-        private static readonly Dictionary<string, string> TrelloParameters = new Dictionary<string, string>
-                                                                         {
-                                                                             {"key", UserKey},
-                                                                             {"token", TokenKey}
-                                                                         };
-
-        public TrelloClient(IHttpRequester httpClient)
+        public TrelloClient(IHttpRequester httpClient, ITrelloUserCredentialService trelloUserCredentialService)
         {
             this.httpClient = httpClient;
+            var trelloCredential = trelloUserCredentialService.GetCredentials();
+            trelloParameters = new Dictionary<string, string>
+                                   {
+                                       {"key", trelloCredential.UserKey},
+                                       {"token", trelloCredential.UserToken}
+                                   };
         }
 
         public Board[] GetBoards(string[] boardIds)
@@ -106,7 +104,7 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         private T GetTrelloData<T>(string id, string format, Dictionary<string, string> queryString = null)
         {
-            var parameters = TrelloParameters;
+            var parameters = trelloParameters;
             if (queryString != null)
             {
                 parameters = parameters.Union(queryString).ToDictionary(x => x.Key, x => x.Value);

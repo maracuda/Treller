@@ -2,7 +2,7 @@ using System;
 using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 
-namespace SKBKontur.Treller.WebApplication.Services.Abstractions
+namespace SKBKontur.Treller.WebApplication.Abstractions
 {
     public class IocContainer : IIocContainer
     {

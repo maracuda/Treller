@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
 
-namespace SKBKontur.Treller.WebApplication.Services.Abstractions
+namespace SKBKontur.Treller.WebApplication.Abstractions
 {
     public class AsyncRunner : IAsyncRunner
     {

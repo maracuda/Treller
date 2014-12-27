@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SKBKontur.HttpInfrastructure.Clients;
 using SKBKontur.TaskManagerClient.Abstractions;
 
-namespace SKBKontur.Treller.WebApplication.Services.Abstractions
+namespace SKBKontur.Treller.WebApplication.Abstractions
 {
     public class HttpRequester : IHttpRequester
     {

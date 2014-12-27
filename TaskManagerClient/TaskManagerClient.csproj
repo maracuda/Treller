@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\IHttpRequester.cs" />
+    <Compile Include="Abstractions\ITrelloUserCredentialService.cs" />
     <Compile Include="BusinessObjects\ActionType.cs" />
     <Compile Include="BusinessObjects\Board.cs" />
     <Compile Include="BusinessObjects\CardAction.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="BusinessObjects\User.cs" />
     <Compile Include="ITaskManagerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrelloCredential.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\Action.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\ActionAttachment.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\ActionBoard.cs" />
