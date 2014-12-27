@@ -1,11 +1,14 @@
 ﻿@using SKBKontur.Treller.WebApplication.Extensions
-@model SKBKontur.Treller.WebApplication.Blocks.Builders.ParrotsInfo
+@model SKBKontur.Treller.WebApplication.Blocks.Builders.ParrotsInfoViewModel
 
 <div style="display: inline-block; font-weight: bold; font-size: 16px;">
-    @Model.PastDays
+    @(Model.PastDays == 0 ? 1 : @Model.PastDays)
     <span title="Дней прошло" class="fa fa-flag-o" style="color: green; margin-right: 7px;"></span>
-    @Model.AverageDaysRemind
-    <span title="Дней осталось" class="fa fa-flag-checkered" style="color: green;  margin-right: 7px;"></span>
+    @if (Model.AverageDaysRemind != 0)
+    {
+        @Model.AverageDaysRemind
+        <span title="Дней осталось" class="fa fa-flag-checkered" style="color: green;  margin-right: 7px;"></span>
+    }
     @Model.AverageSpeedInDay.ToLoanDecimalFormat()
     <span title="Попугаев в день" class="fa fa-tachometer" style="color: green;  margin-right: 7px;"></span>
     @Model.ProgressInfo.Progress.ToLoanDecimalFormat(0)

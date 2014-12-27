@@ -7,14 +7,14 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {
     public class ChecklistParrotsBuilder : IChecklistParrotsBuilder
     {
-        public ParrotsInfo Build(IEnumerable<CardChecklist> checklists, int daysCount)
+        public ParrotsInfoViewModel Build(IEnumerable<CardChecklist> checklists, int daysCount)
         {
             if (checklists == null || daysCount == 0)
             {
-                return new ParrotsInfo();
+                return new ParrotsInfoViewModel();
             }
 
-            var result = new ParrotsInfo();
+            var result = new ParrotsInfoViewModel();
 
             foreach (var listItem in checklists.SelectMany(x => x.Items))
             {

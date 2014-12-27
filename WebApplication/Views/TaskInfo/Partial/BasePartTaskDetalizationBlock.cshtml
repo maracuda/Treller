@@ -6,13 +6,28 @@
 }
 
 <div>
-    <span>@Model.BlockDisclamer</span>
     @if (Model.IsCurrent)
     {
-        <h6>Текущая стадия</h6>
+        <span title="Текущая стадия" class="fa fa-bolt" style="color: green;  margin-right: 7px;"></span>   
     }
-    <span>@string.Format("Этап начался:{0:dd.MM.yyyy}, закончился:{1:dd.MM.yyyy}, длится:{2}", Model.PartBeginDate, Model.PartEndDate, Model.PartDueDays)</span>
+    <span>@Model.BlockDisclamer</span>
+    @Html.Partial("Partial/Parrots", Model.CartParrots)
+    <div style="display: inline-block; font-weight: bold; font-size: 16px;">
+        @if (Model.PartBeginDate.HasValue)
+        {
+            @Model.PartBeginDate.Value.ToString("dd.MM.yyyy")
+            <span title="Начало этапа" class="fa fa-calendar-o" style="color: green; margin-right: 7px;"></span>
+        }
+        @if (Model.PartEndDate.HasValue)
+        {
+            @Model.PartEndDate.Value.ToString("dd.MM.yyyy")
+            <span title="Окончание этапа" class="fa fa-calendar" style="color: green;  margin-right: 7px;"></span>   
+        }
+    </div>
+    <br/>
     <span>Ответственные за этап:@string.Join(",", Model.PartUsers.Select(x => x))</span>
-
+    <br/>
     @Html.DisplayForModel()
+    <br/>
+    <br/>
 </div>

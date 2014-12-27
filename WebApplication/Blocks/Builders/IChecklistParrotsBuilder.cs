@@ -5,6 +5,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {
     public interface IChecklistParrotsBuilder
     {
-        ParrotsInfo Build(IEnumerable<CardChecklist> checklists, int daysCount);
+        ParrotsInfoViewModel Build(IEnumerable<CardChecklist> checklists, int daysCount);
     }
 }

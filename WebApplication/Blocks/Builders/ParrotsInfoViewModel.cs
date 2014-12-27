@@ -2,9 +2,9 @@
 
 namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {
-    public class ParrotsInfo
+    public class ParrotsInfoViewModel
     {
-        public ParrotsInfo()
+        public ParrotsInfoViewModel()
         {
             ProgressInfo = new CardProgressInfoViewModel();
         }

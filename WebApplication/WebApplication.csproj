@@ -150,7 +150,7 @@
     <Compile Include="Blocks\Builders\ICardStateInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\IChecklistParrotsBuilder.cs" />
     <Compile Include="Blocks\Builders\IUserAvatarViewModelBuilder.cs" />
-    <Compile Include="Blocks\Builders\ParrotsInfo.cs" />
+    <Compile Include="Blocks\Builders\ParrotsInfoViewModel.cs" />
     <Compile Include="Blocks\Builders\UserAvatarViewModelBuilder.cs" />
     <Compile Include="Blocks\ContextKeys.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\BaseTaskDetalizationBlock.cs" />

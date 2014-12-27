@@ -7,12 +7,12 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels
     {
         public CardStageInfoViewModel()
         {
-            Parrots = new ParrotsInfo();
+            Parrots = new ParrotsInfoViewModel();
         }
 
         public CardState State { get; set; }
         public int DaysInState { get; set; }
-        public ParrotsInfo Parrots { get; set; }
+        public ParrotsInfoViewModel Parrots { get; set; }
         public int CurrentCardParrots { get; set; }
         public int TotalCardParrots { get; set; }
     }

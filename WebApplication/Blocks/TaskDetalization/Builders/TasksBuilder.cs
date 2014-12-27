@@ -141,9 +141,9 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardBeforeDevelopPartBlock BuildBeforeDevelopingBlock(CardStateInfo stateInfo)
+        private CardBeforeDevelopPartBlock BuildBeforeDevelopingBlock(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists)
         {
-            var result = CreateBasePart<CardBeforeDevelopPartBlock>(stateInfo, CardState.BeforeDevelop);
+            var result = CreateBasePart<CardBeforeDevelopPartBlock>(stateInfo, CardState.BeforeDevelop, checklists);
             if (result != null && stateInfo.States.Any(x => x.Key >= CardState.Develop))
             {
                 result.Description = " арточка ушла на доработку в аналитику";
@@ -155,20 +155,18 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private CardDevelopPartBlock BuildDevelopingBlock(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists)
         {
-            var result = CreateBasePart<CardDevelopPartBlock>(stateInfo, CardState.Develop);
+            var result = CreateBasePart<CardDevelopPartBlock>(stateInfo, CardState.Develop, checklists);
             if (result == null)
             {
                 return null;
             }
-
-            result.Parrots = checklistParrotsBuilder.Build(stateInfo.States[CardState.Develop].CheckListIds.Distinct().Select(x => checklists[x]), result.PartDueDays);
             return result;
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardPresentationPartBlock BuildPresentationBlock(CardStateInfo stateInfo)
+        private CardPresentationPartBlock BuildPresentationBlock(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists)
         {
-            var result = CreateBasePart<CardPresentationPartBlock>(stateInfo, CardState.Presentation);
+            var result = CreateBasePart<CardPresentationPartBlock>(stateInfo, CardState.Presentation, checklists);
             if (result == null)
             {
                 return null;
@@ -181,15 +179,15 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardArchivePartBlock BuildArchiveBlock(CardStateInfo stateInfo)
+        private CardArchivePartBlock BuildArchiveBlock(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists)
         {
-            return CreateBasePart<CardArchivePartBlock>(stateInfo, CardState.Archived);
+            return CreateBasePart<CardArchivePartBlock>(stateInfo, CardState.Archived, checklists);
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardReleaseWaitingPartBlock BuildReleaseWaitingBlock(CardStateInfo stateInfo)
+        private CardReleaseWaitingPartBlock BuildReleaseWaitingBlock(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists)
         {
-            var result = CreateBasePart<CardReleaseWaitingPartBlock>(stateInfo, CardState.ReleaseWaiting);
+            var result = CreateBasePart<CardReleaseWaitingPartBlock>(stateInfo, CardState.ReleaseWaiting, checklists);
             if (result == null)
             {
                 return null;
@@ -203,7 +201,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         [BlockModel(ContextKeys.TaskDetalizationKey)]
         private CardReviewPartBlock BuildReviewBlock(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists)
         {
-            var result = CreateBasePart<CardReviewPartBlock>(stateInfo, CardState.Review);
+            var result = CreateBasePart<CardReviewPartBlock>(stateInfo, CardState.Review, checklists);
             if (result == null)
             {
                 return null;
@@ -238,7 +236,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
                 return null;
             }
 
-            var result = CreateBasePart<CardTestingPartBlock>(stateInfo, CardState.Testing);
+            var result = CreateBasePart<CardTestingPartBlock>(stateInfo, CardState.Testing, checklists);
             result.TestingToDoListsViewModel = BuildToDoListsViewModels(stateInfo, checklists, CardState.Testing);
 
             // TODO: integration with bugtracker (youtrack, jira)
@@ -248,7 +246,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
             return result;
         }
 
-        private static T CreateBasePart<T>(CardStateInfo state, CardState baseState) where T : BasePartTaskDetalizationBlock
+        private T CreateBasePart<T>(CardStateInfo state, CardState baseState, Dictionary<string, CardChecklist> checklists) where T : BasePartTaskDetalizationBlock
         {
             if (!state.States.ContainsKey(baseState))
             {
@@ -264,7 +262,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
             result.PartUsers = stateInfo.NewStateUsers.Select(x => x.FullName).ToArray();
             result.PartBeginDate = stateInfo.BeginDate;
             result.PartEndDate = stateInfo.EndDate;
-            result.PartDueDays = (DateTime.Now.Date - stateInfo.BeginDate.Date).Days;
+
+            var partDueDays = (DateTime.Now.Date - stateInfo.BeginDate.Date).Days;
+            var cardChecklists = stateInfo.CheckListIds.Distinct().Where(checklists.ContainsKey).Select(x => checklists[x]);
+            result.CartParrots = checklistParrotsBuilder.Build(cardChecklists, partDueDays);
+
             return result;
         }
     }
