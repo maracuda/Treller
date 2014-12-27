@@ -1,32 +1,29 @@
-﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts.BasePartTaskDetalizationBlock
+﻿@using SKBKontur.Treller.WebApplication.Extensions
+@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts.BasePartTaskDetalizationBlock
 
 @if (Model == null || !Model.IsExists)
 {
     return;
 }
 
-<div>
+<section class="task-info-block">
     @if (Model.IsCurrent)
     {
-        <span title="Текущая стадия" class="fa fa-bolt" style="color: green;  margin-right: 7px;"></span>   
+        <span title="Текущая стадия" class="fa fa-bolt task-info-block-state text-success"></span>
     }
-
-    <h4 style="">@Model.BlockDisclamer</h4>
     
-    @Html.Partial("Partial/Parrots", Model.CartParrots)
+    <header class="task-info-block-header clearfix">
+        <h4 class="task-info-block-title">@Model.BlockDisclamer</h4>
+        
+        <div class="task-info-block-status">
+            @Html.Partial("Partial/Parrots", Model.CartParrots)
+            @Model.PartBeginDate.SafeDateFormat()
+            @if (Model.PartEndDate.HasValue) { <span class="fa fa-minus" style="font-size: .7em"></span> }
+            @Model.PartEndDate.SafeDateFormat()
+        </div>
+    </header>
 
-    <div style="display: inline-block; font-weight: bold; font-size: 16px;">
-        @if (Model.PartBeginDate.HasValue)
-        {
-            @Model.PartBeginDate.Value.ToString("dd.MM.yyyy")
-            <span title="Начало этапа" class="fa fa-calendar-o" style="color: green; margin-right: 7px;"></span>
-        }
-        @if (Model.PartEndDate.HasValue)
-        {
-            @Model.PartEndDate.Value.ToString("dd.MM.yyyy")
-            <span title="Окончание этапа" class="fa fa-calendar" style="color: green;  margin-right: 7px;"></span>   
-        }
+    <div class="task-info-block-content @(Model.IsCurrent ? "active" : string.Empty)">
+        @Html.DisplayForModel()
     </div>
-
-    @Html.DisplayForModel()
-</div>
+</section>

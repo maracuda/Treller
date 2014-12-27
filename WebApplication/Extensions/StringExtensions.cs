@@ -28,14 +28,24 @@ namespace SKBKontur.Treller.WebApplication.Extensions
             return value != null ? value.Substring(0, Math.Min(value.Length, maxLength)) : string.Empty;
         }
 
-        public static string Format(this DateTime value)
+        public static string DateFormat(this DateTime value)
         {
             return value.ToString("dd.MM.yyyy");
         }
 
-        public static string SafeFormat(this DateTime? value)
+        public static string SafeDateFormat(this DateTime? value)
         {
-            return value.HasValue ? value.Value.ToString("dd.MM.yyyy") : string.Empty;
+            return value.HasValue ? value.Value.DateFormat() : string.Empty;
+        }
+
+        public static string DateTimeFormat(this DateTime value)
+        {
+            return value.ToString("dd.MM.yyyy HH:mm");
+        }
+
+        public static string SafeDateTimeFormat(this DateTime? value)
+        {
+            return value.HasValue ? value.Value.DateTimeFormat() : string.Empty;
         }
     }
 }

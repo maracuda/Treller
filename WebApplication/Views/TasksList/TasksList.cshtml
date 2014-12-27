@@ -8,7 +8,7 @@
 
 @section Header
 {
-    @Styles.Render("~/bundles/tasklist")
+    @Styles.Render("~/bundles/css/tasklist")
 }
 
 @section LayoutHeader
@@ -18,3 +18,8 @@
 }
 
 @Html.Partial("Partial/BaseBlocks", Model.Where(m => m is CardListBlock).ToArray())
+
+@section FooterScripts
+{
+    @Scripts.Render("~/bundles/js/tasklist")
+}

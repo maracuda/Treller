@@ -2,24 +2,23 @@
 @using SKBKontur.Infrastructure.CommonExtenssions
 @model SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks.CardListBlock
 
-<div>
-    @{
-        var currentState = @Model.Cards.Length > 0 ? @Model.Cards[0].StageInfo.State : CardState.Unknown;
-    }
-    
-    @if (currentState != CardState.Unknown)
-    {
-        <h3>@currentState.GetEnumDescription()</h3>
-    }
+@{
+    var currentState = @Model.Cards.Length > 0 ? @Model.Cards[0].StageInfo.State : CardState.Unknown;
+}
 
-    @foreach (var card in @Model.Cards)
+    
+@if (currentState != CardState.Unknown)
+{
+    <h3>@currentState.GetEnumDescription()</h3>
+}
+
+@foreach (var card in Model.Cards)
+{
+    if (card.StageInfo.State != currentState)
     {
-        if (card.StageInfo.State != currentState)
-        {
-            <h3>@card.StageInfo.State.GetEnumDescription()</h3>
-            currentState = card.StageInfo.State;
-        }
-        
-        @Html.DisplayFor(m => card)
+        <h3>@card.StageInfo.State.GetEnumDescription()</h3>
+        currentState = card.StageInfo.State;
     }
-</div>
+        
+    @Html.DisplayFor(m => card)
+}

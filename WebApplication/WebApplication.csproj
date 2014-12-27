@@ -223,6 +223,7 @@
     <Content Include="Content\Shared\ParrotsInfo.css" />
     <Content Include="Content\Shared\UserAvatar.css" />
     <Content Include="Content\TaskInfo\TaskInfo.css" />
+    <Content Include="Content\TaskInfo\TaskInfoBlock.css" />
     <Content Include="Content\TaskInfo\TaskInfoLabelList.css" />
     <Content Include="Content\TaskInfo\TaskInfoMembers.css" />
     <Content Include="Content\TaskInfo\TaskInfoState.css" />
@@ -321,6 +322,7 @@
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\TaskList\TaskList.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -363,7 +365,6 @@
     <Content Include="Views\TasksList\DisplayTemplates\CardLabel.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Blocks\Users\" />
     <Folder Include="Models\" />
   </ItemGroup>

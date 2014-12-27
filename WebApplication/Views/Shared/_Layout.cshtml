@@ -19,12 +19,15 @@
         @RenderBody()
 
         @Scripts.Render("~/bundles/base-libraries")
-        @RenderSection("scripts", false)
+        @RenderSection("FooterScripts", false)
     
         <script>
             $(function () {
                 $(".colorbox-link").colorbox({
+                    iframe: false,
+                    scrolling: false,
                     returnFocus: false,
+                    top: "50px",
                     close: "закрыть"
                 });
             })

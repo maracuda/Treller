@@ -20,6 +20,9 @@ namespace SKBKontur.Treller.WebApplication.App_Start
                 .Include("~/Scripts/bootstrap.js")
                 .Include("~/Scripts/Colorbox/jquery.colorbox.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/tasklist")
+                .IncludeDirectory("~/Scripts/TaskList", "*.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -36,7 +39,7 @@ namespace SKBKontur.Treller.WebApplication.App_Start
                 .IncludeDirectory("~/Content/Layout/", "*.css"));
 
             bundles.Add(
-                new StyleBundle("~/bundles/tasklist")
+                new StyleBundle("~/bundles/css/tasklist")
                 .IncludeDirectory("~/Content/Shared", "*.css")
                 .IncludeDirectory("~/Content/TaskList", "*.css")
                 .IncludeDirectory("~/Content/TaskInfo", "*.css"));

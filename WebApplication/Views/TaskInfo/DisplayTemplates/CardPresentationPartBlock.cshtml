@@ -1,3 +1,4 @@
-﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts.CardPresentationPartBlock
+﻿@using SKBKontur.Treller.WebApplication.Extensions
+@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts.CardPresentationPartBlock
 
-Время презентации: @Model.PresentationTime.ToString("dd.MM.yyyy HH:mm")
+Время презентации: @Model.PresentationTime.DateTimeFormat()
