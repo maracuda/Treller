@@ -11,14 +11,15 @@
         {
             {"class", "colorbox-link"},
         })
-        
-        @foreach (var avatar in Model.Avatars)
-        {
-            <img src="@avatar.AvatarSrc" title="@avatar.UserFullName" />
-        }
     </header>
     
-    @Html.Partial("Partial/CardStageInfo", Model.StageInfo)
+    <div style="display: inline-block;">
+        @Html.Partial("Partial/CardStageInfo", Model.StageInfo)
+    </div>
+    <div class="clearfix" style="display: inline-block; margin-left: 20px;">
+        <span></span>
+        @Html.DisplayFor(m => m.Avatars)
+    </div>
     
     <div class="task-block-label-list">
         @foreach (var label in Model.Labels)
