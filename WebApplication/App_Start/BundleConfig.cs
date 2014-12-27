@@ -37,6 +37,7 @@ namespace SKBKontur.Treller.WebApplication.App_Start
 
             bundles.Add(
                 new StyleBundle("~/bundles/tasklist")
+                .IncludeDirectory("~/Content/Shared", "*.css")
                 .IncludeDirectory("~/Content/TaskList", "*.css")
                 .IncludeDirectory("~/Content/TaskInfo", "*.css"));
 

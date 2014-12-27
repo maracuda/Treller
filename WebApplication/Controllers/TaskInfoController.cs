@@ -16,10 +16,11 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         private readonly Type[] defaultTaskInfoBlocks =
         {
+            typeof (CardNameBlock), 
             typeof (CardAvatarBlock), 
             typeof (CardDescriptionBlock), 
             typeof (CardBranchBlock), 
-            typeof (CardNameBlock), 
+            
             typeof (CardLabelsBlock), 
             typeof (CardStateBlock), 
             typeof (CardWorkBlock), 

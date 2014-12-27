@@ -1,0 +1,30 @@
+﻿.user-avatar-block {
+    width: 30px;
+    height: 30px;
+    margin-top: 3px;
+
+    float: left;
+    background: #dbdbdb center no-repeat;
+    
+    -ms-border-radius: 2px;
+    border-radius: 2px;
+
+    position: relative;
+    text-align: center;
+}
+
+.user-avatar-block:first-child {
+    margin-top: 0;
+}
+
+.user-avatar-initial {
+    color: #4d4d4d;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    line-height: 30px;
+}

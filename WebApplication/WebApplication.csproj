@@ -219,6 +219,9 @@
     <Content Include="Content\Colorbox\images\loading.gif" />
     <Content Include="Content\Layout\Layout.css" />
     <Content Include="Content\normalize.css" />
+    <Content Include="Content\Shared\UserAvatar.css" />
+    <Content Include="Content\TaskInfo\TaskInfo.css" />
+    <Content Include="Content\TaskInfo\TaskInfoMembers.css" />
     <Content Include="Content\TaskList\CardProgress.css" />
     <Content Include="Content\TaskList\TaskBlock.css" />
     <Content Include="Content\TaskList\TaskLabelList.css" />
@@ -355,11 +358,11 @@
     <Content Include="Views\TasksList\DisplayTemplates\CardListItemViewModel.cshtml" />
     <Content Include="Views\TasksList\Partial\CardProgressInfoViewModel.cshtml" />
     <Content Include="Views\Shared\Partial\Parrots.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\UserAvatarViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Blocks\Users\" />
-    <Folder Include="Content\TaskInfo\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,3 +1,5 @@
 ﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.CardNameBlock
 
-<a href="@Model.CardUrl">@Model.ApplicationName ?? @Model.OriginalName</a>
+<header class="task-info-header">
+    <a class="task-info-title" href="@Model.CardUrl"  title="перейти в карточку Trello" target="_blank">@Model.OriginalName</a>
+</header>

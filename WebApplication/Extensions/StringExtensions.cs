@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 
 namespace SKBKontur.Treller.WebApplication.Extensions
@@ -18,8 +19,13 @@ namespace SKBKontur.Treller.WebApplication.Extensions
 
         public static string ToLoanDecimalFormat(this decimal value, int decimalPlaces = 2)
         {
-            var format = string.Format("###0.{0}", new string(Enumerable.Range(0, decimalPlaces).Select(x => '#').ToArray()));;
+            var format = string.Format("###0.{0}", new string(Enumerable.Range(0, decimalPlaces).Select(x => '#').ToArray()));
             return value.ToString(format, CultureInfo.InvariantCulture);
+        }
+        
+        public static string Truncate(this string value, int maxLength)
+        {
+            return value != null ? value.Substring(0, Math.Min(value.Length, maxLength)) : string.Empty;
         }
     }
 }
