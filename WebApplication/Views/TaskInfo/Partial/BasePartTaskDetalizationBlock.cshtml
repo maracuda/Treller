@@ -10,8 +10,11 @@
     {
         <span title="Текущая стадия" class="fa fa-bolt" style="color: green;  margin-right: 7px;"></span>   
     }
-    <span>@Model.BlockDisclamer</span>
+
+    <h4 style="">@Model.BlockDisclamer</h4>
+    
     @Html.Partial("Partial/Parrots", Model.CartParrots)
+
     <div style="display: inline-block; font-weight: bold; font-size: 16px;">
         @if (Model.PartBeginDate.HasValue)
         {
@@ -24,10 +27,6 @@
             <span title="Окончание этапа" class="fa fa-calendar" style="color: green;  margin-right: 7px;"></span>   
         }
     </div>
-    <br/>
-    <span>Ответственные за этап:@string.Join(",", Model.PartUsers.Select(x => x))</span>
-    <br/>
+
     @Html.DisplayForModel()
-    <br/>
-    <br/>
 </div>

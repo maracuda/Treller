@@ -31,3 +31,11 @@
     -ms-opacity: 1;
     opacity: 1;
 }
+
+.task-info-members-list .user-avatar-block {
+    margin-top: 3px;
+}
+
+.task-info-members-list .user-avatar-block:first-child {
+    margin-top: 0;
+}

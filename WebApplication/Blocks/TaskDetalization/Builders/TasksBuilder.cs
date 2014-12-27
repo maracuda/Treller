@@ -259,7 +259,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
             result.IsExists = true;
             result.IsCurrent = stateInfo.State == state.CurrentState;
             result.BlockDisclamer = stateInfo.State.GetEnumDescription();
-            result.PartUsers = stateInfo.NewStateUsers.Select(x => x.FullName).ToArray();
             result.PartBeginDate = stateInfo.BeginDate;
             result.PartEndDate = stateInfo.EndDate;
 

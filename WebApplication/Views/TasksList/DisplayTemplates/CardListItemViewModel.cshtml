@@ -1,7 +1,6 @@
-﻿@using SKBKontur.Treller.WebApplication.Extensions
-@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardListItemViewModel
+﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardListItemViewModel
 
-<div class="task-list-block">
+<section class="task-list-block">
     @Html.Partial("Partial/CardProgressInfoViewModel", Model.StageInfo.Parrots.ProgressInfo)
     
     <header class="task-block-header">
@@ -13,18 +12,22 @@
         })
     </header>
     
-    <div style="display: inline-block;">
-        @Html.Partial("Partial/CardStageInfo", Model.StageInfo)
-    </div>
-    <div class="clearfix" style="display: inline-block; margin-left: 20px;">
-        <span></span>
-        @Html.DisplayFor(m => m.Avatars)
+    <div class="task-block-content">
+        @Html.Partial("Partial/Parrots", Model.StageInfo.Parrots)
+        
+        @if (Model.Avatars != null && Model.Avatars.Length > 0)
+        {
+            <div class="clearfix task-block-members-list">
+                <span></span>
+                @Html.DisplayFor(m => m.Avatars)
+            </div>
+        }
     </div>
     
-    <div class="task-block-label-list">
-        @foreach (var label in Model.Labels)
-        {
-            <span class="task-block-label card-label @label.Color.ToLowerString()" title="@label.Name"></span>
-        }    
-    </div>
-</div>
+    @if (Model.Labels != null && Model.Labels.Length > 0)
+    {
+        <div class="task-block-label-list">
+            @Html.DisplayFor(m => m.Labels)
+        </div>
+    }
+</section>

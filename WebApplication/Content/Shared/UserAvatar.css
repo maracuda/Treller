@@ -1,7 +1,6 @@
 ﻿.user-avatar-block {
     width: 30px;
     height: 30px;
-    margin-top: 3px;
 
     float: left;
     background: #dbdbdb center no-repeat;
@@ -11,10 +10,6 @@
 
     position: relative;
     text-align: center;
-}
-
-.user-avatar-block:first-child {
-    margin-top: 0;
 }
 
 .user-avatar-initial {
