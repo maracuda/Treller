@@ -1,10 +1,19 @@
 ﻿@using SKBKontur.Infrastructure.CommonExtenssions
+@using SKBKontur.Treller.WebApplication.Extensions
 @model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.CardStateBlock
 
-<h4>Статус: @Model.State.GetEnumDescription()
+<section class="task-info-state-block">
+    <span class="label task-info-state">@Model.State.GetEnumDescription()</span>
     
-    @if (Model.DueDate.HasValue)
-    {
-        string.Format("Карточка нужна к {0:dd.MM.yyyy}", @Model.DueDate.Value);
-    }
-</h4>
+    <span class="text-muted">
+        @Model.BeginDate.Format()
+    
+        @if(Model.DueDate.HasValue)
+        {
+            <span class="task-info-duetime">
+                <span class="fa fa-minus" style="font-size: .7em"></span>
+                @Model.DueDate.SafeFormat() <span class="fa fa-clock-o"></span> 
+            </span>
+        }    
+    </span>
+</section>

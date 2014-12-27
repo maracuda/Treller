@@ -27,5 +27,15 @@ namespace SKBKontur.Treller.WebApplication.Extensions
         {
             return value != null ? value.Substring(0, Math.Min(value.Length, maxLength)) : string.Empty;
         }
+
+        public static string Format(this DateTime value)
+        {
+            return value.ToString("dd.MM.yyyy");
+        }
+
+        public static string SafeFormat(this DateTime? value)
+        {
+            return value.HasValue ? value.Value.ToString("dd.MM.yyyy") : string.Empty;
+        }
     }
 }

@@ -18,11 +18,8 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         {
             typeof (CardNameBlock),
             typeof (CardAvatarBlock), 
-            typeof (CardDescriptionBlock),
-            
             typeof (CardLabelsBlock), 
-            typeof (CardStateBlock), 
-            typeof (CardWorkBlock), 
+            typeof (CardStateBlock),
             typeof (CardDetalizationPartsBlock)
         };
 

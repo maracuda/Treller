@@ -17,8 +17,8 @@
 }
 
 .task-info-members-list.inactive {
-    -ms-opacity: .3;
-    opacity: .3;
+    -ms-opacity: .5;
+    opacity: .5;
 
     -webkit-transition: opacity .2s ease-in-out;
     -moz-transition: opacity .2s ease-in-out;

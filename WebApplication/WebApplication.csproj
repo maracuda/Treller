@@ -156,10 +156,8 @@
     <Compile Include="Blocks\TaskDetalization\Blocks\BaseTaskDetalizationBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardAvatarBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardBranchBlock.cs" />
-    <Compile Include="Blocks\TaskDetalization\Blocks\CardDescriptionBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardLabelsBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardStateBlock.cs" />
-    <Compile Include="Blocks\TaskDetalization\Blocks\CardWorkBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\Parts\CardArchivePartBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\Parts\CardBeforeDevelopPartBlock.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\Parts\CardDevelopPartBlock.cs" />
@@ -224,6 +222,7 @@
     <Content Include="Content\TaskInfo\TaskInfo.css" />
     <Content Include="Content\TaskInfo\TaskInfoLabelList.css" />
     <Content Include="Content\TaskInfo\TaskInfoMembers.css" />
+    <Content Include="Content\TaskInfo\TaskInfoState.css" />
     <Content Include="Content\TaskList\CardProgress.css" />
     <Content Include="Content\TaskList\TaskBlock.css" />
     <Content Include="Content\TaskList\TaskLabelList.css" />
@@ -338,7 +337,6 @@
     <Content Include="Views\TaskInfo\DisplayTemplates\CardArchivePartBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardAvatarBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardBeforeDevelopPartBlock.cshtml" />
-    <Content Include="Views\TaskInfo\DisplayTemplates\CardDescriptionBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardDevelopPartBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardLabelsBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardNameBlock.cshtml" />
@@ -347,7 +345,6 @@
     <Content Include="Views\TaskInfo\DisplayTemplates\CardReviewPartBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardStateBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardTestingPartBlock.cshtml" />
-    <Content Include="Views\TaskInfo\DisplayTemplates\CardWorkBlock.cshtml" />
     <Content Include="Views\TaskInfo\TaskInfo.cshtml" />
     <Content Include="Views\TasksList\TasksList.cshtml" />
     <Content Include="Views\TasksList\DisplayTemplates\BoardsBlock.cshtml" />
