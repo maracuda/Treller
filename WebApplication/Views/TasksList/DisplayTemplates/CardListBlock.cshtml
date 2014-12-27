@@ -1,24 +1,12 @@
-﻿@using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models
-@using SKBKontur.Infrastructure.CommonExtenssions
+﻿@using SKBKontur.Infrastructure.CommonExtenssions
 @model SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks.CardListBlock
 
-@{
-    var currentState = @Model.Cards.Length > 0 ? @Model.Cards[0].StageInfo.State : CardState.Unknown;
-}
-
-    
-@if (currentState != CardState.Unknown)
+@foreach (var group in Model.Cards.GroupBy(x => x.StageInfo.State).ToDictionary(x => x.Key, x => x.ToArray()))
 {
-    <h3>@currentState.GetEnumDescription()</h3>
-}
-
-@foreach (var card in Model.Cards)
-{
-    if (card.StageInfo.State != currentState)
-    {
-        <h3>@card.StageInfo.State.GetEnumDescription()</h3>
-        currentState = card.StageInfo.State;
-    }
-        
-    @Html.DisplayFor(m => card)
+    <div class="task-block-group">
+        <h3 class="task-block-group-title">@group.Key.GetEnumDescription()</h3>
+        <div class="task-block-group-body">
+            @Html.DisplayFor(x => group.Value)
+        </div>
+    </div>
 }

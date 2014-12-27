@@ -1,8 +1,7 @@
 ﻿(function ($, undefined) {
     "use strict";
 
-    //$("body").on("click.taskInfoBlockToggle", ".task-info-block-header", function (evt) {
-    //    $(this).closest(".task-info-block").find(".task-info-block-content").toggle();
-    //    $.colorbox.resize();
-    //});
+    $("body").on("click.taskInfoBlockToggle", ".task-block-group-title", function (evt) {
+        $(this).next(".task-block-group-body").slideToggle();
+    });
 })(jQuery, undefined);
