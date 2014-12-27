@@ -219,8 +219,10 @@
     <Content Include="Content\Colorbox\images\loading.gif" />
     <Content Include="Content\Layout\Layout.css" />
     <Content Include="Content\normalize.css" />
+    <Content Include="Content\Shared\BaseCardLabel.css" />
     <Content Include="Content\Shared\UserAvatar.css" />
     <Content Include="Content\TaskInfo\TaskInfo.css" />
+    <Content Include="Content\TaskInfo\TaskInfoLabelList.css" />
     <Content Include="Content\TaskInfo\TaskInfoMembers.css" />
     <Content Include="Content\TaskList\CardProgress.css" />
     <Content Include="Content\TaskList\TaskBlock.css" />
@@ -336,7 +338,6 @@
     <Content Include="Views\TaskInfo\DisplayTemplates\CardArchivePartBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardAvatarBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardBeforeDevelopPartBlock.cshtml" />
-    <Content Include="Views\TaskInfo\DisplayTemplates\CardBranchBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardDescriptionBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardDevelopPartBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardLabelsBlock.cshtml" />

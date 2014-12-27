@@ -14,7 +14,7 @@
         
         @foreach (var avatar in Model.Avatars)
         {
-            <img src="@avatar.AvatarSrc" title="@avatar.UserFullName"/>
+            <img src="@avatar.AvatarSrc" title="@avatar.UserFullName" />
         }
     </header>
     
@@ -23,7 +23,7 @@
     <div class="task-block-label-list">
         @foreach (var label in Model.Labels)
         {
-            <span class="task-block-label @label.Color.ToLowerString()" title="@label.Name"></span>
+            <span class="task-block-label card-label @label.Color.ToLowerString()" title="@label.Name"></span>
         }    
     </div>
 </div>
