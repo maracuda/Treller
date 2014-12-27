@@ -15,3 +15,19 @@
 .task-info-members-list:first-child {
     margin-top: 0;
 }
+
+.task-info-members-list.inactive {
+    -ms-opacity: .3;
+    opacity: .3;
+
+    -webkit-transition: opacity .2s ease-in-out;
+    -moz-transition: opacity .2s ease-in-out;
+    -ms-transition: opacity .2s ease-in-out;
+    -o-transition: opacity .2s ease-in-out;
+    transition: opacity .2s ease-in-out;
+}
+
+.task-info-members-list.inactive:hover {
+    -ms-opacity: 1;
+    opacity: 1;
+}

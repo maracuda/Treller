@@ -3,14 +3,14 @@
 <section class="task-info-members-container clearfix">
     @if (Model.SuggestedActiveAvatars.Length > 0)
     {
-        <div class="task-info-members-list active">
+        <div class="task-info-members-list">
             @Html.DisplayFor(m => m.SuggestedActiveAvatars)
         </div>
     }
     
     @if (Model.SuggestedNotActiveAvatars.Length > 0)
     {
-        <div class="task-info-members-list">
+        <div class="task-info-members-list inactive">
             @Html.DisplayFor(m => m.SuggestedNotActiveAvatars)
         </div>
     }

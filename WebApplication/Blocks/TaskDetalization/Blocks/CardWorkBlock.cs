@@ -6,6 +6,5 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks
     {
         public DateTime BeginDate { get; set; }
         public int DueDays { get; set; }
-        public string[] CurrentUserNames { get; set; }
     }
 }

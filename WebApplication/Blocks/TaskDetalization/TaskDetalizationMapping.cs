@@ -36,7 +36,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization
 
                     BlockMapper.Declare<CardWorkBlock, CardStateInfo, DateTime>(x => x.BeginDate, x => x.States[x.CurrentState].BeginDate),
                     BlockMapper.Declare<CardWorkBlock, CardStateInfo, int>(x => x.DueDays, x => (DateTime.Now.Date - x.States[x.CurrentState].BeginDate.Date).Days),
-                    BlockMapper.Declare<CardWorkBlock, CardStateInfo, string[]>(x => x.CurrentUserNames, x => x.States[x.CurrentState].NewStateUsers.Select(s => s.FullName).ToArray()),
 
                     BlockMapper.Declare<CardDetalizationPartsBlock, CardArchivePartBlock>(x => x.Archive),
                     BlockMapper.Declare<CardDetalizationPartsBlock, CardBeforeDevelopPartBlock>(x => x.BeforeDevelop),
