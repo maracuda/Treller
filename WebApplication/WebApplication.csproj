@@ -188,6 +188,7 @@
     <Compile Include="Blocks\TaskList\TasksListInitialNamer.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardListEnterModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardListItemViewModel.cs" />
+    <Compile Include="Blocks\TaskList\ViewModels\CardProgressInfoViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardStageInfoViewModel.cs" />
     <Compile Include="Controllers\TaskInfoController.cs" />
     <Compile Include="Controllers\TasksListController.cs" />
@@ -352,7 +353,7 @@
     <Content Include="Views\Shared\Partial\BaseBlocks.cshtml" />
     <Content Include="Views\Shared\Partial\BaseBlock.cshtml" />
     <Content Include="Views\TasksList\DisplayTemplates\CardListItemViewModel.cshtml" />
-    <Content Include="Views\TasksList\Partial\CardParrotProggress.cshtml" />
+    <Content Include="Views\TasksList\Partial\CardProgressInfoViewModel.cshtml" />
     <Content Include="Views\Shared\Partial\Parrots.cshtml" />
   </ItemGroup>
   <ItemGroup>

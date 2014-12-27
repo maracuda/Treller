@@ -1,3 +1,13 @@
-﻿@model SKBKontur.Treller.WebApplication.Blocks.Builders.ParrotsInfo
+﻿@using SKBKontur.Treller.WebApplication.Extensions
+@model SKBKontur.Treller.WebApplication.Blocks.Builders.ParrotsInfo
 
-@string.Format("Попугаи: {0}/{1}, Скорость: {2:F2} в день, дней до завершения: {3}", @Model.CurrentCount, @Model.TotalCount, Model.AverageSpeedInDay, Model.AverageDaysRemind)
+<div style="display: inline-block; font-weight: bold; font-size: 16px;">
+    @Model.PastDays
+    <span title="Дней прошло" class="fa fa-flag-o" style="color: green; margin-right: 7px;"></span>
+    @Model.AverageDaysRemind
+    <span title="Дней осталось" class="fa fa-flag-checkered" style="color: green;  margin-right: 7px;"></span>
+    @Model.AverageSpeedInDay.ToLoanDecimalFormat()
+    <span title="Попугаев в день" class="fa fa-tachometer" style="color: green;  margin-right: 7px;"></span>
+    @Model.ProgressInfo.Progress.ToLoanDecimalFormat(0)
+    <span title="Готово на" style="color: green; font-weight: bold; ">%</span>
+</div>

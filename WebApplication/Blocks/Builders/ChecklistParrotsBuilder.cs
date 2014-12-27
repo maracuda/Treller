@@ -23,22 +23,23 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 if (isMatch.Success)
                 {
                     var matchResult = isMatch.Value.Trim('(', ')').Split('/');
-                    result.TotalCount += int.Parse(matchResult[1]);
+                    result.ProgressInfo.TotalCount += int.Parse(matchResult[1]);
                     completeCount = int.Parse(matchResult[0]);
                 }
                 else
                 {
-                    result.TotalCount += 1;
+                    result.ProgressInfo.TotalCount += 1;
                 }
 
                 if (listItem.IsChecked)
                 {
-                    result.CurrentCount += completeCount;
+                    result.ProgressInfo.CurrentCount += completeCount;
                 }
             }
 
-            result.AverageSpeedInDay = (decimal)result.CurrentCount/daysCount;
-            result.AverageDaysRemind = (int) (result.AverageSpeedInDay > 0 ? (result.TotalCount - result.CurrentCount) / result.AverageSpeedInDay : 0);
+            result.AverageSpeedInDay = (decimal)result.ProgressInfo.CurrentCount / daysCount;
+            result.AverageDaysRemind = (int)(result.AverageSpeedInDay > 0 ? (result.ProgressInfo.TotalCount - result.ProgressInfo.CurrentCount) / result.AverageSpeedInDay : 0);
+            result.PastDays = daysCount;
 
             return result;
         }

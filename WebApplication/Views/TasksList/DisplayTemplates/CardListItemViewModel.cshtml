@@ -2,10 +2,10 @@
 @model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardListItemViewModel
 
 <div class="task-list-block">
-    @Html.Partial("Partial/CardParrotProggress", Model.StageInfo)
+    @Html.Partial("Partial/CardProgressInfoViewModel", Model.StageInfo.Parrots.ProgressInfo)
     
     <header class="task-block-header">
-        <a href="@Model.CardUrl" class="fa fa-external-link" title="посмотреть в Trello" target="_blank"></a>
+        <a href="@Model.CardUrl" class="fa fa-trello" title="посмотреть в Trello" target="_blank"></a>
 
         @Html.ActionLink(Model.CardName, "TaskInfo", "TaskInfo", new RouteValueDictionary{{"cardId", Model.CardId}}, new Dictionary<string, object>
         {
