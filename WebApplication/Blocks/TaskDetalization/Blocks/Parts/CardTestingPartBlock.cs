@@ -1,11 +1,9 @@
-using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.ViewModels;
+using SKBKontur.Treller.WebApplication.Blocks.Builders;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts
 {
     public class CardTestingPartBlock : BasePartTaskDetalizationBlock
     {
-        public ToDoItemsListViewModel[] TestingToDoListsViewModel { get; set; }
-        public int OverallBugsCount { get; set; }
-        public int FixedBugsCount { get; set; }
+        public BugsInfoViewModel Bugs { get; set; }
     }
 }

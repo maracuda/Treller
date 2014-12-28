@@ -1,3 +1,14 @@
 ﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts.CardTestingPartBlock
 
-Количество багов: @Model.FixedBugsCount/@Model.OverallBugsCount
+Количество багов: @Model.Bugs.FixedBugsCount/@Model.Bugs.OverallBugsCount
+
+@foreach (var bug in Model.Bugs.ItemItemBugs.OrderBy(x => x.IsFixed))
+{
+    <br />
+    if(bug.IsFixed)
+    {
+        <span class="fa fa-check"></span>
+    }
+    
+    <span>@bug.Url</span>
+}

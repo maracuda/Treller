@@ -12,5 +12,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels
         public CardStageInfoViewModel StageInfo { get; set; }
         public string CardUrl { get; set; }
         public bool IsNewCard { get; set; }
+        public string BranchName { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
         private readonly ICardStateBuilder cardStateBuilder;
         private readonly ITaskCacher taskCacher;
         private readonly IChecklistParrotsBuilder checklistParrotsBuilder;
+        private readonly IBugsBuilder bugsBuilder;
 
         public TasksBuilder(ITaskManagerClient taskManagerClient, 
                             ISettingService settingService,
@@ -30,7 +31,8 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
                             IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
                             ICardStateBuilder cardStateBuilder,
                             ITaskCacher taskCacher,
-                            IChecklistParrotsBuilder checklistParrotsBuilder)
+                            IChecklistParrotsBuilder checklistParrotsBuilder,
+                            IBugsBuilder bugsBuilder)
         {
             this.taskManagerClient = taskManagerClient;
             this.settingService = settingService;
@@ -39,6 +41,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
             this.cardStateBuilder = cardStateBuilder;
             this.taskCacher = taskCacher;
             this.checklistParrotsBuilder = checklistParrotsBuilder;
+            this.bugsBuilder = bugsBuilder;
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
@@ -237,12 +240,10 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
             }
 
             var result = CreateBasePart<CardTestingPartBlock>(stateInfo, CardState.Testing, checklists);
-            result.TestingToDoListsViewModel = BuildToDoListsViewModels(stateInfo, checklists, CardState.Testing);
 
-            // TODO: integration with bugtracker (youtrack, jira)
-            result.FixedBugsCount = 0;
-            result.OverallBugsCount = 0;
-
+            var bugsInfo = bugsBuilder.Build(checklists.Values);
+            result.Bugs = bugsInfo;
+            
             return result;
         }
 

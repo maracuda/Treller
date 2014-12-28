@@ -147,16 +147,20 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Blocks\BaseBlock.cs" />
+    <Compile Include="Blocks\Builders\BugsBuilder.cs" />
+    <Compile Include="Blocks\Builders\BugsInfoViewModel.cs" />
     <Compile Include="Blocks\Builders\CardStageInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\CardStateBuilder.cs" />
     <Compile Include="Blocks\Builders\CardStateInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\ChecklistParrotsBuilder.cs" />
+    <Compile Include="Blocks\Builders\IBugsBuilder.cs" />
     <Compile Include="Blocks\Builders\ICardStageInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\ICardStateBuilder.cs" />
     <Compile Include="Blocks\Builders\ICardStateInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\IChecklistParrotsBuilder.cs" />
     <Compile Include="Blocks\Builders\IUserAvatarViewModelBuilder.cs" />
     <Compile Include="Blocks\Builders\ParrotsInfoViewModel.cs" />
+    <Compile Include="Blocks\Builders\TaskItemBug.cs" />
     <Compile Include="Blocks\Builders\UserAvatarViewModelBuilder.cs" />
     <Compile Include="Blocks\ContextKeys.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\BaseTaskDetalizationBlock.cs" />
@@ -196,6 +200,7 @@
     <Compile Include="Blocks\TaskList\ViewModels\CardStageInfoViewModel.cs" />
     <Compile Include="Controllers\TaskInfoController.cs" />
     <Compile Include="Controllers\TasksListController.cs" />
+    <Compile Include="Extensions\EntityExtenssions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

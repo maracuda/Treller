@@ -12,5 +12,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels
 
         public CardState State { get; set; }
         public ParrotsInfoViewModel StageParrots { get; set; }
+
+        public BugsInfoViewModel Bugs { get; set; }
     }
 }

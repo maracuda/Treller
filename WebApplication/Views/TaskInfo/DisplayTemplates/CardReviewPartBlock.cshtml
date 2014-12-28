@@ -2,5 +2,6 @@
 
 @foreach (var a in @Model.ReviewToDoListsViewModel)
 {
+    <br />
     <span>@string.Format("Список:{3}, Пунктов:{0}/{1}, Слелующий:{2}", a.CompleteCount, a.Count, a.LastIncompletedDescription, a.ListName)</span>
 }

@@ -7,6 +7,5 @@
         public string CardUrl { get; set; }
 
         public string ControlVersionSystemBranchName { get; set; }
-        public string ControlVersionSystemBranchUrl { get; set; }
     }
 }

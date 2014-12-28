@@ -10,6 +10,7 @@ using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using SKBKontur.Treller.WebApplication.Services.Settings;
 using SKBKontur.Treller.WebApplication.Services.TaskCacher;
+using SKBKontur.Treller.WebApplication.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
 {
@@ -120,7 +121,8 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                            Avatars = card.UserIds.Select(id => users[id]).Select(userAvatarViewModelBuilder.Build).ToArray(),
                            CardUrl = card.Url,
                            StageInfo = stageInfo,
-                           IsNewCard = stageInfo.StageParrots.BeginDate.HasValue && stageInfo.StageParrots.BeginDate.Value.Date == DateTime.Now.Date
+                           IsNewCard = stageInfo.StageParrots.BeginDate.HasValue && stageInfo.StageParrots.BeginDate.Value.Date == DateTime.Now.Date,
+                           BranchName = card.GetCardBranchName()
                        };
         }
     }

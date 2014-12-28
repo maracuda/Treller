@@ -3,10 +3,10 @@
 <header class="task-info-header">
     <a class="task-info-title" href="@Model.CardUrl"  title="перейти в карточку Trello" target="_blank">@Model.OriginalName</a>
     
-    @if (!string.IsNullOrEmpty(Model.ControlVersionSystemBranchName) && string.IsNullOrEmpty(Model.ControlVersionSystemBranchUrl))
+    @if (!string.IsNullOrEmpty(Model.ControlVersionSystemBranchName))
     {
         <span class="task-info-git">
-            in branch <a href="@Model.ControlVersionSystemBranchUrl" title="перейти в git">@Model.ControlVersionSystemBranchName</a>    
+            in branch <span>@Model.ControlVersionSystemBranchName</span>
         </span>
     }
 </header>

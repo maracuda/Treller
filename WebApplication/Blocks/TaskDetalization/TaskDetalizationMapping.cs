@@ -8,7 +8,7 @@ using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.ViewModels;
 using SKBKontur.Billy.Core.BlocksMapping.BlockExtenssions;
-using System.Linq;
+using SKBKontur.Treller.WebApplication.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization
 {
@@ -25,8 +25,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization
             BlockMapper.Declare<CardNameBlock, BoardCard, string>(x => x.OriginalName, x => x.Name),
             BlockMapper.Declare<CardNameBlock, BoardCard, string>(x => x.ApplicationName, x => x.Name + "(В будущем монжо менять)"),
             BlockMapper.Declare<CardNameBlock, BoardCard, string>(x => x.CardUrl, x => x.Url),
-            BlockMapper.Declare<CardNameBlock, BoardCard, string>(x => x.ControlVersionSystemBranchName, x => GetCardBrunchName(x)),
-            BlockMapper.Declare<CardNameBlock, string>(x => x.ControlVersionSystemBranchUrl, value: "Can't retrieve branchUrl"),
+            BlockMapper.Declare<CardNameBlock, BoardCard, string>(x => x.ControlVersionSystemBranchName, x => x.GetCardBranchName()),
                     
             BlockMapper.Declare<CardStateBlock, CardState>(x => x.State),
             BlockMapper.Declare<CardStateBlock, BoardCard, DateTime?>(x => x.DueDate, x => x.DueDate),
@@ -41,17 +40,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization
             BlockMapper.Declare<CardDetalizationPartsBlock, CardReviewPartBlock>(x => x.Review),
             BlockMapper.Declare<CardDetalizationPartsBlock, CardTestingPartBlock>(x => x.Testing),
         };
-
-        private static string GetCardBrunchName(BoardCard card)
-        {
-            int branchIndex;
-            if (!string.IsNullOrEmpty(card.Description) && (branchIndex = card.Description.IndexOf("ветка", StringComparison.OrdinalIgnoreCase)) > 0)
-            {
-                return new string(card.Description.Skip(branchIndex).Take(15).ToArray());
-            }
-
-            return "Can't retrieve branchName";
-        }
 
         private static UserAvatarViewModel[] GetAvatars(Dictionary<bool, UserAvatarViewModel[]> users, bool isActive)
         {

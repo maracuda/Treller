@@ -11,6 +11,10 @@
         {
             {"class", "colorbox-link"},
         })
+        @if (!string.IsNullOrEmpty(Model.BranchName))
+        {
+            <sup>in branch @Model.BranchName</sup>
+        }
     </header>
     
     <div class="task-block-content">
@@ -20,6 +24,15 @@
                 <span class="fa fa-lightbulb-o"></span>
             }
             @Html.Partial("Partial/Parrots", Model.StageInfo.StageParrots)
+            
+            @if (Model.StageInfo.Bugs.NotFixedBugsCount > 0)
+            {
+                <span class="parrots-info-action"  title="Незакрытых багов">
+                    @Model.StageInfo.Bugs.NotFixedBugsCount
+                    <span class="fa fa-bug text-success"></span>
+                </span>
+            }
+
             <span style="margin-left: 10px;">
                 с @Model.StageInfo.StageParrots.BeginDate.SafeDateFormat()
             </span>
