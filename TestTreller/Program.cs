@@ -53,9 +53,11 @@ namespace SKBKontur.Treller.TestTreller
             container = configurator.Configure();
             var trelloClient = container.Get<ITaskManagerClient>();
             jsonSerializer = new JsonSerializer();
-            var trello = new Trello("4349fda675a2a387d7da63a457acdf19");
             var trelloClientCredentials = container.Get<ITrelloUserCredentialService>();
-            trello.Authorize(trelloClientCredentials.GetCredentials().UserToken);
+            var trelloCredential = trelloClientCredentials.GetCredentials();
+            var trello = new Trello(trelloCredential.UserKey);
+            
+            trello.Authorize(trelloCredential.UserToken);
 
             Do("get authorization uri", CheckAuthorizationUrl, trello);
             Do("authorize", Authorize, trelloClient);
