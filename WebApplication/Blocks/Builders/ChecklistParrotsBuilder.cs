@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using SKBKontur.TaskManagerClient.BusinessObjects;
@@ -7,7 +9,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {
     public class ChecklistParrotsBuilder : IChecklistParrotsBuilder
     {
-        public ParrotsInfoViewModel Build(IEnumerable<CardChecklist> checklists, int daysCount)
+        public ParrotsInfoViewModel Build(IEnumerable<CardChecklist> checklists, int daysCount, DateTime? beginDate, DateTime? endDate)
         {
             if (checklists == null || daysCount == 0)
             {
@@ -18,13 +20,14 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 
             foreach (var listItem in checklists.SelectMany(x => x.Items))
             {
-                var completeCount = 1;
-                var isMatch = Regex.Match(listItem.Description, @"\(\d+/\d+\)$", RegexOptions.IgnoreCase);
+                decimal completeCount = 1;
+                const string floatRegexPattern = @"\d+[.,]?[\d]*";
+                var isMatch = Regex.Match(listItem.Description, string.Format(@"\({0}[/,\\]{0}\)$", floatRegexPattern), RegexOptions.IgnoreCase);
                 if (isMatch.Success)
                 {
                     var matchResult = isMatch.Value.Trim('(', ')').Split('/');
-                    result.ProgressInfo.TotalCount += int.Parse(matchResult[1]);
-                    completeCount = int.Parse(matchResult[0]);
+                    result.ProgressInfo.TotalCount += Parse(matchResult[1]);
+                    completeCount = Parse(matchResult[0]);
                 }
                 else
                 {
@@ -37,11 +40,28 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 }
             }
 
-            result.AverageSpeedInDay = (decimal)result.ProgressInfo.CurrentCount / daysCount;
+            result.AverageSpeedInDay = result.ProgressInfo.CurrentCount / daysCount;
             result.AverageDaysRemind = (int)(result.AverageSpeedInDay > 0 ? (result.ProgressInfo.TotalCount - result.ProgressInfo.CurrentCount) / result.AverageSpeedInDay : 0);
             result.PastDays = daysCount;
+            result.BeginDate = beginDate;
+            result.EndDate = endDate;
 
             return result;
+        }
+
+        private static decimal Parse(string value)
+        {
+            decimal result;
+            if (decimal.TryParse(value, NumberStyles.AllowDecimalPoint,
+                                 new NumberFormatInfo {NumberDecimalSeparator = "."}, out result)
+                ||
+                decimal.TryParse(value, NumberStyles.AllowDecimalPoint,
+                                 new NumberFormatInfo {NumberDecimalSeparator = ","}, out result))
+            {
+                return result;
+            }
+
+            return 1;
         }
     }
 }

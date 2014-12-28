@@ -23,32 +23,37 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
         {
             var state = cardStateBuilder.GetState(card.BoardListId, boardSetting, boardLists);
 
-            DateTime? lastListChangedDate = null;
+            DateTime? beginDate = null;
+            DateTime? endDate = null;
             var cardChecklists = new HashSet<string>();
             foreach (var action in actions)
             {
                 if (action.ToListId == card.BoardListId)
                 {
-                    lastListChangedDate = action.Date;
+                    beginDate = action.Date;
                 }
-                if (lastListChangedDate.HasValue && !string.IsNullOrEmpty(action.CreatedCheckListId))
+
+                if (action.FromListId == card.BoardListId)
+                {
+                    endDate = action.Date;
+                }
+
+                if (beginDate.HasValue && !string.IsNullOrEmpty(action.CreatedCheckListId))
                 {
                     cardChecklists.Add(action.CreatedCheckListId);
                 }
             }
+            beginDate = beginDate ?? (actions.Length > 0 ? actions[0].Date : (DateTime?) null);
             var lists = checklists.ToDictionary(x => x.Id);
             var resultLists = cardChecklists.Select(x => lists.SafeGet(x)).Where(x => x != null).ToArray();
             
-            var totalDays = (int)(lastListChangedDate != null ? (DateTime.Now.Date - lastListChangedDate.Value.Date).TotalDays : 0);
-            var parrotsInfo = checklistParrotsBuilder.Build(resultLists, totalDays);
+            var totalDays = (int)(beginDate != null ? (DateTime.Now.Date - beginDate.Value.Date).TotalDays : 0);
+            var parrotsInfo = checklistParrotsBuilder.Build(resultLists, totalDays, beginDate, endDate);
 
             return new CardStageInfoViewModel
                        {
-                           DaysInState = totalDays,
                            State = state,
-                           Parrots = parrotsInfo,
-                           TotalCardParrots = checklists.Sum(l => l.Items.Length),
-                           CurrentCardParrots = checklists.Sum(l => l.Items.Count(i => i.IsChecked)),
+                           StageParrots = parrotsInfo,
                        };
         }
     }

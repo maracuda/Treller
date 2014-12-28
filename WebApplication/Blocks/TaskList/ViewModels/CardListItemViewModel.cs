@@ -11,5 +11,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels
         public UserAvatarViewModel[] Avatars { get; set; }
         public CardStageInfoViewModel StageInfo { get; set; }
         public string CardUrl { get; set; }
+        public bool IsNewCard { get; set; }
     }
 }

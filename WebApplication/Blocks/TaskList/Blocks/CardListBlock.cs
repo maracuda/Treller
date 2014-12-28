@@ -1,9 +1,10 @@
-﻿using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
+﻿using System.Collections.Generic;
+using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks
 {
     public class CardListBlock : BaseCardListBlock
     {
-        public CardListItemViewModel[] Cards { get; set; }
+        public Dictionary<CardState, CardStateOverallViewModel> OverallStateCards { get; set; }
     }
 }

@@ -185,7 +185,7 @@
     <Compile Include="Blocks\TaskList\Blocks\BaseCardListBlock.cs" />
     <Compile Include="Blocks\TaskList\Blocks\BoardsBlock.cs" />
     <Compile Include="Blocks\TaskList\Blocks\CardListBlock.cs" />
-    <Compile Include="Blocks\TaskList\Blocks\CardOverallBlock.cs" />
+    <Compile Include="Blocks\TaskList\Blocks\CardStateOverallViewModel.cs" />
     <Compile Include="Blocks\TaskList\Builders\TaskListBuilder.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardNameBlock.cs" />
     <Compile Include="Blocks\TaskList\TaskListMapping.cs" />
@@ -355,7 +355,6 @@
     <Content Include="Views\TasksList\TasksList.cshtml" />
     <Content Include="Views\TasksList\DisplayTemplates\BoardsBlock.cshtml" />
     <Content Include="Views\TasksList\DisplayTemplates\CardListBlock.cshtml" />
-    <Content Include="Views\TasksList\DisplayTemplates\CardOverallBlock.cshtml" />
     <Content Include="Views\Shared\Partial\BaseBlocks.cshtml" />
     <Content Include="Views\Shared\Partial\BaseBlock.cshtml" />
     <Content Include="Views\TasksList\DisplayTemplates\CardListItemViewModel.cshtml" />

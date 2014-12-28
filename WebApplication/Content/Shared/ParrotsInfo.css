@@ -9,6 +9,11 @@
     margin-left: 15px;
 }
 
+.parrots-list {
+    margin-top: 15px;
+    font-size: 17px;
+}
+
 .parrots-info-action:first-child {
     margin-left: 0;
 }

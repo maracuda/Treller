@@ -17,9 +17,11 @@
         
         <div class="task-info-block-status">
             @Html.Partial("Partial/Parrots", Model.CartParrots)
-            @Model.PartBeginDate.SafeDateFormat()
-            @if (Model.PartEndDate.HasValue) { <span class="fa fa-minus" style="font-size: .7em"></span> }
-            @Model.PartEndDate.SafeDateFormat()
+            <span style="margin-left: 10px;">
+                @Model.PartBeginDate.SafeDateFormat()
+                @if (Model.PartEndDate.HasValue) { <span class="fa fa-minus" style="font-size: .7em"></span> }
+                @Model.PartEndDate.SafeDateFormat()
+            </span>
         </div>
     </header>
 

@@ -1,10 +1,9 @@
-﻿using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
+﻿using System.Collections.Generic;
+using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
 using SKBKontur.Billy.Core.BlocksMapping.Mappings;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
-using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
-using System.Linq;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList
 {
@@ -13,11 +12,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList
         private static readonly IBlockMapper[] Mappers =
             new IBlockMapper[]
                 {
-                    BlockMapper.Declare<CardListBlock, CardListItemViewModel[]>(x => x.Cards),
-                    BlockMapper.Declare<CardOverallBlock, BoardCard[], int>(x => x.TotalCount, x => x.Length),
-                    BlockMapper.Declare<CardOverallBlock, CardListItemViewModel[], int>(x => x.DevelopCount, x => x.Count(c => c.StageInfo.State >= CardState.Develop && c.StageInfo.State < CardState.Testing)),
-                    BlockMapper.Declare<CardOverallBlock, CardListItemViewModel[], int>(x => x.TestingCount, x => x.Count(c => c.StageInfo.State == CardState.Testing || c.StageInfo.State == CardState.ReleaseWaiting)),
-                    BlockMapper.Declare<CardOverallBlock, CardListItemViewModel[], int>(x => x.AnaliticsCount, x => x.Count(c => c.StageInfo.State == CardState.BeforeDevelop)),
+                    BlockMapper.Declare<CardListBlock, Dictionary<CardState, CardStateOverallViewModel>>(x => x.OverallStateCards),
                     BlockMapper.Declare<BoardsBlock, Board[]>(x => x.Boards)
                 };
 

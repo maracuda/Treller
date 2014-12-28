@@ -1,7 +1,8 @@
-﻿@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardListItemViewModel
+﻿@using SKBKontur.Treller.WebApplication.Extensions
+@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardListItemViewModel
 
 <section class="task-list-block">
-    @Html.Partial("Partial/CardProgressInfoViewModel", Model.StageInfo.Parrots.ProgressInfo)
+    @Html.Partial("Partial/CardProgressInfoViewModel", Model.StageInfo.StageParrots.ProgressInfo)
     
     <header class="task-block-header">
         <a href="@Model.CardUrl" class="fa fa-trello" title="посмотреть в Trello" target="_blank"></a>
@@ -13,7 +14,16 @@
     </header>
     
     <div class="task-block-content">
-        @Html.Partial("Partial/Parrots", Model.StageInfo.Parrots)
+        <div class="parrots-info-block">
+            @if (Model.IsNewCard)
+            {
+                <span class="fa fa-lightbulb-o"></span>
+            }
+            @Html.Partial("Partial/Parrots", Model.StageInfo.StageParrots)
+            <span style="margin-left: 10px;">
+                с @Model.StageInfo.StageParrots.BeginDate.SafeDateFormat()
+            </span>
+        </div>
         
         @if (Model.Avatars != null && Model.Avatars.Length > 0)
         {

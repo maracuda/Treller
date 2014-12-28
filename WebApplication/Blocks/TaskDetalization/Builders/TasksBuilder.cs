@@ -262,9 +262,9 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
             result.PartBeginDate = stateInfo.BeginDate;
             result.PartEndDate = stateInfo.EndDate;
 
-            var partDueDays = (DateTime.Now.Date - stateInfo.BeginDate.Date).Days;
+            var partDueDays = ((stateInfo.EndDate ?? DateTime.Now).Date - stateInfo.BeginDate.Date).Days;
             var cardChecklists = stateInfo.CheckListIds.Distinct().Where(checklists.ContainsKey).Select(x => checklists[x]);
-            result.CartParrots = checklistParrotsBuilder.Build(cardChecklists, partDueDays);
+            result.CartParrots = checklistParrotsBuilder.Build(cardChecklists, partDueDays, result.PartBeginDate, result.PartEndDate);
 
             return result;
         }
