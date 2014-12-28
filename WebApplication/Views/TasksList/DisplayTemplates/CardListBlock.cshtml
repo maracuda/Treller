@@ -11,15 +11,21 @@
                 <span class="fa fa-tasks text-success"></span>
             </span>
         
-            <span class="parrots-info-action"  title="Новые карточки за сегодня">
-                @stateCards.Value.NewCardsCount
-                <span class="fa fa-lightbulb-o text-success"></span>
-            </span>
-        
-            <span class="parrots-info-action"  title="Близки к завершению">
-                @stateCards.Value.FinishingCardsCount
-                <span class="fa fa-check-square-o text-success"></span>
-            </span>
+            @if (stateCards.Value.NewCardsCount > 0)
+            {
+                <span class="parrots-info-action"  title="Новые карточки за сегодня">
+                    @stateCards.Value.NewCardsCount
+                    <span class="fa fa-lightbulb-o text-success"></span>
+                </span>
+            }
+            
+            @if (stateCards.Value.FinishingCardsCount > 0)
+            {
+                <span class="parrots-info-action"  title="Близки к завершению">
+                    @stateCards.Value.FinishingCardsCount
+                    <span class="fa fa-check-square-o text-success"></span>
+                </span>
+            }
         </sup>
         </h3>
         <div class="task-block-group-body">
