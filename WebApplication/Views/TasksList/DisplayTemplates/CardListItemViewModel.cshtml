@@ -11,9 +11,10 @@
         {
             {"class", "colorbox-link"},
         })
+
         @if (!string.IsNullOrEmpty(Model.BranchName))
         {
-            <sup>in branch @Model.BranchName</sup>
+            <small class="text-muted">in branch @Model.BranchName</small>
         }
     </header>
     

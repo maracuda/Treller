@@ -4,30 +4,33 @@
 @foreach (var stateCards in Model.OverallStateCards)
 {
     <div class="task-block-group">
-        <h3 class="task-block-group-title">@stateCards.Key.GetEnumDescription()
-        <sup>
-            <span class="parrots-info-action"  title="Количество">
-                @stateCards.Value.TotalCardsCount
-                <span class="fa fa-tasks text-success"></span>
-            </span>
+        <div class="task-block-group-header">
+            <h3 class="task-block-group-title">@stateCards.Key.GetEnumDescription()</h3>
+
+            <div class="task-block-group-legend">
+                <span class="parrots-info-action"  title="Количество">
+                    @stateCards.Value.TotalCardsCount
+                    <span class="fa fa-tasks text-success"></span>
+                </span>
         
-            @if (stateCards.Value.NewCardsCount > 0)
-            {
-                <span class="parrots-info-action"  title="Новые карточки за сегодня">
-                    @stateCards.Value.NewCardsCount
-                    <span class="fa fa-lightbulb-o text-success"></span>
-                </span>
-            }
+                @if (stateCards.Value.NewCardsCount > 0)
+                {
+                    <span class="parrots-info-action"  title="Новые карточки за сегодня">
+                        @stateCards.Value.NewCardsCount
+                        <span class="fa fa-lightbulb-o text-success"></span>
+                    </span>
+                }
             
-            @if (stateCards.Value.FinishingCardsCount > 0)
-            {
-                <span class="parrots-info-action"  title="Близки к завершению">
-                    @stateCards.Value.FinishingCardsCount
-                    <span class="fa fa-check-square-o text-success"></span>
-                </span>
-            }
-        </sup>
-        </h3>
+                @if (stateCards.Value.FinishingCardsCount > 0)
+                {
+                    <span class="parrots-info-action"  title="Близки к завершению">
+                        @stateCards.Value.FinishingCardsCount
+                        <span class="fa fa-check-square-o text-success"></span>
+                    </span>
+                }
+            </div>
+        </div>
+
         <div class="task-block-group-body">
             @Html.DisplayFor(x => stateCards.Value.Cards)
         </div>

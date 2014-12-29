@@ -1,0 +1,28 @@
+﻿.task-block-group {
+    margin: 20px 0;
+}
+
+.task-block-group-header {
+    cursor: pointer;
+}
+
+.task-block-group-title {
+    display: inline-block;
+    margin: 0;
+}
+
+.task-block-group-body {
+    margin: 30px 0 60px;
+    display: none;
+}
+
+/* todo: если первая група нужна открытой */
+/*.task-block-group:first-child .task-block-group-body {
+    display: block;
+}*/
+
+.task-block-group-legend {
+    display: inline-block;
+    margin-left: 16px;
+    font-size: 1.1em;
+}
