@@ -15,6 +15,10 @@
         @if (!string.IsNullOrEmpty(Model.BranchName))
         {
             <small class="text-muted">in branch @Model.BranchName</small>
+            if (Model.IsInCandidateRelease)
+            {
+                <span>(RC)</span>
+            }
         }
     </header>
     

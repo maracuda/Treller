@@ -2,6 +2,7 @@
 using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
 using SKBKontur.Billy.Core.BlocksMapping.Mappings;
 using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.Treller.WebApplication.Blocks.Builders;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 
@@ -13,7 +14,8 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList
             new IBlockMapper[]
                 {
                     BlockMapper.Declare<CardListBlock, Dictionary<CardState, CardStateOverallViewModel>>(x => x.OverallStateCards),
-                    BlockMapper.Declare<BoardsBlock, Board[]>(x => x.Boards)
+                    BlockMapper.Declare<BoardsBlock, Board[]>(x => x.Boards),
+                    BlockMapper.Declare<BoardsBlock, SimpleRepoBranch[]>(x => x.BranchesInCandidateRelease)
                 };
 
         public IBlockMapper[] SelectAll()

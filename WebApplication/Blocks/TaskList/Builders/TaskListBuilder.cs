@@ -21,18 +21,21 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         private readonly IUserAvatarViewModelBuilder userAvatarViewModelBuilder;
         private readonly ICardStageInfoBuilder cardStageInfoBuilder;
         private readonly ITaskCacher taskCacher;
+        private readonly IReleaseCandidateService releaseCandidateService;
 
         public TaskListBuilder(ITaskManagerClient taskManagerClient,
                                ISettingService settingService,
                                IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
                                ICardStageInfoBuilder cardStageInfoBuilder,
-                               ITaskCacher taskCacher)
+                               ITaskCacher taskCacher,
+                               IReleaseCandidateService releaseCandidateService)
         {
             this.taskManagerClient = taskManagerClient;
             this.settingService = settingService;
             this.userAvatarViewModelBuilder = userAvatarViewModelBuilder;
             this.cardStageInfoBuilder = cardStageInfoBuilder;
             this.taskCacher = taskCacher;
+            this.releaseCandidateService = releaseCandidateService;
         }
 
         [BlockModel(ContextKeys.TasksKey)]
@@ -51,6 +54,12 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         private string[] BuildSettings(Dictionary<string, BoardSettings> settings)
         {
             return settings.Select(x => x.Key).ToArray();
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
+        public SimpleRepoBranch[] BuildReleaseCandidateBranches()
+        {
+            return releaseCandidateService.WhatBranchesInReleaseCandidate();
         }
 
         [BlockModel(ContextKeys.TasksKey)]
@@ -92,9 +101,10 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         [BlockModel(ContextKeys.TasksKey)]
         private Dictionary<CardState, CardStateOverallViewModel> BuildCards(BoardCard[] cards, Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
                                                    Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
-                                                   ILookup<string, CardChecklist> cardChecklists)
+                                                   ILookup<string, CardChecklist> cardChecklists, SimpleRepoBranch[] branches)
         {
-            return cards.Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card))
+            var rcBranches = new HashSet<string>(branches.Select(x => x.Name));
+            return cards.Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches))
                         .OrderByDescending(x => x.StageInfo.State)
                         .ThenByDescending(x => x.StageInfo.StageParrots.PastDays)
                         .ThenBy(x => x.StageInfo.StageParrots.BeginDate)
@@ -106,13 +116,16 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                                                                        });
         }
 
-        private CardListItemViewModel BuildCard(Dictionary<string, User> users, ILookup<string, BoardList> boardLists, Dictionary<string, BoardSettings> boardSettings,
-                                                ILookup<string, CardAction> cardActions, ILookup<string, CardChecklist> cardChecklists, BoardCard card)
+        private CardListItemViewModel BuildCard(Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
+                                                Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
+                                                ILookup<string, CardChecklist> cardChecklists, BoardCard card, HashSet<string> rcBranches)
         {
             var stageInfo = cardStageInfoBuilder.Build(card, cardActions[card.Id].ToArray(),
                                                        cardChecklists[card.Id].ToArray(),
                                                        boardSettings[card.BoardId],
                                                        boardLists[card.BoardId].ToArray());
+            var branchName = card.GetCardBranchName();
+            var isInRc = !string.IsNullOrEmpty(branchName) && rcBranches.Contains(branchName);
             return new CardListItemViewModel
                        {
                            CardId = card.Id,
@@ -122,7 +135,8 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                            CardUrl = card.Url,
                            StageInfo = stageInfo,
                            IsNewCard = stageInfo.StageParrots.BeginDate.HasValue && stageInfo.StageParrots.BeginDate.Value.Date == DateTime.Now.Date,
-                           BranchName = card.GetCardBranchName()
+                           BranchName = branchName,
+                           IsInCandidateRelease = isInRc
                        };
         }
     }

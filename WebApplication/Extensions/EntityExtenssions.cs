@@ -1,5 +1,6 @@
 ﻿using System;
 using SKBKontur.TaskManagerClient.BusinessObjects;
+using System.Linq;
 
 namespace SKBKontur.Treller.WebApplication.Extensions
 {
@@ -7,16 +8,16 @@ namespace SKBKontur.Treller.WebApplication.Extensions
     {
         public static string GetCardBranchName(this BoardCard card)
         {
-            int branchIndex;
-            if (!string.IsNullOrEmpty(card.Description) && (branchIndex = card.Description.IndexOf("ветка", StringComparison.OrdinalIgnoreCase)) >= 0)
+            var branchIndex = card.Description.IndexOf("ветка:", StringComparison.OrdinalIgnoreCase);
+            if (branchIndex == -1)
             {
-                var startBranchNameIndex = card.Description.IndexOf(' ', branchIndex);
-                var endBranchNameIndex = card.Description.IndexOf(' ', startBranchNameIndex + 1);
-                endBranchNameIndex = endBranchNameIndex < startBranchNameIndex ? card.Description.Length : endBranchNameIndex;
-                return card.Description.Substring(startBranchNameIndex, endBranchNameIndex - startBranchNameIndex).Trim();
+                return string.Empty;
             }
 
-            return string.Empty;
+            return card.Description.Substring(branchIndex, card.Description.Length > 200 ? 200 : card.Description.Length)
+                                   .Split(new[] {' ', '\r', '\n', ':'}, StringSplitOptions.RemoveEmptyEntries)
+                                   .Skip(1)
+                                   .FirstOrDefault(x => x.Length > 1);
         } 
     }
 }

@@ -6,4 +6,6 @@
     {
         <label><a href="@board.Url">@board.Name</a>  </label>
     }
+    <br/>
+    В релиз кандидате: @string.Join("  ", Model.BranchesInCandidateRelease.Select(x => string.Format("{0} ({1:dd.MM HH:mm})", x.Name, x.LastCommitTime)))
 </h4>

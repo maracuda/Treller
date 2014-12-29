@@ -141,7 +141,7 @@
     <Compile Include="Abstractions\DomainService.cs" />
     <Compile Include="Abstractions\IocContainer.cs" />
     <Compile Include="Abstractions\TrelloClientCustomizer.cs" />
-    <Compile Include="Abstractions\TrelloUserCredentialService.cs" />
+    <Compile Include="Abstractions\UserCredentialService.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -158,8 +158,11 @@
     <Compile Include="Blocks\Builders\ICardStateBuilder.cs" />
     <Compile Include="Blocks\Builders\ICardStateInfoBuilder.cs" />
     <Compile Include="Blocks\Builders\IChecklistParrotsBuilder.cs" />
+    <Compile Include="Blocks\Builders\IReleaseCandidateService.cs" />
     <Compile Include="Blocks\Builders\IUserAvatarViewModelBuilder.cs" />
     <Compile Include="Blocks\Builders\ParrotsInfoViewModel.cs" />
+    <Compile Include="Blocks\Builders\ReleaseCandidateService.cs" />
+    <Compile Include="Blocks\Builders\SimpleRepoBranch.cs" />
     <Compile Include="Blocks\Builders\TaskItemBug.cs" />
     <Compile Include="Blocks\Builders\UserAvatarViewModelBuilder.cs" />
     <Compile Include="Blocks\ContextKeys.cs" />
