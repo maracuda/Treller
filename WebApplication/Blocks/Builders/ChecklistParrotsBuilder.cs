@@ -11,11 +11,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
     {
         public ParrotsInfoViewModel Build(IEnumerable<CardChecklist> checklists, int daysCount, DateTime? beginDate, DateTime? endDate)
         {
-            if (checklists == null || daysCount == 0)
-            {
-                return new ParrotsInfoViewModel();
-            }
-
             var result = new ParrotsInfoViewModel();
 
             foreach (var listItem in checklists.SelectMany(x => x.Items))
@@ -40,7 +35,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 }
             }
 
-            result.AverageSpeedInDay = result.ProgressInfo.CurrentCount / daysCount;
+            result.AverageSpeedInDay = daysCount == 0 ? 0 : result.ProgressInfo.CurrentCount / daysCount;
             result.AverageDaysRemind = (int)(result.AverageSpeedInDay > 0 ? (result.ProgressInfo.TotalCount - result.ProgressInfo.CurrentCount) / result.AverageSpeedInDay : 0);
             result.PastDays = daysCount;
             result.BeginDate = beginDate;
