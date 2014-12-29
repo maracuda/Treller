@@ -4,6 +4,6 @@ namespace SKBKontur.TaskManagerClient.Abstractions
 {
     public interface IGitLabCredentialService
     {
-        GitLabCredential GetCredentials();
+        GitLabCredential GetGitLabCredentials();
     }
 }
