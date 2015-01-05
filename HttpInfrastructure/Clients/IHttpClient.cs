@@ -11,9 +11,5 @@ namespace SKBKontur.HttpInfrastructure.Clients
         Task SendPostAsync(string url, Dictionary<string, string> queryParameters = null);
         Task<TResult> SendPostAsync<TSerialized, TResult>(string url, TSerialized body, Dictionary<string, string> queryParameters = null);
         Task<TResult> SendPostAsync<TResult>(string url, Dictionary<string, string> queryParameters = null);
-
-        void SendGetSync(string url, Dictionary<string, string> queryParameters = null);
-        void SendPostSync<TSerialized>(string url, TSerialized body, Dictionary<string, string> queryParameters = null);
-        void SendPostSync(string url, Dictionary<string, string> queryParameters = null);
     }
 }

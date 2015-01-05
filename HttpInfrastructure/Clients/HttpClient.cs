@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -77,37 +76,6 @@ namespace SKBKontur.HttpInfrastructure.Clients
         public async Task<TResult> SendPostAsync<TResult>(string url, Dictionary<string, string> queryParameters = null)
         {
             return await SendPostAsync<string, TResult>(url, null, queryParameters);
-        }
-
-        public void SendGetSync(string url, Dictionary<string, string> queryParameters)
-        {
-            using (var client = new System.Net.Http.HttpClient())
-            {
-                var requestUri = GetFullUrl(url, queryParameters);
-                var response = client.GetAsync(requestUri).Result;
-                if (!response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine("Something goes wrong, at get method: {0}, errorText: {1}", requestUri, response.ReasonPhrase);
-                }
-            }
-        }
-
-        public void SendPostSync<TSerialized>(string url, TSerialized body, Dictionary<string, string> queryParameters = null)
-        {
-            using (var client = new System.Net.Http.HttpClient())
-            {
-                var requestUri = GetFullUrl(url, queryParameters);
-                var response = client.PostAsJsonAsync(requestUri, body).Result;
-                if (!response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine("Something goes wrong, at post method: {0}, errorText: {1}", requestUri, response.ReasonPhrase);
-                }
-            }
-        }
-
-        public void SendPostSync(string url, Dictionary<string, string> queryParameters = null)
-        {
-            SendPostSync(url, (string)null, queryParameters);
         }
 
         private static string GetFullUrl(string url, Dictionary<string, string> queryParameters)

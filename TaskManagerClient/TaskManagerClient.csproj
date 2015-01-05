@@ -52,6 +52,7 @@
     <Compile Include="BusinessObjects\CardLabelColor.cs" />
     <Compile Include="BusinessObjects\ChecklistItem.cs" />
     <Compile Include="BusinessObjects\User.cs" />
+    <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="GitLab\BusinessObjects\GitLabCredential.cs" />
     <Compile Include="GitLab\BusinessObjects\RepoBranch.cs" />
     <Compile Include="GitLab\BusinessObjects\RepoCommit.cs" />

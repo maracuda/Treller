@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SKBKontur.TaskManagerClient.Abstractions;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions;
@@ -10,6 +11,7 @@ using Action = SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions.Action
 using Board = SKBKontur.TaskManagerClient.BusinessObjects.Board;
 using BoardList = SKBKontur.TaskManagerClient.BusinessObjects.BoardList;
 using CardLabel = SKBKontur.TaskManagerClient.BusinessObjects.CardLabel;
+using SKBKontur.TaskManagerClient.Extensions;
 
 namespace SKBKontur.TaskManagerClient.Trello
 {
@@ -29,80 +31,74 @@ namespace SKBKontur.TaskManagerClient.Trello
                                    };
         }
 
-        public Board[] GetBoards(string[] boardIds)
+        public Task<Board[]> GetBoardsAsync(string[] boardIds)
         {
-            return boardIds.Select(id => GetTrelloData<BusinessObjects.Boards.Board>(id, "boards/{0}"))
-                           .Select(x => new Board{ Id = x.Id, OrganizationId = x.IdOrganization, Name = x.Name, Url = x.Url })
-                           .ToArray();
+            return boardIds.Select(id => GetTrelloDataAsync<BusinessObjects.Boards.Board>(id, "boards/{0}"))
+                           .Await(x => new Board { Id = x.Id, OrganizationId = x.IdOrganization, Name = x.Name, Url = x.Url });
         }
 
-        public BoardList[] GetBoardLists(params string[] boardIds)
+        public Task<BoardList[]> GetBoardListsAsync(params string[] boardIds)
         {
-            return boardIds.SelectMany(id => GetTrelloData<BusinessObjects.Boards.BoardList[]>(id, "boards/{0}/lists"))
-                           .Select(x => new BoardList { Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos })
-                           .ToArray();
+            return boardIds.Select(id => GetTrelloDataAsync<BusinessObjects.Boards.BoardList[]>(id, "boards/{0}/lists"))
+                           .Await(x => new BoardList { Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos });
 
         }
 
-        public BoardCard[] GetBoardCards(string[] boardIds)
+        public Task<BoardCard[]> GetBoardCardsAsync(string[] boardIds)
         {
-            return boardIds.SelectMany(id => GetTrelloData<Card[]>(id, "boards/{0}/cards")).Select(CreateBoardCard)
-                           .ToArray();
+            return boardIds.Select(id => GetTrelloDataAsync<Card[]>(id, "boards/{0}/cards"))
+                           .Await(CreateBoardCard);
         }
 
-        public User[] GetBoardUsers(string[] boardIds)
+        public Task<User[]> GetBoardUsersAsync(string[] boardIds)
         {
             var queryString = new Dictionary<string, string> { { "fields", "all" } };
-            return boardIds.SelectMany(id => GetTrelloData<BoardMember[]>(id, "boards/{0}/members", queryString))
-                           .GroupBy(x => x.Id, StringComparer.OrdinalIgnoreCase)
-                           .Select(x => x.First())
-                           .Select(CreateUser)
-                           .ToArray();
+            return boardIds.Select(id => GetTrelloDataAsync<BoardMember[]>(id, "boards/{0}/members", queryString))
+                           .Await(CreateUser, result => result.GroupBy(x => x.Id, StringComparer.OrdinalIgnoreCase).Select(x => x.First()));
         }
 
-        public CardChecklist[] GetBoardChecklists(string[] boardIds)
+        public Task<CardChecklist[]> GetBoardChecklistsAsync(string[] boardIds)
         {
-            return boardIds.SelectMany(id => GetTrelloData<Checklist[]>(id, "boards/{0}/checklists").Select(CreateChecklist)).ToArray();
+            return boardIds.Select(id => GetTrelloDataAsync<Checklist[]>(id, "boards/{0}/checklists"))
+                           .Await(CreateChecklist);
         }
 
-        public CardAction[] GetCardActions(string cardId)
+        public Task<CardAction[]> GetCardActionsAsync(string cardId)
         {
             var queryString = new Dictionary<string, string> {{"filter", "all"}, {"limit", "1000"}};
-            return GetTrelloData<Action[]>(cardId, "cards/{0}/actions", queryString)
-                        .Select(CreateCardAction)
-                        .Where(x => x != null)
-                        .ToArray();
+
+            return GetTrelloDataAsync<Action[]>(cardId, "cards/{0}/actions", queryString)
+                    .Await(CreateCardAction, result => result.Where(x => x != null));
         }
 
-        public CardAction[] GetActionsForBoardCards(string[] boardIds, DateTime? fromUtc = null)
+        public Task<CardAction[]> GetActionsForBoardCardsAsync(string[] boardIds, DateTime? fromUtc = null)
         {
             var queryString = new Dictionary<string, string> {{"limit", "1000"}};
             if (fromUtc.HasValue)
             {
                 queryString.Add("since", fromUtc.Value.ToString("O"));
             }
-            return boardIds.SelectMany(id => GetTrelloData<Action[]>(id, "boards/{0}/actions", queryString))
-                           .Select(CreateCardAction)
-                           .Where(x => x != null)
-                           .ToArray();
+
+            return boardIds.Select(id => GetTrelloDataAsync<Action[]>(id, "boards/{0}/actions", queryString))
+                           .Await(CreateCardAction, result => result.Where(x => x != null));
         }
 
-        public BoardCard GetCard(string cardId)
+        public Task<BoardCard> GetCardAsync(string cardId)
         {
-            return CreateBoardCard(GetTrelloData<Card>(cardId, "cards/{0}"));
+            return GetTrelloDataAsync<Card>(cardId, "cards/{0}").Await(CreateBoardCard);
         }
 
-        public User[] GetCardUsers(string cardId)
+        public Task<User[]> GetCardUsersAsync(string cardId)
         {
-            return GetTrelloData<BoardMember[]>(cardId, "cards/{0}/members").Select(CreateUser).ToArray();
+            return GetTrelloDataAsync<BoardMember[]>(cardId, "cards/{0}/members").Await(CreateUser);
         }
 
-        public CardChecklist[] GetCardChecklists(string cardId)
+        public Task<CardChecklist[]> GetCardChecklistsAsync(string cardId)
         {
-            return GetTrelloData<Checklist[]>(cardId, "cards/{0}/checklists").Select(CreateChecklist).ToArray();
+            return GetTrelloDataAsync<Checklist[]>(cardId, "cards/{0}/checklists").Await(CreateChecklist);
         }
 
-        private T GetTrelloData<T>(string id, string format, Dictionary<string, string> queryString = null)
+        private Task<T> GetTrelloDataAsync<T>(string id, string format, Dictionary<string, string> queryString = null)
         {
             var parameters = trelloParameters;
             if (queryString != null)
@@ -110,7 +106,7 @@ namespace SKBKontur.TaskManagerClient.Trello
                 parameters = parameters.Union(queryString).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            return httpClient.SendGetAsync<T>(string.Format(string.Format("https://trello.com/1/{0}", format), id), parameters).Result;
+            return httpClient.SendGetAsync<T>(string.Format(string.Format("https://trello.com/1/{0}", format), id), parameters);
         }
 
         private static CardChecklist CreateChecklist(Checklist list)

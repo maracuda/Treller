@@ -1,20 +1,21 @@
 using System;
+using System.Threading.Tasks;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 
 namespace SKBKontur.TaskManagerClient
 {
     public interface ITaskManagerClient
     {
-        Board[] GetBoards(string[] boardIds);
-        BoardList[] GetBoardLists(params string[] boardIds);
-        BoardCard[] GetBoardCards(string[] boardIds);
-        User[] GetBoardUsers(string[] boardIds);
-        CardChecklist[] GetBoardChecklists(string[] boardIds);
-        CardAction[] GetActionsForBoardCards(string[] boardIds, DateTime? fromUtc = null);
+        Task<Board[]> GetBoardsAsync(string[] boardIds);
+        Task<BoardList[]> GetBoardListsAsync(params string[] boardIds);
+        Task<BoardCard[]> GetBoardCardsAsync(string[] boardIds);
+        Task<User[]> GetBoardUsersAsync(string[] boardIds);
+        Task<CardChecklist[]> GetBoardChecklistsAsync(string[] boardIds);
+        Task<CardAction[]> GetActionsForBoardCardsAsync(string[] boardIds, DateTime? fromUtc = null);
 
-        CardAction[] GetCardActions(string cardId);
-        BoardCard GetCard(string cardId);
-        User[] GetCardUsers(string cardId);
-        CardChecklist[] GetCardChecklists(string cardId);
+        Task<CardAction[]> GetCardActionsAsync(string cardId);
+        Task<BoardCard> GetCardAsync(string cardId);
+        Task<User[]> GetCardUsersAsync(string cardId);
+        Task<CardChecklist[]> GetCardChecklistsAsync(string cardId);
     }
 }

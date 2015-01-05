@@ -109,7 +109,7 @@ namespace SKBKontur.Treller.TestTreller
 
         private static void Authorize(ITaskManagerClient taskManagerClient)
         {
-            taskManagerClient.GetBoards(new[] { "4f4e2e4a0141dade72f808ef" });
+            taskManagerClient.GetBoardsAsync(new[] { "4f4e2e4a0141dade72f808ef" });
             Console.WriteLine("Authorization complete");
         }
 
