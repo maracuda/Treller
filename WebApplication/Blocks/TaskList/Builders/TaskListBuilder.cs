@@ -65,37 +65,37 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         [BlockModel(ContextKeys.TasksKey)]
         private BoardCard[] BuildCards([BlockModelParameter("boardIds")] string[] boardIds)
         {
-            return taskCacher.GetCached(boardIds, taskManagerClient.GetBoardCards, TaskCacherStoredTypes.BoardCards);
+            return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardCards);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         private ILookup<string, BoardList> BuildBoardLists([BlockModelParameter("boardIds")] string[] boardIds)
         {
-            return taskCacher.GetCached(boardIds, taskManagerClient.GetBoardLists, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);
+            return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         private Dictionary<string, User> BuildUsers([BlockModelParameter("boardIds")] string[] boardIds)
         {
-            return taskCacher.GetCached(boardIds, taskManagerClient.GetBoardUsers, TaskCacherStoredTypes.BoardUsers).ToDictionary(x => x.Id);
+            return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardUsersAsync(ids).Result, TaskCacherStoredTypes.BoardUsers).ToDictionary(x => x.Id);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         private ILookup<string, CardAction> BuildCardActions([BlockModelParameter("boardIds")] string[] boardIds)
         {
-            return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetActionsForBoardCards(ids), TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
+            return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetActionsForBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         private Board[] BuildBoards([BlockModelParameter("boardIds")] string[] boardIds)
         {
-            return taskCacher.GetCached(boardIds, taskManagerClient.GetBoards, TaskCacherStoredTypes.Boards);
+            return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardsAsync(ids).Result, TaskCacherStoredTypes.Boards);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         private ILookup<string, CardChecklist> BuildCardChecklists([BlockModelParameter("boardIds")] string[] boardIds)
         {
-            return taskCacher.GetCached(boardIds, taskManagerClient.GetBoardChecklists, TaskCacherStoredTypes.BoardChecklists).ToLookup(x => x.CardId);
+            return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardChecklistsAsync(ids).Result, TaskCacherStoredTypes.BoardChecklists).ToLookup(x => x.CardId);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
