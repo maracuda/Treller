@@ -8,13 +8,13 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {
     public class BugsBuilder : IBugsBuilder
     {
-        private readonly IBugTrackerClient bugTrackerClient;
+        // TODO: to early, need client integration :(
+//        private readonly IBugTrackerClient bugTrackerClient;
         private readonly string issueStartUrl;
         private readonly string sprintStartUrl;
 
         public BugsBuilder(IBugTrackerClient bugTrackerClient)
         {
-            this.bugTrackerClient = bugTrackerClient;
             issueStartUrl = bugTrackerClient.GetIssueUrl();
             sprintStartUrl = bugTrackerClient.GetSprintUrl();
         }

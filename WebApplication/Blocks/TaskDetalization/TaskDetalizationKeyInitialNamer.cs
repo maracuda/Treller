@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
+using SKBKontur.BlocksMapping.Abstrations;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization
 {

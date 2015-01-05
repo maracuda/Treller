@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
-using SKBKontur.Billy.Core.BlocksMapping.Mappings;
+using SKBKontur.BlocksMapping.Abstrations;
+using SKBKontur.BlocksMapping.BlockExtenssions;
+using SKBKontur.BlocksMapping.Mappings;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.ViewModels;
-using SKBKontur.Billy.Core.BlocksMapping.BlockExtenssions;
 using SKBKontur.Treller.WebApplication.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization

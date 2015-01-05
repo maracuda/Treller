@@ -1,5 +1,5 @@
 using System;
-using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
+using SKBKontur.BlocksMapping.Abstrations;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 
 namespace SKBKontur.Treller.WebApplication.Abstractions

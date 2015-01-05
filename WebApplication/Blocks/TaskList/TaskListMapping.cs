@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
-using SKBKontur.Billy.Core.BlocksMapping.Mappings;
+using SKBKontur.BlocksMapping.Abstrations;
+using SKBKontur.BlocksMapping.Mappings;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;

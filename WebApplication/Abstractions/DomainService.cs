@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using SKBKontur.Billy.Core.BlocksMapping.Abstrations;
+using SKBKontur.BlocksMapping.Abstrations;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks;
 

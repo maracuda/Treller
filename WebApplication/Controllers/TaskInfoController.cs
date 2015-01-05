@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using SKBKontur.Billy.Core.BlocksMapping.Blocks;
+using SKBKontur.BlocksMapping.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts;
