@@ -20,12 +20,13 @@ namespace SKBKontur.Treller.WebApplication
 
             serviceContainer.RegisterControllers(assemblyService.GetLoadedAssemblies().ToArray());
             serviceContainer.EnableMvc();
-
+            
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            ReactConfig.Configure();
 
             BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);

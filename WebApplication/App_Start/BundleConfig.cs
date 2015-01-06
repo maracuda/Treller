@@ -1,6 +1,7 @@
 ﻿using System.Web.Optimization;
+using System.Web.Optimization.React;
 
-namespace SKBKontur.Treller.WebApplication.App_Start
+namespace SKBKontur.Treller.WebApplication
 {
     public static class BundleConfig
     {
@@ -23,10 +24,17 @@ namespace SKBKontur.Treller.WebApplication.App_Start
             bundles.Add(new ScriptBundle("~/bundles/js/tasklist")
                 .IncludeDirectory("~/Scripts/TaskList", "*.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/react")
+                .Include("~/Scripts/react/es5-shim.js")
+                .Include("~/Scripts/react/react-with-addons-{version}.js")
+                .Include("~/Scripts/react/JSXTransformer-{version}.js"));
+
+            bundles.Add(new JsxBundle("~/bunsles/jsx/tasklist")
+                .IncludeDirectory("~/Content/Scripts/TaskList", "*.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include("~/Scripts/modernizr-*"));
             
             bundles.Add(
                 new StyleBundle("~/bundles/layout")
@@ -44,6 +52,7 @@ namespace SKBKontur.Treller.WebApplication.App_Start
                 .IncludeDirectory("~/Content/TaskList", "*.css")
                 .IncludeDirectory("~/Content/TaskInfo", "*.css"));
 
+            //todo: нам это нужно?
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
                         "~/Content/themes/base/jquery.ui.resizable.css",
