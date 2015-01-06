@@ -14,7 +14,7 @@ namespace SKBKontur.Treller.WebApplication.Extensions
                 return string.Empty;
             }
 
-            return card.Description.Substring(branchIndex, card.Description.Length > 200 ? 200 : card.Description.Length)
+            return card.Description.Substring(branchIndex, card.Description.Length)
                                    .Split(new[] {' ', '\r', '\n', ':'}, StringSplitOptions.RemoveEmptyEntries)
                                    .Skip(1)
                                    .FirstOrDefault(x => x.Length > 1);
