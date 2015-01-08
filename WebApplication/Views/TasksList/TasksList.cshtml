@@ -1,5 +1,4 @@
-﻿@using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks
-@model SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks.BaseCardListBlock[]
+﻿@model SKBKontur.Treller.WebApplication.Models.TaskList.TaskListViewModel
 
 @{
     ViewBag.Title = "Информация по задачам в трелло";
@@ -13,13 +12,16 @@
 
 @section LayoutHeader
 {
-    @Html.Partial("Partial/BaseBlocks", Model.Where(m => !(m is CardListBlock)).ToArray())
-    
+    @Html.Partial("Partial/BaseBlocks", Model.HeaderBlocks)
 }
 
-@Html.Partial("Partial/BaseBlocks", Model.Where(m => m is CardListBlock).ToArray())
+@Html.React("TaskListComponent", new { data = Model.TaskList })
 
 @section FooterScripts
 {
-    @Scripts.Render("~/bundles/js/tasklist")
+    @Scripts.Render(
+        "~/bundles/js/react",
+        "~/bunsles/jsx/tasklist")
+
+    @Html.ReactInitJavaScript()
 }

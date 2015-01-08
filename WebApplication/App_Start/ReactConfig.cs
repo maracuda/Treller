@@ -19,7 +19,7 @@ namespace SKBKontur.Treller.WebApplication
 			// your components as well as all of their dependencies.
 			// See http://reactjs.net/ for more information. Example:
             ReactSiteConfiguration.Configuration
-                .AddScript("~/Content/Scripts/TaskList/TaskListComponent.js");
+                .AddScript("~/Content/Scripts/TaskList/TaskListComponent.jsx");
 		}
 	}
 }

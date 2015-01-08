@@ -5,26 +5,26 @@
 {
     <div class="task-block-group">
         <div class="task-block-group-header">
-            <h3 class="task-block-group-title">@stateCards.Key.GetEnumDescription()</h3>
+            <h3 class="task-block-group-title">@stateCards.State.GetEnumDescription()</h3>
 
             <div class="task-block-group-legend">
                 <span class="parrots-info-action"  title="Количество">
-                    @stateCards.Value.TotalCardsCount
+                    @stateCards.TotalCardsCount
                     <span class="fa fa-tasks text-success"></span>
                 </span>
         
-                @if (stateCards.Value.NewCardsCount > 0)
+                @if (stateCards.NewCardsCount > 0)
                 {
                     <span class="parrots-info-action"  title="Новые карточки за сегодня">
-                        @stateCards.Value.NewCardsCount
+                        @stateCards.NewCardsCount
                         <span class="fa fa-lightbulb-o text-success"></span>
                     </span>
                 }
             
-                @if (stateCards.Value.FinishingCardsCount > 0)
+                @if (stateCards.FinishingCardsCount > 0)
                 {
                     <span class="parrots-info-action"  title="Близки к завершению">
-                        @stateCards.Value.FinishingCardsCount
+                        @stateCards.FinishingCardsCount
                         <span class="fa fa-check-square-o text-success"></span>
                     </span>
                 }
@@ -32,7 +32,7 @@
         </div>
 
         <div class="task-block-group-body">
-            @Html.DisplayFor(x => stateCards.Value.Cards)
+            @Html.DisplayFor(x => stateCards.Cards)
         </div>
     </div>
 }

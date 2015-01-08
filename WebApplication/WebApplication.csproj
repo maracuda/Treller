@@ -240,10 +240,12 @@
     <Compile Include="Controllers\TaskInfoController.cs" />
     <Compile Include="Controllers\TasksListController.cs" />
     <Compile Include="Extensions\EntityExtenssions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\TaskList\TaskListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Settings\BoardSettings.cs" />
     <Compile Include="Services\Settings\ISettingService.cs" />
@@ -263,7 +265,7 @@
     <Content Include="Content\Colorbox\images\loading.gif" />
     <Content Include="Content\Layout\Layout.css" />
     <Content Include="Content\normalize.css" />
-    <Content Include="Content\Scripts\TaskList\TaskListComponent.js" />
+    <Content Include="Content\Scripts\TaskList\TaskListComponent.jsx" />
     <Content Include="Content\Shared\BaseCardLabel.css" />
     <Content Include="Content\Shared\ParrotsInfo.css" />
     <Content Include="Content\Shared\UserAvatar.css" />
@@ -419,7 +421,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blocks\Users\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

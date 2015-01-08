@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using SKBKontur.BlocksMapping.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using System.Linq;
+using SKBKontur.Treller.WebApplication.Extensions;
+using SKBKontur.Treller.WebApplication.Models.TaskList;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
@@ -21,10 +25,19 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var cardListEnterModel = new CardListEnterModel { BoardIds = new string[0] };
-            var blocks = (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel)).Cast<BaseCardListBlock>().ToArray();
+            BaseCardListBlock[] bodyBlocks;
+            BaseCardListBlock[] headerBlocks;
 
-            return View("TasksList", blocks);
+            var cardListEnterModel = new CardListEnterModel { BoardIds = new string[0] };
+            (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel))
+                .Cast<BaseCardListBlock>()
+                .Split(block => block is CardListBlock, out bodyBlocks, out headerBlocks);
+            
+            return View("TasksList", new TaskListViewModel
+            {
+                HeaderBlocks = headerBlocks,
+                TaskList = bodyBlocks.FirstOrDefault()
+            });
         }
     }
 }
