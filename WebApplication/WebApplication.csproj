@@ -241,6 +241,7 @@
     <Compile Include="Controllers\TasksListController.cs" />
     <Compile Include="Extensions\EntityExtenssions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\ReactConfigurationExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -265,6 +266,16 @@
     <Content Include="Content\Colorbox\images\loading.gif" />
     <Content Include="Content\Layout\Layout.css" />
     <Content Include="Content\normalize.css" />
+    <Content Include="Content\Scripts\Shared\StringExtensions.js" />
+    <Content Include="Content\Scripts\TaskList\AvatarItem.jsx" />
+    <Content Include="Content\Scripts\TaskList\CardBranchName.jsx" />
+    <Content Include="Content\Scripts\TaskList\TaskGroupCounter.jsx" />
+    <Content Include="Content\Scripts\TaskList\TaskListCardAvatarList.jsx" />
+    <Content Include="Content\Scripts\TaskList\TaskListCardComponent.jsx" />
+    <Content Include="Content\Scripts\TaskList\TaskGroupComponent.jsx" />
+    <Content Include="Content\Scripts\TaskList\TaskListCardLabel.jsx" />
+    <Content Include="Content\Scripts\TaskList\TaskListCardParrots.jsx" />
+    <Content Include="Content\Scripts\TaskList\TaskListCardProggressInfo.jsx" />
     <Content Include="Content\Scripts\TaskList\TaskListComponent.jsx" />
     <Content Include="Content\Shared\BaseCardLabel.css" />
     <Content Include="Content\Shared\ParrotsInfo.css" />
@@ -378,7 +389,6 @@
     <Content Include="Scripts\react\react-0.12.2.min.js" />
     <Content Include="Scripts\react\react-with-addons-0.12.2.js" />
     <Content Include="Scripts\react\react-with-addons-0.12.2.min.js" />
-    <Content Include="Scripts\TaskList\TaskList.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

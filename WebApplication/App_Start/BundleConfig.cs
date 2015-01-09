@@ -21,13 +21,11 @@ namespace SKBKontur.Treller.WebApplication
                 .Include("~/Scripts/bootstrap.js")
                 .Include("~/Scripts/Colorbox/jquery.colorbox.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/js/tasklist")
-                .IncludeDirectory("~/Scripts/TaskList", "*.js"));
-
             bundles.Add(new ScriptBundle("~/bundles/js/react")
                 .Include("~/Scripts/react/es5-shim.js")
                 .Include("~/Scripts/react/react-with-addons-{version}.js")
-                .Include("~/Scripts/react/JSXTransformer-{version}.js"));
+                .Include("~/Scripts/react/JSXTransformer-{version}.js")
+                .IncludeDirectory("~/Content/Scripts/Shared", "*.js"));
 
             bundles.Add(new JsxBundle("~/bunsles/jsx/tasklist")
                 .IncludeDirectory("~/Content/Scripts/TaskList", "*.jsx"));

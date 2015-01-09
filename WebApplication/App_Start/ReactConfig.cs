@@ -1,4 +1,5 @@
 using React;
+using SKBKontur.Treller.WebApplication.Extensions;
 
 namespace SKBKontur.Treller.WebApplication
 {
@@ -18,8 +19,9 @@ namespace SKBKontur.Treller.WebApplication
 			// add all the necessary JavaScript files here. This includes 
 			// your components as well as all of their dependencies.
 			// See http://reactjs.net/ for more information. Example:
-            ReactSiteConfiguration.Configuration
-                .AddScript("~/Content/Scripts/TaskList/TaskListComponent.jsx");
+
+            ReactSiteConfiguration.Configuration.AddScripts("~/Content/Scripts/Shared", "*.js");
+            ReactSiteConfiguration.Configuration.AddScripts("~/Content/Scripts", "*.jsx", true);
 		}
 	}
 }
