@@ -37,5 +37,19 @@ namespace SKBKontur.Treller.WebApplication.Controllers
                 TaskList = bodyBlocks.FirstOrDefault()
             });
         }
+
+        [HttpGet]
+        public async Task<ActionResult> TaskList()
+        {
+            BaseCardListBlock[] bodyBlocks;
+            BaseCardListBlock[] headerBlocks;
+
+            var cardListEnterModel = new CardListEnterModel { BoardIds = new string[0] };
+            (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel))
+                .Cast<BaseCardListBlock>()
+                .Split(block => block is CardListBlock, out bodyBlocks, out headerBlocks);
+
+            return Json(bodyBlocks.FirstOrDefault(), JsonRequestBehavior.AllowGet);
+        }
     }
 }

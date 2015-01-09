@@ -144,7 +144,24 @@ var TaskGroupComponent = React.createClass({
 });
 
 var TaskListComponent = React.createClass({
-    render: function () {
-        return <div>{ this.props.data.OverallStateCards.map(group => <TaskGroupComponent {...group} key={group.State} />) }</div>;
+    getInitialState(){
+        return {
+            taskList: this.props.data
+        };
+    },
+    componentWillMount(){
+        if (typeof window !== "undefined") {
+            setInterval(this.loadFromServer, this.props.pollInterval);  
+        };        
+    },
+    loadFromServer(){
+        var _this = this;
+        
+        $.get(this.props.updateUrl).done(function(data){
+            _this.setState({ taskList: data });
+        });
+    },
+    render() {
+        return <div>{ this.state.taskList && this.state.taskList.OverallStateCards.map(group => <TaskGroupComponent {...group} key={group.State} />) }</div>;
     }
 });

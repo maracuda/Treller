@@ -15,7 +15,12 @@
     @Html.Partial("Partial/BaseBlocks", Model.HeaderBlocks)
 }
 
-@Html.React("TaskListComponent", new { data = Model.TaskList })
+@Html.React("TaskListComponent", new
+{
+    data = Model.TaskList,
+    updateUrl = Url.Action("TaskList", "TasksList"),
+    pollInterval = 60000
+})
 
 @section FooterScripts
 {
