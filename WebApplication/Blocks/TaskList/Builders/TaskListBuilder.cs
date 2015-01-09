@@ -6,7 +6,6 @@ using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
-using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using SKBKontur.Treller.WebApplication.Services.Settings;
@@ -127,8 +126,10 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                                                        cardChecklists[card.Id].ToArray(),
                                                        boardSettings[card.BoardId],
                                                        boardLists[card.BoardId].ToArray());
+            
             var branchName = card.GetCardBranchName();
             var isInRc = !string.IsNullOrEmpty(branchName) && rcBranches.Contains(branchName);
+
             return new CardListItemViewModel
                        {
                            CardId = card.Id,
