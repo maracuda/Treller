@@ -10,9 +10,9 @@ namespace SKBKontur.Treller.WebApplication
 			// See http://reactjs.net/guides/es6.html for more information.
             ReactSiteConfiguration.Configuration.SetUseHarmony(true);
 
-			// Uncomment the below line if you are using Flow
+            // Uncomment the below line if you are using Flow
 			// See http://reactjs.net/guides/flow.html for more information.
-            ReactSiteConfiguration.Configuration.SetStripTypes(true);
+            // ReactSiteConfiguration.Configuration.SetStripTypes(true);
 
 			// If you want to use server-side rendering of React components, 
 			// add all the necessary JavaScript files here. This includes 
