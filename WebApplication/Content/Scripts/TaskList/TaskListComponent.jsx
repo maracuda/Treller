@@ -117,10 +117,13 @@ var TaskListCardComponent = React.createClass({
     }
 });
 
-var TaskGroupComponent = React.createClass({
+var TaskGroupComponent = React.createClass({    
+    toggleList(evt){
+        $(evt.target).closest(".task-block-group").find(".task-block-group-body").slideToggle();
+    },
     render: function(){
         return <div className="task-block-group">
-            <div className="task-block-group-header">
+            <div className="task-block-group-header" onClick={this.toggleList}>
                 <h3 className="task-block-group-title">{ this.props.Title }</h3>
 
                 <div className="task-block-group-legend">
@@ -156,7 +159,7 @@ var TaskListComponent = React.createClass({
     },
     loadFromServer(){
         var _this = this;
-        
+
         $.get(this.props.updateUrl).done(function(data){
             _this.setState({ taskList: data });
         });

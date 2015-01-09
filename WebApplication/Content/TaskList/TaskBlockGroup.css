@@ -4,6 +4,7 @@
 
 .task-block-group-header {
     cursor: pointer;
+    display: inline-block;
 }
 
 .task-block-group-title {
@@ -13,7 +14,7 @@
 
 .task-block-group-body {
     margin: 30px 0 60px;
-    /*display: none;*/
+    display: none;
 }
 
 /* todo: если первая група нужна открытой */
