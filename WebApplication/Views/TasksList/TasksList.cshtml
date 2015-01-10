@@ -10,15 +10,11 @@
     @Styles.Render("~/bundles/css/tasklist")
 }
 
-@section LayoutHeader
-{
-    @Html.Partial("Partial/BaseBlocks", Model.HeaderBlocks)
-}
-
 @Html.React("TaskListComponent", new
 {
-    data = Model.TaskList,
-    updateUrl = Url.Action("TaskList", "TasksList"),
+    data = Model,
+    title = ViewBag.Title,
+    updateUrl = Url.Action("Index", "TasksList"),
     pollInterval = 60000
 })
 

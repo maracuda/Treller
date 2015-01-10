@@ -23,33 +23,26 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public async Task<ActionResult> Index()
         {
-            BaseCardListBlock[] bodyBlocks;
-            BaseCardListBlock[] headerBlocks;
+            var taskListViewModel = await CreateTaskListViewModel();
 
-            var cardListEnterModel = new CardListEnterModel { BoardIds = new string[0] };
-            (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel))
-                .Cast<BaseCardListBlock>()
-                .Split(block => block is CardListBlock, out bodyBlocks, out headerBlocks);
-            
-            return View("TasksList", new TaskListViewModel
-            {
-                HeaderBlocks = headerBlocks,
-                TaskList = bodyBlocks.FirstOrDefault()
-            });
+            if (Request.IsAjaxRequest())
+                return Json(taskListViewModel, JsonRequestBehavior.AllowGet);
+
+            return View("TasksList", taskListViewModel);
         }
 
-        [HttpGet]
-        public async Task<ActionResult> TaskList()
+        private async Task<TaskListViewModel> CreateTaskListViewModel()
         {
-            BaseCardListBlock[] bodyBlocks;
-            BaseCardListBlock[] headerBlocks;
-
-            var cardListEnterModel = new CardListEnterModel { BoardIds = new string[0] };
-            (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel))
+            var cardListEnterModel = new CardListEnterModel {BoardIds = new string[0]};
+            var blocks = (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel))
                 .Cast<BaseCardListBlock>()
-                .Split(block => block is CardListBlock, out bodyBlocks, out headerBlocks);
+                .ToArray();
 
-            return Json(bodyBlocks.FirstOrDefault(), JsonRequestBehavior.AllowGet);
+            return new TaskListViewModel
+            {
+                BoardsBlock = blocks.FirstOrDefault(x => x is BoardsBlock),
+                TaskList = blocks.FirstOrDefault(x => x is CardListBlock)
+            };
         }
     }
 }

@@ -266,10 +266,12 @@
     <Content Include="Content\Colorbox\images\loading.gif" />
     <Content Include="Content\Layout\Layout.css" />
     <Content Include="Content\normalize.css" />
+    <Content Include="Content\Scripts\Layout\SiteHeader.jsx" />
     <Content Include="Content\Scripts\Shared\StringExtensions.js" />
     <Content Include="Content\Scripts\TaskList\AvatarItem.jsx" />
     <Content Include="Content\Scripts\TaskList\CardBranchName.jsx" />
     <Content Include="Content\Scripts\TaskList\TaskGroupCounter.jsx" />
+    <Content Include="Content\Scripts\TaskList\TaskListBoardsBlock.jsx" />
     <Content Include="Content\Scripts\TaskList\TaskListCardAvatarList.jsx" />
     <Content Include="Content\Scripts\TaskList\TaskListCardComponent.jsx" />
     <Content Include="Content\Scripts\TaskList\TaskGroupComponent.jsx" />
@@ -285,6 +287,7 @@
     <Content Include="Content\TaskInfo\TaskInfoLabelList.css" />
     <Content Include="Content\TaskInfo\TaskInfoMembers.css" />
     <Content Include="Content\TaskInfo\TaskInfoState.css" />
+    <Content Include="Content\TaskList\BoardsBlock.css" />
     <Content Include="Content\TaskList\CardProgress.css" />
     <Content Include="Content\TaskList\TaskBlock.css" />
     <Content Include="Content\TaskList\TaskBlockGroup.css" />

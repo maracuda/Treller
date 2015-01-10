@@ -25,6 +25,7 @@ namespace SKBKontur.Treller.WebApplication
                 .IncludeDirectory("~/Content/Scripts/Shared", "*.js"));
 
             bundles.Add(new JsxBundle("~/bunsles/jsx/tasklist")
+                .IncludeDirectory("~/Content/Scripts/Layout", "*.jsx")
                 .IncludeDirectory("~/Content/Scripts/TaskList", "*.jsx"));
 
             

@@ -1,7 +1,8 @@
 ﻿var TaskListComponent = React.createClass({
     getInitialState(){
         return {
-            taskList: this.props.data
+            taskList: this.props.data.TaskList,
+            boardsBlock: this.props.data.BoardsBlock
         };
     },
     componentWillMount(){
@@ -11,10 +12,20 @@
     },
     loadFromServer(){
         $.get(this.props.updateUrl).done(function(data){
-            this.setState({ taskList: data });
+            this.setState({
+                taskList: data.TaskList,
+                boardsBlock: data.BoardsBlock
+            });
         }.bind(this));
     },
     render() {
-        return <div>{ this.state.taskList && this.state.taskList.OverallStateCards.map(group => <TaskGroupComponent {...group} key={group.State} />) }</div>;
+        var taskListGroups = this.state.taskList ? this.state.taskList.OverallStateCards.map(group => <TaskGroupComponent {...group} key={group.State} />) : null;
+
+        return <div>
+            <SiteHeader title={this.props.title}>
+                <TaskListBoardsBlock {...this.state.boardsBlock} />
+            </SiteHeader>
+            {taskListGroups}
+        </div>;
     }
 });

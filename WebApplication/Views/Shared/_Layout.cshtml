@@ -12,11 +12,6 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
     <body class="layout-body">
-        <header class="layout-header">
-            <h1 class="layout-title">@ViewBag.Title</h1>
-            @RenderSection("LayoutHeader", false)
-        </header>
-
         @RenderBody()
         
         <!--[if lte IE 8]>
