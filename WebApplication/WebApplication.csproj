@@ -359,15 +359,10 @@
     <Content Include="Views\TaskInfo\DisplayTemplates\CardTestingPartBlock.cshtml" />
     <Content Include="Views\TaskInfo\TaskInfo.cshtml" />
     <Content Include="Views\TasksList\TasksList.cshtml" />
-    <Content Include="Views\TasksList\DisplayTemplates\BoardsBlock.cshtml" />
-    <Content Include="Views\TasksList\DisplayTemplates\CardListBlock.cshtml" />
     <Content Include="Views\Shared\Partial\BaseBlocks.cshtml" />
     <Content Include="Views\Shared\Partial\BaseBlock.cshtml" />
-    <Content Include="Views\TasksList\DisplayTemplates\CardListItemViewModel.cshtml" />
-    <Content Include="Views\TasksList\Partial\CardProgressInfoViewModel.cshtml" />
     <Content Include="Views\Shared\Partial\Parrots.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\UserAvatarViewModel.cshtml" />
-    <Content Include="Views\TasksList\DisplayTemplates\CardLabel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blocks\Users\" />
