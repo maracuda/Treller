@@ -28,9 +28,9 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
             DateTime? beginDate = null;
             DateTime? endDate = null;
             var cardChecklists = new HashSet<string>();
-            foreach (var action in actions)
+            foreach (var action in actions.OrderBy(x => x.Date))
             {
-                if (action.ToListId == card.BoardListId)
+                if (!beginDate.HasValue && (action.ToListId == card.BoardListId || action.ListId == card.BoardListId))
                 {
                     beginDate = action.Date;
                 }

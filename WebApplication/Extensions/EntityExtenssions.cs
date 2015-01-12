@@ -14,10 +14,14 @@ namespace SKBKontur.Treller.WebApplication.Extensions
                 return string.Empty;
             }
 
-            return card.Description.Substring(branchIndex, card.Description.Length)
-                                   .Split(new[] {' ', '\r', '\n', ':'}, StringSplitOptions.RemoveEmptyEntries)
-                                   .Skip(1)
-                                   .FirstOrDefault(x => x.Length > 1);
+            var restLength = card.Description.Length - branchIndex;
+            var array = card.Description.Substring(branchIndex, restLength > 200 ? 200 : restLength).Split(new[] {' ', '\r', '\n', ':'}, StringSplitOptions.RemoveEmptyEntries);
+            if (array.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            return array.Skip(1).FirstOrDefault(x => x.Length > 1);
         } 
     }
 }
