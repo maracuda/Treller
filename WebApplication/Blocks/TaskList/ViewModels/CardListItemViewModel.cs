@@ -7,6 +7,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels
     {
         public string CardId { get; set; }
         public string CardName { get; set; }
+        public string AnalyticLink { get; set; }
         public CardLabel[] Labels { get; set; }
         public UserAvatarViewModel[] Avatars { get; set; }
         public CardStageInfoViewModel StageInfo { get; set; }

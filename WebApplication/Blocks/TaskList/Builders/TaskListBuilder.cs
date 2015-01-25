@@ -22,13 +22,17 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         private readonly ICardStageInfoBuilder cardStageInfoBuilder;
         private readonly ITaskCacher taskCacher;
         private readonly IReleaseCandidateService releaseCandidateService;
+        private readonly IBugTrackerClient bugTrackerClient;
+        private readonly IWikiClient wikiClient;
 
         public TaskListBuilder(ITaskManagerClient taskManagerClient,
                                ISettingService settingService,
                                IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
                                ICardStageInfoBuilder cardStageInfoBuilder,
                                ITaskCacher taskCacher,
-                               IReleaseCandidateService releaseCandidateService)
+                               IReleaseCandidateService releaseCandidateService,
+                               IBugTrackerClient bugTrackerClient,
+                               IWikiClient wikiClient)
         {
             this.taskManagerClient = taskManagerClient;
             this.settingService = settingService;
@@ -36,6 +40,8 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
             this.cardStageInfoBuilder = cardStageInfoBuilder;
             this.taskCacher = taskCacher;
             this.releaseCandidateService = releaseCandidateService;
+            this.bugTrackerClient = bugTrackerClient;
+            this.wikiClient = wikiClient;
         }
 
         [BlockModel(ContextKeys.TasksKey)]
@@ -126,10 +132,13 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                                                        boardLists[card.BoardId].ToArray());
             var branchName = card.GetCardBranchName();
             var isInRc = !string.IsNullOrEmpty(branchName) && rcBranches.Contains(branchName);
+            var analyticLink = card.GetAnalyticLink(wikiClient.GetBaseUrl(), bugTrackerClient.GetBaseUrl());
+
             return new CardListItemViewModel
                        {
                            CardId = card.Id,
                            CardName = card.Name,
+                           AnalyticLink = analyticLink,
                            Labels = card.Labels.OrderBy(x => x.Color).ToArray(),
                            Avatars = card.UserIds.Select(id => users[id]).Select(userAvatarViewModelBuilder.Build).ToArray(),
                            CardUrl = card.Url,

@@ -72,6 +72,11 @@ namespace SKBKontur.TaskManagerClient.Youtrack
             return BuildUrl(BugsSprintStartsString);
         }
 
+        public string GetBaseUrl()
+        {
+            return YouTrackBaseUrl;
+        }
+
         private static Cookie[] GetAuthCookies(YouTrackCredential credential, IHttpRequester httpRequester)
         {
             var credentials = new Dictionary<string, string>

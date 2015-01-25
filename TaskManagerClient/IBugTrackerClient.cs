@@ -8,5 +8,6 @@ namespace SKBKontur.TaskManagerClient
         Issue[] GetSprintInfo(string sprintName);
         string GetIssueUrl();
         string GetSprintUrl();
+        string GetBaseUrl();
     }
 }

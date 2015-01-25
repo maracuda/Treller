@@ -6,6 +6,10 @@
     
     <header class="task-block-header">
         <a href="@Model.CardUrl" class="fa fa-trello" title="посмотреть в Trello" target="_blank"></a>
+        @if (!string.IsNullOrEmpty(Model.AnalyticLink))
+        {
+            <a href="@Model.AnalyticLink" class="fa fa-info-circle text-success"></a>
+        }
 
         @Html.ActionLink(Model.CardName, "TaskInfo", "TaskInfo", new RouteValueDictionary{{"cardId", Model.CardId}}, new Dictionary<string, object>
         {
