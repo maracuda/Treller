@@ -42,6 +42,7 @@
     <Compile Include="Abstractions\IGitLabCredentialService.cs" />
     <Compile Include="Abstractions\IHttpRequester.cs" />
     <Compile Include="Abstractions\ITrelloUserCredentialService.cs" />
+    <Compile Include="Abstractions\IYouTrackCredentialService.cs" />
     <Compile Include="BusinessObjects\ActionType.cs" />
     <Compile Include="BusinessObjects\Board.cs" />
     <Compile Include="BusinessObjects\CardAction.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="BusinessObjects\CardLabel.cs" />
     <Compile Include="BusinessObjects\CardLabelColor.cs" />
     <Compile Include="BusinessObjects\ChecklistItem.cs" />
+    <Compile Include="BusinessObjects\TrelloCredential.cs" />
     <Compile Include="BusinessObjects\User.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="GitLab\BusinessObjects\GitLabCredential.cs" />
@@ -61,7 +63,6 @@
     <Compile Include="IRepositoryClient.cs" />
     <Compile Include="ITaskManagerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrelloCredential.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\Action.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\ActionAttachment.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\ActionBoard.cs" />
@@ -82,10 +83,13 @@
     <Compile Include="Trello\BusinessObjects\Cards\CheckItem.cs" />
     <Compile Include="Trello\BusinessObjects\Cards\Checklist.cs" />
     <Compile Include="Trello\TrelloClient.cs" />
+    <Compile Include="Youtrack\BusinessObjects\Issue.cs" />
+    <Compile Include="Youtrack\BusinessObjects\YouTrackComment.cs" />
+    <Compile Include="Youtrack\BusinessObjects\YouTrackCredential.cs" />
+    <Compile Include="Youtrack\BusinessObjects\YouTrackIssue.cs" />
+    <Compile Include="Youtrack\BusinessObjects\YouTrackIssueField.cs" />
+    <Compile Include="Youtrack\BusinessObjects\YouTrackIssues.cs" />
     <Compile Include="Youtrack\YouTrackClient.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Youtrack\BusinessObjects\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

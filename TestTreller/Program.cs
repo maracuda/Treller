@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SKBKontur.HttpInfrastructure.Clients;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.Abstractions;
+using SKBKontur.TaskManagerClient.BusinessObjects;
 using TrelloNet;
 using JsonSerializer = RestSharp.Serializers.JsonSerializer;
 
@@ -21,9 +23,23 @@ namespace SKBKontur.Treller.TestTreller
             this.httpClient = httpClient;
         }
 
-        public Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null)
+        public Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
-            return httpClient.SendGetAsync<T>(url, queryParameters);
+            CookieContainer cookieContainer = null;
+            if (cookies != null)
+            {
+                cookieContainer = new CookieContainer();
+                foreach (var cookie in cookies)
+                {
+                    cookieContainer.Add(cookie);
+                }
+            }
+            return httpClient.SendGetAsync<T>(url, queryParameters, cookieContainer);
+        }
+
+        public Task<IEnumerable<Cookie>> SendPostEncodedAsync(string url, Dictionary<string, string> formUrlEncodedContent = null)
+        {
+            throw new NotImplementedException();
         }
     }
 
