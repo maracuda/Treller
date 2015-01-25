@@ -34,10 +34,10 @@
             }
             @Html.Partial("Partial/Parrots", Model.StageInfo.StageParrots)
             
-            @if (Model.StageInfo.Bugs.OverallBugsCount > 0)
+            @if (Model.Bugs != null && Model.Bugs.OverallBugsCount > 0)
             {
                 <span class="parrots-info-action"  title="Незакрытых багов">
-                    (@Model.StageInfo.Bugs.FixedBugsCount/@Model.StageInfo.Bugs.OverallBugsCount)
+                    (@Model.Bugs.FixedBugsCount/@Model.Bugs.OverallBugsCount)
                     <span class="fa fa-bug text-success"></span>
                 </span>
             }

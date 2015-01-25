@@ -12,12 +12,14 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
         private readonly IBugTrackerClient bugTrackerClient;
         private readonly string issueStartUrl;
         private readonly string sprintStartUrl;
+        private readonly string sprintUrlEndWord;
 
         public BugsBuilder(IBugTrackerClient bugTrackerClient)
         {
             this.bugTrackerClient = bugTrackerClient;
             issueStartUrl = bugTrackerClient.GetIssueUrl();
             sprintStartUrl = bugTrackerClient.GetSprintUrl();
+            sprintUrlEndWord = bugTrackerClient.GetStrintUrlEndWord();
         }
 
         public BugsInfoViewModel Build(IEnumerable<CardChecklist> checklists)
@@ -37,17 +39,21 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 }
                 if (item.Description.StartsWith(sprintStartUrl, StringComparison.OrdinalIgnoreCase))
                 {
-                    var sprintName = HttpUtility.UrlDecode(HttpUtility.UrlDecode(item.Description.Substring(sprintStartUrl.Length).Split('/', '?').First()));
-
-                    var issues = bugTrackerClient.GetSprintInfo(sprintName);
-                    foreach (var issue in issues)
+                    var sprintIndex = item.Description.IndexOf(sprintUrlEndWord, StringComparison.OrdinalIgnoreCase);
+                    if (sprintIndex > 0)
                     {
-                        bugs[issue.Id] = new TaskItemBug
-                                             {
-                                                 Url = issueStartUrl + issue.Id,
-                                                 IsFixed = issue.Resolved.HasValue,
-                                                 Issue = issue.Id
-                                             };
+                        var sprintName = HttpUtility.UrlDecode(HttpUtility.UrlDecode(item.Description.Substring(sprintIndex + sprintUrlEndWord.Length).Split('/', '?').First()));
+
+                        var issues = bugTrackerClient.GetSprintInfo(sprintName);
+                        foreach (var issue in issues)
+                        {
+                            bugs[issue.Id] = new TaskItemBug
+                            {
+                                Url = issueStartUrl + issue.Id,
+                                IsFixed = issue.Resolved.HasValue,
+                                Issue = issue.Id
+                            };
+                        }
                     }
                 }
             }

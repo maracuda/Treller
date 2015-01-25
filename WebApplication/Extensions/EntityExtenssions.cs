@@ -18,7 +18,7 @@ namespace SKBKontur.Treller.WebApplication.Extensions
                    ?? string.Empty).TrimEnd('.');
         }
 
-        private static string SearchInfo(string text, string searchText, char[] additionalSplitCharacters = null, int skip = 0)
+        private static string SearchInfo(this string text, string searchText, char[] additionalSplitCharacters = null, int skip = 0)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(searchText))
             {

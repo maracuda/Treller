@@ -1,4 +1,5 @@
 ﻿using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.Treller.WebApplication.Blocks.Builders;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.ViewModels;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels
@@ -11,6 +12,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels
         public CardLabel[] Labels { get; set; }
         public UserAvatarViewModel[] Avatars { get; set; }
         public CardStageInfoViewModel StageInfo { get; set; }
+        public BugsInfoViewModel Bugs { get; set; }
         public string CardUrl { get; set; }
         public bool IsNewCard { get; set; }
         public string BranchName { get; set; }

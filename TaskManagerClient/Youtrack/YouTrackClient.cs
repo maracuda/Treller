@@ -13,7 +13,7 @@ namespace SKBKontur.TaskManagerClient.Youtrack
         private const string YouTrackBaseUrl = "https://yt.skbkontur.ru";
         private const string BugsIssueStartsString = "issue";
         private const string BugsIssueRestStartsString = "rest/issue";
-        private const string BugsSprintStartsString = "rest/agile/Billing-169/sprint/";
+        private const string BugsSprintStartsString = "rest/agile/";
         private const string UserLoginString = "rest/user/login";
         private Lazy<IEnumerable<Cookie>> authCookies;
 
@@ -70,6 +70,11 @@ namespace SKBKontur.TaskManagerClient.Youtrack
         public string GetSprintUrl()
         {
             return BuildUrl(BugsSprintStartsString);
+        }
+
+        public string GetStrintUrlEndWord()
+        {
+            return "/sprint/";
         }
 
         public string GetBaseUrl()
