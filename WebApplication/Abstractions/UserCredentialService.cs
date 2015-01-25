@@ -2,13 +2,14 @@ using System;
 using System.IO;
 using System.Web;
 using Newtonsoft.Json;
-using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.Abstractions;
+using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
+using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Abstractions
 {
-    public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService
+    public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService
     {
         private static readonly string LogInFilePath = Path.Combine(HttpRuntime.AppDomainAppPath, "LogIn.json");
         private readonly Lazy<ClientsIntegrationCredentials> credentials;
@@ -27,6 +28,11 @@ namespace SKBKontur.Treller.WebApplication.Abstractions
         public GitLabCredential GetGitLabCredentials()
         {
             return credentials.Value.GitLabClientCredentials;
+        }
+
+        public YouTrackCredential GetYouTrackCredentials()
+        {
+            return credentials.Value.YouTrackCredentials;
         }
     }
 }
