@@ -227,6 +227,7 @@
     <Compile Include="Blocks\TaskDetalization\ViewModels\UserAvatarViewModel.cs" />
     <Compile Include="Blocks\TaskList\Blocks\BaseCardListBlock.cs" />
     <Compile Include="Blocks\TaskList\Blocks\BoardsBlock.cs" />
+    <Compile Include="Blocks\TaskList\Blocks\BugsBlock.cs" />
     <Compile Include="Blocks\TaskList\Blocks\CardListBlock.cs" />
     <Compile Include="Blocks\TaskList\Blocks\CardStateOverallViewModel.cs" />
     <Compile Include="Blocks\TaskList\Builders\TaskListBuilder.cs" />
@@ -416,6 +417,7 @@
     <Content Include="Views\Shared\Partial\Parrots.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\UserAvatarViewModel.cshtml" />
     <Content Include="Views\TasksList\DisplayTemplates\CardLabel.cshtml" />
+    <Content Include="Views\TasksList\DisplayTemplates\BugsBlock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blocks\Users\" />

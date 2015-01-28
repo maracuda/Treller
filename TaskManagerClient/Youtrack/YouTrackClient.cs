@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
+using System.Threading;
 using SKBKontur.TaskManagerClient.Abstractions;
 using System.Linq;
 using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
@@ -56,6 +58,32 @@ namespace SKBKontur.TaskManagerClient.Youtrack
                                            }).ToArray();
         }
 
+        public int GetFilteredCount(string filter)
+        {
+            var parameters = new Dictionary<string, string>
+                                 {
+                                     {"filter", filter}
+                                 };
+            var timer = Stopwatch.StartNew();
+            while (true)
+            {
+                var countResult = httpRequester.SendGetAsync<Count>(BuildUrl(BugsIssueRestStartsString + "/count"), parameters, authCookies.Value).Result;
+                if (countResult.Entity.Value >= 0)
+                {
+                    timer.Stop();
+                    return countResult.Entity.Value;
+                }
+
+                if (timer.ElapsedMilliseconds > 2000)
+                {
+                    timer.Stop();
+                    return -1;
+                }
+
+                Thread.Sleep(500);
+            }
+        }
+        
         public Issue[] GetSprintInfo(string sprintName)
         {
             var sprintFilter = string.Format("Fix versions:{{{0}}}", sprintName);

@@ -133,6 +133,22 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
             return cardChecklists.ToDictionary(x => x.Key, x => bugsBuilder.Build(x));
         }
 
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("battleBugsCount")]
+        private int BuildBattleBugsInfo()
+        {
+            // todo: remove hardcode
+            return bugTrackerClient.GetFiltered("#Billy #Battle State: -Resolved").Length;
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("battleBugsUnassignedCount")]
+        private int BuildBattleBugsUnassignedInfo()
+        {
+            // todo: remove hardcode
+            return bugTrackerClient.GetFiltered("#Billy #Battle #Unassigned State: -Resolved").Length;
+        }
+
         private CardListItemViewModel BuildCard(Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
                                                 Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
                                                 ILookup<string, CardChecklist> cardChecklists, BoardCard card, HashSet<string> rcBranches,
