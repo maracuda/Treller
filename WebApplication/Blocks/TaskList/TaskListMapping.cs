@@ -5,6 +5,7 @@ using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
+using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList
 {
@@ -16,11 +17,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList
                     BlockMapper.Declare<CardListBlock, Dictionary<CardState, CardStateOverallViewModel>>(x => x.OverallStateCards),
                     BlockMapper.Declare<BoardsBlock, Board[]>(x => x.Boards),
                     BlockMapper.Declare<BoardsBlock, SimpleRepoBranch[]>(x => x.BranchesInCandidateRelease),
-                    BlockMapper.Declare<BugsBlock, int>(x => x.BattleBugsUnassignedCount, "battleBugsUnassignedCount"),
-                    BlockMapper.Declare<BugsBlock, int>(x => x.BattleBugsCount, "battleBugsCount"),
-                    BlockMapper.Declare<BugsBlock, int>(x => x.CurrentBillyBugsCount, "currentBillyBugsCount"),
-                    BlockMapper.Declare<BugsBlock, int>(x => x.OverallBillyBugsCount, "overallBillyBugsCount"),
-                    BlockMapper.Declare<BugsBlock, int>(x => x.CurrentCSBugsCount, "currentCSBugsCount")
+                    BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BattleUnassigned, "battleBugsUnassignedCount"),
+                    BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BattleAssigned, "battleBugsCount"),
+                    BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BillyCurrent, "currentBillyBugsCount"),
+                    BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BillyAll, "overallBillyBugsCount"),
+                    BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.CsCurrent, "currentCSBugsCount")
                 };
 
         public IBlockMapper[] SelectAll()

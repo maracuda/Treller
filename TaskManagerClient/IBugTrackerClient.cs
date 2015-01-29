@@ -11,5 +11,6 @@ namespace SKBKontur.TaskManagerClient
         string GetSprintUrl();
         string GetStrintUrlEndWord();
         string GetBaseUrl();
+        string GetBrowseFilterUrl(string filter);
     }
 }

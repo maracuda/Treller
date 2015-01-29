@@ -234,6 +234,7 @@
     <Compile Include="Blocks\TaskDetalization\Blocks\CardNameBlock.cs" />
     <Compile Include="Blocks\TaskList\TaskListMapping.cs" />
     <Compile Include="Blocks\TaskList\TasksListInitialNamer.cs" />
+    <Compile Include="Blocks\TaskList\ViewModels\BugsCountLinkInfoViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardListEnterModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardListItemViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardProgressInfoViewModel.cs" />

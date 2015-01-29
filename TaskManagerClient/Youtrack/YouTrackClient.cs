@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
+using System.Web;
 using SKBKontur.TaskManagerClient.Abstractions;
 using System.Linq;
 using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
@@ -108,6 +109,11 @@ namespace SKBKontur.TaskManagerClient.Youtrack
         public string GetBaseUrl()
         {
             return YouTrackBaseUrl;
+        }
+
+        public string GetBrowseFilterUrl(string filter)
+        {
+            return BuildUrl(string.Format("issues?q={0}", HttpUtility.UrlEncode(filter)));
         }
 
         private static Cookie[] GetAuthCookies(YouTrackCredential credential, IHttpRequester httpRequester)

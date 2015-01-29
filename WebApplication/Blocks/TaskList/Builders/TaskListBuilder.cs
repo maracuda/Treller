@@ -136,37 +136,47 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("battleBugsCount")]
-        private int BuildBattleBugsInfo()
+        private BugsCountLinkInfoViewModel BuildBattleBugsInfo()
         {
-            return bugTrackerClient.GetFiltered("#Billy #Battle State: -Resolved").Length;
+            return BuildCountLink("#Billy #Battle State: -Resolved");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("battleBugsUnassignedCount")]
-        private int BuildBattleBugsUnassignedInfo()
+        private BugsCountLinkInfoViewModel BuildBattleBugsUnassignedInfo()
         {
-            return bugTrackerClient.GetFiltered("#Billy #Battle #Unassigned State: -Resolved").Length;
+            return BuildCountLink("#Billy #Battle #Unassigned State: -Resolved");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("currentBillyBugsCount")]
-        private int GetBillyCurrentBugsCount()
+        private BugsCountLinkInfoViewModel GetBillyCurrentBugsCount()
         {
-            return bugTrackerClient.GetFiltered("#Billy -Resolved Affected versions: -{No Affected versions}").Length;
+            return BuildCountLink("#Billy -Resolved Affected versions: -{No Affected versions}");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("overallBillyBugsCount")]
-        private int GetBillyOverallBugsCount()
+        private BugsCountLinkInfoViewModel GetBillyOverallBugsCount()
         {
-            return bugTrackerClient.GetFiltered("#Billy -Resolved Affected versions: {No Affected versions}").Length;
+            return BuildCountLink("#Billy -Resolved Affected versions: {No Affected versions}");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("currentCSBugsCount")]
-        private int GetCSCurrentBugsCount()
+        private BugsCountLinkInfoViewModel GetCSCurrentBugsCount()
         {
-            return bugTrackerClient.GetFiltered("#CS -Resolved").Length;
+            return BuildCountLink("#CS -Resolved");
+        }
+
+        private BugsCountLinkInfoViewModel BuildCountLink(string filterString)
+        {
+            var count = bugTrackerClient.GetFiltered(filterString).Length;
+            return new BugsCountLinkInfoViewModel
+                       {
+                           Count = count,
+                           Link = bugTrackerClient.GetBrowseFilterUrl(filterString)
+                       };
         }
 
         #endregion

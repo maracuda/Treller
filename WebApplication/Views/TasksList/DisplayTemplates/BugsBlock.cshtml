@@ -3,9 +3,9 @@
 <h3>
     Информация по багам:
     <br/>
-    Боевые инциденты: всего @Model.BattleBugsCount, неназначенных: @Model.BattleBugsUnassignedCount
+    Боевые инциденты: всего <a href="@Model.BattleAssigned.Link">@Model.BattleAssigned.Count</a>, неназначенных: <a href="@Model.BattleUnassigned.Link">@Model.BattleUnassigned.Count</a>
     <br/>
-    Billy баги всего: @Model.OverallBillyBugsCount, на текущей версии: @Model.CurrentBillyBugsCount
+    Billy баги всего: <a href="@Model.BillyAll.Link">@Model.BillyAll.Count</a>, на текущей версии: <a href="@Model.BillyCurrent.Link">@Model.BillyCurrent.Count</a>
     <br/>
-    CS баги всего: @Model.CurrentCSBugsCount
+    CS баги всего: <a href="@Model.CsCurrent.Link">@Model.CsCurrent.Count</a>
 </h3>
