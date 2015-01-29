@@ -36,7 +36,7 @@ namespace SKBKontur.TaskManagerClient.Youtrack
             var parameters = new Dictionary<string, string>
                                  {
                                      {"filter", filter},
-                                     {"max", "100"}
+                                     {"max", "1000"}
                                  };
             var result = httpRequester.SendGetAsync<YouTrackIssues>(BuildUrl(BugsIssueRestStartsString), parameters, authCookies.Value).Result;
             return result.Issue.Select(x =>

@@ -4,5 +4,8 @@
     {
         public int BattleBugsUnassignedCount { get; set; }
         public int BattleBugsCount { get; set; }
+        public int CurrentBillyBugsCount { get; set; }
+        public int OverallBillyBugsCount { get; set; }
+        public int CurrentCSBugsCount { get; set; }
     }
 }

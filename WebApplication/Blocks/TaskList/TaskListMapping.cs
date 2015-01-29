@@ -17,7 +17,10 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList
                     BlockMapper.Declare<BoardsBlock, Board[]>(x => x.Boards),
                     BlockMapper.Declare<BoardsBlock, SimpleRepoBranch[]>(x => x.BranchesInCandidateRelease),
                     BlockMapper.Declare<BugsBlock, int>(x => x.BattleBugsUnassignedCount, "battleBugsUnassignedCount"),
-                    BlockMapper.Declare<BugsBlock, int>(x => x.BattleBugsCount, "battleBugsCount")
+                    BlockMapper.Declare<BugsBlock, int>(x => x.BattleBugsCount, "battleBugsCount"),
+                    BlockMapper.Declare<BugsBlock, int>(x => x.CurrentBillyBugsCount, "currentBillyBugsCount"),
+                    BlockMapper.Declare<BugsBlock, int>(x => x.OverallBillyBugsCount, "overallBillyBugsCount"),
+                    BlockMapper.Declare<BugsBlock, int>(x => x.CurrentCSBugsCount, "currentCSBugsCount")
                 };
 
         public IBlockMapper[] SelectAll()

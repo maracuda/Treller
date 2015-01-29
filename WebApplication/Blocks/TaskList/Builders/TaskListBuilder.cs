@@ -132,12 +132,12 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         {
             return cardChecklists.ToDictionary(x => x.Key, x => bugsBuilder.Build(x));
         }
+        #region remove hardcode inside
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("battleBugsCount")]
         private int BuildBattleBugsInfo()
         {
-            // todo: remove hardcode
             return bugTrackerClient.GetFiltered("#Billy #Battle State: -Resolved").Length;
         }
 
@@ -145,9 +145,31 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         [BlockModelParameter("battleBugsUnassignedCount")]
         private int BuildBattleBugsUnassignedInfo()
         {
-            // todo: remove hardcode
             return bugTrackerClient.GetFiltered("#Billy #Battle #Unassigned State: -Resolved").Length;
         }
+
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("currentBillyBugsCount")]
+        private int GetBillyCurrentBugsCount()
+        {
+            return bugTrackerClient.GetFiltered("#Billy -Resolved Affected versions: -{No Affected versions}").Length;
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("overallBillyBugsCount")]
+        private int GetBillyOverallBugsCount()
+        {
+            return bugTrackerClient.GetFiltered("#Billy -Resolved Affected versions: {No Affected versions}").Length;
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("currentCSBugsCount")]
+        private int GetCSCurrentBugsCount()
+        {
+            return bugTrackerClient.GetFiltered("#CS -Resolved").Length;
+        }
+
+        #endregion
 
         private CardListItemViewModel BuildCard(Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
                                                 Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
