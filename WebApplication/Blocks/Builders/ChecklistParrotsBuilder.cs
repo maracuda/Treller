@@ -21,8 +21,10 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 if (isMatch.Success)
                 {
                     var matchResult = isMatch.Value.Trim('(', ')').Split('/');
-                    result.ProgressInfo.TotalCount += Parse(matchResult[1]);
-                    completeCount = Parse(matchResult[0]);
+                    var totalCount = Parse(matchResult[1]);
+                    result.ProgressInfo.TotalCount += totalCount;
+
+                    completeCount = listItem.IsChecked ? totalCount : Parse(matchResult[0]);
                 }
                 else
                 {

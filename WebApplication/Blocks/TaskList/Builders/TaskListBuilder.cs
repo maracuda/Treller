@@ -11,6 +11,7 @@ using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using SKBKontur.Treller.WebApplication.Services.Settings;
 using SKBKontur.Treller.WebApplication.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Extensions;
+using SKBKontur.BlocksMapping.BlockExtenssions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
 {
@@ -22,13 +23,19 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         private readonly ICardStageInfoBuilder cardStageInfoBuilder;
         private readonly ITaskCacher taskCacher;
         private readonly IReleaseCandidateService releaseCandidateService;
+        private readonly IBugTrackerClient bugTrackerClient;
+        private readonly IWikiClient wikiClient;
+        private readonly IBugsBuilder bugsBuilder;
 
         public TaskListBuilder(ITaskManagerClient taskManagerClient,
                                ISettingService settingService,
                                IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
                                ICardStageInfoBuilder cardStageInfoBuilder,
                                ITaskCacher taskCacher,
-                               IReleaseCandidateService releaseCandidateService)
+                               IReleaseCandidateService releaseCandidateService,
+                               IBugTrackerClient bugTrackerClient,
+                               IWikiClient wikiClient,
+                               IBugsBuilder bugsBuilder)
         {
             this.taskManagerClient = taskManagerClient;
             this.settingService = settingService;
@@ -36,6 +43,9 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
             this.cardStageInfoBuilder = cardStageInfoBuilder;
             this.taskCacher = taskCacher;
             this.releaseCandidateService = releaseCandidateService;
+            this.bugTrackerClient = bugTrackerClient;
+            this.wikiClient = wikiClient;
+            this.bugsBuilder = bugsBuilder;
         }
 
         [BlockModel(ContextKeys.TasksKey)]
@@ -101,10 +111,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         [BlockModel(ContextKeys.TasksKey)]
         private CardStateOverallViewModel[] BuildCards(BoardCard[] cards, Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
                                                    Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
-                                                   ILookup<string, CardChecklist> cardChecklists, SimpleRepoBranch[] branches)
+                                                   ILookup<string, CardChecklist> cardChecklists, SimpleRepoBranch[] branches,
+                                                   Dictionary<string, BugsInfoViewModel> bugs)
         {
             var rcBranches = new HashSet<string>(branches.Select(x => x.Name));
-            return cards.Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches))
+            return cards.Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches, bugs.SafeGet(card.Id)))
                         .OrderByDescending(x => x.StageInfo.State)
                         .ThenByDescending(x => x.StageInfo.StageParrots.PastDays)
                         .ThenBy(x => x.StageInfo.StageParrots.BeginDate)
@@ -118,9 +129,64 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                         .ToArray();
         }
 
+        [BlockModel(ContextKeys.TasksKey)]
+        private Dictionary<string, BugsInfoViewModel> BuildBugsInfo(ILookup<string, CardChecklist> cardChecklists)
+        {
+            return cardChecklists.ToDictionary(x => x.Key, x => bugsBuilder.Build(x));
+        }
+        #region remove hardcode inside
+
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("battleBugsCount")]
+        private BugsCountLinkInfoViewModel BuildBattleBugsInfo()
+        {
+            return BuildCountLink("#Billy #Battle State: -Resolved");
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("battleBugsUnassignedCount")]
+        private BugsCountLinkInfoViewModel BuildBattleBugsUnassignedInfo()
+        {
+            return BuildCountLink("#Billy #Battle #Unassigned State: -Resolved");
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("currentBillyBugsCount")]
+        private BugsCountLinkInfoViewModel GetBillyCurrentBugsCount()
+        {
+            return BuildCountLink("#Billy -Resolved Affected versions: -{No Affected versions}");
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("overallBillyBugsCount")]
+        private BugsCountLinkInfoViewModel GetBillyOverallBugsCount()
+        {
+            return BuildCountLink("#Billy -Resolved Affected versions: {No Affected versions}");
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("currentCSBugsCount")]
+        private BugsCountLinkInfoViewModel GetCSCurrentBugsCount()
+        {
+            return BuildCountLink("#CS -Resolved");
+        }
+
+        private BugsCountLinkInfoViewModel BuildCountLink(string filterString)
+        {
+            var count = bugTrackerClient.GetFiltered(filterString).Length;
+            return new BugsCountLinkInfoViewModel
+                       {
+                           Count = count,
+                           Link = bugTrackerClient.GetBrowseFilterUrl(filterString)
+                       };
+        }
+
+        #endregion
+
         private CardListItemViewModel BuildCard(Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
                                                 Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
-                                                ILookup<string, CardChecklist> cardChecklists, BoardCard card, HashSet<string> rcBranches)
+                                                ILookup<string, CardChecklist> cardChecklists, BoardCard card, HashSet<string> rcBranches,
+                                                BugsInfoViewModel bugs)
         {
             var stageInfo = cardStageInfoBuilder.Build(card, cardActions[card.Id].ToArray(),
                                                        cardChecklists[card.Id].ToArray(),
@@ -129,18 +195,21 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
             
             var branchName = card.GetCardBranchName();
             var isInRc = !string.IsNullOrEmpty(branchName) && rcBranches.Contains(branchName);
+            var analyticLink = card.GetAnalyticLink(wikiClient.GetBaseUrl(), bugTrackerClient.GetBaseUrl());
 
             return new CardListItemViewModel
                        {
                            CardId = card.Id,
                            CardName = card.Name,
+                           AnalyticLink = analyticLink,
                            Labels = card.Labels.OrderBy(x => x.Color).ToArray(),
                            Avatars = card.UserIds.Select(id => users[id]).Select(userAvatarViewModelBuilder.Build).ToArray(),
                            CardUrl = card.Url,
                            StageInfo = stageInfo,
                            IsNewCard = stageInfo.StageParrots.BeginDate.HasValue && stageInfo.StageParrots.BeginDate.Value.Date == DateTime.Now.Date,
                            BranchName = branchName,
-                           IsInCandidateRelease = isInRc
+                           IsInCandidateRelease = isInRc,
+                           Bugs = bugs
                        };
         }
     }

@@ -8,16 +8,40 @@ namespace SKBKontur.Treller.WebApplication.Extensions
     {
         public static string GetCardBranchName(this BoardCard card)
         {
-            var branchIndex = card.Description.IndexOf("ветка:", StringComparison.OrdinalIgnoreCase);
-            if (branchIndex == -1)
+            return SearchInfo(card.Description, "ветка:", new[] {':'}, 1);
+        }
+
+        public static string GetAnalyticLink(this BoardCard card, string wikiUrl, string bugTrackerUrl)
+        {
+            return (SearchInfo(card.Description, wikiUrl)
+                   ?? SearchInfo(card.Description, bugTrackerUrl)
+                   ?? string.Empty).TrimEnd('.');
+        }
+
+        private static string SearchInfo(this string text, string searchText, char[] additionalSplitCharacters = null, int skip = 0)
+        {
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(searchText))
             {
-                return string.Empty;
+                return null;
             }
 
-            return card.Description.Substring(branchIndex, card.Description.Length)
-                                   .Split(new[] {' ', '\r', '\n', ':'}, StringSplitOptions.RemoveEmptyEntries)
-                                   .Skip(1)
-                                   .FirstOrDefault(x => x.Length > 1);
-        } 
+            var startIndex = text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
+            if (startIndex == -1)
+            {
+                return null;
+            }
+
+            var splitCharacters = new[] {' ', '\r', '\n'}.Union(additionalSplitCharacters ?? new char[0]).ToArray();
+            var restLength = text.Length - startIndex;
+            var array = text.Substring(startIndex, restLength > 300 ? 300 : restLength)
+                            .Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries);
+
+            if (array.Length == 0)
+            {
+                return null;
+            }
+
+            return array.Skip(skip).FirstOrDefault(x => x.Length > 1);
+        }
     }
 }

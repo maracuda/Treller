@@ -1,5 +1,6 @@
-using SKBKontur.TaskManagerClient;
+using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
+using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Abstractions
 {
@@ -7,5 +8,6 @@ namespace SKBKontur.Treller.WebApplication.Abstractions
     {
         public TrelloCredential TrelloClientCredentials { get; set; }
         public GitLabCredential GitLabClientCredentials { get; set; }
+        public YouTrackCredential YouTrackCredentials { get; set; }
     }
 }

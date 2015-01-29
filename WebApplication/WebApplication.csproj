@@ -175,7 +175,7 @@
     <Compile Include="Abstractions\ClientsIntegrationCredentials.cs" />
     <Compile Include="Abstractions\DomainService.cs" />
     <Compile Include="Abstractions\IocContainer.cs" />
-    <Compile Include="Abstractions\TrelloClientCustomizer.cs" />
+    <Compile Include="Abstractions\HttpRequester.cs" />
     <Compile Include="Abstractions\UserCredentialService.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -227,12 +227,14 @@
     <Compile Include="Blocks\TaskDetalization\ViewModels\UserAvatarViewModel.cs" />
     <Compile Include="Blocks\TaskList\Blocks\BaseCardListBlock.cs" />
     <Compile Include="Blocks\TaskList\Blocks\BoardsBlock.cs" />
+    <Compile Include="Blocks\TaskList\Blocks\BugsBlock.cs" />
     <Compile Include="Blocks\TaskList\Blocks\CardListBlock.cs" />
     <Compile Include="Blocks\TaskList\Blocks\CardStateOverallViewModel.cs" />
     <Compile Include="Blocks\TaskList\Builders\TaskListBuilder.cs" />
     <Compile Include="Blocks\TaskDetalization\Blocks\CardNameBlock.cs" />
     <Compile Include="Blocks\TaskList\TaskListMapping.cs" />
     <Compile Include="Blocks\TaskList\TasksListInitialNamer.cs" />
+    <Compile Include="Blocks\TaskList\ViewModels\BugsCountLinkInfoViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardListEnterModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardListItemViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardProgressInfoViewModel.cs" />
@@ -363,6 +365,7 @@
     <Content Include="Views\Shared\Partial\BaseBlock.cshtml" />
     <Content Include="Views\Shared\Partial\Parrots.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\UserAvatarViewModel.cshtml" />
+    <Content Include="Views\TasksList\DisplayTemplates\BugsBlock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blocks\Users\" />

@@ -12,13 +12,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
     {
         private readonly ICardStateBuilder cardStateBuilder;
         private readonly IChecklistParrotsBuilder checklistParrotsBuilder;
-        private readonly IBugsBuilder bugsBuilder;
 
-        public CardStageInfoBuilder(ICardStateBuilder cardStateBuilder, IChecklistParrotsBuilder checklistParrotsBuilder, IBugsBuilder bugsBuilder)
+        public CardStageInfoBuilder(ICardStateBuilder cardStateBuilder, IChecklistParrotsBuilder checklistParrotsBuilder)
         {
             this.cardStateBuilder = cardStateBuilder;
             this.checklistParrotsBuilder = checklistParrotsBuilder;
-            this.bugsBuilder = bugsBuilder;
         }
 
         public CardStageInfoViewModel Build(BoardCard card, CardAction[] actions, CardChecklist[] checklists, BoardSettings boardSetting, BoardList[] boardLists)
@@ -28,9 +26,9 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
             DateTime? beginDate = null;
             DateTime? endDate = null;
             var cardChecklists = new HashSet<string>();
-            foreach (var action in actions)
+            foreach (var action in actions.OrderBy(x => x.Date))
             {
-                if (action.ToListId == card.BoardListId)
+                if (!beginDate.HasValue && (action.ToListId == card.BoardListId || action.ListId == card.BoardListId))
                 {
                     beginDate = action.Date;
                 }
@@ -51,13 +49,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
             
             var totalDays = (int)(beginDate != null ? (DateTime.Now.Date - beginDate.Value.Date).TotalDays : 0);
             var parrotsInfo = checklistParrotsBuilder.Build(resultLists, totalDays, beginDate, endDate);
-            var bugsInfo = bugsBuilder.Build(resultLists);
 
             return new CardStageInfoViewModel
                        {
                            State = state,
-                           StageParrots = parrotsInfo,
-                           Bugs = bugsInfo,
+                           StageParrots = parrotsInfo
                        };
         }
     }

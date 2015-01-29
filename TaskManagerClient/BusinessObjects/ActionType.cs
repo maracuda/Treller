@@ -25,6 +25,7 @@
 
         CreateBoard = 200,
         UpdateBoard,
+        UnconfirmedBoardInvitation,
         AddMemberToBoard,
         RemoveMemberFromBoard,
         AddToOrganizationBoard,

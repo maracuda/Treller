@@ -1,0 +1,65 @@
+﻿@using SKBKontur.Treller.WebApplication.Extensions
+@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardListItemViewModel
+
+<section class="task-list-block">
+    @Html.Partial("Partial/CardProgressInfoViewModel", Model.StageInfo.StageParrots.ProgressInfo)
+    
+    <header class="task-block-header">
+        <a href="@Model.CardUrl" class="fa fa-trello" title="посмотреть в Trello" target="_blank"></a>
+        @if (!string.IsNullOrEmpty(Model.AnalyticLink))
+        {
+            <a href="@Model.AnalyticLink" class="fa fa-info-circle text-success"></a>
+        }
+
+        @Html.ActionLink(Model.CardName, "TaskInfo", "TaskInfo", new RouteValueDictionary{{"cardId", Model.CardId}}, new Dictionary<string, object>
+        {
+            {"class", "colorbox-link"},
+        })
+
+        @if (!string.IsNullOrEmpty(Model.BranchName))
+        {
+            <small class="text-muted">in branch @Model.BranchName</small>
+            if (Model.IsInCandidateRelease)
+            {
+                <span>(RC)</span>
+            }
+        }
+    </header>
+    
+    <div class="task-block-content">
+        <div class="parrots-info-block">
+            @if (Model.IsNewCard)
+            {
+                <span class="fa fa-lightbulb-o"></span>
+            }
+            @Html.Partial("Partial/Parrots", Model.StageInfo.StageParrots)
+            
+            @if (Model.Bugs != null && Model.Bugs.OverallBugsCount > 0)
+            {
+                <span class="parrots-info-action"  title="Незакрытых багов">
+                    (@Model.Bugs.FixedBugsCount/@Model.Bugs.OverallBugsCount)
+                    <span class="fa fa-bug text-success"></span>
+                </span>
+            }
+
+            <span style="margin-left: 10px;">
+                с @Model.StageInfo.StageParrots.BeginDate.SafeDateFormat()
+            </span>
+        </div>
+        
+        @if (Model.Avatars != null && Model.Avatars.Length > 0)
+        {
+            <div class="clearfix task-block-members-list">
+                <span></span>
+                @Html.DisplayFor(m => m.Avatars)
+            </div>
+        }
+    </div>
+    
+    @if (Model.Labels != null && Model.Labels.Length > 0)
+    {
+        <div class="task-block-label-list">
+            @Html.DisplayFor(m => m.Labels)
+        </div>
+    }
+</section>
