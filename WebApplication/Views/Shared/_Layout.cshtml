@@ -3,22 +3,22 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
-    @Styles.Render("~/bundles/layout")
-    @RenderSection("Header", false)
 
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/fonts/font-awesome/css/font-awesome.min.css")" />
+    @Styles.Render("~/bundles/layout")
+
+    @RenderSection("Header", false)
     @Scripts.Render("~/bundles/modernizr")
 </head>
     <body class="layout-body">
-        <header class="layout-header">
-            <h1 class="layout-title">@ViewBag.Title</h1>
-            
-            @RenderSection("LayoutHeader", false)
-        </header>
-
         @RenderBody()
-
-        @Scripts.Render("~/bundles/base-libraries")
+        
+        <!--[if lte IE 8]>
+        @Scripts.Render("~/bundles/js/polyfills")
+        <![endif]-->
+        
+        @Scripts.Render("~/bundles/js/base-libraries")
         @RenderSection("FooterScripts", false)
     
         <script>

@@ -1,5 +1,6 @@
 ﻿using System;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
+using SKBKontur.Treller.WebApplication.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {
@@ -15,6 +16,9 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
         public int PastDays { get; set; }
         public DateTime? BeginDate { get; set; }
         public DateTime? EndDate { get; set; }
+
+        public string BeginDateFormat {get { return BeginDate.SafeDateFormat(); }}
+        public string EndDateFormat { get { return BeginDate.SafeDateFormat(); } }
 
         public CardProgressInfoViewModel ProgressInfo { get; private set; }
     }

@@ -6,6 +6,8 @@ using SKBKontur.Treller.WebApplication.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using System.Linq;
+using SKBKontur.Treller.WebApplication.Extensions;
+using SKBKontur.Treller.WebApplication.Models.TaskList;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
@@ -21,10 +23,27 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var cardListEnterModel = new CardListEnterModel { BoardIds = new string[0] };
-            var blocks = (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel)).Cast<BaseCardListBlock>().ToArray();
+            var taskListViewModel = await CreateTaskListViewModel();
 
-            return View("TasksList", blocks);
+            if (Request.IsAjaxRequest())
+                return Json(taskListViewModel, JsonRequestBehavior.AllowGet);
+
+            return View("TasksList", taskListViewModel);
+        }
+
+        private async Task<TaskListViewModel> CreateTaskListViewModel()
+        {
+            var cardListEnterModel = new CardListEnterModel {BoardIds = new string[0]};
+            var blocks = (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel))
+                .Cast<BaseCardListBlock>()
+                .ToArray();
+
+            return new TaskListViewModel
+            {
+                BoardsBlock = blocks.FirstOrDefault(x => x is BoardsBlock),
+                BugsBlock = blocks.FirstOrDefault(x => x is BugsBlock),
+                TaskList = blocks.FirstOrDefault(x => x is CardListBlock)
+            };
         }
     }
 }

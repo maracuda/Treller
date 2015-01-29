@@ -4,6 +4,7 @@
 
 .task-block-group-header {
     cursor: pointer;
+    display: inline-block;
 }
 
 .task-block-group-title {

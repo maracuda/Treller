@@ -8,33 +8,27 @@ namespace SKBKontur.Treller.WebApplication
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
-
-            //bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-            //            "~/Scripts/jquery-ui-{version}.js"));
-
-            //bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-            //            "~/Scripts/jquery.unobtrusive*",
-            //            "~/Scripts/jquery.validate*"));
-            
-            bundles.Add(new ScriptBundle("~/bundles/base-libraries")
-                .Include("~/Scripts/jquery-{version}.js")
-                .Include("~/Scripts/bootstrap.js")
-                .Include("~/Scripts/Colorbox/jquery.colorbox.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/js/tasklist")
-                .IncludeDirectory("~/Scripts/TaskList", "*.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/js/react")
-                .Include("~/Scripts/react/es5-shim.js")
-                .Include("~/Scripts/react/react-with-addons-{version}.js")
-                .Include("~/Scripts/react/JSXTransformer-{version}.js"));
-
-            bundles.Add(new JsxBundle("~/bunsles/jsx/tasklist")
-                .IncludeDirectory("~/Content/Scripts/TaskList", "*.js"));
-
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include("~/Scripts/modernizr-*"));
+
+            bundles.Add(new ScriptBundle("~/bundles/js/polyfills")
+                .Include("~/Scripts/es5-shim.js")
+                .Include("~/Scripts/es5-sham.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/js/base-libraries")
+                .Include("~/Scripts/jquery-{version}.js")
+                .Include("~/Scripts/bootstrap.js")
+                .Include("~/Scripts/react/react-with-addons-{version}.js")
+                .Include("~/Scripts/react/JSXTransformer-{version}.js")
+                .Include("~/Scripts/Colorbox/jquery.colorbox.js")
+                .IncludeDirectory("~/Content/Scripts/Shared", "*.js"));
+
+            bundles.Add(new JsxBundle("~/bunsles/jsx/tasklist")
+                .IncludeDirectory("~/Content/Scripts/Layout", "*.jsx")
+                .IncludeDirectory("~/Content/Scripts/TaskList", "*.jsx"));
+
+            
             
             bundles.Add(
                 new StyleBundle("~/bundles/layout")
@@ -43,29 +37,13 @@ namespace SKBKontur.Treller.WebApplication
                 .Include("~/Content/Bootstrap/bootstrap-theme.css")
                 .Include("~/Content/Colorbox/colorbox.css")
                 .Include("~/Content/site.css")
-                .Include("~/fonts/font-awesome/css/font-awesome.css")
                 .IncludeDirectory("~/Content/Layout/", "*.css"));
-
+            
             bundles.Add(
                 new StyleBundle("~/bundles/css/tasklist")
                 .IncludeDirectory("~/Content/Shared", "*.css")
                 .IncludeDirectory("~/Content/TaskList", "*.css")
                 .IncludeDirectory("~/Content/TaskInfo", "*.css"));
-
-            //todo: нам это нужно?
-            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
-                        "~/Content/themes/base/jquery.ui.core.css",
-                        "~/Content/themes/base/jquery.ui.resizable.css",
-                        "~/Content/themes/base/jquery.ui.selectable.css",
-                        "~/Content/themes/base/jquery.ui.accordion.css",
-                        "~/Content/themes/base/jquery.ui.autocomplete.css",
-                        "~/Content/themes/base/jquery.ui.button.css",
-                        "~/Content/themes/base/jquery.ui.dialog.css",
-                        "~/Content/themes/base/jquery.ui.slider.css",
-                        "~/Content/themes/base/jquery.ui.tabs.css",
-                        "~/Content/themes/base/jquery.ui.datepicker.css",
-                        "~/Content/themes/base/jquery.ui.progressbar.css",
-                        "~/Content/themes/base/jquery.ui.theme.css"));
         }
     }
 }

@@ -1,9 +1,0 @@
-﻿@using SKBKontur.Treller.WebApplication.Extensions
-@model SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels.CardProgressInfoViewModel
-
-
-<section class="task-progress-block" title="Общий прогресс: (@Model.CurrentCount/@Model.TotalCount)">
-    <div class="task-progress-legend">@Model.Progress.ToString("#0")% (@Model.CurrentCount/@Model.TotalCount)</div>
-    <div class="task-progress-line total"></div>
-    <div class="task-progress-line accomplished progress-bar-striped" style="width: @Model.Progress.HtmlPercentFormat()"></div>
-</section>

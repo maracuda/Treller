@@ -7,6 +7,8 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks
     public class CardStateOverallViewModel
     {
         public CardState State { get; set; }
+        public string Title { get; set; }
+
         public CardListItemViewModel[] Cards { get; set; }
         public int TotalCardsCount { get { return Cards.Length; } }
         public int NewCardsCount { get { return Cards.Count(x => x.IsNewCard); } }
