@@ -41,6 +41,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             return new TaskListViewModel
             {
                 BoardsBlock = blocks.FirstOrDefault(x => x is BoardsBlock),
+                BugsBlock = blocks.FirstOrDefault(x => x is BugsBlock),
                 TaskList = blocks.FirstOrDefault(x => x is CardListBlock)
             };
         }

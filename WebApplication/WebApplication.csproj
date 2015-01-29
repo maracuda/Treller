@@ -365,7 +365,6 @@
     <Content Include="Views\Shared\Partial\BaseBlock.cshtml" />
     <Content Include="Views\Shared\Partial\Parrots.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\UserAvatarViewModel.cshtml" />
-    <Content Include="Views\TasksList\DisplayTemplates\BugsBlock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blocks\Users\" />

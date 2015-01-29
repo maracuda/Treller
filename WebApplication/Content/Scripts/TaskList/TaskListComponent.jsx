@@ -1,8 +1,15 @@
-﻿var TaskListComponent = React.createClass({
+﻿var BugsLink = React.createClass({
+    render(){
+        return <a href={this.props.Link}>{this.props.Count}</a>
+    }
+});
+
+var TaskListComponent = React.createClass({
     getInitialState(){
         return {
             taskList: this.props.data.TaskList,
-            boardsBlock: this.props.data.BoardsBlock
+            boardsBlock: this.props.data.BoardsBlock,
+            bugsBlock: this.props.data.BugsBlock
         };
     },
     componentWillMount(){
@@ -14,7 +21,8 @@
         $.get(this.props.updateUrl).done(function(data){
             this.setState({
                 taskList: data.TaskList,
-                boardsBlock: data.BoardsBlock
+                boardsBlock: data.BoardsBlock,
+                bugsBlock: data.BugsBlock
             });
         }.bind(this));
     },
@@ -24,6 +32,15 @@
         return <div>
             <SiteHeader title={this.props.title}>
                 <TaskListBoardsBlock {...this.state.boardsBlock} />
+                <h3>
+                    Информация по багам:
+                    <br/>
+                    Боевые инциденты: всего <BugsLink {...this.state.bugsBlock.BattleAssigned} />, неназначенных: <BugsLink {...this.state.bugsBlock.BattleUnassigned} />
+                    <br/>
+                    Billy баги всего: <BugsLink {...this.state.bugsBlock.BillyAll} />, на текущей версии: <BugsLink {...this.state.bugsBlock.BillyCurrent} />
+                    <br/>
+                    CS баги всего: <BugsLink {...this.state.bugsBlock.CsCurrent} />
+                </h3>
             </SiteHeader>
             {taskListGroups}
         </div>;

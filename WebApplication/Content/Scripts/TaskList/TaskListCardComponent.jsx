@@ -7,6 +7,13 @@
             <TaskListCardProggressInfo {...this.props.StageInfo.StageParrots.ProgressInfo} />
             <header className="task-block-header">
                 <a href={this.props.CardUrl} className="fa fa-trello" title="посмотреть в Trello" target="_blank"></a>&nbsp;                
+                
+                { this.props.AnalyticLink &&
+                    <a href={this.props.AnalyticLink} className="fa fa-info-circle text-success"></a>                   
+                }
+
+                &nbsp;
+
                 <a href={ "/TaskInfo/TaskInfo/?cardId=" + this.props.CardId } className="colorbox-link">{this.props.CardName}</a>
 
                 { this.props.BranchName &&
@@ -20,8 +27,8 @@
 
                     <TaskListCardParrots {...this.props.StageInfo.StageParrots} />
 
-                    { this.props.StageInfo.Bugs.NotFixedBugsCount > 0 &&
-                        <TaskGroupCounter count={this.props.StageInfo.Bugs.NotFixedBugsCount} title="Незакрытых багов" iconClass="fa-bug" />
+                    { this.props.Bugs && this.props.Bugs.OverallBugsCount > 0 &&
+                        <TaskGroupCounter count={ "({0}/{1})".format(this.props.Bugs.FixedBugsCount, this.props.Bugs.OverallBugsCount) } title="Незакрытых багов" iconClass="fa-bug" />
                     }
 
                     <span style={{marginLeft: 10}}>{"с " + this.props.StageInfo.StageParrots.BeginDateFormat}</span>
