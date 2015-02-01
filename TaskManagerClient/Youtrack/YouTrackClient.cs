@@ -68,11 +68,11 @@ namespace SKBKontur.TaskManagerClient.Youtrack
             var timer = Stopwatch.StartNew();
             while (true)
             {
-                var countResult = httpRequester.SendGetAsync<Count>(BuildUrl(BugsIssueRestStartsString + "/count"), parameters, authCookies.Value).Result;
-                if (countResult.Entity.Value >= 0)
+                var countResult = httpRequester.SendGetAsync<EntityCount>(BuildUrl(BugsIssueRestStartsString + "/count"), parameters, authCookies.Value).Result;
+                if (countResult.Value >= 0)
                 {
                     timer.Stop();
-                    return countResult.Entity.Value;
+                    return countResult.Value;
                 }
 
                 if (timer.ElapsedMilliseconds > 2000)
@@ -81,7 +81,7 @@ namespace SKBKontur.TaskManagerClient.Youtrack
                     return -1;
                 }
 
-                Thread.Sleep(500);
+                Thread.Sleep(100);
             }
         }
         

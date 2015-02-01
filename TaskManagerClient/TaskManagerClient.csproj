@@ -86,7 +86,6 @@
     <Compile Include="Trello\BusinessObjects\Cards\Checklist.cs" />
     <Compile Include="Trello\TrelloClient.cs" />
     <Compile Include="Wiki\WikiClient.cs" />
-    <Compile Include="Youtrack\BusinessObjects\Count.cs" />
     <Compile Include="Youtrack\BusinessObjects\EntityCount.cs" />
     <Compile Include="Youtrack\BusinessObjects\Issue.cs" />
     <Compile Include="Youtrack\BusinessObjects\YouTrackComment.cs" />

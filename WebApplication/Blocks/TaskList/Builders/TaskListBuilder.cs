@@ -173,7 +173,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
 
         private BugsCountLinkInfoViewModel BuildCountLink(string filterString, string description)
         {
-            var count = bugTrackerClient.GetFiltered(filterString).Length;
+            var count = bugTrackerClient.GetFilteredCount(filterString);
             return new BugsCountLinkInfoViewModel
                        {
                            Count = count,
