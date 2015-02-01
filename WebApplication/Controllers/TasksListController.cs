@@ -6,7 +6,6 @@ using SKBKontur.Treller.WebApplication.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using System.Linq;
-using SKBKontur.Treller.WebApplication.Extensions;
 using SKBKontur.Treller.WebApplication.Models.TaskList;
 
 namespace SKBKontur.Treller.WebApplication.Controllers

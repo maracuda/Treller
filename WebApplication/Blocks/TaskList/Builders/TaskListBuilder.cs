@@ -140,44 +140,45 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         [BlockModelParameter("battleBugsCount")]
         private BugsCountLinkInfoViewModel BuildBattleBugsInfo()
         {
-            return BuildCountLink("#Billy #Battle State: -Resolved");
+            return BuildCountLink("#Billy #Battle State: -Resolved", "Все баги с боевой площадки");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("battleBugsUnassignedCount")]
         private BugsCountLinkInfoViewModel BuildBattleBugsUnassignedInfo()
         {
-            return BuildCountLink("#Billy #Battle #Unassigned State: -Resolved");
+            return BuildCountLink("#Billy #Battle #Unassigned State: -Resolved", "Неназначенные баги с боевой");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("currentBillyBugsCount")]
         private BugsCountLinkInfoViewModel GetBillyCurrentBugsCount()
         {
-            return BuildCountLink("#Billy -Resolved Affected versions: -{No Affected versions}");
+            return BuildCountLink("#Billy -Resolved Affected versions: -{No Affected versions}", "Баги на текущей версии");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("overallBillyBugsCount")]
         private BugsCountLinkInfoViewModel GetBillyOverallBugsCount()
         {
-            return BuildCountLink("#Billy -Resolved Affected versions: {No Affected versions}");
+            return BuildCountLink("#Billy -Resolved Affected versions: {No Affected versions}", "Все баги билли");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("currentCSBugsCount")]
         private BugsCountLinkInfoViewModel GetCSCurrentBugsCount()
         {
-            return BuildCountLink("#CS -Resolved");
+            return BuildCountLink("#CS -Resolved", "Все баги КС");
         }
 
-        private BugsCountLinkInfoViewModel BuildCountLink(string filterString)
+        private BugsCountLinkInfoViewModel BuildCountLink(string filterString, string description)
         {
             var count = bugTrackerClient.GetFiltered(filterString).Length;
             return new BugsCountLinkInfoViewModel
                        {
                            Count = count,
-                           Link = bugTrackerClient.GetBrowseFilterUrl(filterString)
+                           Link = bugTrackerClient.GetBrowseFilterUrl(filterString),
+                           Description = description
                        };
         }
 

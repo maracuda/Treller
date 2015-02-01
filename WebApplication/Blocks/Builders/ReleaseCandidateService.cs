@@ -9,6 +9,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
     public class ReleaseCandidateService : IReleaseCandidateService
     {
         private readonly IRepositoryClient repositoryClient;
+        private static HashSet<string> noTrackedBrancheNames = new HashSet<string>(new []{ "RC", "release", "hotfixes", "Autotests" });
 
         public ReleaseCandidateService(IRepositoryClient repositoryClient)
         {
@@ -19,6 +20,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
         {
             var pageNumber = 0;
             var result = new Dictionary<string, SimpleRepoBranch>(StringComparer.OrdinalIgnoreCase);
+            // todo : Remove hardcode
             var branches = repositoryClient.SelectAllBranches("584").Select(x => x.Name).ToArray();
 
             RepoCommit releaseCandidateBranchedCommit = null;
@@ -35,6 +37,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                     if (IsBranchMergeOperation(repoCommit.Title, "RC", "release") || IsBranchMergeOperation(repoCommit.Title, "Billy_2.5.13", "release"))
                     {
                         releaseCandidateBranchedCommit = repoCommit;
+                        break;
                     }
 
                     var mergedBranch = branches.FirstOrDefault(branch => IsBranchMergeOperation(repoCommit.Title, branch, "RC"));
@@ -48,7 +51,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                     }
                 }
             }
-            return result.Select(x => x.Value).ToArray();
+            return result.Select(x => x.Value).Where(x => !noTrackedBrancheNames.Contains(x.Name)).ToArray();
         }
 
         private static bool IsBranchMergeOperation(string repoCommitMessage)

@@ -1,6 +1,6 @@
 ﻿var BugsLink = React.createClass({
     render(){
-        return <a href={this.props.Link}>{this.props.Count}</a>
+        return <a title={this.props.Description} href={this.props.Link}>{this.props.Count}</a>
     }
 });
 
@@ -32,15 +32,11 @@ var TaskListComponent = React.createClass({
         return <div>
             <SiteHeader title={this.props.title}>
                 <TaskListBoardsBlock {...this.state.boardsBlock} />
-                <h3>
-                    Информация по багам:
-                    <br/>
-                    Боевые инциденты: всего <BugsLink {...this.state.bugsBlock.BattleAssigned} />, неназначенных: <BugsLink {...this.state.bugsBlock.BattleUnassigned} />
-                    <br/>
-                    Billy баги всего: <BugsLink {...this.state.bugsBlock.BillyAll} />, на текущей версии: <BugsLink {...this.state.bugsBlock.BillyCurrent} />
-                    <br/>
-                    CS баги всего: <BugsLink {...this.state.bugsBlock.CsCurrent} />
-                </h3>
+                <h4>
+                    Информация по багам: Battle (<BugsLink {...this.state.bugsBlock.BattleUnassigned} />/<BugsLink {...this.state.bugsBlock.BattleAssigned} />),
+					Billy (<BugsLink {...this.state.bugsBlock.BillyCurrent} />/<BugsLink {...this.state.bugsBlock.BillyAll} />),
+					CS <BugsLink {...this.state.bugsBlock.CsCurrent} />
+                </h4>
             </SiteHeader>
             {taskListGroups}
         </div>;
