@@ -217,7 +217,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Builders
 
         private static ToDoItemsListViewModel[] BuildToDoListsViewModels(CardStateInfo stateInfo, Dictionary<string, CardChecklist> checklists, CardState state)
         {
-            return stateInfo.States[state].CheckListIds.Distinct().Select(x => checklists[x]).Select(CreateToDoItemsListViewModel).ToArray();
+            return stateInfo.States[state].CheckListIds.Distinct().Where(checklists.ContainsKey).Select(x => checklists[x]).Select(CreateToDoItemsListViewModel).ToArray();
         }
 
         private static ToDoItemsListViewModel CreateToDoItemsListViewModel(CardChecklist checkList)

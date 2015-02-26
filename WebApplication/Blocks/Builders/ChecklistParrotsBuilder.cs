@@ -15,7 +15,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 
             foreach (var listItem in checklists.SelectMany(x => x.Items))
             {
-                decimal completeCount = 1;
                 const string floatRegexPattern = @"\d+[.,]?[\d]*";
                 var isMatch = Regex.Match(listItem.Description, string.Format(@"\({0}[/,\\]{0}\)$", floatRegexPattern), RegexOptions.IgnoreCase);
                 if (isMatch.Success)
@@ -24,16 +23,15 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                     var totalCount = Parse(matchResult[1]);
                     result.ProgressInfo.TotalCount += totalCount;
 
-                    completeCount = listItem.IsChecked ? totalCount : Parse(matchResult[0]);
+                    result.ProgressInfo.CurrentCount += listItem.IsChecked ? totalCount : Parse(matchResult[0]);
                 }
                 else
                 {
+                    if (listItem.IsChecked)
+                    {
+                        result.ProgressInfo.CurrentCount += 1;
+                    }
                     result.ProgressInfo.TotalCount += 1;
-                }
-
-                if (listItem.IsChecked)
-                {
-                    result.ProgressInfo.CurrentCount += completeCount;
                 }
             }
 

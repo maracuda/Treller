@@ -56,11 +56,13 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 
         private static bool IsBranchMergeOperation(string repoCommitMessage)
         {
-            return repoCommitMessage.StartsWith("Merge branch", StringComparison.OrdinalIgnoreCase);
+            return repoCommitMessage.StartsWith("Merge branch", StringComparison.OrdinalIgnoreCase)
+                   || repoCommitMessage.StartsWith("Merge remote-tracking branch", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsBranchMergeOperation(string repoCommitMessage, string fromBranch, string toBranch = null)
         {
+            repoCommitMessage = repoCommitMessage.Replace("origin/", "").Replace(" remote-tracking ", " ");
             return string.Equals(repoCommitMessage, string.Format("Merge branch '{0}' into {1}", fromBranch, toBranch), StringComparison.OrdinalIgnoreCase)
                    || (   repoCommitMessage.StartsWith(string.Format("Merge branch '{0}' of ", toBranch), StringComparison.OrdinalIgnoreCase)
                           && repoCommitMessage.EndsWith(string.Format("into {0}", fromBranch), StringComparison.OrdinalIgnoreCase));

@@ -115,7 +115,8 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                                                    Dictionary<string, BugsInfoViewModel> bugs)
         {
             var rcBranches = new HashSet<string>(branches.Select(x => x.Name));
-            return cards.Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches, bugs.SafeGet(card.Id)))
+            return cards.Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase))
+                        .Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches, bugs.SafeGet(card.Id)))
                         .OrderByDescending(x => x.StageInfo.State)
                         .ThenByDescending(x => x.StageInfo.StageParrots.PastDays)
                         .ThenBy(x => x.StageInfo.StageParrots.BeginDate)
@@ -140,28 +141,28 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         [BlockModelParameter("battleBugsCount")]
         private BugsCountLinkInfoViewModel BuildBattleBugsInfo()
         {
-            return BuildCountLink("#Billy #Battle State: -Resolved", "Все баги с боевой площадки");
+            return BuildCountLink("#Billy #Battle #Unresolved", "Все баги с боевой площадки");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("battleBugsUnassignedCount")]
         private BugsCountLinkInfoViewModel BuildBattleBugsUnassignedInfo()
         {
-            return BuildCountLink("#Billy #Battle #Unassigned State: -Resolved", "Неназначенные баги с боевой");
+            return BuildCountLink("#Billy #Battle #Unassigned #Unresolved", "Неназначенные баги с боевой");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("currentBillyBugsCount")]
         private BugsCountLinkInfoViewModel GetBillyCurrentBugsCount()
         {
-            return BuildCountLink("#Billy -Resolved Affected versions: -{No Affected versions}", "Баги на текущей версии");
+            return BuildCountLink("#Billy #Unresolved Affected versions: -{No Affected versions}", "Баги на текущей версии");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("overallBillyBugsCount")]
         private BugsCountLinkInfoViewModel GetBillyOverallBugsCount()
         {
-            return BuildCountLink("#Billy -Resolved Affected versions: {No Affected versions}", "Все баги билли");
+            return BuildCountLink("#Billy #Unresolved Affected versions: {No Affected versions}", "Все баги билли");
         }
 
         [BlockModel(ContextKeys.TasksKey)]

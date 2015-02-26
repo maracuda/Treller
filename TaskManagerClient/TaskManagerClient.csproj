@@ -53,6 +53,7 @@
     <Compile Include="BusinessObjects\CardLabel.cs" />
     <Compile Include="BusinessObjects\CardLabelColor.cs" />
     <Compile Include="BusinessObjects\ChecklistItem.cs" />
+    <Compile Include="BusinessObjects\ContinuousIntegration\BuildModel.cs" />
     <Compile Include="BusinessObjects\TrelloCredential.cs" />
     <Compile Include="BusinessObjects\User.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
@@ -61,10 +62,13 @@
     <Compile Include="GitLab\BusinessObjects\RepoCommit.cs" />
     <Compile Include="GitLab\GitLabClient.cs" />
     <Compile Include="IBugTrackerClient.cs" />
+    <Compile Include="IContinuousIntegrationClient.cs" />
     <Compile Include="IRepositoryClient.cs" />
     <Compile Include="ITaskManagerClient.cs" />
     <Compile Include="IWikiClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TeamCity\BusinessObjects\TeamCityBuild.cs" />
+    <Compile Include="TeamCity\TeamCityClient.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\Action.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\ActionAttachment.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\ActionBoard.cs" />
