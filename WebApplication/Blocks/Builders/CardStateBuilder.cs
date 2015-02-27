@@ -31,7 +31,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
             {
                 return boardList.Position > developList.Position 
                             ? CardState.Presentation
-                            : CardState.BeforeDevelop;
+                            : CardState.AnalitycPresentation;
             }
 
             if (string.Equals(boardList.Name, setting.ReviewListName, StringComparison.OrdinalIgnoreCase))
@@ -42,6 +42,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
             if (string.Equals(boardList.Name, setting.TestingListName, StringComparison.OrdinalIgnoreCase))
             {
                 return CardState.Testing;
+            }
+
+            if (string.Equals(boardList.Name, setting.AnalyticListName, StringComparison.OrdinalIgnoreCase))
+            {
+                return CardState.Analityc;
             }
 
             if (boardList.Position < developList.Position)

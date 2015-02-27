@@ -5,6 +5,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
         public string Id { get; set; }
         public string Name { get; set; }
         public string DevelopListName { get; set; }
+        public string AnalyticListName { get; set; }
         public string ReviewListName { get; set; }
         public string DevelopPresentationListName { get; set; }
         public string TestingListName { get; set; }

@@ -6,6 +6,7 @@ using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
+using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using SKBKontur.Treller.WebApplication.Services.Settings;
@@ -117,6 +118,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
             var rcBranches = new HashSet<string>(branches.Select(x => x.Name));
             return cards.Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase))
                         .Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches, bugs.SafeGet(card.Id)))
+                        .Where(x => x.StageInfo.State != CardState.BeforeDevelop && x.StageInfo.State != CardState.Unknown)
                         .OrderByDescending(x => x.StageInfo.State)
                         .ThenByDescending(x => x.StageInfo.StageParrots.PastDays)
                         .ThenBy(x => x.StageInfo.StageParrots.BeginDate)

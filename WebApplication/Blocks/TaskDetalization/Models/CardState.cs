@@ -7,8 +7,14 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models
         [Description("Неизвестно")]
         Unknown,
 
-        [Description("Аналитика")]
+        [Description("Пул задач")]
         BeforeDevelop,
+
+        [Description("Аналитика")]
+        Analityc,
+
+        [Description("Презентация аналитики")]
+        AnalitycPresentation,
 
         [Description("Разработка")]
         Develop,

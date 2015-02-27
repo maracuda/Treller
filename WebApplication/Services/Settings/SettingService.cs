@@ -11,6 +11,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     Id = "4f4e2e4a0141dade72f808ef",
                     Name = "Биллинг",
                     DevelopListName = "Developing",
+                    AnalyticListName = "Analitics & Design",
                     ReviewListName = "Review",
                     DevelopPresentationListName = "Team Presentation",
                     TestingListName = "Testing"
@@ -20,6 +21,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     Id = "50a218636f423ac72500927f",
                     Name = "CRM",
                     DevelopListName = "Developing",
+                    AnalyticListName = "Analitics & Design",
                     ReviewListName = "Review",
                     DevelopPresentationListName = "Team Presentation",
                     TestingListName = "Testing"
