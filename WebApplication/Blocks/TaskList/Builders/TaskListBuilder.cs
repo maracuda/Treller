@@ -205,7 +205,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
                            CardName = card.Name,
                            AnalyticLink = analyticLink,
                            Labels = card.Labels.OrderBy(x => x.Color).ToArray(),
-                           Avatars = card.UserIds.Select(id => users[id]).Select(userAvatarViewModelBuilder.Build).ToArray(),
+                           Avatars = card.UserIds.Select(id => users.SafeGet(id)).Where(x => x != null).Select(userAvatarViewModelBuilder.Build).ToArray(),
                            CardUrl = card.Url,
                            StageInfo = stageInfo,
                            IsNewCard = stageInfo.StageParrots.BeginDate.HasValue && stageInfo.StageParrots.BeginDate.Value.Date == DateTime.Now.Date,

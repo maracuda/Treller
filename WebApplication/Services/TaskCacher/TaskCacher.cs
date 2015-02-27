@@ -97,11 +97,10 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
                 var boardIds = keys.SelectMany(x => x.GetBoardIds()).Distinct().ToArray();
 
                 var actions = taskManagerClient.GetActionsForBoardCardsAsync(boardIds, lastUpdateUtc).Result.ToArray();
-                
 
                 var isSuccessUpdate = UpdateWhenExists(actions, action => action.Type < ActionType.CreateList, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardCards));
                 isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type < ActionType.CreateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardActions));
-                isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.AddMemberToBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardUsers));
+                isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.AddMemberToBoard || action.Type == ActionType.RemoveMemberFromBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardUsers));
                 isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.CreateList
                                                     || action.Type == ActionType.UpdateList, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardLists));
                 isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.UpdateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.Boards));

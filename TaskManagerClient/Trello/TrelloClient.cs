@@ -73,7 +73,7 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         public Task<CardAction[]> GetActionsForBoardCardsAsync(string[] boardIds, DateTime? fromUtc = null)
         {
-            var queryString = new Dictionary<string, string> {{"limit", "1000"}};
+            var queryString = new Dictionary<string, string> { { "filter", "all" }, { "limit", "1000" } };
             if (fromUtc.HasValue)
             {
                 queryString.Add("since", fromUtc.Value.ToString("O"));
@@ -154,15 +154,16 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         private static CardAction CreateCardAction(Action action)
         {
-            return action.Data.Card == null || action.Data.Board == null || action.Type >= ActionType.CreateList ? null
+            return (action.Data.Card == null || action.Data.Board == null || action.Type > ActionType.RemoveMemberFromBoard)
+                    && action.Type != ActionType.AddMemberToBoard && action.Type != ActionType.RemoveMemberFromBoard ? null
                        : new CardAction
                              {
                                  Id = action.Id,
                                  Date = action.Date,
                                  Initiator = CreateUser(action.MemberCreator),
                                  Type = action.Type,
-                                 BoardId = action.Data.Board.Id,
-                                 CardId = action.Data.Card.Id,
+                                 BoardId = action.Data.Board == null ? string.Empty : action.Data.Board.Id,
+                                 CardId = action.Data.Card == null ? string.Empty : action.Data.Card.Id,
                                  Comment = action.Data.Text,
                                  AddedUser = action.Member != null ? CreateUser(action.Member) : null,
                                  ListId = action.Data.List != null ? action.Data.List.Id : null,
