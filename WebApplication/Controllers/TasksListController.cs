@@ -20,9 +20,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             this.blocksBuilder = blocksBuilder;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(ShowMode showMode = ShowMode.All)
         {
-            var taskListViewModel = await CreateTaskListViewModel();
+            var taskListViewModel = await CreateTaskListViewModel(showMode);
 
             if (Request.IsAjaxRequest())
                 return Json(taskListViewModel, JsonRequestBehavior.AllowGet);
@@ -30,9 +30,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             return View("TasksList", taskListViewModel);
         }
 
-        private async Task<TaskListViewModel> CreateTaskListViewModel()
+        private async Task<TaskListViewModel> CreateTaskListViewModel(ShowMode showMode)
         {
-            var cardListEnterModel = new CardListEnterModel {BoardIds = new string[0]};
+            var cardListEnterModel = new CardListEnterModel { BoardIds = new string[0], ShowMode = showMode };
             var blocks = (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel))
                 .Cast<BaseCardListBlock>()
                 .ToArray();

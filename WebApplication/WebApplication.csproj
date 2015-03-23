@@ -247,6 +247,7 @@
     <Compile Include="Blocks\TaskList\ViewModels\CardListItemViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardProgressInfoViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardStageInfoViewModel.cs" />
+    <Compile Include="Blocks\TaskList\ViewModels\ShowMode.cs" />
     <Compile Include="Controllers\TaskInfoController.cs" />
     <Compile Include="Controllers\TasksListController.cs" />
     <Compile Include="Extensions\EntityExtenssions.cs" />

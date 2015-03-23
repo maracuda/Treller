@@ -113,12 +113,16 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         private CardStateOverallViewModel[] BuildCards(BoardCard[] cards, Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
                                                    Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
                                                    ILookup<string, CardChecklist> cardChecklists, SimpleRepoBranch[] branches,
-                                                   Dictionary<string, BugsInfoViewModel> bugs)
+                                                   Dictionary<string, BugsInfoViewModel> bugs, CardListEnterModel cardListEnterModel)
         {
             var rcBranches = new HashSet<string>(branches.Select(x => x.Name));
             return cards.Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase))
                         .Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches, bugs.SafeGet(card.Id)))
                         .Where(x => x.StageInfo.State != CardState.BeforeDevelop && x.StageInfo.State != CardState.Unknown)
+                        .Where(x => cardListEnterModel.ShowMode == ShowMode.All || 
+                                    (cardListEnterModel.ShowMode == ShowMode.Infrastructure 
+                                     ? x.Labels.Any(l => l.Color == CardLabelColor.Blue)
+                                     : x.Labels.All(l => l.Color != CardLabelColor.Blue)))
                         .OrderByDescending(x => x.StageInfo.State)
                         .ThenByDescending(x => x.StageInfo.StageParrots.PastDays)
                         .ThenBy(x => x.StageInfo.StageParrots.BeginDate)
