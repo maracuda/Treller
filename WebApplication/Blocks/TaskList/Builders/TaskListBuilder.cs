@@ -182,7 +182,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         [BlockModelParameter("billyNotVerified")]
         private BugsCountLinkInfoViewModel GetBillyNotVerifed()
         {
-            return BuildCountLink("#Billy #Resolved -Verified -Obsolete Type: Bug, Task", "Закрытые, но не подтвержденные");
+            return BuildCountLink("#Billy #Resolved -Verified -Obsolete Type: Bug, Task, Feature", "Закрытые, но не подтвержденные");
         }
 
         private BugsCountLinkInfoViewModel BuildCountLink(string filterString, string description)
