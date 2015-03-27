@@ -9,5 +9,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks
         public BugsCountLinkInfoViewModel BillyCurrent { get; set; }
         public BugsCountLinkInfoViewModel BillyAll { get; set; }
         public BugsCountLinkInfoViewModel CsCurrent { get; set; }
+        public BugsCountLinkInfoViewModel BillyNotVerified { get; set; }
     }
 }

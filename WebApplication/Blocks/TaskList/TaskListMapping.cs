@@ -19,7 +19,8 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList
                     BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BattleAssigned, "battleBugsCount"),
                     BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BillyCurrent, "currentBillyBugsCount"),
                     BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BillyAll, "overallBillyBugsCount"),
-                    BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.CsCurrent, "currentCSBugsCount")
+                    BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.CsCurrent, "currentCSBugsCount"),
+                    BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BillyNotVerified, "billyNotVerified")
                 };
 
         public IBlockMapper[] SelectAll()

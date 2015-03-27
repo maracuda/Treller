@@ -178,6 +178,13 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
             return BuildCountLink("#CS -Resolved", "Все баги КС");
         }
 
+        [BlockModel(ContextKeys.TasksKey)]
+        [BlockModelParameter("billyNotVerified")]
+        private BugsCountLinkInfoViewModel GetBillyNotVerifed()
+        {
+            return BuildCountLink("#Billy #Resolved -Verified -Obsolete Type: Bug, Task", "Закрытые, но не подтвержденные");
+        }
+
         private BugsCountLinkInfoViewModel BuildCountLink(string filterString, string description)
         {
             var count = bugTrackerClient.GetFilteredCount(filterString);

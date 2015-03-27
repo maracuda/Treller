@@ -35,7 +35,8 @@ var TaskListComponent = React.createClass({
                 <h4>
                     Информация по багам: Battle (<BugsLink {...this.state.bugsBlock.BattleUnassigned} />/<BugsLink {...this.state.bugsBlock.BattleAssigned} />),
 					Billy (<BugsLink {...this.state.bugsBlock.BillyCurrent} />/<BugsLink {...this.state.bugsBlock.BillyAll} />),
-					CS <BugsLink {...this.state.bugsBlock.CsCurrent} />
+					CS <BugsLink {...this.state.bugsBlock.CsCurrent} />,
+					В тестировании <BugsLink {...this.state.bugsBlock.BillyNotVerified} />
                 </h4>
             </SiteHeader>
             {taskListGroups}
