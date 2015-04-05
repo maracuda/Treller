@@ -94,8 +94,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\React.Web.Mvc4.1.4.0\lib\net40\React.Web.Mvc4.dll</HintPath>
     </Reference>
-    <Reference Include="SKBKontur.BlocksMapping">
-      <HintPath>..\packages\BlocksMapping.0.0.89\lib\SKBKontur.BlocksMapping.dll</HintPath>
+    <Reference Include="SKBKontur.BlocksMapping, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BlocksMapping.0.0.90\lib\SKBKontur.BlocksMapping.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -181,6 +182,7 @@
   <ItemGroup>
     <Compile Include="Abstractions\AsyncRunner.cs" />
     <Compile Include="Abstractions\ClientsIntegrationCredentials.cs" />
+    <Compile Include="Abstractions\DefaultExceptionHandler.cs" />
     <Compile Include="Abstractions\DomainService.cs" />
     <Compile Include="Abstractions\IocContainer.cs" />
     <Compile Include="Abstractions\HttpRequester.cs" />
