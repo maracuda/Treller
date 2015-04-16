@@ -34,7 +34,8 @@ namespace SKBKontur.TaskManagerClient.Extensions
 
             foreach (var task in tasks)
             {
-                foreach (var value in await task)
+                var values = await task;
+                foreach (var value in values)
                 {
                     result.AddLast(converter(value));
                 }

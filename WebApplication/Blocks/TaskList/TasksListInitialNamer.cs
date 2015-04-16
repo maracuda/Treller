@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using SKBKontur.BlocksMapping.Abstrations;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
+using SKBKontur.BlocksMapping.BlockExtenssions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList
 {
@@ -8,7 +9,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList
     {
         public IEnumerable<string> GetParamterNames()
         {
-            return new[] { typeof(CardListEnterModel).FullName };
+            return new[] { typeof(CardListEnterModel).ToBlockParameterKey() };
         }
 
         public string ContextKey { get { return ContextKeys.TasksKey; } }

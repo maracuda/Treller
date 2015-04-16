@@ -9,8 +9,17 @@ namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions
         public string IdMemberCreator { get; set; }
         public DateTime Date { get; set; }
         public ActionMember MemberCreator { get; set; }
-        public ActionType Type { get; set; }
+        public string Type { get; set; }
         public ActionData Data { get; set; }
         public ActionMember Member { get; set; }
+
+        public ActionType ActionType
+        {
+            get
+            {
+                ActionType actionType;
+                return string.IsNullOrEmpty(Type) || !Enum.TryParse(Type, true, out actionType) ? ActionType.Unknown : actionType;
+            }
+        }
     }
 }

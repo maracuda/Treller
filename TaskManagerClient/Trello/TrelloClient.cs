@@ -154,14 +154,14 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         private static CardAction CreateCardAction(Action action)
         {
-            return (action.Data.Card == null || action.Data.Board == null || action.Type > ActionType.RemoveMemberFromBoard)
-                    && action.Type != ActionType.AddMemberToBoard && action.Type != ActionType.RemoveMemberFromBoard ? null
+            return (action.Data.Card == null || action.ActionType == ActionType.Unknown || action.Data.Board == null || action.ActionType > ActionType.RemoveMemberFromBoard)
+                    && action.ActionType != ActionType.AddMemberToBoard && action.ActionType != ActionType.RemoveMemberFromBoard ? null
                        : new CardAction
                              {
                                  Id = action.Id,
                                  Date = action.Date,
                                  Initiator = CreateUser(action.MemberCreator),
-                                 Type = action.Type,
+                                 Type = action.ActionType,
                                  BoardId = action.Data.Board == null ? string.Empty : action.Data.Board.Id,
                                  CardId = action.Data.Card == null ? string.Empty : action.Data.Card.Id,
                                  Comment = action.Data.Text,

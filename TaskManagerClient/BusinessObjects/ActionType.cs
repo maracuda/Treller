@@ -33,5 +33,7 @@
 
         CreateOrganization = 300,
         UpdateOrganization,
+
+        Unknown = 1000,
     }
 }

@@ -8,22 +8,42 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
         {
             new BoardSettings
                 {
-                    Id = "4f4e2e4a0141dade72f808ef",
-                    Name = "Биллинг",
-                    DevelopListName = "Developing",
-                    AnalyticListName = "Analitics & Design",
+                    Id = "552ab670e01e4af28afdc2c2",
+                    Name = "Биллинг продуктов",
+                    DevelopListName = "Dev",
+                    AnalyticListName = "Analytics & Design",
                     ReviewListName = "Review",
-                    DevelopPresentationListName = "Team Presentation",
+                    DevelopPresentationListName = "",
                     TestingListName = "Testing"
                 },
             new BoardSettings
                 {
-                    Id = "50a218636f423ac72500927f",
-                    Name = "CRM",
-                    DevelopListName = "Developing",
-                    AnalyticListName = "Analitics & Design",
+                    Id = "552aae2b8ca279a4eb485af7",
+                    Name = "Услуги УЦ",
+                    DevelopListName = "Dev",
+                    AnalyticListName = "Analytics & Design",
                     ReviewListName = "Review",
-                    DevelopPresentationListName = "Team Presentation",
+                    DevelopPresentationListName = "",
+                    TestingListName = "Testing"
+                },
+            new BoardSettings
+                {
+                    Id = "552ab5e211d6ae9b61dbaa77",
+                    Name = "Оптимизация ТП",
+                    DevelopListName = "Dev",
+                    AnalyticListName = "Analytics & Design",
+                    ReviewListName = "Review",
+                    DevelopPresentationListName = "",
+                    TestingListName = "Testing"
+                },
+            new BoardSettings
+                {
+                    Id = "552ab2abc66faf3bec7915f4",
+                    Name = "Инфраструктура",
+                    DevelopListName = "Dev",
+                    AnalyticListName = "",
+                    ReviewListName = "Review",
+                    DevelopPresentationListName = "",
                     TestingListName = "Testing"
                 }
         };
