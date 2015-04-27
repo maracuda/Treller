@@ -10,7 +10,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
     {
         public CardState GetState(string boardListId, BoardSettings setting, BoardList[] boardLists)
         {
-            var developList = boardLists.FirstOrDefault(list => string.Equals(list.Name, setting.DevelopListName, StringComparison.OrdinalIgnoreCase));
+            var developList = boardLists.FirstOrDefault(list => IsInState(list.Name, setting.DevelopListName));
             if (developList == null)
             {
                 return CardState.BeforeDevelop;
@@ -27,24 +27,24 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 return CardState.Archived;
             }
 
-            if (string.Equals(boardList.Name, setting.DevelopPresentationListName, StringComparison.OrdinalIgnoreCase))
+            if (IsInState(boardList.Name, setting.DevelopPresentationListName))
             {
                 return boardList.Position > developList.Position 
                             ? CardState.Presentation
                             : CardState.AnalitycPresentation;
             }
 
-            if (string.Equals(boardList.Name, setting.ReviewListName, StringComparison.OrdinalIgnoreCase))
+            if (IsInState(boardList.Name, setting.ReviewListName))
             {
                 return CardState.Review;
             }
 
-            if (string.Equals(boardList.Name, setting.TestingListName, StringComparison.OrdinalIgnoreCase))
+            if (IsInState(boardList.Name, setting.TestingListName))
             {
                 return CardState.Testing;
             }
 
-            if (string.Equals(boardList.Name, setting.AnalyticListName, StringComparison.OrdinalIgnoreCase))
+            if (IsInState(boardList.Name, setting.AnalyticListName))
             {
                 return CardState.Analityc;
             }
@@ -60,6 +60,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
             }
 
             return CardState.Archived;
+        }
+
+        private static bool IsInState(string listName, string stateName)
+        {
+            return !string.IsNullOrEmpty(stateName) && listName.StartsWith(stateName, StringComparison.OrdinalIgnoreCase);
         }
     }
 }
