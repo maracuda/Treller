@@ -1,0 +1,120 @@
+﻿@model string
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">.error-block { margin-top: 40px; }
+
+ .error-block-title { font-weight: 900; }
+
+ .error-list {overflow: hidden; }
+
+ .error-list-marker { float: left;
+    margin-right: 5px;
+    margin-top: 7px;}
+
+ .error-list-item { overflow: hidden;
+    margin-top: 7px;}
+
+ .error-highlighted-text {font-weight: 900; }
+
+ .error-list-item:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+ .content-title + .error-block {
+    margin-top: 30px;
+}
+
+ .main-wrapper {     display: table;
+    height: 100%;
+    width: 100%;}
+
+ .content-wrapper {     display: table-cell;
+    height: 100%;
+    vertical-align: middle;
+    padding: 10px 0;}
+
+ .content-frame-wrapper {     width: 540px;
+    padding: 45px 80px;
+    margin: 0 auto 0;
+    
+    border: 1px solid #d6d1cb;
+    border-radius: 5px;
+
+    background-color: #f8f6f3;
+    background: -webkit-linear-gradient(top, #f8f6f3, #f3eee8);
+    background: -moz-linear-gradient(top, #f8f6f3, #f3eee8);
+    background: -ms-linear-gradient(top, #f8f6f3, #f3eee8);
+    background: -o-linear-gradient(top, #f8f6f3, #f3eee8);
+    background: linear-gradient(#f8f6f3, #f3eee8);}
+
+ .content-title-icon {    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+    vertical-align: middle;}
+
+ .content-frame-shadow { width: 600px;
+    height: 9px;
+    margin: 0 auto;}
+</style>
+
+<!DOCTYPE HTML>
+<!--[if IE]><![endif]-->
+<!--[if lt IE 7]><html class="ie ie-lt7 ie-lt8 ie-lt9"><![endif]-->
+<!--[if lt IE 8]><html class="ie ie-lt8 ie-lt9"><![endif]-->
+<!--[if lt IE 9]><html class="ie ie-lt9"><![endif]-->
+<!--[if gt IE 8]><html class="ie"><![endif]-->
+<!--[if !IE]><!--><html><!--<![endif]-->
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Что-то пошло не так :(</title>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="content-wrapper">
+            <div class="content-frame-wrapper">
+                <div class="content-title">
+                    Что-то пошло не так :(
+                    <span class="content-title-icon"></span>
+                </div>                
+                    <div class="error-block">
+                        <div class="error-block-title">Что случилось:</div>
+                        <div class="error-list">
+                            <div class="error-list-marker">&mdash;</div>
+                            <div class="error-list-item">
+                                Произошла ошибка. Информация о ней уже передана разработчикам.
+                                Мы сделаем все, чтобы такого больше <br />
+                                не повторилось. Приносим свои извинения.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="error-block">
+                        <div class="error-block-title">Вы можете:</div>
+                        <div class="error-list">
+                            <div class="error-list-marker">&mdash;</div>
+                            <div class="error-list-item">
+                                <a href="@Url.Action("Index", "TasksList")">Вернуться на страницу с тарифами</a>
+                                и попробовать заново;
+                            </div>
+
+                            <div class="error-list-marker">&mdash;</div>
+                            <div class="error-list-item">
+                                <div>Если ошибка будет повторяться - позвоните в техподдержку@(string.IsNullOrEmpty("1234567894") ? "." : " и сообщите номер заказа.")</div>
+            
+                                <div>Номер заказа: <span class="error-highlighted-text">1234567894</span></div>
+                                <div>Кодовая фраза для обращения в техподдержку:<br/> <span class="error-highlighted-text">@Model</span></div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="content-frame-shadow"></div>
+        </div>
+    </div>
+</body>
+@Html.Raw("</html>")

@@ -61,6 +61,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         [BlockModelParameter("boardIds")]
         private string[] BuildSettings(Dictionary<string, BoardSettings> settings)
         {
@@ -68,48 +69,56 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         public SimpleRepoBranch[] BuildReleaseCandidateBranches()
         {
             return releaseCandidateService.WhatBranchesInReleaseCandidate();
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private BoardCard[] BuildCards([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardCards);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private ILookup<string, BoardList> BuildBoardLists([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private Dictionary<string, User> BuildUsers([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardUsersAsync(ids).Result, TaskCacherStoredTypes.BoardUsers).ToDictionary(x => x.Id);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private ILookup<string, CardAction> BuildCardActions([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetActionsForBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private Board[] BuildBoards([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardsAsync(ids).Result, TaskCacherStoredTypes.Boards);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private ILookup<string, CardChecklist> BuildCardChecklists([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardChecklistsAsync(ids).Result, TaskCacherStoredTypes.BoardChecklists).ToLookup(x => x.CardId);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private CardStateOverallViewModel[] BuildCards(BoardCard[] cards, Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
                                                    Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
                                                    ILookup<string, CardChecklist> cardChecklists, SimpleRepoBranch[] branches,
@@ -137,6 +146,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         }
 
         [BlockModel(ContextKeys.TasksKey)]
+//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private Dictionary<string, BugsInfoViewModel> BuildBugsInfo(ILookup<string, CardChecklist> cardChecklists)
         {
             return cardChecklists.ToDictionary(x => x.Key, x => bugsBuilder.Build(x));
@@ -161,14 +171,14 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         [BlockModelParameter("currentBillyBugsCount")]
         private BugsCountLinkInfoViewModel GetBillyCurrentBugsCount()
         {
-            return BuildCountLink("#Billy #Unresolved Affected versions: -{No Affected versions}", "Баги на текущей версии");
+            return BuildCountLink("#Billy #Unresolved #Unassigned", "Неназначенные баги");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("overallBillyBugsCount")]
         private BugsCountLinkInfoViewModel GetBillyOverallBugsCount()
         {
-            return BuildCountLink("#Billy #Unresolved Affected versions: {No Affected versions}", "Все баги билли");
+            return BuildCountLink("#Billy #Unresolved", "Все баги билли");
         }
 
         [BlockModel(ContextKeys.TasksKey)]

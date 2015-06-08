@@ -20,7 +20,9 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 if (isMatch.Success)
                 {
                     var matchResult = isMatch.Value.Trim('(', ')').Split('/');
-                    var totalCount = Parse(matchResult[1]);
+
+                    var totalCount = matchResult.Length > 1 ? Parse(matchResult[1]) : Parse(matchResult[0]);
+                    
                     result.ProgressInfo.TotalCount += totalCount;
 
                     result.ProgressInfo.CurrentCount += listItem.IsChecked ? totalCount : Parse(matchResult[0]);

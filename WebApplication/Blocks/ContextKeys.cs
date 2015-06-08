@@ -5,5 +5,6 @@
         public const string UsersKey = "Users";
         public const string TasksKey = "Tasks";
         public const string TaskDetalizationKey = "TaskDetalization";
+        public const string PeopleLoadPoolKey = "PeopleLoadPool";
     }
 }
