@@ -45,6 +45,16 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     ReviewListName = "Review",
                     DevelopPresentationListName = "",
                     TestingListName = "Testing"
+                },
+            new BoardSettings
+                {
+                    Id = "557e531fe71fe22dd72d1348",
+                    Name = "Партнерка",
+                    DevelopListName = "Dev",
+                    AnalyticListName = "Analytics&Desing",
+                    ReviewListName = "Review",
+                    DevelopPresentationListName = "",
+                    TestingListName = "Testing"
                 }
         };
 
