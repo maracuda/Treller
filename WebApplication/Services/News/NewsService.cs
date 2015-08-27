@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
+using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects;
@@ -72,25 +74,25 @@ namespace SKBKontur.Treller.WebApplication.Services.News
             var currentTechNews = cachedFileStorage.Find<Dictionary<DateTime, NewsModel>>(TechNewsStoreName) ?? new Dictionary<DateTime, NewsModel>();
             var currentNews = cachedFileStorage.Find<Dictionary<DateTime, NewsModel>>(NewsStoreName) ?? new Dictionary<DateTime, NewsModel>();
 
-            var publishedTechNewsCardIds = new HashSet<string>(currentTechNews.Where(x => x.Value.IsPublished).SelectMany(x => x.Value.CardIds), StringComparer.OrdinalIgnoreCase);
-            var publishedNewsCardIds = new HashSet<string>(currentNews.Where(x => x.Value.IsPublished).SelectMany(x => x.Value.CardIds), StringComparer.OrdinalIgnoreCase);
+            var publishedTechNewsCardIds = new HashSet<string>(currentTechNews.Where(x => x.Value.IsPublished || x.Value.IsDeleted).SelectMany(x => x.Value.CardIds), StringComparer.OrdinalIgnoreCase);
+            var publishedNewsCardIds = new HashSet<string>(currentNews.Where(x => x.Value.IsPublished || x.Value.IsDeleted).SelectMany(x => x.Value.CardIds), StringComparer.OrdinalIgnoreCase);
 
-            var cardsByDate = BuildCards(cardActions)
-                                .GroupBy(x => x.DueDate ?? DateTime.Now.Date)
-                                .Where(x => x.Key >= DateTime.Now.Date)
-                                .ToDictionary(x => x.Key, x => x.ToArray());
+            var cardsByDate = BuildCards(cardActions, boardIds)
+                .GroupBy(x => x.DueDate ?? DateTime.Now.Date)
+                .Where(x => x.Key >= DateTime.Now.Date)
+                .ToDictionary(x => x.Key, x => x.ToArray());
 
             var technicalNews = cardsByDate.Select(card => BuildNewsModel(card.Key, card.Value, true, publishedTechNewsCardIds)).Where(x => x != null).ToArray();
             var news = cardsByDate.Select(card => BuildNewsModel(card.Key, card.Value, false, publishedNewsCardIds)).Where(x => x != null).ToArray();
 
             foreach (var oneTechNews in technicalNews)
             {
-                currentTechNews[oneTechNews.ReleaseDate] = oneTechNews;
+                currentTechNews[oneTechNews.ReleaseDate.Date] = oneTechNews;
             }
 
             foreach (var oneNews in news)
             {
-                currentNews[oneNews.ReleaseDate] = oneNews;
+                currentNews[oneNews.ReleaseDate.Date] = oneNews;
             }
 
             cachedFileStorage.Write(TechNewsStoreName, currentTechNews);
@@ -99,24 +101,74 @@ namespace SKBKontur.Treller.WebApplication.Services.News
             return true;
         }
 
-        private CardNewsModel[] BuildCards(CardAction[] actions)
+        public void SendNews(Guid id)
         {
-            var actionBoardIds = actions.Select(x => x.BoardId).Distinct().ToArray();
+            var news = GetAllNews();
+            var newsToPublish = news.News.Union(news.TechnicalNews).Select(x => x.Value).First(x => x.Id == id);
+
+            SendMessageWithNews(newsToPublish);
+            
+            newsToPublish.IsPublished = true;
+            cachedFileStorage.Write(TechNewsStoreName, news.TechnicalNews);
+            cachedFileStorage.Write(NewsStoreName, news.News);
+        }
+
+        private static void SendMessageWithNews(NewsModel newsToPublish)
+        {
+            using (var smtpClient = new SmtpClient("mail.site", 25) {UseDefaultCredentials = true, DeliveryMethod = SmtpDeliveryMethod.Network})
+            {
+                smtpClient.Send("maylo@skbkontur.ru", "i.spitsyna@skbkontur.ru", newsToPublish.NewsHeader, newsToPublish.NewsText);
+            }
+        }
+
+        public void SendNews(DateTime date)
+        {
+            var news = GetAllNews();
+            var technicalNewsToSend = news.TechnicalNews.SafeGet(date);
+            var newsToSend = news.News.SafeGet(date);
+
+            if (technicalNewsToSend != null && !technicalNewsToSend.IsPublished && !technicalNewsToSend.IsDeleted)
+            {
+                SendMessageWithNews(technicalNewsToSend);
+                technicalNewsToSend.IsPublished = true;
+                cachedFileStorage.Write(TechNewsStoreName, news.TechnicalNews);
+            }
+
+            if (newsToSend != null && !newsToSend.IsPublished && !newsToSend.IsDeleted)
+            {
+                SendMessageWithNews(newsToSend);
+                newsToSend.IsPublished = true;
+                cachedFileStorage.Write(NewsStoreName, news.News);
+            }
+        }
+
+        public void DeleteNews(Guid id)
+        {
+            var news = GetAllNews();
+            var newsToDelete = news.News.Union(news.TechnicalNews).Select(x => x.Value).First(x => x.Id == id);
+
+            newsToDelete.IsDeleted = true;
+            cachedFileStorage.Write(TechNewsStoreName, news.TechnicalNews);
+            cachedFileStorage.Write(NewsStoreName, news.News);
+        }
+
+        private CardNewsModel[] BuildCards(CardAction[] actions, string[] boardIds)
+        {
             var actionCardIds = new HashSet<string>(actions.Select(x => x.CardId), StringComparer.OrdinalIgnoreCase);
 
-            var cards = taskCacher.GetCached(actionBoardIds, ids => taskManagerClient.GetBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardCards)
+            var cards = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardCards)
                 .Where(x => actionCardIds.Contains(x.Id))
                 .ToArray();
 
-            var boardLists = taskCacher.GetCached(actionBoardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists)
+            var boardLists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists)
                 .ToLookup(x => x.BoardId);
 
-            var boardSettings = settingService.GetDevelopingBoards().Where(x => actionBoardIds.Contains(x.Id)).ToDictionary(x => x.Id);
+            var boardSettings = settingService.GetDevelopingBoards().ToDictionary(x => x.Id);
 
-            var cardActions = taskCacher.GetCached(actionBoardIds, ids => taskManagerClient.GetActionsForBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardActions)
+            var cardActions = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetActionsForBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardActions)
                 .ToLookup(x => x.CardId);
 
-            var checklists = taskCacher.GetCached(actionBoardIds, ids => taskManagerClient.GetBoardChecklistsAsync(ids).Result, TaskCacherStoredTypes.BoardChecklists).ToLookup(x => x.CardId);
+            var checklists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardChecklistsAsync(ids).Result, TaskCacherStoredTypes.BoardChecklists).ToLookup(x => x.CardId);
 
             return cards.Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase))
                 .Select(card => BuildCard(boardLists, boardSettings, cardActions, card, checklists))
@@ -148,6 +200,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
         {
             var marker = isTechnicalNews ? "**Технические новости**" : "**Новости**";
             var news = new StringBuilder();
+            var cardNames = new StringBuilder();
 
             foreach (var card in cards)
             {
@@ -180,13 +233,17 @@ namespace SKBKontur.Treller.WebApplication.Services.News
 
                 cardNews = cardNews.Trim();
 
-                if (news.Length > 0)
+                if (cardNames.Length > 0)
                 {
-                    news.Insert(0, "Ожидается релиз нескольких фич:" + Environment.NewLine);
+                    cardNames.Append(", ");
                 }
 
+                news.Append(card.CardName);
+                news.Append(Environment.NewLine);
                 news.Append(cardNews);
                 news.Append(Environment.NewLine);
+                news.Append(Environment.NewLine);
+                cardNames.Append(card.CardName);
             }
 
             if (news.Length == 0)
@@ -196,11 +253,13 @@ namespace SKBKontur.Treller.WebApplication.Services.News
 
             return new NewsModel
             {
-                ReleaseDate = releaseDate,
+                Id = Guid.NewGuid(),
+                ReleaseDate = releaseDate.Date,
                 CardIds = cards.Select(x => x.CardId).ToArray(),
                 IsTechnicalNews = isTechnicalNews,
-                NewsHeader = isTechnicalNews ? "Технические новости" : "Релизы",
-                NewsText = news.ToString()
+                NewsHeader = (isTechnicalNews ? "Технические релизы: " : "Релизы: ") + cardNames,
+                NewsText = news.ToString(),
+                IsPublished = false
             };
         }
     }

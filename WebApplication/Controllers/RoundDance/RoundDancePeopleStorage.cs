@@ -32,7 +32,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
                     WorkPeriods = new []
                     {
                         new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 07, 27), EndDate = new DateTime(2015, 08, 16) },
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 08, 17) }
+                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 08, 17), EndDate = new DateTime(2015, 08, 30)},
+                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 08, 31), EndDate = new DateTime(2015, 09, 06)},
+                        new DirectionPeriod { Direction = Direction.LinksDeliveryAgent, BeginDate = new DateTime(2015, 09, 07), EndDate = new DateTime(2015, 09, 20)},
                     }},
                 new RoundDancePeople { Name = "Павел Александров",
                     WorkPeriods = new []
@@ -78,7 +80,8 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
                         new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 06, 20), EndDate = new DateTime(2015, 07, 01) },
                         new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 07, 6), EndDate = new DateTime(2015, 8, 19)},
                         new DirectionPeriod { Direction = Direction.Vendors, BeginDate = new DateTime(2015, 08, 20), EndDate = new DateTime(2015, 09, 07)},
-                        new DirectionPeriod { Direction = Direction.RomingDiadoc, BeginDate = new DateTime(2015, 09, 08)}
+                        new DirectionPeriod { Direction = Direction.RomingDiadoc, BeginDate = new DateTime(2015, 09, 08), EndDate = new DateTime(2015, 09, 20)},
+                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 09, 21)},
                     }},
                 new RoundDancePeople { Name = "Сережа Рожин",
                     WorkPeriods = new []
@@ -139,7 +142,8 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
                         new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 08, 03), EndDate = new DateTime(2015, 08, 09)},
                         new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 08, 10), EndDate = new DateTime(2015, 08, 19)},
                         new DirectionPeriod { Direction = Direction.Vendors, BeginDate = new DateTime(2015, 08, 20), EndDate = new DateTime(2015, 09, 07)},
-                        new DirectionPeriod { Direction = Direction.RomingDiadoc, BeginDate = new DateTime(2015, 09, 08)}
+                        new DirectionPeriod { Direction = Direction.RomingDiadoc, BeginDate = new DateTime(2015, 09, 08), EndDate = new DateTime(2015, 09, 20)},
+                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 09, 21)},
                     }},
                 new RoundDancePeople { Name = "Оля Соболева",
                     WorkPeriods = new []

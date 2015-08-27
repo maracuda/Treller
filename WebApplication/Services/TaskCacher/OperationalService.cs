@@ -35,6 +35,11 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
                 {
                     lastUpdateUtc = elapsedEventArgs.SignalTime;
                 }
+
+//                if (DateTime.Now.Hour > 18 && DateTime.Now.Hour < 19)
+//                {
+//                    newsService.SendNews(DateTime.Now.Date);
+//                }
             }
             finally
             {

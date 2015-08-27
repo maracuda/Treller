@@ -26,6 +26,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     DevelopPresentationListName = "",
                     TestingListName = "Testing",
                     WaitForReleaseListName = "Wait for release",
+                    IsDeleted = true
                 },
             new BoardSettings
                 {
@@ -48,6 +49,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     DevelopPresentationListName = "",
                     TestingListName = "Testing",
                     WaitForReleaseListName = "Wait for release",
+                    IsDeleted = true
                 },
             new BoardSettings
                 {
@@ -58,7 +60,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     ReviewListName = "Review",
                     DevelopPresentationListName = "",
                     TestingListName = "Testing",
-                    WaitForReleaseListName = "Wait for release",
+                    WaitForReleaseListName = "Wait for release"
                 },
             new BoardSettings
                 {
@@ -70,6 +72,29 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     DevelopPresentationListName = "",
                     TestingListName = "Testing",
                     WaitForReleaseListName = "Wait for release",
+                    IsDeleted = true
+                },
+            new BoardSettings
+                {
+                    Id = "55dc679888eb0faddaf201b2",
+                    Name = "Сценарий продления",
+                    DevelopListName = "Dev",
+                    AnalyticListName = "Analytics&Desing",
+                    ReviewListName = "Review",
+                    DevelopPresentationListName = "",
+                    TestingListName = "Testing",
+                    WaitForReleaseListName = "Wait for release"
+                },
+            new BoardSettings
+                {
+                    Id = "55d55d17e6ca1d101fe0061c",
+                    Name = "Вендоры",
+                    DevelopListName = "Dev",
+                    AnalyticListName = "",
+                    ReviewListName = "Review",
+                    DevelopPresentationListName = "",
+                    TestingListName = "Testing",
+                    WaitForReleaseListName = "Wait for release"
                 }
         };
 

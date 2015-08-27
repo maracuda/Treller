@@ -44,6 +44,9 @@ namespace SKBKontur.Treller.WebApplication
                 .IncludeDirectory("~/Content/Shared", "*.css")
                 .IncludeDirectory("~/Content/TaskList", "*.css")
                 .IncludeDirectory("~/Content/TaskInfo", "*.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/css/News")
+                .IncludeDirectory("~/Content/News", "*.css"));
         }
     }
 }

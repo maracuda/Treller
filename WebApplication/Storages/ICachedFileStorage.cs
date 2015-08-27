@@ -1,6 +1,4 @@
-﻿using SKBKontur.Treller.WebApplication.Services.TaskCacher;
-
-namespace SKBKontur.Treller.WebApplication.Storages
+﻿namespace SKBKontur.Treller.WebApplication.Storages
 {
     public interface ICachedFileStorage
     {

@@ -214,7 +214,6 @@
     <Compile Include="Blocks\ContextKeys.cs" />
     <Compile Include="Blocks\PeopleLoadPool\Blocks\BasePeopleLoadPoolBlock.cs" />
     <Compile Include="Blocks\PeopleLoadPool\Blocks\PeopleLoadPoolListBlock.cs" />
-    <Compile Include="Blocks\PeopleLoadPool\Builders\PeopleLoadPoolBuilders.cs" />
     <Compile Include="Blocks\PeopleLoadPool\Models\PeopleLoadPoolEnterModel.cs" />
     <Compile Include="Blocks\PeopleLoadPool\PeopleLoadPoolInitialNamer.cs" />
     <Compile Include="Blocks\PeopleLoadPool\PeopleLoadPoolMapping.cs" />
@@ -259,7 +258,6 @@
     <Compile Include="Blocks\TaskList\ViewModels\CardStageInfoViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\ShowMode.cs" />
     <Compile Include="Controllers\GeneratorController.cs" />
-    <Compile Include="Controllers\PeopleLoadPoolController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\RoundDanceController.cs" />
     <Compile Include="Controllers\RoundDance\Direction.cs" />
@@ -314,6 +312,7 @@
     <Content Include="Content\Colorbox\images\border2.png" />
     <Content Include="Content\Colorbox\images\loading.gif" />
     <Content Include="Content\Layout\Layout.css" />
+    <Content Include="Content\News\News.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Content\Scripts\Layout\SiteHeader.jsx" />
     <Content Include="Content\Scripts\Shared\StringExtensions.js" />

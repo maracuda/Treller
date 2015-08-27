@@ -5,67 +5,102 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Новости о технических и бизнес-релизах Контур.Биллинг</h2>
+@section Header
+{
+    @Styles.Render("~/bundles/css/News")
+}
 
-<h3>Технические новости</h3>
+<div class="news-content">
+    <span class="news-block header">
+        Новости о технических и бизнес-релизах Контур.Биллинг
+@*        <a class="news__button news_actualize_button" href="@Url.Action("ActualizeNews", "News")">*@
+@*            Актуализировать*@
+@*        </a>*@
+    </span>
+    
 
-<table class="tablerow">
-    <tr>
-        <th>Дата автоматической публикации новости</th>
-        <th>Заголовок сообщения</th>
-        <th>Текст новости</th>
-        <th>Отправить прямо сейчас</th>
-    </tr>
-
-    @foreach (var newsByDate in Model.TechnicalNews.Where(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished).OrderBy(x => x.Key))
+    @if (Model.TechnicalNews.Any(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished && !x.Value.IsDeleted))
     {
-        <tr>
-            <td>@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</td>
-            <td>@newsByDate.Value.NewsHeader</td>
-            <td>@newsByDate.Value.NewsText</td>
-            <td>ТУТ БУДЕТ КНОПКА</td>
-        </tr>
+        <h3>Технические новости</h3>
+
+        <div class="news-block">
+            <div class="news-block__header clearfix">
+                <span class="news-block__column title">Заголовок</span>
+                <span class="news-block__column date">Дата</span>
+                <span class="news-block__column action">Действия</span>
+                <span class="news-block__column action"></span>
+            </div>
+
+            @foreach (var newsByDate in Model.TechnicalNews.Where(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished).OrderBy(x => x.Key))
+            {
+                <div class="news-block__row clearfix" title="@newsByDate.Value.NewsText">
+                    <span class="news-block__column title">@newsByDate.Value.NewsHeader</span>
+                    <span class="news-block__column date">@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</span>
+                    <span class="news-block__column action">
+                        <a class="news__button" href="@Url.Action("SendNews", "News", new {id = newsByDate.Value.Id})">
+                            Опубликовать
+                        </a>
+                    </span>
+                    <span class="news-block__column action2">
+                        <a class="news__button" href="@Url.Action("DeleteNews", "News", new {id = newsByDate.Value.Id})">
+                            Удалить
+                        </a>
+                    </span>
+                </div>
+            }
+        </div>
     }
-</table>
 
-<h3>Бизнес новости</h3>
-<table class="tablerow">
-    <tr>
-        <th>Дата автоматической публикации новости</th>
-        <th>Заголовок сообщения</th>
-        <th>Текст новости</th>
-        <th>Отправить прямо сейчас</th>
-    </tr>
-
-    @foreach (var newsByDate in Model.News.Where(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished).OrderBy(x => x.Key))
+    @if (Model.News.Any(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished && !x.Value.IsDeleted))
     {
-        <tr>
-            <td>@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</td>
-            <td>@newsByDate.Value.NewsHeader</td>
-            <td>@newsByDate.Value.NewsText</td>
-            <td>ТУТ БУДЕТ КНОПКА</td>
-        </tr>
-    }
-</table>
+        <h3>Бизнес новости</h3>
 
-<h3>Отправленные новости (неактуальные)</h3>
-<table class="tablerow">
-    <tr>
-        <th>Дата релиза</th>
-        <th>Заголовок сообщения</th>
-        <th>Текст новости</th>
-        <th>Новость Опубликована</th>
-        <th>Отправить прямо сейчас</th>
-    </tr>
+        <div class="news-block">
+            <div class="news-block__header clearfix">
+                <span class="news-block__column title">Заголовок</span>
+                <span class="news-block__column date">Дата</span>
+                <span class="news-block__column action">Действия</span>
+                <span class="news-block__column action"></span>
+            </div>
 
-    @foreach (var newsByDate in Model.News.Union(Model.TechnicalNews).Where(x => x.Key < DateTime.Now.Date || x.Value.IsPublished).OrderBy(x => x.Key))
-    {
-        <tr>
-            <td>@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</td>
-            <td>@newsByDate.Value.NewsHeader</td>
-            <td>@newsByDate.Value.NewsText</td>
-            <td>@newsByDate.Value.IsPublished</td>
-            <td>ТУТ БУДЕТ КНОПКА</td>
-        </tr>
+            @foreach (var newsByDate in Model.News.Where(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished).OrderBy(x => x.Key))
+            {
+                <div class="news-block__row clearfix" title="@newsByDate.Value.NewsText">
+                    <span class="news-block__column title">@newsByDate.Value.NewsHeader</span>
+                    <span class="news-block__column date">@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</span>
+                    <span class="news-block__column action">
+                        <a class="news__button" href="@Url.Action("SendNews", "News", new {id = newsByDate.Value.Id})">
+                            Опубликовать
+                        </a>
+                    </span>
+                    <span class="news-block__column action2">
+                        <a class="news__button" href="@Url.Action("DeleteNews", "News", new {id = newsByDate.Value.Id})">
+                            Удалить
+                        </a>
+                    </span>
+                </div>
+            }
+        </div>
     }
-</table>
+
+    <h3>Отправленные новости (неактуальные)</h3>
+
+    <div class="news-block">
+        <div class="news-block__header clearfix">
+            <span class="news-block__column title">Заголовок</span>
+            <span class="news-block__column date">Дата</span>
+            <span class="news-block__column isPublished">Опубликована</span>
+            <span class="news-block__column isPublished">Удалена</span>
+        </div>
+
+        @foreach (var newsByDate in (Model.News.Union(Model.TechnicalNews)).Where(x => x.Key < DateTime.Now.Date || x.Value.IsPublished || x.Value.IsDeleted).OrderBy(x => x.Key))
+        {
+            <div class="news-block__row clearfix" title="@newsByDate.Value.NewsText">
+                <span class="news-block__column title">@newsByDate.Value.NewsHeader</span>
+                <span class="news-block__column date">@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</span>
+                <span class="news-block__column isPublished">@(newsByDate.Value.IsPublished ? "Да" : "Нет")</span>
+                <span class="news-block__column isPublished">@(newsByDate.Value.IsDeleted ? "Да" : "Нет")</span>
+            </div>
+        }
+    </div>
+</div>
