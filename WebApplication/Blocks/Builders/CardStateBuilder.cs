@@ -44,6 +44,11 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 return CardState.Testing;
             }
 
+            if (IsInState(boardList.Name, setting.WaitForReleaseListName))
+            {
+                return CardState.ReleaseWaiting;
+            }
+
             if (IsInState(boardList.Name, setting.AnalyticListName))
             {
                 return CardState.Analityc;

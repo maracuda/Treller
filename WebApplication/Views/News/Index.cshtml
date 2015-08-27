@@ -1,0 +1,71 @@
+﻿@using System.Linq
+@model SKBKontur.Treller.WebApplication.Services.News.NewsViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Новости о технических и бизнес-релизах Контур.Биллинг</h2>
+
+<h3>Технические новости</h3>
+
+<table class="tablerow">
+    <tr>
+        <th>Дата автоматической публикации новости</th>
+        <th>Заголовок сообщения</th>
+        <th>Текст новости</th>
+        <th>Отправить прямо сейчас</th>
+    </tr>
+
+    @foreach (var newsByDate in Model.TechnicalNews.Where(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished).OrderBy(x => x.Key))
+    {
+        <tr>
+            <td>@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</td>
+            <td>@newsByDate.Value.NewsHeader</td>
+            <td>@newsByDate.Value.NewsText</td>
+            <td>ТУТ БУДЕТ КНОПКА</td>
+        </tr>
+    }
+</table>
+
+<h3>Бизнес новости</h3>
+<table class="tablerow">
+    <tr>
+        <th>Дата автоматической публикации новости</th>
+        <th>Заголовок сообщения</th>
+        <th>Текст новости</th>
+        <th>Отправить прямо сейчас</th>
+    </tr>
+
+    @foreach (var newsByDate in Model.News.Where(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished).OrderBy(x => x.Key))
+    {
+        <tr>
+            <td>@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</td>
+            <td>@newsByDate.Value.NewsHeader</td>
+            <td>@newsByDate.Value.NewsText</td>
+            <td>ТУТ БУДЕТ КНОПКА</td>
+        </tr>
+    }
+</table>
+
+<h3>Отправленные новости (неактуальные)</h3>
+<table class="tablerow">
+    <tr>
+        <th>Дата релиза</th>
+        <th>Заголовок сообщения</th>
+        <th>Текст новости</th>
+        <th>Новость Опубликована</th>
+        <th>Отправить прямо сейчас</th>
+    </tr>
+
+    @foreach (var newsByDate in Model.News.Union(Model.TechnicalNews).Where(x => x.Key < DateTime.Now.Date || x.Value.IsPublished).OrderBy(x => x.Key))
+    {
+        <tr>
+            <td>@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</td>
+            <td>@newsByDate.Value.NewsHeader</td>
+            <td>@newsByDate.Value.NewsText</td>
+            <td>@newsByDate.Value.IsPublished</td>
+            <td>ТУТ БУДЕТ КНОПКА</td>
+        </tr>
+    }
+</table>

@@ -260,7 +260,21 @@
     <Compile Include="Blocks\TaskList\ViewModels\ShowMode.cs" />
     <Compile Include="Controllers\GeneratorController.cs" />
     <Compile Include="Controllers\PeopleLoadPoolController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\RoundDanceController.cs" />
+    <Compile Include="Controllers\RoundDance\Direction.cs" />
+    <Compile Include="Controllers\RoundDance\DirectionPeriod.cs" />
+    <Compile Include="Controllers\RoundDance\DirectionTransferViewModel.cs" />
+    <Compile Include="Controllers\RoundDance\IRoundDancePeopleStorage.cs" />
+    <Compile Include="Controllers\RoundDance\IRoundDanceViewModelBuilder.cs" />
+    <Compile Include="Controllers\RoundDance\RoundDanceDirectionWeight.cs" />
+    <Compile Include="Controllers\RoundDance\RoundDancePeople.cs" />
+    <Compile Include="Controllers\RoundDance\RoundDancePeopleDirectionChange.cs" />
+    <Compile Include="Controllers\RoundDance\RoundDancePeopleStorage.cs" />
+    <Compile Include="Controllers\RoundDance\RoundDancePeopleViewModel.cs" />
+    <Compile Include="Controllers\RoundDance\RoundDanceViewModel.cs" />
+    <Compile Include="Controllers\RoundDance\RoundDanceViewModelBuilder.cs" />
+    <Compile Include="Controllers\RoundDance\SuggestDirectionViewModel.cs" />
     <Compile Include="Controllers\TaskInfoController.cs" />
     <Compile Include="Controllers\TasksListController.cs" />
     <Compile Include="Extensions\EntityExtenssions.cs" />
@@ -274,12 +288,21 @@
     </Compile>
     <Compile Include="Models\TaskList\TaskListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\News\CardNewsModel.cs" />
+    <Compile Include="Services\News\INewsService.cs" />
+    <Compile Include="Services\News\NewsModel.cs" />
+    <Compile Include="Services\News\NewsService.cs" />
+    <Compile Include="Services\News\NewsViewModel.cs" />
     <Compile Include="Services\Settings\BoardSettings.cs" />
     <Compile Include="Services\Settings\ISettingService.cs" />
     <Compile Include="Services\Settings\SettingService.cs" />
+    <Compile Include="Services\TaskCacher\IOperationalService.cs" />
     <Compile Include="Services\TaskCacher\ITaskCacher.cs" />
+    <Compile Include="Services\TaskCacher\OperationalService.cs" />
     <Compile Include="Services\TaskCacher\TaskCacher.cs" />
     <Compile Include="Services\TaskCacher\TaskCacherStoredTypes.cs" />
+    <Compile Include="Storages\CachedFileStorage.cs" />
+    <Compile Include="Storages\ICachedFileStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Bootstrap\bootstrap-theme.css" />
@@ -391,6 +414,7 @@
     <Content Include="Views\Shared\DisplayTemplates\UserAvatarViewModel.cshtml" />
     <Content Include="Views\Generator\Index.cshtml" />
     <Content Include="Views\RoundDance\Index.cshtml" />
+    <None Include="Views\News\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blocks\Users\" />

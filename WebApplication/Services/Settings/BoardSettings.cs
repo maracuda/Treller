@@ -9,5 +9,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
         public string ReviewListName { get; set; }
         public string DevelopPresentationListName { get; set; }
         public string TestingListName { get; set; }
+        public string WaitForReleaseListName { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using SKBKontur.Treller.WebApplication.App_Start;
 using System.Linq;
+using SKBKontur.Treller.WebApplication.Services.TaskCacher;
 
 namespace SKBKontur.Treller.WebApplication
 {
@@ -30,6 +31,7 @@ namespace SKBKontur.Treller.WebApplication
 
             BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            container.Get<IOperationalService>().Start();
         }
     }
 }

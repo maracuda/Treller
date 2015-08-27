@@ -1,0 +1,49 @@
+using System.ComponentModel;
+
+namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
+{
+    public enum Direction
+    {
+        [Description("Биллинг")]
+        ProductBilling = 0,
+
+        [Description("ТП")]
+        Support,
+
+        [Description("УЦ")]
+        СaServices,
+
+        [Description("Партнерка")]
+        Crm,
+
+        [Description("Инфраструктура")]
+        Infrastructure,
+
+        [Description("Отпуск")]
+        Leave,
+
+        [Description("Дежурство")]
+        Duty,
+
+        [Description("Шустрые задачи")]
+        SpeedyFeatures,
+
+        [Description("Тарифы и скидки УЦ")]
+        CaTariffsAndDiscounts,
+
+        [Description("Вендоры")]
+        Vendors,
+
+        [Description("Сценарий продления")]
+        ProlongationScenario,
+
+        [Description("Связи Д-агента")]
+        LinksDeliveryAgent,
+
+        [Description("Миграция УЦ")]
+        CaMigration,
+
+        [Description("Роуминг ДД")]
+        RomingDiadoc,
+    }
+}

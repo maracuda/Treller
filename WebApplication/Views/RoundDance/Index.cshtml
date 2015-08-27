@@ -1,7 +1,8 @@
-﻿@using SKBKontur.Treller.WebApplication.Controllers
+﻿@using System.Linq
+@using Microsoft.Ajax.Utilities
 @using SKBKontur.Infrastructure.CommonExtenssions
-@using System.Linq
-@model SKBKontur.Treller.WebApplication.Controllers.RoundDanceViewModel
+@using SKBKontur.Treller.WebApplication.Controllers.RoundDance
+@model SKBKontur.Treller.WebApplication.Controllers.RoundDance.RoundDanceViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -29,42 +30,104 @@
         }
 
         .tablerow2 { font-weight: bold; }
+        .tablerow3 {
+            color: #6abf3d;
+            font-weight: bold;
+        }
+
+        .tablerow4 {
+            color: #ff6a00;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div>
-        <table class ="tablerow">
+        <h2>Текущие направления:</h2>
+        <table class="tablerow">
             @foreach (var pair in Model.DirectionPeoples)
             {
                 <tr>
                     <th>@pair.Key.GetEnumDescription()</th>
                     <th>Вес</th>
-                    <th>Куда ротироваться?</th>
-                    <th>Биллинг</th>
-                    <th>УЦ</th>
-                    <th>ТП</th>
-                    <th>CRM</th>
-@*                    <th>Инфраструктура</th>*@
+                    <th>Вес, куда ротироваться</th>
+                    @foreach (Direction direction in Enum.GetValues(typeof (Direction)).Cast<Direction>().Where(x => (int)x > 3))
+                    {
+                        <th>@direction.GetEnumDescription()</th>
+                    }
                 </tr>
-                var rotationWeight = pair.Value.First().CurrentWeight.Weight;
-                var maxRotationPeoplesWeight = pair.Value.ToDictionary(x => x.People.Name, t => t.DirectionWeights.Select(x => x.Value.RotationWeight).Max());
-            
+//                var rotationWeight = pair.Value.First().CurrentWeight.Weight;
+//                var maxRotationPeoplesWeight = pair.Value.ToDictionary(x => x.People.Name, t => t.DirectionWeights.Select(x => x.Value.RotationWeight).Max());
+
                 foreach (var people in pair.Value)
                 {
                     <tr>
-                        <td class=@(rotationWeight == people.CurrentWeight.Weight ? "tablerow2" : "tablerow")>@people.People.Name</td>
-                        <td class=@(rotationWeight == people.CurrentWeight.Weight ? "tablerow2" : "tablerow")>@people.CurrentWeight.Weight</td>
+
+                        <td> @people.People.Name</td>
+                        <td>@people.CurrentWeight.Weight</td>
                         <td>Необходимость ротации в:</td>
-                        
-                        <td class=@(maxRotationPeoplesWeight[people.People.Name] == people.DirectionWeights[Direction.ProductBilling].RotationWeight ? "tablerow2" : "tablerow")>@people.DirectionWeights[Direction.ProductBilling].RotationWeight</td>
-                        <td class=@(maxRotationPeoplesWeight[people.People.Name] == people.DirectionWeights[Direction.СaServices].RotationWeight ? "tablerow2" : "tablerow")>@people.DirectionWeights[Direction.СaServices].RotationWeight</td>
-                        <td class=@(maxRotationPeoplesWeight[people.People.Name] == people.DirectionWeights[Direction.Support].RotationWeight ? "tablerow2" : "tablerow")>@people.DirectionWeights[Direction.Support].RotationWeight</td>
-                        <td class=@(maxRotationPeoplesWeight[people.People.Name] == people.DirectionWeights[Direction.Crm].RotationWeight ? "tablerow2" : "tablerow")>@people.DirectionWeights[Direction.Crm].RotationWeight</td>
-@*                        <td>@people.DirectionWeights[Direction.Infrastructure].RotationWeight</td>*@
+
+                        <td>@people.DirectionWeights[Direction.ProductBilling].RotationWeight</td>
+                        @foreach (Direction direction in Enum.GetValues(typeof(Direction)).Cast<Direction>().Where(x => (int)x > 3))
+                        {
+                            <td>@people.DirectionWeights[direction].RotationWeight</td>
+                        }
                     </tr>
                 }
             }
         </table>
-    </div>
+
+        @if (Model.DirectionPeoples.SelectMany(x => x.Value).Any(x => x.Suggest != null && !x.Suggest.IsSuggestDirection))
+        {
+            <h2>Недавно отхороводились:</h2>
+            <table class="tablerow">
+                <tr>
+                    <th>Кто</th>
+                    <th>Откуда</th>
+                    <th>Куда</th>
+                    <th>Когда</th>
+                </tr>
+
+                @foreach (var suggest in Model.DirectionPeoples
+                    .SelectMany(x => x.Value)
+                    .Where(x => x.Suggest != null && !x.Suggest.IsSuggestDirection)
+                    .Select(x => x.Suggest)
+                    .OrderBy(x => x.NewDirection))
+                {
+                    <tr>
+                        <td>@suggest.Name</td>
+                        <td>@suggest.OldDirection.IfNotNull(x => x.GetEnumDescription())</td>
+                        <td>@(suggest.NewDirection.GetEnumDescription())</td>
+                        <td>@suggest.SuggestDate.IfNotNull(x => x.Value.ToString("dd.MM.yyyy"))</td>
+                    </tr>
+                }
+            </table>
+        }
+
+        <h2>Ближайшие хороводы:</h2>
+        <table class="tablerow">
+            <tr>
+                <th>Кто</th>
+                <th>Откуда</th>
+                <th>Куда</th>
+                <th>Когда</th>
+            </tr>
+
+            @foreach (var suggest in Model.DirectionPeoples
+                .SelectMany(x => x.Value)
+                .Where(x => x.NextTransfers != null && x.NextTransfers.Length > 0)
+                .SelectMany(x => x.NextTransfers)
+                .OrderBy(x => x.TransferDate)
+                .ThenBy(x => x.NewDirection))
+            {
+                <tr>
+                    <td>@suggest.Name</td>
+                    <td>@suggest.OldDirection.GetEnumDescription()</td>
+                    <td>@(suggest.NewDirection.GetEnumDescription())</td>
+                    <td>@(!suggest.TransferEndDate.HasValue ? suggest.TransferDate.ToString("dd.MM.yyyy") : string.Format("{0:dd.MM.yyyy} - {1:dd.MM.yyyy}", suggest.TransferDate, suggest.TransferEndDate.Value))</td>
+                </tr>
+            }
+        </table>
+</div>
 </body>
 @Html.Raw("</html>")

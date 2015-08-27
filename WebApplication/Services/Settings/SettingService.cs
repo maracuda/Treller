@@ -1,10 +1,20 @@
+using System;
 using System.Linq;
+using SKBKontur.Treller.WebApplication.Storages;
 
 namespace SKBKontur.Treller.WebApplication.Services.Settings
 {
     public class SettingService : ISettingService
     {
-        private static readonly BoardSettings[] Settings = new[]
+        private readonly Lazy<BoardSettings[]> _settings;
+        private const string SettingsName = "boardSettings";
+
+        public SettingService(ICachedFileStorage cachedFileStorage)
+        {
+            _settings = new Lazy<BoardSettings[]>(() => GetBoardSettings(cachedFileStorage), true);
+        }
+
+        private static readonly BoardSettings[] DefaultSettings = new[]
         {
             new BoardSettings
                 {
@@ -14,7 +24,8 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     AnalyticListName = "Analytics & Design",
                     ReviewListName = "Review",
                     DevelopPresentationListName = "",
-                    TestingListName = "Testing"
+                    TestingListName = "Testing",
+                    WaitForReleaseListName = "Wait for release",
                 },
             new BoardSettings
                 {
@@ -24,7 +35,8 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     AnalyticListName = "Analytics & Design",
                     ReviewListName = "Review",
                     DevelopPresentationListName = "",
-                    TestingListName = "Testing"
+                    TestingListName = "Testing",
+                    WaitForReleaseListName = "Wait for release",
                 },
             new BoardSettings
                 {
@@ -34,7 +46,8 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     AnalyticListName = "Analytics & Design",
                     ReviewListName = "Review",
                     DevelopPresentationListName = "",
-                    TestingListName = "Testing"
+                    TestingListName = "Testing",
+                    WaitForReleaseListName = "Wait for release",
                 },
             new BoardSettings
                 {
@@ -44,7 +57,8 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     AnalyticListName = "",
                     ReviewListName = "Review",
                     DevelopPresentationListName = "",
-                    TestingListName = "Testing"
+                    TestingListName = "Testing",
+                    WaitForReleaseListName = "Wait for release",
                 },
             new BoardSettings
                 {
@@ -54,18 +68,31 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     AnalyticListName = "Analytics&Desing",
                     ReviewListName = "Review",
                     DevelopPresentationListName = "",
-                    TestingListName = "Testing"
+                    TestingListName = "Testing",
+                    WaitForReleaseListName = "Wait for release",
                 }
         };
 
+        private static BoardSettings[] GetBoardSettings(ICachedFileStorage cachedFileStorage)
+        {
+            var result = cachedFileStorage.Find<BoardSettings[]>(SettingsName);
+            if (result == null)
+            {
+                result = DefaultSettings;
+                cachedFileStorage.Write(SettingsName, DefaultSettings);
+            }
+
+            return result;
+        }
+
         public string[] GetDevelopingBoardIds()
         {
-            return Settings.Select(x => x.Id).ToArray();
+            return _settings.Value.Select(x => x.Id).ToArray();
         }
 
         public BoardSettings[] GetDevelopingBoards()
         {
-            return Settings;
+            return _settings.Value;
         }
     }
 }

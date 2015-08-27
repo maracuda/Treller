@@ -6,5 +6,6 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
     {
         T GetCached<T>(string[] boardIds, Func<string[], T> loadAction, TaskCacherStoredTypes storedType);
         T[] GetBuilded<T>();
+        bool TryActualize(DateTime timestamp);
     }
 }
