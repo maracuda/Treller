@@ -31,6 +31,12 @@ namespace SKBKontur.TaskManagerClient.Trello
                                    };
         }
 
+        public Task<Board[]> GetOpenBoardsAsync(string organizationIdOrName)
+        {
+            return GetTrelloDataAsync<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string>{{"filter", "open"}})
+                    .Await(x => x.Select(b => new Board { Id = b.Id, Name = b.Name, Url = b.Url, OrganizationId = b.IdOrganization }).ToArray());
+        }
+
         public Task<Board[]> GetBoardsAsync(string[] boardIds)
         {
             return boardIds.Select(id => GetTrelloDataAsync<BusinessObjects.Boards.Board>(id, "boards/{0}"))

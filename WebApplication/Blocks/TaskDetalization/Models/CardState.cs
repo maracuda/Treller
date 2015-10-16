@@ -31,6 +31,9 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models
         [Description("Ждёт релиз")]
         ReleaseWaiting,
 
+        [Description("В релизе")]
+        Released,
+
         [Description("В архиве")]
         Archived,
     }

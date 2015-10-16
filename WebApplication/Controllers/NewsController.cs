@@ -8,12 +8,12 @@ namespace SKBKontur.Treller.WebApplication.Controllers
     public class NewsController : Controller
     {
         private readonly INewsService newsService;
-        private readonly ITaskCacher taskCacher;
+        private readonly IOperationalService operationalService;
 
-        public NewsController(INewsService newsService, ITaskCacher taskCacher)
+        public NewsController(INewsService newsService, IOperationalService operationalService)
         {
             this.newsService = newsService;
-            this.taskCacher = taskCacher;
+            this.operationalService = operationalService;
         }
 
         [HttpGet]
@@ -33,7 +33,8 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public ActionResult ActualizeNews()
         {
-            newsService.TryRefresh(DateTime.Now.Date);
+            operationalService.Actualize();
+            newsService.TryRefresh(DateTime.Today);
 
             return RedirectToAction("Index");
         }

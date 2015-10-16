@@ -51,10 +51,10 @@ namespace SKBKontur.Treller.WebApplication.Services.News
             };
         }
 
-        public bool TryRefresh(DateTime timestamp)
+        public bool TryRefresh(DateTime? timestamp)
         {
             var boardIds = settingService.GetDevelopingBoards().Select(x => x.Id).ToArray();
-            var actions = taskManagerClient.GetActionsForBoardCardsAsync(boardIds, timestamp).Result.ToArray();
+            var actions = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetActionsForBoardCardsAsync(boardIds, timestamp).Result, TaskCacherStoredTypes.BoardActions);
 
             if (actions.Length <= 0)
             {
@@ -81,6 +81,11 @@ namespace SKBKontur.Treller.WebApplication.Services.News
                 .GroupBy(x => x.DueDate ?? DateTime.Now.Date)
                 .Where(x => x.Key >= DateTime.Now.Date)
                 .ToDictionary(x => x.Key, x => x.ToArray());
+
+            if (cardsByDate.Count == 0)
+            {
+                return true;
+            }
 
             var technicalNews = cardsByDate.Select(card => BuildNewsModel(card.Key, card.Value, true, publishedTechNewsCardIds)).Where(x => x != null).ToArray();
             var news = cardsByDate.Select(card => BuildNewsModel(card.Key, card.Value, false, publishedNewsCardIds)).Where(x => x != null).ToArray();
@@ -117,7 +122,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
         {
             using (var smtpClient = new SmtpClient("mail.site", 25) {UseDefaultCredentials = true, DeliveryMethod = SmtpDeliveryMethod.Network})
             {
-                smtpClient.Send("maylo@skbkontur.ru", "i.spitsyna@skbkontur.ru", newsToPublish.NewsHeader, newsToPublish.NewsText);
+                smtpClient.Send("maylo@skbkontur.ru", "maylo@skbkontur.ru", newsToPublish.NewsHeader, newsToPublish.NewsText);
             }
         }
 
@@ -155,26 +160,15 @@ namespace SKBKontur.Treller.WebApplication.Services.News
         private CardNewsModel[] BuildCards(CardAction[] actions, string[] boardIds)
         {
             var actionCardIds = new HashSet<string>(actions.Select(x => x.CardId), StringComparer.OrdinalIgnoreCase);
-
-            var cards = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardCards)
-                .Where(x => actionCardIds.Contains(x.Id))
-                .ToArray();
-
-            var boardLists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists)
-                .ToLookup(x => x.BoardId);
-
+            var cards = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardCards).Where(x => actionCardIds.Contains(x.Id)).ToArray();
+            var boardLists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);
             var boardSettings = settingService.GetDevelopingBoards().ToDictionary(x => x.Id);
-
-            var cardActions = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetActionsForBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardActions)
-                .ToLookup(x => x.CardId);
-
+            var cardActions = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetActionsForBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
             var checklists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardChecklistsAsync(ids).Result, TaskCacherStoredTypes.BoardChecklists).ToLookup(x => x.CardId);
 
             return cards.Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase))
                 .Select(card => BuildCard(boardLists, boardSettings, cardActions, card, checklists))
-                .Where(x =>
-                    (x.State == CardState.ReleaseWaiting && x.DueDate.HasValue)
-                    || x.State == CardState.Archived)
+                .Where(x => (x.State == CardState.ReleaseWaiting && x.DueDate.HasValue) || x.State == CardState.Released)
                 .ToArray();
         }
 
@@ -209,7 +203,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
                     continue;
                 }
 
-                var newsIndex = card.CardDescription.IndexOf(marker, 0, StringComparison.OrdinalIgnoreCase);
+                var newsIndex = card.CardDescription.Replace(":","").IndexOf(marker, 0, StringComparison.OrdinalIgnoreCase);
                 if (newsIndex < 0)
                 {
                     continue;
@@ -226,7 +220,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
 
                 var cardNews = card.CardDescription.Substring(newsIndex, newsLength);
 
-                if (string.IsNullOrEmpty(cardNews))
+                if (string.IsNullOrEmpty(cardNews) || cardNews.Length < 10)
                 {
                     continue;
                 }

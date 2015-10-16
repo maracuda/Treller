@@ -7,6 +7,10 @@ using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using SKBKontur.Treller.WebApplication.App_Start;
 using System.Linq;
+using SKBKontur.BlocksMapping.Blocks;
+using SKBKontur.Treller.WebApplication.Blocks;
+using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
+using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using SKBKontur.Treller.WebApplication.Services.TaskCacher;
 
 namespace SKBKontur.Treller.WebApplication
@@ -31,6 +35,12 @@ namespace SKBKontur.Treller.WebApplication
 
             BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            WarmUp(container);
+        }
+
+        private static void WarmUp(IContainer container)
+        {
+            var warmedBlocks = container.Get<IBlocksBuilder>().BuildBlocks(ContextKeys.TasksKey, new[] { typeof(BoardsBlock), typeof(CardListBlock) }, new CardListEnterModel { BoardIds = new string[0], ShowMode = ShowMode.All }).Result;
             container.Get<IOperationalService>().Start();
         }
     }

@@ -61,7 +61,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 
             if (boardList.Position > developList.Position)
             {
-                return CardState.ReleaseWaiting;
+                return CardState.Released;
             }
 
             return CardState.Archived;

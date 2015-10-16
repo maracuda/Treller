@@ -93,7 +93,7 @@ namespace SKBKontur.HttpInfrastructure.Clients
             var handler = new HttpClientHandler
                               {
                                   CookieContainer = cookies,
-                                  UseCookies = true
+                                  UseCookies = true,
                               };
             return new System.Net.Http.HttpClient(handler, true);
         }

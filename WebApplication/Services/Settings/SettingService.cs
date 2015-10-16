@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using SKBKontur.BlocksMapping.BlockExtenssions;
+using SKBKontur.TaskManagerClient;
+using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Storages;
 
 namespace SKBKontur.Treller.WebApplication.Services.Settings
@@ -9,10 +13,13 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
         private readonly Lazy<BoardSettings[]> _settings;
         private const string SettingsName = "boardSettings";
 
-        public SettingService(ICachedFileStorage cachedFileStorage)
+        public SettingService(ICachedFileStorage cachedFileStorage, ITaskManagerClient taskManagerClient)
         {
-            _settings = new Lazy<BoardSettings[]>(() => GetBoardSettings(cachedFileStorage), true);
+            _settings = new Lazy<BoardSettings[]>(() => GetBoardSettings(cachedFileStorage, taskManagerClient), true);
         }
+
+        private static HashSet<string> exceptBoardNames = new HashSet<string>(new[] { "dev", "FeaturePool", "Manager Tasks", "Архив", "Оптимизация ТП", "Стратегия 2014", "Стратегия 2015", "Стратегия 2016" });
+        private const string OrganizationName = "konturbilling";
 
         private static readonly BoardSettings[] DefaultSettings = new[]
         {
@@ -98,16 +105,34 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                 }
         };
 
-        private static BoardSettings[] GetBoardSettings(ICachedFileStorage cachedFileStorage)
+        private static BoardSettings[] GetBoardSettings(ICachedFileStorage cachedFileStorage, ITaskManagerClient taskManagerClient)
         {
             var result = cachedFileStorage.Find<BoardSettings[]>(SettingsName);
             if (result == null)
             {
-                result = DefaultSettings;
-                cachedFileStorage.Write(SettingsName, DefaultSettings);
+                var allBoards = taskManagerClient.GetOpenBoardsAsync(OrganizationName).Result.Where(x => !exceptBoardNames.Contains(x.Name)).ToArray();
+                var settings = DefaultSettings.ToDictionary(x => x.Id);
+                result = allBoards.Select(x => BuildBoardSettings(x, settings.SafeGet(x.Id))).ToArray();
+                cachedFileStorage.Write(SettingsName, result);
             }
 
             return result;
+        }
+
+        private static BoardSettings BuildBoardSettings(Board board, BoardSettings boardData)
+        {
+            return new BoardSettings
+            {
+                Id = board.Id,
+                Name = board.Name,
+                IsDeleted = false,
+                WaitForReleaseListName = boardData != null ? boardData.WaitForReleaseListName : "Wait for release",
+                AnalyticListName = boardData != null ? boardData.AnalyticListName : "Analytics & Design",
+                DevelopListName = boardData != null ? boardData.DevelopListName : "Dev",
+                DevelopPresentationListName = boardData != null ? boardData.DevelopPresentationListName : "",
+                ReviewListName = boardData != null ? boardData.ReviewListName : "Review",
+                TestingListName = boardData != null ? boardData.TestingListName : "Testing"
+            };
         }
 
         public string[] GetDevelopingBoardIds()
