@@ -18,8 +18,21 @@
         </a>
     </span>
     
+    <span class="news-block header">
+        <a class="news__button news_actualize_button" href="@Url.Action("ResetBattleEmails", "News")">
+            Заполнить боевые адреса для отправки почты
+        </a>
+    </span>
+    
+    @using (Html.BeginForm("UpdateTechnicalEmail", "News", FormMethod.Post))
+    {
+        @Html.TextBox("technicalEmail", Model.TechnicalEmail, new { placeholder = "Адрес для технической рассылки", title = "Адрес для технической рассылки", @class = "news_actualize_text_area" });
+        @Html.TextBox("releaseEmail", Model.ReleaseEmail, new { placeholder = "Адрес для рассылки релизов", title = "Адрес для рассылки релизов", @class = "news_actualize_text_area" });
+        <input type="submit" value="Сохранить адреса" class="news__button news_actualize_button" />
+    }
 
-    @if (Model.TechnicalNews.Any(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished && !x.Value.IsDeleted))
+
+    @if (Model.TechnicalNewsToPublish != null)
     {
         <h3>Технические новости</h3>
 
@@ -31,27 +44,19 @@
                 <span class="news-block__column action"></span>
             </div>
 
-            @foreach (var newsByDate in Model.TechnicalNews.Where(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished).OrderBy(x => x.Key))
-            {
-                <div class="news-block__row clearfix" title="@newsByDate.Value.NewsText">
-                    <span class="news-block__column title">@newsByDate.Value.NewsHeader</span>
-                    <span class="news-block__column date">@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</span>
-                    <span class="news-block__column action">
-                        <a class="news__button" href="@Url.Action("SendNews", "News", new {id = newsByDate.Value.Id})">
-                            Опубликовать
-                        </a>
-                    </span>
-                    <span class="news-block__column action2">
-                        <a class="news__button" href="@Url.Action("DeleteNews", "News", new {id = newsByDate.Value.Id})">
-                            Удалить
-                        </a>
-                    </span>
-                </div>
-            }
+            <div class="news-block__row clearfix" title="@Model.TechnicalNewsToPublish.NewsText">
+                <span class="news-block__column title">@Model.TechnicalNewsToPublish.NewsHeader</span>
+                <span class="news-block__column date">Сегодня</span>
+                <span class="news-block__column action">
+                    <a class="news__button" href="@Url.Action("SendTechnicalNews", "News")">
+                        Опубликовать
+                    </a>
+                </span>
+            </div>
         </div>
     }
 
-    @if (Model.News.Any(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished && !x.Value.IsDeleted))
+    @if (Model.NewsToPublish != null)
     {
         <h3>Бизнес новости</h3>
 
@@ -62,44 +67,87 @@
                 <span class="news-block__column action">Действия</span>
                 <span class="news-block__column action"></span>
             </div>
+            <div class="news-block__row clearfix" title="@Model.NewsToPublish.NewsText">
+                <span class="news-block__column title">@Model.NewsToPublish.NewsHeader</span>
+                <span class="news-block__column date">Сегодня</span>
+                <span class="news-block__column action">
+                    <a class="news__button" href="@Url.Action("SendNews", "News")">
+                        Опубликовать
+                    </a>
+                </span>
+            </div>
+        </div>
+    }
+    @if (Model.ActualCards.Length > 0)
+    {
+        <h3>Карточки для новостей</h3>
 
-            @foreach (var newsByDate in Model.News.Where(x => x.Key >= DateTime.Now.Date && !x.Value.IsPublished).OrderBy(x => x.Key))
+        <div class="news-block">
+            <div class="news-block__header clearfix">
+                <span class="news-block__column title">Заголовок</span>
+                <span class="news-block__column date">Дата релиза</span>
+                <span class="news-block__column action">Действия</span>
+                <span class="news-block__column action"></span>
+            </div>
+
+            @foreach (var card in Model.ActualCards)
             {
-                <div class="news-block__row clearfix" title="@newsByDate.Value.NewsText">
-                    <span class="news-block__column title">@newsByDate.Value.NewsHeader</span>
-                    <span class="news-block__column date">@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</span>
-                    <span class="news-block__column action">
-                        <a class="news__button" href="@Url.Action("SendNews", "News", new {id = newsByDate.Value.Id})">
-                            Опубликовать
-                        </a>
-                    </span>
-                    <span class="news-block__column action2">
-                        <a class="news__button" href="@Url.Action("DeleteNews", "News", new {id = newsByDate.Value.Id})">
-                            Удалить
-                        </a>
-                    </span>
-                </div>
+                <div class="news-block__row clearfix fitrow" title="@(card.NewsText ?? card.TechnicalNewsText)">
+                <span class="news-block__column title" title="@card.CardDescription">@card.CardName</span>
+                <span class="news-block__column date">@card.CardReleaseDate.ToString("dd.MM.yyyy")</span>
+                <span class="news-block__column action">
+                    <a class="news__button fitrow" href="@Url.Action("DeleteCardFromNews", "News", new { cardId = card.CardId })">
+                        Убрать из новостей
+                    </a>
+                </span>
+            </div>
             }
         </div>
     }
 
-    <h3>Отправленные новости (неактуальные)</h3>
+    <h3>Карточки без новостей</h3>
+
+    <div class="news-block">
+        <div class="news-block__header clearfix">
+            <span class="news-block__column titleLong">Заголовок</span>
+            <span class="news-block__column date">Дата релиза</span>
+        </div>
+
+        @foreach (var card in Model.NotActualCards.OrderByDescending(x => x.CardReleaseDate).Take(5))
+        {
+            <div class="news-block__row clearfix fitrow" title="@card.NewsText">
+                <span class="news-block__column titleLong" title="@card.CardDescription">@card.CardName</span>
+                <span class="news-block__column date">@card.CardReleaseDate.ToString("dd.MM.yyyy")</span>
+            </div>
+        }
+    </div>
+
+    <h3>Прошлые карточки (неактуальные)</h3>
 
     <div class="news-block">
         <div class="news-block__header clearfix">
             <span class="news-block__column title">Заголовок</span>
-            <span class="news-block__column date">Дата</span>
+            <span class="news-block__column date">Дата релиза</span>
             <span class="news-block__column isPublished">Опубликована</span>
             <span class="news-block__column isPublished">Удалена</span>
         </div>
 
-        @foreach (var newsByDate in (Model.News.Union(Model.TechnicalNews)).Where(x => x.Key < DateTime.Now.Date || x.Value.IsPublished || x.Value.IsDeleted).OrderBy(x => x.Key))
+        @foreach (var card in Model.NotActualCards.OrderByDescending(x => x.CardReleaseDate).Take(7))
         {
-            <div class="news-block__row clearfix" title="@newsByDate.Value.NewsText">
-                <span class="news-block__column title">@newsByDate.Value.NewsHeader</span>
-                <span class="news-block__column date">@newsByDate.Value.ReleaseDate.ToString("dd.MM.yyyy")</span>
-                <span class="news-block__column isPublished">@(newsByDate.Value.IsPublished ? "Да" : "Нет")</span>
-                <span class="news-block__column isPublished">@(newsByDate.Value.IsDeleted ? "Да" : "Нет")</span>
+            <div class="news-block__row clearfix fitrow" title="@card.NewsText">
+                <span class="news-block__column title" title="@card.CardDescription">@card.CardName</span>
+                <span class="news-block__column date">@card.CardReleaseDate.ToString("dd.MM.yyyy")</span>
+                <span class="news-block__column isPublished">@(card.IsTechnicalNewsPublished || card.IsNewsPublished ? "Да" : "Нет")</span>
+                <span class="news-block__column isPublished">@(card.IsDeleted ? "Да" : "Нет")</span>
+
+                @if (card.CardReleaseDate > DateTime.Now.AddDays(-4) && card.IsNewsExists())
+                {
+                    <span class="news-block__column action2">
+                        <a class="news__button fitrow" href="@Url.Action("RestoreCardForNews", "News", new { cardId = card.CardId})">
+                            Восстановить
+                        </a>
+                    </span>
+                }
             </div>
         }
     </div>

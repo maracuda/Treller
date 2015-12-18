@@ -1,13 +1,14 @@
-﻿using System;
-
-namespace SKBKontur.Treller.WebApplication.Services.News
+﻿namespace SKBKontur.Treller.WebApplication.Services.News
 {
     public interface INewsService
     {
-        NewsViewModel GetAllNews();
-        bool TryRefresh(DateTime? timestamp);
-        void SendNews(Guid id);
-        void SendNews(DateTime date);
-        void DeleteNews(Guid id);
+        void Refresh();
+        NewsViewModel GetNews();
+        void DeleteCard(string cardId);
+        void RestoreCard(string cardId);
+        void SendTechnicalNews();
+        void SendNews();
+        void UpdateEmail(string technicalEmail, string releaseEmail);
+        bool IsAnyNewsExists();
     }
 }

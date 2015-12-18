@@ -1,7 +1,11 @@
 using System;
 using System.Timers;
-using SKBKontur.Treller.WebApplication.Services.News;
 using SKBKontur.Treller.WebApplication.Storages;
+using SKBKontur.BlocksMapping.Blocks;
+using SKBKontur.Treller.WebApplication.Blocks;
+using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
+using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
+using SKBKontur.Treller.WebApplication.Services.News;
 
 namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
 {
@@ -10,14 +14,16 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
         private readonly ITaskCacher taskCacher;
         private readonly INewsService newsService;
         private readonly ICachedFileStorage cachedFileStorage;
+        private readonly IBlocksBuilder blocksBuilder;
         private bool isTimerInProgress;
         private readonly Timer timer;
         private DateTime lastUpdateUtc;
         private const string TimestampFileName = "TrellerCacheCurrentTimestamp.json";
 
-        public OperationalService(ITaskCacher taskCacher, INewsService newsService, ICachedFileStorage cachedFileStorage)
+        public OperationalService(ITaskCacher taskCacher, INewsService newsService, ICachedFileStorage cachedFileStorage, IBlocksBuilder blocksBuilder)
         {
             this.taskCacher = taskCacher;
+            this.blocksBuilder = blocksBuilder;
             this.newsService = newsService;
             this.cachedFileStorage = cachedFileStorage;
 
@@ -40,16 +46,23 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
             try
             {
                 var time = DateTime.UtcNow;
-                if (taskCacher.TryActualize(lastUpdateUtc) && newsService.TryRefresh(lastUpdateUtc))
+                if (taskCacher.TryActualize(lastUpdateUtc))
                 {
                     lastUpdateUtc = time;
                     cachedFileStorage.Write(TimestampFileName, lastUpdateUtc.Ticks);
                 }
+                else
+                {
+                    var warmedBlocks = blocksBuilder.BuildBlocks(ContextKeys.TasksKey, new[] { typeof(BoardsBlock), typeof(CardListBlock) }, new CardListEnterModel { BoardIds = new string[0], ShowMode = ShowMode.All }).Result;
+                }
+                newsService.Refresh();
 
-//                if (DateTime.Now.Hour > 18 && DateTime.Now.Hour < 19)
-//                {
-//                    newsService.SendNews(DateTime.Now.Date);
-//                }
+                var now = DateTime.Now;
+                if (((now.Hour >= 17 && now.Minute > 20 && now.Hour < 18) || (now.Hour >= 9 && now.Hour < 10)) && newsService.IsAnyNewsExists())
+                {
+                    newsService.SendNews();
+                    newsService.SendTechnicalNews();
+                }
             }
             finally
             {

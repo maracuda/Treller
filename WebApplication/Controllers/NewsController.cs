@@ -1,47 +1,71 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using SKBKontur.Treller.WebApplication.Services.News;
-using SKBKontur.Treller.WebApplication.Services.TaskCacher;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public class NewsController : Controller
     {
         private readonly INewsService newsService;
-        private readonly IOperationalService operationalService;
 
-        public NewsController(INewsService newsService, IOperationalService operationalService)
+        public NewsController(INewsService newsService)
         {
             this.newsService = newsService;
-            this.operationalService = operationalService;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var news = newsService.GetAllNews();
+            var news = newsService.GetNews();
             return View("Index", news);
         }
 
         [HttpGet]
-        public ActionResult SendNews(Guid id)
+        public ActionResult SendTechnicalNews()
         {
-            newsService.SendNews(id);
+            newsService.SendTechnicalNews();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult SendNews()
+        {
+            newsService.SendNews();
 
             return RedirectToAction("Index");
         }
 
         public ActionResult ActualizeNews()
         {
-            operationalService.Actualize();
-            newsService.TryRefresh(DateTime.Today);
+            newsService.Refresh();
 
             return RedirectToAction("Index");
         }
 
-        public ActionResult DeleteNews(Guid id)
+        public ActionResult RestoreCardForNews(string cardId)
         {
-            newsService.DeleteNews(id);
+            newsService.RestoreCard(cardId);
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult DeleteCardFromNews(string cardId)
+        {
+            newsService.DeleteCard(cardId);
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult UpdateTechnicalEmail(string technicalEmail, string releaseEmail)
+        {
+            newsService.UpdateEmail(technicalEmail, releaseEmail);
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ResetBattleEmails()
+        {
+            newsService.UpdateEmail("tech.news.billing@skbkontur.ru", "news.billing@skbkontur.ru");
 
             return RedirectToAction("Index");
         }
