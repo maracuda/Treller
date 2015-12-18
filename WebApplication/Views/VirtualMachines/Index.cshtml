@@ -37,7 +37,7 @@
     @using (Html.BeginForm("ExecuteCommand", "VirtualMachines", FormMethod.Post))
     {
         <div style="float: right; margin: 0 0 10px 20px; min-width: 400px; font-size: 20px;">
-            <h4><a href="@Url.Action("ShowLogs", "VirtualMachines")">Показать логи выполнения предыдущих запросов</a></h4>
+            <h4 id="logs"></h4>
             <h3>Список команд:</h3>
             @foreach (var command in commands)
             {
@@ -104,6 +104,12 @@
                 .closest(".js-news-content")
                 .find(".js-profile-select, .js-profile-selectAll")
                 .prop("checked", this.checked);
+        });
+        $("#login").bind("change", function () {
+            if ($(this).val() === "mayloe" || $(this).val() === "yord") {
+                $("<a href=\"/VirtualMachines/ShowLogs\">Показать логи выполнения предыдущих запросов</a>").appendTo("#logs");
+            }
+            $("#login").unbind("change");
         });
     </script>
 }
