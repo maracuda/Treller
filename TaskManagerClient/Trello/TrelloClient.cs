@@ -19,6 +19,7 @@ namespace SKBKontur.TaskManagerClient.Trello
     {
         private readonly IHttpRequester httpClient;
         private readonly Dictionary<string, string> trelloParameters;
+        private const int MaxActionsLimitCount = 1000;
 
         public TrelloClient(IHttpRequester httpClient, ITrelloUserCredentialService trelloUserCredentialService)
         {
@@ -37,6 +38,20 @@ namespace SKBKontur.TaskManagerClient.Trello
                     .Await(x => x.Select(b => new Board { Id = b.Id, Name = b.Name, Url = b.Url, OrganizationId = b.IdOrganization }).ToArray());
         }
 
+        public Task<Board[]> GetAllBoardsAsync(string organizationIdOrName)
+        {
+            return GetTrelloDataAsync<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string> { { "filter", "all" } })
+                    .Await(x => x.Select(b => new Board { Id = b.Id, Name = b.Name, Url = b.Url, OrganizationId = b.IdOrganization }).ToArray());
+        }
+
+        public Board[] GetAllBoards(string organizationIdOrName)
+        {
+            return GetTrelloData<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards",
+                new Dictionary<string, string> {{"filter", "all"}})
+                .Select(b => new Board {Id = b.Id, Name = b.Name, Url = b.Url, OrganizationId = b.IdOrganization})
+                .ToArray();
+        }
+
         public Task<Board[]> GetBoardsAsync(string[] boardIds)
         {
             return boardIds.Select(id => GetTrelloDataAsync<BusinessObjects.Boards.Board>(id, "boards/{0}"))
@@ -48,6 +63,14 @@ namespace SKBKontur.TaskManagerClient.Trello
             return boardIds.Select(id => GetTrelloDataAsync<BusinessObjects.Boards.BoardList[]>(id, "boards/{0}/lists"))
                            .Await(x => new BoardList { Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos });
 
+        }
+
+        public BoardList[] GetBoardLists(params string[] boardIds)
+        {
+            return boardIds
+                .SelectMany(boardId => GetTrelloData<BusinessObjects.Boards.BoardList[]>(boardId, "boards/{0}/lists"))
+                .Select(x => new BoardList {Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos})
+                .ToArray();
         }
 
         public Task<BoardCard[]> GetBoardCardsAsync(string[] boardIds)
@@ -69,6 +92,35 @@ namespace SKBKontur.TaskManagerClient.Trello
                            .Await(CreateChecklist);
         }
 
+        public CardAction[] GetActionsForBoardCards(string[] boardIds, DateTime fromUtc, DateTime toUtc)
+        {
+            var result = new LinkedList<CardAction>();
+            var queryString = new Dictionary<string, string> { { "filter", "all" }, { "limit", MaxActionsLimitCount.ToString()} };
+
+            foreach (var boardId in boardIds)
+            {
+                queryString["since"] = fromUtc.ToString("O");
+                
+                while (true)
+                {
+                    var boardResult = GetTrelloData<Action[]>(boardId, "boards/{0}/actions", queryString);
+                    foreach (var action in boardResult.Where(x => x.Date < toUtc))
+                    {
+                        result.AddLast(CreateCardAction(action));
+                    }
+
+                    if (boardResult.Length < MaxActionsLimitCount || boardResult.Any(x => x.Date > toUtc))
+                    {
+                        break;
+                    }
+
+                    queryString["since"] = boardResult.Max(b => b.Date).AddMilliseconds(1).ToString("O");
+                }
+            }
+
+            return result.Where(x => x != null).ToArray();
+        }
+
         public Task<CardAction[]> GetCardActionsAsync(string cardId)
         {
             var queryString = new Dictionary<string, string> {{"filter", "all"}, {"limit", "1000"}};
@@ -77,9 +129,9 @@ namespace SKBKontur.TaskManagerClient.Trello
                     .Await(CreateCardAction, result => result.Where(x => x != null));
         }
 
-        public Task<CardAction[]> GetActionsForBoardCardsAsync(string[] boardIds, DateTime? fromUtc = null)
+        public Task<CardAction[]> GetActionsForBoardCardsAsync(string[] boardIds, DateTime? fromUtc, int limit)
         {
-            var queryString = new Dictionary<string, string> { { "filter", "all" }, { "limit", "1000" } };
+            var queryString = new Dictionary<string, string> { { "filter", "all" }, { "limit", limit.ToString() } };
             if (fromUtc.HasValue)
             {
                 queryString.Add("since", fromUtc.Value.ToString("O"));
@@ -113,6 +165,17 @@ namespace SKBKontur.TaskManagerClient.Trello
             }
 
             return httpClient.SendGetAsync<T>(string.Format(string.Format("https://trello.com/1/{0}", format), id), parameters);
+        }
+
+        private T GetTrelloData<T>(string id, string format, Dictionary<string, string> queryString = null)
+        {
+            var parameters = trelloParameters;
+            if (queryString != null)
+            {
+                parameters = parameters.Union(queryString).ToDictionary(x => x.Key, x => x.Value);
+            }
+
+            return httpClient.SendGet<T>(string.Format(string.Format("https://trello.com/1/{0}", format), id), parameters);
         }
 
         private static CardChecklist CreateChecklist(Checklist list)

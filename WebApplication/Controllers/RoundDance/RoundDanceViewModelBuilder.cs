@@ -30,16 +30,18 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
 
         private static RoundDancePeopleViewModel InnerBuild(RoundDancePeople people)
         {
-            var now = DateTime.Now;
+            var nowTime = DateTime.Now;
+            var now = nowTime.Date;
 
-            var currentWorkPeriod = people.WorkPeriods.LastOrDefault(x => x.BeginDate < now && (!x.EndDate.HasValue || x.EndDate > now));
+            var currentWorkPeriod = people.WorkPeriods.FirstOrDefault(x => nowTime > x.BeginDate && nowTime < x.EndDate) 
+                                 ?? people.WorkPeriods.LastOrDefault(x => x.BeginDate <= now || x.EndDate >= now);
             var currentDirection = currentWorkPeriod.IfNotNull(x => (Direction?)x.Direction) ?? Direction.Leave;
             var nextDirection = people.WorkPeriods.LastOrDefault(x => x.Direction != currentDirection);
             var weights = BuildWeight(people).OrderBy(t => t.Direction).ToDictionary(x => x.Direction);
             var currentWeight = weights[currentDirection];
 
             SuggestDirectionViewModel suggest = null;
-            if (currentWeight.Weight < 5)
+            if (currentWeight.Weight < 5 || (currentWorkPeriod != null && (now - currentWorkPeriod.BeginDate).Days <= 4))
             {
                 suggest = new SuggestDirectionViewModel
                 {
@@ -48,21 +50,6 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
                     OldDirection = nextDirection != null ? nextDirection.Direction : (Direction?)null,
                     SuggestDate = currentWorkPeriod.IfNotNull(x => (DateTime?)x.BeginDate),
                     Name = people.Name
-                };
-            }
-            if (currentWeight.Weight > 20 && weights.Any())
-            {
-                var newDirections = weights.Select(x => x.Value).OrderByDescending(x => x.Direction >= currentDirection ? x.Direction - 5 : x.Direction).ToArray();
-                var newDirection = newDirections.First(x => x.RotationWeight == weights.Max(w => w.Value.RotationWeight));
-
-                suggest = new SuggestDirectionViewModel
-                {
-                    IsSuggestDirection = true,
-                    OldDirection = currentDirection,
-                    SuggestWeight = currentWeight.Weight,
-                    NewDirection = newDirection.Direction,
-                    Name = people.Name,
-                    NewDirections = newDirections
                 };
             }
 
@@ -77,7 +64,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
                         Name = people.Name,
                         NewDirection = workPeriod.Direction,
                         TransferDate = workPeriod.BeginDate,
-                        TransferEndDate = workPeriod.EndDate,
+                        TransferEndDate = workPeriod.EndDate == now ? (DateTime?) null : workPeriod.EndDate,
                         OldDirection = lastDirectionPeriod.IfNotNull(x => (Direction?)x.Direction) ?? Direction.Leave
                     });
                 }
@@ -121,17 +108,23 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
             var now = DateTime.Now.Date;
             var direction = periods.First().Direction;
 
-            foreach (var period in periods.Where(x => x.BeginDate < DateTime.Now))
-            {
-                var endDate = period.EndDate ?? now;
-                endDate = endDate > now ? now : endDate;
-                var daysCount = (endDate - period.BeginDate).Days + 1;
-                var daysDiff = 90 - (now - endDate.Date).Days;
+            var actualPeriods = periods.Where(x => x.BeginDate <= DateTime.Now.Date);
+            var isServiceDirection = direction == Direction.Infrastructure || direction == Direction.Duty;
 
-                directionWeight += daysCount*daysDiff;
+            foreach (var period in actualPeriods)
+            {
+                var endDate = period.EndDate > now ? now : period.EndDate;
+                var daysCount = (endDate - period.BeginDate).Days + 1;
+                var daysDiff = (isServiceDirection ? 40 : 90) - (now - endDate).Days;
+
+                if (daysDiff > 0)
+                {
+                    directionWeight += daysCount*daysDiff;
+                }
             }
 
-            var maxWeight = direction == Direction.Infrastructure || direction == Direction.Duty ? 12*91 : 90*91;
+            
+            var maxWeight = isServiceDirection ? 14*41 : 90*91;
             
             return new RoundDanceDirectionWeight
             {

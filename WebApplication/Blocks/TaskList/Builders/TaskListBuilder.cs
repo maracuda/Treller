@@ -127,7 +127,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
             var rcBranches = new HashSet<string>(branches.Select(x => x.Name));
             return cards.Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase))
                         .Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches, bugs.SafeGet(card.Id)))
-                        .Where(x => x.StageInfo.State != CardState.BeforeDevelop && x.StageInfo.State != CardState.Unknown)
+                        .Where(x => x.StageInfo.State != CardState.BeforeDevelop && x.StageInfo.State != CardState.Unknown && x.StageInfo.State != CardState.Released)
                         .Where(x => cardListEnterModel.ShowMode == ShowMode.All || 
                                     (cardListEnterModel.ShowMode == ShowMode.Infrastructure 
                                      ? x.Labels.Any(l => l.Color == CardLabelColor.Blue)

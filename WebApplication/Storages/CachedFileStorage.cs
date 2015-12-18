@@ -9,7 +9,7 @@ namespace SKBKontur.Treller.WebApplication.Storages
     public class CachedFileStorage : ICachedFileStorage
     {
         private readonly static string FileNamePattern = Path.Combine(HttpRuntime.AppDomainAppPath, "Store_{0}.json");
-        private readonly ConcurrentDictionary<string, object> _cache = new ConcurrentDictionary<string, object>();
+        private readonly ConcurrentDictionary<string, dynamic> _cache = new ConcurrentDictionary<string, dynamic>();
 
         public T Find<T>(string storeName)
         {
@@ -32,6 +32,8 @@ namespace SKBKontur.Treller.WebApplication.Storages
 
         public void Write<T>(string storeName, T serializedEntity)
         {
+            dynamic stored;
+            _cache.TryRemove(storeName, out stored);
             _cache.TryAdd(storeName, serializedEntity);
 
             var contents = JsonConvert.SerializeObject(serializedEntity);

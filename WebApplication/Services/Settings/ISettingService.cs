@@ -4,5 +4,6 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
     {
         string[] GetDevelopingBoardIds();
         BoardSettings[] GetDevelopingBoards();
+        BoardSettings[] GetDevelopingBoardsWithClosed();
     }
 }

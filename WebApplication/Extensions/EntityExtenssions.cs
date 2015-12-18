@@ -8,7 +8,10 @@ namespace SKBKontur.Treller.WebApplication.Extensions
     {
         public static string GetCardBranchName(this BoardCard card)
         {
-            return SearchInfo(card.Description, "ветка:", new[] {':'}, 1);
+            return SearchInfo(card.Description, "**Ветка:**", new[] { ':', '*' }, 1)
+                   ?? SearchInfo(card.Description, "Ветка:", new[] {':', '*'}, 1)
+                   ?? SearchInfo(card.Description, "**Ветка**:", new[] { ':', '*' }, 1)
+                   ?? SearchInfo(card.Description, "Ветка", new[] { ':', '*' }, 1);
         }
 
         public static string GetAnalyticLink(this BoardCard card, string wikiUrl, string bugTrackerUrl)
@@ -41,7 +44,8 @@ namespace SKBKontur.Treller.WebApplication.Extensions
                 return null;
             }
 
-            return array.Skip(skip).FirstOrDefault(x => x.Length > 1);
+            var result = array.Skip(skip).FirstOrDefault(x => x.Length > 1);
+            return string.IsNullOrWhiteSpace(result) ? null : result;
         }
     }
 }

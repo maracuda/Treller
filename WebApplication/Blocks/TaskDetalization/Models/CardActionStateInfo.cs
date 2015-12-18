@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.Treller.WebApplication.Services.Statistics;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models
 {
@@ -20,6 +21,15 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models
         public User StateInitiator { get; private set; }
         public DateTime BeginDate { get; private set; }
         public DateTime? EndDate { get; set; }
+
+        public TimeSpan StatePeriod
+        {
+            get
+            {
+                return EndDate.HasValue ? BeginDate.CalculatePeriod(EndDate.Value) : new TimeSpan(1000, 0, 0, 0);
+            }
+        }
+
         public LinkedList<User> NewStateUsers { get; set; }
         public LinkedList<string> StateComments { get; set; }
         public LinkedList<string> CheckListIds { get; set; }

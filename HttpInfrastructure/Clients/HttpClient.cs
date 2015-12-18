@@ -24,6 +24,19 @@ namespace SKBKontur.HttpInfrastructure.Clients
             }
         }
 
+        public T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, CookieContainer cookies = null)
+        {
+            using (var client = CreateHttpClient(cookies))
+            {
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (var response = client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead).Result)
+                {
+                    ValidateResponse(response);
+                    return response.Content.ReadAsAsync<T>().Result;
+                }
+            }
+        }
+
         private static void ValidateResponse(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)

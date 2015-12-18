@@ -37,6 +37,11 @@ namespace SKBKontur.Treller.TestTreller
             return httpClient.SendGetAsync<T>(url, queryParameters, cookieContainer);
         }
 
+        public T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<Cookie>> SendPostEncodedAsync(string url, Dictionary<string, string> formUrlEncodedContent = null)
         {
             throw new NotImplementedException();

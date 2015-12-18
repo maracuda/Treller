@@ -11,5 +11,6 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
         public string TestingListName { get; set; }
         public string WaitForReleaseListName { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsServiceTeamBoard { get; set; }
     }
 }

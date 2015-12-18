@@ -8,6 +8,7 @@ namespace SKBKontur.TaskManagerClient.Abstractions
     public interface IHttpRequester
     {
         Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null);
+        T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null);
         Task<IEnumerable<Cookie>> SendPostEncodedAsync(string url, Dictionary<string, string> formUrlEncodedContent);
     }
 }

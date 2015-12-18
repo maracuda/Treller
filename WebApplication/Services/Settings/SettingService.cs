@@ -10,15 +10,17 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
 {
     public class SettingService : ISettingService
     {
+        private readonly ITaskManagerClient taskManagerClient;
         private readonly Lazy<BoardSettings[]> _settings;
         private const string SettingsName = "boardSettings";
 
         public SettingService(ICachedFileStorage cachedFileStorage, ITaskManagerClient taskManagerClient)
         {
+            this.taskManagerClient = taskManagerClient;
             _settings = new Lazy<BoardSettings[]>(() => GetBoardSettings(cachedFileStorage, taskManagerClient), true);
         }
 
-        private static HashSet<string> exceptBoardNames = new HashSet<string>(new[] { "dev", "FeaturePool", "Manager Tasks", "Архив", "Оптимизация ТП", "Стратегия 2014", "Стратегия 2015", "Стратегия 2016" });
+        private static HashSet<string> exceptBoardNames = new HashSet<string>(new[] { "dev", "FeaturePool", "Manager Tasks", "Архив", "Оптимизация ТП", "Стратегия 2014", "Стратегия 2015", "Стратегия 2016", "Billing", "CRM", "dev_old" });
         private const string OrganizationName = "konturbilling";
 
         private static readonly BoardSettings[] DefaultSettings = new[]
@@ -33,7 +35,8 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     DevelopPresentationListName = "",
                     TestingListName = "Testing",
                     WaitForReleaseListName = "Wait for release",
-                    IsDeleted = true
+                    IsDeleted = true,
+                    IsServiceTeamBoard = true
                 },
             new BoardSettings
                 {
@@ -67,7 +70,8 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                     ReviewListName = "Review",
                     DevelopPresentationListName = "",
                     TestingListName = "Testing",
-                    WaitForReleaseListName = "Wait for release"
+                    WaitForReleaseListName = "Wait for release",
+                    IsServiceTeamBoard = true
                 },
             new BoardSettings
                 {
@@ -107,16 +111,34 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
 
         private static BoardSettings[] GetBoardSettings(ICachedFileStorage cachedFileStorage, ITaskManagerClient taskManagerClient)
         {
-            var result = cachedFileStorage.Find<BoardSettings[]>(SettingsName);
+            BoardSettings[] result;
+            try
+            {
+                result = GetBoardSettings(taskManagerClient);
+                cachedFileStorage.Write(SettingsName, result);
+            }
+            catch (Exception)
+            {
+                result = cachedFileStorage.Find<BoardSettings[]>(SettingsName);
+            }
+
             if (result == null)
             {
-                var allBoards = taskManagerClient.GetOpenBoardsAsync(OrganizationName).Result.Where(x => !exceptBoardNames.Contains(x.Name)).ToArray();
-                var settings = DefaultSettings.ToDictionary(x => x.Id);
-                result = allBoards.Select(x => BuildBoardSettings(x, settings.SafeGet(x.Id))).ToArray();
+                result = GetBoardSettings(taskManagerClient);
                 cachedFileStorage.Write(SettingsName, result);
             }
 
             return result;
+        }
+
+        private static BoardSettings[] GetBoardSettings(ITaskManagerClient taskManagerClient)
+        {
+            var allBoards =
+                taskManagerClient.GetOpenBoardsAsync(OrganizationName)
+                    .Result.Where(x => !exceptBoardNames.Contains(x.Name))
+                    .ToArray();
+            var settings = DefaultSettings.ToDictionary(x => x.Id);
+            return allBoards.Select(x => BuildBoardSettings(x, settings.SafeGet(x.Id))).ToArray();
         }
 
         private static BoardSettings BuildBoardSettings(Board board, BoardSettings boardData)
@@ -126,6 +148,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
                 Id = board.Id,
                 Name = board.Name,
                 IsDeleted = false,
+                IsServiceTeamBoard = boardData != null && boardData.IsServiceTeamBoard,
                 WaitForReleaseListName = boardData != null ? boardData.WaitForReleaseListName : "Wait for release",
                 AnalyticListName = boardData != null ? boardData.AnalyticListName : "Analytics & Design",
                 DevelopListName = boardData != null ? boardData.DevelopListName : "Dev",
@@ -143,6 +166,13 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
         public BoardSettings[] GetDevelopingBoards()
         {
             return _settings.Value;
+        }
+
+        public BoardSettings[] GetDevelopingBoardsWithClosed()
+        {
+            var allBoards = taskManagerClient.GetAllBoards(OrganizationName);
+            var settings = DefaultSettings.ToDictionary(x => x.Id);
+            return (allBoards).Where(x => !exceptBoardNames.Contains(x.Name)).Select(x => BuildBoardSettings(x, settings.SafeGet(x.Id))).ToArray();
         }
     }
 }

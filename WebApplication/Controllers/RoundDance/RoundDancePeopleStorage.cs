@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 using Newtonsoft.Json;
@@ -22,170 +23,240 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
                 new RoundDancePeople { Name = "Êàòÿ Çåëåíèíà",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 06, 29) },
-                        new DirectionPeriod { Direction = Direction.Crm, BeginDate = new DateTime(2015, 06, 30), EndDate = new DateTime(2015, 8, 25)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 08, 25), EndDate = new DateTime(2015, 09, 10)},
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 09, 11), EndDate = new DateTime(2015, 09, 27)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 09, 28)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.ProductBilling },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 06, 30), Direction = Direction.Crm },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 25), Direction = Direction.SpeedyFeatures },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 11), Direction = Direction.Leave },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 28), Direction = Direction.SpeedyFeatures },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 29), Direction = Direction.Fisics },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 14), Direction = Direction.Duty },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 21), Direction = Direction.SpeedyFeatures },
                     }},
                 new RoundDancePeople { Name = "Êóí Àíäðåé",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 07, 27), EndDate = new DateTime(2015, 08, 16) },
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 08, 17), EndDate = new DateTime(2015, 08, 30)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 08, 31), EndDate = new DateTime(2015, 09, 06)},
-                        new DirectionPeriod { Direction = Direction.LinksDeliveryAgent, BeginDate = new DateTime(2015, 09, 07), EndDate = new DateTime(2015, 10, 04)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 10, 05)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 27), Direction = Direction.Infrastructure },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 17), Direction = Direction.Leave },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 31), Direction = Direction.Infrastructure },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 07), Direction = Direction.LinksDeliveryAgent },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 05), Direction = Direction.SpeedyFeatures },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 15), Direction = Direction.Sickness },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 17), Direction = Direction.SpeedyFeatures },
                     }},
                 new RoundDancePeople { Name = "Ïàâåë Àëåêñàíäðîâ",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 05, 10)},
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 05, 25), EndDate = new DateTime(2015, 07, 12) },
-                        new DirectionPeriod { Direction = Direction.Crm, BeginDate = new DateTime(2015, 07, 12), EndDate = new DateTime(2015, 07, 19)},
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 07, 20), EndDate = new DateTime(2015, 07, 26)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 07, 27), EndDate = new DateTime(2015, 08, 09)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 08, 10), EndDate = new DateTime(2015, 08, 16)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 08, 17), EndDate = new DateTime(2015, 08, 23)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 08, 24), EndDate = new DateTime(2015, 09, 13)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 09, 14), EndDate = new DateTime(2015, 09, 20)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 09, 21), EndDate = new DateTime(2015, 09, 27)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 09, 28), EndDate = new DateTime(2015, 10, 11)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 10, 12), EndDate = new DateTime(2015, 10, 18)},
-                        new DirectionPeriod { Direction = Direction.RomingDiadoc, BeginDate = new DateTime(2015, 10, 19)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.ProductBilling},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 05, 25), Direction = Direction.ProductBilling },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 12), Direction = Direction.Crm, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 20), Direction = Direction.Support, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 27), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 10), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 17), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 24), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 14), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 21), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 28), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 12), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 19), Direction = Direction.RomingDiadoc, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 07), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 14), Direction = Direction.SpeedyFeatures, },
                     }},
                 new RoundDancePeople { Name = "Íèêèòà Áóðëàêîâ",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 4, 4), EndDate = new DateTime(2015, 4, 19) },
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 4, 26), EndDate = new DateTime(2015, 5, 04) },
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 4, 04), EndDate = new DateTime(2015, 5, 10) },
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 5, 11), EndDate = new DateTime(2015, 5, 17) },
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 5, 18), EndDate = new DateTime(2015, 08, 09)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 8, 10), EndDate = new DateTime(2015, 8, 16)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 8, 17), EndDate = new DateTime(2015, 8, 23)},
-                        new DirectionPeriod { Direction = Direction.ProlongationScenario, BeginDate = new DateTime(2015, 8, 24), EndDate = new DateTime(2015, 9, 13)},
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 9, 14), EndDate = new DateTime(2015, 9, 27)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 9, 28), EndDate = new DateTime(2015, 10, 04)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 10, 05), EndDate = new DateTime(2015, 10, 11)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 10, 12)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 04), Direction = Direction.ProductBilling,   },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 26), Direction = Direction.Support,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 05, 04), Direction = Direction.ProductBilling,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 05, 11), Direction = Direction.Support,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 05, 18), Direction = Direction.ProductBilling, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 10), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 17), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 24), Direction = Direction.ProlongationScenario, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 14), Direction = Direction.Leave, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 28), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 05), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 12), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 02), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 10), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 23), Direction = Direction.Fisics, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 10), Direction = Direction.Certificates, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 18), Direction = Direction.Leave, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 21), Direction = Direction.Certificates, },
+
+                    }},
+                new RoundDancePeople { Name = "Ñòåïàí Ìóðàøîâ",
+                    WorkPeriods = new []
+                    {
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 20), Direction = Direction.Infrastructure,},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 06), Direction = Direction.SpeedyFeatures,},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 30), Direction = Direction.Duty,},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 14), Direction = Direction.SpeedyFeatures,},
                     }},
                 new RoundDancePeople { Name = "Èãîðü Ìàìàé",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 8, 10), EndDate = new DateTime(2015, 8, 16)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 8, 17), EndDate = new DateTime(2015, 8, 23)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 8, 24), EndDate = new DateTime(2015, 8, 30)},
-                        new DirectionPeriod { Direction = Direction.LinksDeliveryAgent, BeginDate = new DateTime(2015, 8, 31), EndDate = new DateTime(2015, 09, 27)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 09, 28), EndDate = new DateTime(2015, 10, 11)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 10, 12)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 10), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 17), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 24), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 31), Direction = Direction.LinksDeliveryAgent, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 28), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 12), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 29), Direction = Direction.Fisics, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 24), Direction = Direction.Leave, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 08), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 14), Direction = Direction.Sickness, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 21), Direction = Direction.Duty, },
                     }},
                 new RoundDancePeople { Name = "Ëåøà Ðîìàíîâñêèé",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ÑaServices, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 05, 17)},
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 05, 18), EndDate = new DateTime(2015, 06, 19) },
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 06, 20), EndDate = new DateTime(2015, 07, 01) },
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 07, 6), EndDate = new DateTime(2015, 8, 19)},
-                        new DirectionPeriod { Direction = Direction.Vendors, BeginDate = new DateTime(2015, 08, 20), EndDate = new DateTime(2015, 09, 07)},
-                        new DirectionPeriod { Direction = Direction.RomingDiadoc, BeginDate = new DateTime(2015, 09, 08), EndDate = new DateTime(2015, 09, 20)},
-                        new DirectionPeriod { Direction = Direction.CaMigration, BeginDate = new DateTime(2015, 09, 21), EndDate = new DateTime(2015, 10, 04)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 10, 05), EndDate = new DateTime(2015, 10, 11)},
-                        new DirectionPeriod { Direction = Direction.RomingDiadoc, BeginDate = new DateTime(2015, 10, 12)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.ÑaServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 05, 18), Direction = Direction.ProductBilling,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 06, 20), Direction = Direction.Infrastructure,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 06), Direction = Direction.Support, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 20), Direction = Direction.Vendors, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 08), Direction = Direction.RomingDiadoc, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 21), Direction = Direction.CaMigration, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 05), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 12), Direction = Direction.RomingDiadoc, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 19), Direction = Direction.Leave, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 24), Direction = Direction.RomingDiadoc, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 08), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 14), Direction = Direction.Duty },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 21), Direction = Direction.SpeedyFeatures },
                     }},
                 new RoundDancePeople { Name = "Ñåðåæà Ðîæèí",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ÑaServices, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 07, 12) },
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 07, 13), EndDate = new DateTime(2015, 08, 11)},
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 08, 12), EndDate = new DateTime(2015, 08, 28)},
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 08, 12), EndDate = new DateTime(2015, 08, 30)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 08, 31), EndDate = new DateTime(2015, 09, 06)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 09, 07)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.ÑaServices,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 13), Direction = Direction.Support, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 12), Direction = Direction.Leave, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 31), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 07), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 26), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 03), Direction = Direction.SpeedyFeatures},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 16), Direction = Direction.Infrastructure},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 30), Direction = Direction.Certificates},
                     }},
                 new RoundDancePeople { Name = "Ëåøà Èâàíîâ",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 05, 01)},
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 05, 25), EndDate = new DateTime(2015, 06, 1)},
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 06, 2), EndDate = new DateTime(2015, 07, 05) },
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 07, 06), EndDate = new DateTime(2015, 08, 23)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 08, 24), EndDate = new DateTime(2015, 09, 01)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 09, 02), EndDate = new DateTime(2015, 09, 15)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 09, 16), EndDate = new DateTime(2015, 10, 04)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 10, 5)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.ProductBilling, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 05, 25), Direction = Direction.ProductBilling, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 06, 02), Direction = Direction.Support,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 06), Direction = Direction.ProductBilling, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 24), Direction = Direction.Duty,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 02), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 16), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 05), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 19), Direction = Direction.SpeedyFeatures},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 17), Direction = Direction.Duty},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 23), Direction = Direction.SpeedyFeatures},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 21), Direction = Direction.Leave},
                     }},
                 new RoundDancePeople { Name = "Îêñàíà Çàïîðîæåö",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ProlongationScenario, BeginDate = new DateTime(2015, 08, 24), EndDate = new DateTime(2015, 10, 08)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 10, 09)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 24), Direction = Direction.ProlongationScenario, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 09), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 05), Direction = Direction.SpeedyFeatures},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 25), Direction = Direction.Fisics},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 30), Direction = Direction.Leave},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 03), Direction = Direction.Fisics},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 07), Direction = Direction.Infrastructure},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 10), Direction = Direction.SpeedyFeatures},
                     }},
                 // Direction = Support
                 new RoundDancePeople { Name = "Æåíÿ Êëþêèí",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 6, 01)},
-                        new DirectionPeriod { Direction = Direction.Crm, BeginDate = new DateTime(2015, 06, 2), EndDate = new DateTime(2015, 06, 10) },
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 06, 10), EndDate = new DateTime(2015, 07, 12) },
-                        new DirectionPeriod { Direction = Direction.ÑaServices, BeginDate = new DateTime(2015, 07, 13), EndDate = new DateTime(2015, 08, 16)},
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 08, 17), EndDate = new DateTime(2015, 09, 06)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 09, 07), EndDate = new DateTime(2015, 09, 13)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 09, 14)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.Support, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 06, 02), Direction = Direction.Crm,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 06, 10), Direction = Direction.Support,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 13), Direction = Direction.ÑaServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 17), Direction = Direction.Leave, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 07), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 14), Direction = Direction.SpeedyFeatures},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 10), Direction = Direction.Duty},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 18), Direction = Direction.SpeedyFeatures},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 30), Direction = Direction.Certificates},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 28), Direction = Direction.Leave},
                     }},
                 new RoundDancePeople { Name = "Àíòîí Åæîâ",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 07, 05) },
-                        new DirectionPeriod { Direction = Direction.ÑaServices, BeginDate = new DateTime(2015, 07, 06), EndDate = new DateTime(2015, 08, 15)},
-                        new DirectionPeriod { Direction = Direction.CaTariffsAndDiscounts, BeginDate = new DateTime(2015, 08, 16), EndDate = new DateTime(2015, 08, 31)},
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 09, 01), EndDate = new DateTime(2015, 09, 17)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 09, 18)}
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.Support,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 06), Direction = Direction.ÑaServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 16), Direction = Direction.CaTariffsAndDiscounts, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 01), Direction = Direction.Leave, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 18), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 28), Direction = Direction.Fop},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 10), Direction = Direction.Duty},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 23), Direction = Direction.SpeedyFeatures},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 29), Direction = Direction.Leave},
                     }},
                 new RoundDancePeople { Name = "Àíäðåé Øàëèí",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 04, 26)},
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 04, 27), EndDate = new DateTime(2015, 6, 1)},
-                        new DirectionPeriod { Direction = Direction.Crm, BeginDate = new DateTime(2015, 06, 2), EndDate = new DateTime(2015, 06, 20) },
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 06, 20), EndDate = new DateTime(2015, 07, 01) },
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 07, 01), EndDate = new DateTime(2015, 07, 19)},
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 07, 20), EndDate = new DateTime(2015, 08, 02)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 08, 03), EndDate = new DateTime(2015, 08, 09)},
-                        new DirectionPeriod { Direction = Direction.Support, BeginDate = new DateTime(2015, 08, 10), EndDate = new DateTime(2015, 08, 19)},
-                        new DirectionPeriod { Direction = Direction.Vendors, BeginDate = new DateTime(2015, 08, 20), EndDate = new DateTime(2015, 09, 07)},
-                        new DirectionPeriod { Direction = Direction.RomingDiadoc, BeginDate = new DateTime(2015, 09, 08), EndDate = new DateTime(2015, 09, 20)},
-                        new DirectionPeriod { Direction = Direction.CaMigration, BeginDate = new DateTime(2015, 09, 21), EndDate = new DateTime(2015, 10, 04)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 10, 05)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.ProductBilling, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 27), Direction = Direction.Support, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 06, 02), Direction = Direction.Crm,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 06, 20), Direction = Direction.Infrastructure,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 01), Direction = Direction.Support, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 20), Direction = Direction.Leave, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 03), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 10), Direction = Direction.Support, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 20), Direction = Direction.Vendors, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 08), Direction = Direction.RomingDiadoc, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 21), Direction = Direction.CaMigration, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 05), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 19), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 26), Direction = Direction.Duty,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 03), Direction = Direction.SpeedyFeatures},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 23), Direction = Direction.Duty},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 30), Direction = Direction.SpeedyFeatures},
                     }},
                 // Direction = CaServices
                 new RoundDancePeople { Name = "Ñàøà ×è÷åðñêèé",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ÑaServices, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 07, 24)},
-                        new DirectionPeriod { Direction = Direction.Leave, BeginDate = new DateTime(2015, 07, 13), EndDate = new DateTime(2015, 07, 26)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 07, 27), EndDate = new DateTime(2015, 08, 09)},
-                        new DirectionPeriod { Direction = Direction.ProductBilling, BeginDate = new DateTime(2015, 08, 10), EndDate = new DateTime(2015, 08, 23)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 08, 24), EndDate = new DateTime(2015, 08, 30)},
-                        new DirectionPeriod { Direction = Direction.LinksDeliveryAgent, BeginDate = new DateTime(2015, 08, 31), EndDate = new DateTime(2015, 09, 27)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 09, 28)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.ÑaServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 13), Direction = Direction.Leave, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 27), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 10), Direction = Direction.ProductBilling, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 24), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 31), Direction = Direction.LinksDeliveryAgent, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 28), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 10), Direction = Direction.Duty,  },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 26), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 03), Direction = Direction.Infrastructure},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 01), Direction = Direction.Leave},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 14), Direction = Direction.Certificates},
                     }},
                 new RoundDancePeople { Name = "Þðà Ñóñëîâ",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ÑaServices, BeginDate = new DateTime(2015, 04, 6), EndDate = new DateTime(2015, 06, 29)},
-                        new DirectionPeriod { Direction = Direction.Crm, BeginDate = new DateTime(2015, 06, 30), EndDate = new DateTime(2015, 08, 23)},
-                        new DirectionPeriod { Direction = Direction.ProlongationScenario, BeginDate = new DateTime(2015, 08, 24), EndDate = new DateTime(2015, 10, 11)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 10, 12)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), Direction = Direction.ÑaServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 06, 30), Direction = Direction.Crm, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 24), Direction = Direction.ProlongationScenario, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 12), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 26), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 30), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 07), Direction = Direction.SpeedyFeatures, },
                     }},
                 new RoundDancePeople { Name = "Ñàøà Êóëèêîâ",
                     WorkPeriods = new []
                     {
-                        new DirectionPeriod { Direction = Direction.ÑaServices, BeginDate = new DateTime(2015, 07, 1), EndDate = new DateTime(2015, 08, 18)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 08, 19), EndDate = new DateTime(2015, 09, 20)},
-                        new DirectionPeriod { Direction = Direction.Duty, BeginDate = new DateTime(2015, 09, 21), EndDate = new DateTime(2015, 09, 27)},
-                        new DirectionPeriod { Direction = Direction.Infrastructure, BeginDate = new DateTime(2015, 09, 28), EndDate = new DateTime(2015, 10, 04)},
-                        new DirectionPeriod { Direction = Direction.SpeedyFeatures, BeginDate = new DateTime(2015, 10, 05)},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 01), Direction = Direction.ÑaServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 19), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 21), Direction = Direction.Duty, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 09, 28), Direction = Direction.Infrastructure, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 05), Direction = Direction.SpeedyFeatures, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 10, 28), Direction = Direction.Fop},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 23), Direction = Direction.Duty},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 11, 30), Direction = Direction.SpeedyFeatures},
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 21), Direction = Direction.Duty},
                     }},
             };
         }
@@ -201,9 +272,37 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
             return null;
         }
 
+        private RoundDancePeople[] GetStartVariant()
+        {
+            var dancePeoples = startVariant;
+
+            foreach (var people in dancePeoples)
+            {
+                DirectionPeriod lastPeriod = null;
+                foreach (var period in people.WorkPeriods)
+                {
+                    if (lastPeriod != null)
+                    {
+                        if (lastPeriod.BeginDate >= period.BeginDate)
+                        {
+                            throw new ArgumentOutOfRangeException(String.Format("period is bad for {0}", people.Name));
+                        }
+
+                        lastPeriod.SetNextPeriod(period);
+                    }
+                    
+                    lastPeriod = period;
+                }
+
+                people.WorkPeriods.Last().SetAsCurrentPeriod();
+            }
+
+            return dancePeoples;
+        }
+
         public RoundDancePeople[] GetAll()
         {
-            peoples = peoples ?? GetCachedPeoples() ?? startVariant;
+            peoples = peoples ?? GetCachedPeoples() ?? GetStartVariant();
             return peoples;
         }
 

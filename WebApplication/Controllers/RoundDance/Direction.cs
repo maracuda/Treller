@@ -22,6 +22,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
         [Description("Отпуск")]
         Leave,
 
+        [Description("Болезнь")]
+        Sickness,
+
         [Description("Дежурство")]
         Duty,
 
@@ -45,5 +48,14 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
 
         [Description("Роуминг ДД")]
         RomingDiadoc,
+
+        [Description("Физики")]
+        Fisics,
+
+        [Description("Fop")]
+        Fop,
+
+        [Description("Сертификаты")]
+        Certificates,
     }
 }

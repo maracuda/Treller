@@ -19,7 +19,7 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
         public CardStateInfo Build(CardAction[] actions, Dictionary<string, BoardSettings> boardSettings, Dictionary<string, BoardList[]> boardLists)
         {
             var currentState = CardState.Unknown;
-            var firstAction = actions.FirstOrDefault() ?? new CardAction { Date = new DateTime(2014, 1, 1) };
+            var firstAction = actions.OrderBy(x => x.Date).FirstOrDefault() ?? new CardAction { Date = new DateTime(2014, 1, 1) };
             var states = new Dictionary<CardState, CardActionStateInfo>(8) { { CardState.Unknown, new CardActionStateInfo(CardState.Unknown, firstAction.Date, firstAction.Initiator ) } };
 
             foreach (var action in actions.OrderBy(x => x.Date))

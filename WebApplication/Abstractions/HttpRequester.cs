@@ -30,6 +30,20 @@ namespace SKBKontur.Treller.WebApplication.Abstractions
             return httpClient.SendGetAsync<T>(url, queryParameters, cookieContainer);
         }
 
+        public T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
+        {
+            CookieContainer cookieContainer = null;
+            if (cookies != null)
+            {
+                cookieContainer = new CookieContainer();
+                foreach (var cookie in cookies)
+                {
+                    cookieContainer.Add(cookie);
+                }
+            }
+            return httpClient.SendGet<T>(url, queryParameters, cookieContainer);
+        }
+
         public async Task<IEnumerable<Cookie>> SendPostEncodedAsync(string url, Dictionary<string, string> formUrlEncodedContent = null)
         {
             var cookies = await httpClient.SendEncodedFormPostAsync(url, formUrlEncodedContent);

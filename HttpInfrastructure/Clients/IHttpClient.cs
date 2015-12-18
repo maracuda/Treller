@@ -8,6 +8,7 @@ namespace SKBKontur.HttpInfrastructure.Clients
     public interface IHttpClient
     {
         Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, CookieContainer cookies = null);
+        T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, CookieContainer cookies = null);
 
         Task SendPostAsync<T>(string url, T body, Dictionary<string, string> queryParameters = null);
         Task SendPostAsync(string url, Dictionary<string, string> queryParameters = null);
