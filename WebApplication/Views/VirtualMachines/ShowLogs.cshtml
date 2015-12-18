@@ -1,0 +1,79 @@
+﻿@model SKBKontur.Treller.WebApplication.Services.VirtualMachines.BusinessObjects.ShowLogsViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Header
+{
+    @Styles.Render("~/bundles/css/News")
+}
+
+
+<div class="news-content">
+    @if (Model.CurrentResult != null)
+    {
+        <h3>Работа с тестовыми тачками</h3>
+
+        <h4>Запрос (логин: @Model.CurrentResult.Login):</h4>
+        <label>@Model.CurrentResult.Command</label>
+
+        <h4>Результаты ( @(Model.CurrentResult.MachineResults.All(x => x.IsFinished) ? "Завершен" : "Выполняется" ) ):</h4>
+        foreach (var machine in Model.CurrentResult.MachineResults)
+        {
+            <h6>@machine.MachineName ( @(machine.IsFinished ? "Завершен" : "Выполняется") )</h6>
+            <label>@machine.ResultText</label>
+            if (!string.IsNullOrEmpty(machine.ErrorText))
+            {
+                <br/>
+                <label>Ошибки при выполнении:</label>
+                <br/>
+                <label>@machine.ErrorText</label>
+            }
+        }
+        <br/>
+        <br/>
+        <a class="news__button fitrow" href="@Url.Action("Index", "VirtualMachines")">
+            Сделать другой запрос
+        </a>
+
+        <br/>
+        <br/>
+       
+    }
+    
+    <h4>Предыдущие запросы</h4>
+
+    <div class="news-block">
+        <div class="news-block__header clearfix">
+            <span class="news-block__column action">Дата создания</span>
+            <span class="news-block__column action">Дата обновления</span>
+            <span class="news-block__column date">Логин</span>
+            <span class="news-block__column action2">Статус выполнения</span>
+            <span class="news-block__column action3">Действия</span>
+        </div>
+        @foreach (var log in Model.Logs)
+        {
+            <div class="news-block__row clearfix fitrow" title="@log.Execute.Command">
+                <span class="news-block__column action">@log.CreateTime.ToString("dd.MM.yyyy HH:mm:ss")</span>
+                <span class="news-block__column action">@log.LastUpdateTime.ToString("dd.MM.yyyy HH:mm:ss")</span>
+                <span class="news-block__column date">@log.Execute.Login</span>
+                <span class="news-block__column action2">@(log.Execute.MachineResults.Any(x => !x.IsFinished) ? "Выполняется" : "Завершен")</span>
+                <span class="news-block__column action3">
+                <a class="news__button fitrow" href="@Url.Action("ShowLogs", "VirtualMachines", new {log.ExecuteId})">
+                    Подробнее
+                </a>
+                @if (Model.CurrentResult != null)
+                {
+                    <a class="news__button fitrow" href="@Url.Action("ShowLogs", "VirtualMachines", new {ExecuteId = Model.CurrentResult.Id, RefreshExecuteId = log.Execute.Id})">
+                        Обновить статус
+                    </a>
+                }
+            </span>
+            </div>
+        }
+        <a class="news__button fitrow" href="@Url.Action("DeleteLogs", "VirtualMachines")">
+            Удалить весь лог
+        </a>
+    </div>
+</div>

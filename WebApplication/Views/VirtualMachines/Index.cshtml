@@ -1,0 +1,109 @@
+﻿@using SKBKontur.Infrastructure.CommonExtenssions
+@model Dictionary<SKBKontur.Treller.WebApplication.Services.VirtualMachines.BusinessObjects.VirtualMachineProfile, SKBKontur.Treller.WebApplication.Services.VirtualMachines.BusinessObjects.VirtualMachine[]>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Header
+{
+    @Styles.Render("~/bundles/css/News")
+}
+
+
+<div class="news-content js-news-content">
+    @{
+        var commands = new Dictionary<string, string>
+        {
+            {
+                "Поменять время на ЕКБ", "get-service \"billy*\" | stop-service" + Environment.NewLine +
+                                         "tzutil /s  \"Ekaterinburg Standard Time\"" + Environment.NewLine +
+                                         "get-service billy.core.setting* | start-service" + Environment.NewLine +
+                                         "get-service billy* | start-service"
+            },
+            {"Посмотреть npm registry", "npm config get registry"},
+            {"Поменять npm registry", "npm config set registry http://vm-billy-npm:4873/"},
+            {"Почистить npm кэш", "npm cache clean"},
+            {
+                "Запустить правильно все билли сервисы", "get-service billy.core.setting* | start-service" + Environment.NewLine +
+                                                         "get-service billy* | start-service"
+            },
+            {"Остановить все билли сервисы", "get-service billy* | stop-service"},
+        };
+    }
+
+    <h3>Работа с тестовыми тачками</h3>
+
+    @using (Html.BeginForm("ExecuteCommand", "VirtualMachines", FormMethod.Post))
+    {
+        <div style="float: right; margin: 0 0 10px 20px; min-width: 400px; font-size: 20px;">
+            <h4><a href="@Url.Action("ShowLogs", "VirtualMachines")">Показать логи выполнения предыдущих запросов</a></h4>
+            <h3>Список команд:</h3>
+            @foreach (var command in commands)
+            {
+                <div><a href="@Url.Action("Index", "VirtualMachines", new {command = command.Value})">@command.Key</a>
+                </div>
+            }
+        </div>
+
+        @Html.Label("login", "Логин:")
+        @Html.TextBox("login")
+        <br/>
+        <label>Удаленный запрос для выполнения:</label>
+        @Html.TextArea("command", ViewData["command"] as string, new Dictionary<string, object> {{"style", "width: 500px; height: 100px"}})
+
+        if ((bool) ViewData["isLoginFailed"])
+        {
+
+            <label>У вас нет прав посылать запросы!</label>
+        }
+
+        <h4 style="margin: 10px 0 -10px;">
+            <label>
+                <input type="checkbox" class="js-vm-selectAll"/>
+                Виртуалки
+            </label>
+        </h4>
+        foreach (var profile in Model.Keys)
+        {
+            <div class="js-profile-settings">
+
+                <h4 style="margin: 5px 0 0;">
+                    <label>
+                        <input type="checkbox" class="js-profile-selectAll"/>
+                        @profile.GetEnumDescription()
+                    </label>
+                </h4>
+
+                @foreach (var machine in Model[profile])
+                {
+                    <label>
+                        @Html.CheckBox("virtualMachineNames", new {@value = @machine.Name, @class = "js-profile-select"})
+                        @machine.Name
+                    </label>
+                    <br/>
+                }
+            </div>
+        }
+        <input type="submit" value="Выполнить запрос" class="news__button news_actualize_button"/>
+    }
+</div>
+
+@section FooterScripts
+{
+    <script>
+        $(".js-profile-selectAll").on("change.profileSettings", function() {
+            $(this)
+                .closest(".js-profile-settings")
+                .find(".js-profile-select")
+                .prop("checked", this.checked);
+        });
+
+        $(".js-vm-selectAll").on("change.profileSettings", function() {
+            $(this)
+                .closest(".js-news-content")
+                .find(".js-profile-select, .js-profile-selectAll")
+                .prop("checked", this.checked);
+        });
+    </script>
+}

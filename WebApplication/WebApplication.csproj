@@ -102,6 +102,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management.Automation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Management.Automation.6.1.7601.17515\lib\net45\System.Management.Automation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -258,7 +262,9 @@
     <Compile Include="Blocks\TaskList\ViewModels\CardStageInfoViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\ShowMode.cs" />
     <Compile Include="Controllers\GeneratorController.cs" />
+    <Compile Include="Controllers\VirtualMachinesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\RoundDanceController.cs" />
     <Compile Include="Controllers\RoundDance\Direction.cs" />
     <Compile Include="Controllers\RoundDance\DirectionPeriod.cs" />
@@ -286,19 +292,39 @@
     </Compile>
     <Compile Include="Models\TaskList\TaskListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\News\CardNewsModel.cs" />
-    <Compile Include="Services\News\INewsService.cs" />
-    <Compile Include="Services\News\NewsModel.cs" />
     <Compile Include="Services\News\NewsService.cs" />
+    <Compile Include="Services\News\INewsService.cs" />
+    <Compile Include="Services\News\NewCardNewsModel.cs" />
+    <Compile Include="Services\News\NewsEmail.cs" />
+    <Compile Include="Services\News\NewsModel.cs" />
     <Compile Include="Services\News\NewsViewModel.cs" />
     <Compile Include="Services\Settings\BoardSettings.cs" />
     <Compile Include="Services\Settings\ISettingService.cs" />
     <Compile Include="Services\Settings\SettingService.cs" />
+    <Compile Include="Services\Statistics\IStatisticsService.cs" />
+    <Compile Include="Services\Statistics\StatisticsService.cs" />
+    <Compile Include="Services\Statistics\StatisticsViewModel.cs" />
     <Compile Include="Services\TaskCacher\IOperationalService.cs" />
     <Compile Include="Services\TaskCacher\ITaskCacher.cs" />
     <Compile Include="Services\TaskCacher\OperationalService.cs" />
     <Compile Include="Services\TaskCacher\TaskCacher.cs" />
     <Compile Include="Services\TaskCacher\TaskCacherStoredTypes.cs" />
+    <Compile Include="Services\VirtualMachines\BusinessObjects\AsyncPowershell.cs" />
+    <Compile Include="Services\VirtualMachines\BusinessObjects\CommandExecute.cs" />
+    <Compile Include="Services\VirtualMachines\BusinessObjects\CommandExecuteResult.cs" />
+    <Compile Include="Services\VirtualMachines\BusinessObjects\CommandExecuteVirtualMachineResult.cs" />
+    <Compile Include="Services\VirtualMachines\BusinessObjects\ShowLogsViewModel.cs" />
+    <Compile Include="Services\VirtualMachines\BusinessObjects\VirtualMachine.cs" />
+    <Compile Include="Services\VirtualMachines\BusinessObjects\VirtualMachineProfile.cs" />
+    <Compile Include="Services\VirtualMachines\Logging\IVirtualMachinesExecuteLog.cs" />
+    <Compile Include="Services\VirtualMachines\Logging\VirtualMachinesExecuteLog.cs" />
+    <Compile Include="Services\VirtualMachines\Logging\VirtualMachinesExecuteLogModel.cs" />
+    <Compile Include="Services\VirtualMachines\Runspaces\IVirtualMachinesRunspacePool.cs" />
+    <Compile Include="Services\VirtualMachines\Runspaces\VirtualMachinesRunspacePool.cs" />
+    <Compile Include="Services\VirtualMachines\Services\IVirtualMachinesService.cs" />
+    <Compile Include="Services\VirtualMachines\Services\VirtualMachinesService.cs" />
+    <Compile Include="Services\VirtualMachines\Storages\IVirtualMachinesStorage.cs" />
+    <Compile Include="Services\VirtualMachines\Storages\VirtualMachinesStorage.cs" />
     <Compile Include="Storages\CachedFileStorage.cs" />
     <Compile Include="Storages\ICachedFileStorage.cs" />
   </ItemGroup>
@@ -413,7 +439,11 @@
     <Content Include="Views\Shared\DisplayTemplates\UserAvatarViewModel.cshtml" />
     <Content Include="Views\Generator\Index.cshtml" />
     <Content Include="Views\RoundDance\Index.cshtml" />
-    <None Include="Views\News\Index.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
+    <None Include="Views\VirtualMachines\ExecuteCommand.cshtml" />
+    <None Include="Views\VirtualMachines\Index.cshtml" />
+    <None Include="Views\Statistics\Index.cshtml" />
+    <None Include="Views\VirtualMachines\ShowLogs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blocks\Users\" />
