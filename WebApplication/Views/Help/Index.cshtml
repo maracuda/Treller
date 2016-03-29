@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Header
+{
+    @Styles.Render("~/bundles/css/News")
+}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Прикольные кнопки</title>
+        <meta name="robots" content="noindex, nofollow" />
+    </head>
+    <body>
+        <div>
+            <h2>Веселые кнопки</h2>
+            @using (Html.BeginForm("DeleteAllCommentsFromConsistencyBattle", "Help", FormMethod.Post))
+            {
+                <input type="submit" value="Удалить все данные из бага консистентности" class="news__button news_actualize_button" />
+            }
+        </div>
+    </body>
+</html>
