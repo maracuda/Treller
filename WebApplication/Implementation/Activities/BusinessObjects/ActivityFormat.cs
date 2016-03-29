@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace SKBKontur.Treller.WebApplication.Fan.Activities
+namespace SKBKontur.Treller.WebApplication.Implementation.Activities.BusinessObjects
 {
     public enum ActivityFormat
     {

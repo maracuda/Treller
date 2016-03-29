@@ -3,7 +3,7 @@ using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
 using SKBKontur.TaskManagerClient.Wiki.BusinessObjects;
 using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
 
-namespace SKBKontur.Treller.WebApplication.Abstractions
+namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions
 {
     public class ClientsIntegrationCredentials
     {

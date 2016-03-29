@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Services.VirtualMachines.BusinessObjects;
-using SKBKontur.Treller.WebApplication.Storages;
 
 namespace SKBKontur.Treller.WebApplication.Services.VirtualMachines.Logging
 {

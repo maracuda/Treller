@@ -3,7 +3,7 @@ using System.Reflection;
 using SKBKontur.BlocksMapping.Abstrations;
 using SKBKontur.Infrastructure.Common;
 
-namespace SKBKontur.Treller.WebApplication.Abstractions
+namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions
 {
     public class DomainService : IDomainService
     {

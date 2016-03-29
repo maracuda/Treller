@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.WebApplication.Storages
+﻿namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages
 {
     public interface ICachedFileStorage
     {

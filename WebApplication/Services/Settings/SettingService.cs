@@ -4,7 +4,7 @@ using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Storages;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 
 namespace SKBKontur.Treller.WebApplication.Services.Settings
 {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Web;
 using Newtonsoft.Json;
 
-namespace SKBKontur.Treller.WebApplication.Storages
+namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages
 {
     public class CachedFileStorage : ICachedFileStorage
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
-using SKBKontur.Treller.WebApplication.Extensions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {

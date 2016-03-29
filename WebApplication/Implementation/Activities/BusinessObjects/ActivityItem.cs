@@ -1,6 +1,6 @@
 using System;
 
-namespace SKBKontur.Treller.WebApplication.Fan.Activities
+namespace SKBKontur.Treller.WebApplication.Implementation.Activities.BusinessObjects
 {
     public class ActivityItem
     {

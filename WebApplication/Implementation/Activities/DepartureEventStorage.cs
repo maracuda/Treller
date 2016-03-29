@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SKBKontur.Treller.WebApplication.Implementation.Activities.BusinessObjects;
 
-namespace SKBKontur.Treller.WebApplication.Fan.Activities
+namespace SKBKontur.Treller.WebApplication.Implementation.Activities
 {
     public class DepartureEventStorage : IDepartureEventStorage
     {

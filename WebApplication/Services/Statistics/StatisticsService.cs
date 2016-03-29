@@ -7,8 +7,8 @@ using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Services.Settings;
-using SKBKontur.Treller.WebApplication.Storages;
 
 namespace SKBKontur.Treller.WebApplication.Services.Statistics
 {

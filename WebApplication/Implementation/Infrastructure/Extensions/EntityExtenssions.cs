@@ -2,7 +2,7 @@
 using System.Linq;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 
-namespace SKBKontur.Treller.WebApplication.Extensions
+namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions
 {
     public static class EntityExtenssions
     {

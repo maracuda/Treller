@@ -1,7 +1,7 @@
 using System.Linq;
 using Microsoft.Ajax.Utilities;
 
-namespace SKBKontur.Treller.WebApplication.Fan.Activities
+namespace SKBKontur.Treller.WebApplication.Implementation.Activities.BusinessObjects
 {
     public class Activity
     {

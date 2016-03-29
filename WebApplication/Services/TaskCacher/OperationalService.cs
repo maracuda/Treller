@@ -1,10 +1,10 @@
 using System;
 using System.Timers;
-using SKBKontur.Treller.WebApplication.Storages;
 using SKBKontur.BlocksMapping.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Services.Digest;
 using SKBKontur.Treller.WebApplication.Services.News;
 using SKBKontur.Treller.WebApplication.Services.Notifications;

@@ -8,7 +8,7 @@ using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.ViewModels;
-using SKBKontur.Treller.WebApplication.Extensions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization
 {

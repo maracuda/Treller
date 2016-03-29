@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using SKBKontur.Treller.WebApplication.Fan;
+using SKBKontur.Treller.WebApplication.Implementation.PhraseGeneration;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {

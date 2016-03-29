@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.WebApplication.Fan
+namespace SKBKontur.Treller.WebApplication.Implementation.PhraseGeneration
 {
     public class PhraseGenerator : IPhraseGenerator
     {

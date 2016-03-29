@@ -1,5 +1,5 @@
 using React;
-using SKBKontur.Treller.WebApplication.Extensions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 
 namespace SKBKontur.Treller.WebApplication
 {

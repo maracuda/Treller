@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.WebApplication.Fan
+﻿namespace SKBKontur.Treller.WebApplication.Implementation.PhraseGeneration
 {
     public interface IPhraseGenerator
     {

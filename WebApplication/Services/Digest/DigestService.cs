@@ -7,10 +7,10 @@ using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
-using SKBKontur.Treller.WebApplication.Extensions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Services.Settings;
 using SKBKontur.Treller.WebApplication.Services.TaskCacher;
-using SKBKontur.Treller.WebApplication.Storages;
 
 namespace SKBKontur.Treller.WebApplication.Services.Digest
 {

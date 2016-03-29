@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SKBKontur.Treller.WebApplication.Fan.Activities
+namespace SKBKontur.Treller.WebApplication.Implementation.Activities.BusinessObjects
 {
     public class EventViewModel
     {
