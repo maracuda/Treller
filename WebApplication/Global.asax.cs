@@ -5,8 +5,8 @@ using System.Web.Routing;
 using LightInject;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
-using SKBKontur.Treller.WebApplication.App_Start;
 using System.Linq;
+using System.Threading.Tasks;
 using SKBKontur.BlocksMapping.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
@@ -39,7 +39,7 @@ namespace SKBKontur.Treller.WebApplication
             BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             runspacePool = container.Get<IVirtualMachinesRunspacePool>();
-            WarmUp(container);
+            Task.Factory.StartNew(() => WarmUp(container));
         }
 
         private static void WarmUp(IContainer container)
