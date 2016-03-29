@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Text;
 using Microsoft.Ajax.Utilities;
 using SKBKontur.BlocksMapping.BlockExtenssions;
@@ -9,6 +8,7 @@ using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
+using SKBKontur.Treller.WebApplication.Services.Notifications;
 using SKBKontur.Treller.WebApplication.Services.Settings;
 using SKBKontur.Treller.WebApplication.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Storages;
@@ -21,20 +21,31 @@ namespace SKBKontur.Treller.WebApplication.Services.News
         private const string CardNewsName = "CardNews";
         private const string NewsEmailsStoreName = "NewsEmailsToSend";
 
+        #region init
+
+
         private readonly ICachedFileStorage cachedFileStorage;
         private readonly ISettingService settingService;
         private readonly ITaskCacher taskCacher;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
+        private readonly INotificationService notificationService;
 
-        public NewsService(ICachedFileStorage cachedFileStorage, ISettingService settingService, ITaskCacher taskCacher, ITaskManagerClient taskManagerClient, ICardStateInfoBuilder cardStateInfoBuilder)
+        public NewsService(ICachedFileStorage cachedFileStorage,
+                           ISettingService settingService,
+                           ITaskCacher taskCacher,
+                           ITaskManagerClient taskManagerClient,
+                           ICardStateInfoBuilder cardStateInfoBuilder,
+                           INotificationService notificationService)
         {
             this.cachedFileStorage = cachedFileStorage;
             this.settingService = settingService;
             this.taskCacher = taskCacher;
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
+            this.notificationService = notificationService;
         }
+        #endregion
 
         public void Refresh()
         {
@@ -198,11 +209,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
             }
 
             var body = string.Format("{1}{0}{0}Вы можете ответить на это письмо, если у вас возникли вопросы или комментарии касающиеся релизов{0}{0}--{0}С уважением, команда Контур.Биллинг", inHtmlStyle ? "<br/>" : Environment.NewLine, newsModel.NewsText);
-
-            using (var smtpClient = new SmtpClient("dag3.kontur", 25) { UseDefaultCredentials = true, DeliveryMethod = SmtpDeliveryMethod.Network })
-            {
-                smtpClient.Send(new MailMessage("maylo@skbkontur.ru", emails.GetEmail(technical), newsModel.NewsHeader, body) { IsBodyHtml = inHtmlStyle, ReplyToList = { "ask.billing@skbkontur.ru" } });
-            }
+            notificationService.SendMessage(emails.GetEmail(technical), newsModel.NewsHeader, body, inHtmlStyle);
 
             newsModel.Cards.ForEach(x => x.Publish(technical));
             cachedFileStorage.Write(CardNewsName, cards);

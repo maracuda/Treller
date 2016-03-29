@@ -5,7 +5,9 @@ using SKBKontur.BlocksMapping.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
+using SKBKontur.Treller.WebApplication.Services.Digest;
 using SKBKontur.Treller.WebApplication.Services.News;
+using SKBKontur.Treller.WebApplication.Services.Notifications;
 
 namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
 {
@@ -15,15 +17,26 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
         private readonly INewsService newsService;
         private readonly ICachedFileStorage cachedFileStorage;
         private readonly IBlocksBuilder blocksBuilder;
-        private bool isTimerInProgress;
+        private readonly INotificationService notificationService;
+        private readonly IDigestService digestService;
+        private static bool isTimerInProgress;
         private readonly Timer timer;
         private DateTime lastUpdateUtc;
         private const string TimestampFileName = "TrellerCacheCurrentTimestamp.json";
+        private DateTime lastError = DateTime.MinValue;
+        private DateTime lastNewsError = DateTime.MinValue;
 
-        public OperationalService(ITaskCacher taskCacher, INewsService newsService, ICachedFileStorage cachedFileStorage, IBlocksBuilder blocksBuilder)
+        public OperationalService(ITaskCacher taskCacher,
+                                  INewsService newsService,
+                                  ICachedFileStorage cachedFileStorage,
+                                  IBlocksBuilder blocksBuilder,
+                                  INotificationService notificationService,
+                                  IDigestService digestService)
         {
             this.taskCacher = taskCacher;
             this.blocksBuilder = blocksBuilder;
+            this.notificationService = notificationService;
+            this.digestService = digestService;
             this.newsService = newsService;
             this.cachedFileStorage = cachedFileStorage;
 
@@ -46,7 +59,19 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
             try
             {
                 var time = DateTime.UtcNow;
-                if (taskCacher.TryActualize(lastUpdateUtc))
+
+                var actualizeResult = false;
+                try
+                {
+                    actualizeResult = taskCacher.TryActualize(lastUpdateUtc);
+                }
+                catch (Exception ex)
+                {
+                    notificationService.SendErrorReport("Актуализатор кэша не смог отработать!", ex);
+                    return;
+                }
+
+                if (actualizeResult)
                 {
                     lastUpdateUtc = time;
                     cachedFileStorage.Write(TimestampFileName, lastUpdateUtc.Ticks);
@@ -55,14 +80,50 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
                 {
                     var warmedBlocks = blocksBuilder.BuildBlocks(ContextKeys.TasksKey, new[] { typeof(BoardsBlock), typeof(CardListBlock) }, new CardListEnterModel { BoardIds = new string[0], ShowMode = ShowMode.All }).Result;
                 }
-                newsService.Refresh();
+
+                try
+                {
+                    newsService.Refresh();
+                }
+                catch (Exception ex)
+                {
+                    notificationService.SendErrorReport("Проблема в обновлении данных для новостей", ex);
+                    return;
+                }
+                
 
                 var now = DateTime.Now;
-                if (((now.Hour >= 17 && now.Minute > 20 && now.Hour < 18) || (now.Hour >= 9 && now.Hour < 10)) && newsService.IsAnyNewsExists())
+                if (((now.Hour >= 18 && now.Minute > 20 && now.Hour < 19) || (now.Hour >= 12 && now.Hour < 13)) && newsService.IsAnyNewsExists())
                 {
-                    newsService.SendNews();
-                    newsService.SendTechnicalNews();
+                    try
+                    {
+                        newsService.SendNews();
+                        newsService.SendTechnicalNews();
+                    }
+                    catch (Exception ex)
+                    {
+                        if ((DateTime.Now - lastNewsError).TotalDays > 1)
+                        {
+                            notificationService.SendErrorReport("Не смог отправить новости!", ex);
+                        }
+                        lastNewsError = DateTime.Now;
+                    }
+                    
                 }
+
+                try
+                {
+                    digestService.SendAllToDigest();
+                }
+                catch (Exception ex)
+                {
+                    if ((DateTime.Now - lastError).TotalDays > 1)
+                    {
+                        notificationService.SendErrorReport("Не смог отправить в дайджест!", ex);
+                    }
+                    lastError = DateTime.Now;
+                }
+                
             }
             finally
             {

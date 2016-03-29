@@ -7,13 +7,15 @@ using System.Text;
 using System.Web;
 using Newtonsoft.Json;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using SKBKontur.Treller.WebApplication.Services.Notifications;
 
 namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
 {
     public class TaskCacher : ITaskCacher
     {
         private readonly ITaskManagerClient taskManagerClient;
+        private readonly INotificationService notificationService;
         private readonly ConcurrentDictionary<CacheKey, CacheResult> cache;
         private readonly HashSet<ActionType> checklistActions = new HashSet<ActionType>(new []{ ActionType.AddChecklistToCard, ActionType.ConvertToCardFromCheckItem, ActionType.RemoveChecklistFromCard, ActionType.UpdateCheckItemStateOnCard, ActionType.UpdateChecklist });
         private readonly Dictionary<TaskCacherStoredTypes, Type> storKeys = new Dictionary<TaskCacherStoredTypes, Type>
@@ -37,9 +39,10 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
                                                                                                                    new KeyValuePair<Type, ConcurrentDictionary<string, dynamic>>(typeof(Board[]), new ConcurrentDictionary<string, dynamic>(3, 10)),
                                                                                                                });
 
-        public TaskCacher(ITaskManagerClient taskManagerClient)
+        public TaskCacher(ITaskManagerClient taskManagerClient, INotificationService notificationService)
         {
             this.taskManagerClient = taskManagerClient;
+            this.notificationService = notificationService;
             cache = new ConcurrentDictionary<CacheKey, CacheResult>(3, 6);
 
             foreach (var storKey in storKeys)
@@ -48,6 +51,11 @@ namespace SKBKontur.Treller.WebApplication.Services.TaskCacher
                 if (File.Exists(fileName))
                 {
                     var result = (IStoredObject)JsonConvert.DeserializeObject(File.ReadAllText(fileName, Encoding.UTF8), storKey.Value);
+                    if (result == null)
+                    {
+                        continue;
+                    }
+
                     var key = new CacheKey(storKey.Key, result.BoardIds);
                     cache.TryAdd(key, new CacheResult(storKey.Key, null, result.Result));
 

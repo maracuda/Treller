@@ -1,5 +1,5 @@
 using System;
-using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 
 namespace SKBKontur.Treller.WebApplication.Services.News
@@ -49,6 +49,11 @@ namespace SKBKontur.Treller.WebApplication.Services.News
             }
 
             newsIndex += marker.Length + 1;
+
+            if (newsIndex >= CardDescription.Length)
+            {
+                return null;
+            }
 
             var postNewsIndex = CardDescription.IndexOf("**", newsIndex, StringComparison.OrdinalIgnoreCase);
             var newsLength = (postNewsIndex < 0 ? CardDescription.Length - 1 : postNewsIndex) - newsIndex;
