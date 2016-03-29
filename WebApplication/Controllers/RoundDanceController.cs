@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using SKBKontur.Treller.WebApplication.Services.RoundDance;
+using SKBKontur.Treller.WebApplication.Implementation.RoundDance;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {

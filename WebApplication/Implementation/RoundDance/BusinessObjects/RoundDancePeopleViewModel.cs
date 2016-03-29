@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 
-namespace SKBKontur.Treller.WebApplication.Services.RoundDance
+namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects
 {
     public class RoundDancePeopleViewModel
     {

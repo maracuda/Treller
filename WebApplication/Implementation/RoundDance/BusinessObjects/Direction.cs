@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace SKBKontur.Treller.WebApplication.Services.RoundDance
+namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects
 {
     public enum Direction
     {

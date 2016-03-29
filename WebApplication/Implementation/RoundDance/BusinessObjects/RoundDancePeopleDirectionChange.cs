@@ -1,6 +1,6 @@
 using System;
 
-namespace SKBKontur.Treller.WebApplication.Services.RoundDance
+namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects
 {
     public class RoundDancePeopleDirectionChange
     {

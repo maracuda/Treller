@@ -4,7 +4,7 @@ using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 
 namespace SKBKontur.Treller.WebApplication.Services.News
 {
-    public class NewCardNewsModel
+    public class CardNewsModel
     {
         private string cardDescription;
 

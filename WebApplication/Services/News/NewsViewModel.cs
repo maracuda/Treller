@@ -7,8 +7,8 @@
 
         public NewsModel TechnicalNewsToPublish { get; set; }
         public NewsModel NewsToPublish { get; set; }
-        public NewCardNewsModel[] NotActualCards { get; set; }
-        public NewCardNewsModel[] CardsWihoutNews { get; set; }
-        public NewCardNewsModel[] ActualCards { get; set; }
+        public CardNewsModel[] NotActualCards { get; set; }
+        public CardNewsModel[] CardsWihoutNews { get; set; }
+        public CardNewsModel[] ActualCards { get; set; }
     }
 }

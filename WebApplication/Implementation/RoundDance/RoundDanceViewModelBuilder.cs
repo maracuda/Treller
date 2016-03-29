@@ -4,8 +4,9 @@ using System.Linq;
 using Microsoft.Ajax.Utilities;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
+using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects;
 
-namespace SKBKontur.Treller.WebApplication.Services.RoundDance
+namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 {
     public class RoundDanceViewModelBuilder : IRoundDanceViewModelBuilder
     {

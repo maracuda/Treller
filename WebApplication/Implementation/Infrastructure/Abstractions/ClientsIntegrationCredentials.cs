@@ -11,5 +11,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstrac
         public GitLabCredential GitLabClientCredentials { get; set; }
         public YouTrackCredential YouTrackCredentials { get; set; }
         public WikiCredential WikiCredentials { get; set; }
+        public AdCredentials AdCredentials { get; set; }
     }
 }

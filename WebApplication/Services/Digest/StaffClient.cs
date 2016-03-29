@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Newtonsoft.Json;
 using SKBKontur.HttpInfrastructure.Clients;
-using SKBKontur.Treller.WebApplication.Services.ActiveDirectory;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 
 namespace SKBKontur.Treller.WebApplication.Services.Digest
 {
@@ -11,7 +11,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Digest
     {
         private readonly IHttpClient httpClient;
         private readonly IAdService adService;
-        private static StaffAuthoricationInfo authoricationInfo;
+        private static StaffAuthoricationInfo _authoricationInfo;
 
         public StaffClient(IHttpClient httpClient, IAdService adService)
         {
@@ -52,7 +52,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Digest
 
         private StaffAuthoricationInfo GetAuthorizationData()
         {
-            if (authoricationInfo == null || !authoricationInfo.IsActive)
+            if (_authoricationInfo == null || !_authoricationInfo.IsActive)
             {
                 var credentials = adService.GetDeliveryCredentials();
                 var form = new FormUrlEncodedContent(new Dictionary<string,string>
@@ -64,10 +64,10 @@ namespace SKBKontur.Treller.WebApplication.Services.Digest
                 });
 
                 var authorizationData = httpClient.SendPost<StaffAuthorizationData>("https://passport.skbkontur.ru/authz/staff/oauth/token", null, form, null, "Basic YmlsbHlfdHJlbGxlcjpOa0VTdU1PRm05aDdJdEZHZVJtcHV5RGpPbkY1MFFuZWgxRktsQ3RTbEnigIs=");
-                authoricationInfo = new StaffAuthoricationInfo(authorizationData);
+                _authoricationInfo = new StaffAuthoricationInfo(authorizationData);
             }
 
-            return authoricationInfo;
+            return _authoricationInfo;
         }
 
         public class StaffAuthorizationData

@@ -10,7 +10,7 @@ using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions
 {
-    public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService
+    public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService, IAdService
     {
         private static readonly string LogInFilePath = Path.Combine(HttpRuntime.AppDomainAppPath, "LogIn.json");
         private readonly Lazy<ClientsIntegrationCredentials> credentials;
@@ -39,6 +39,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstrac
         public WikiCredential GetWikiCredentials()
         {
             return credentials.Value.WikiCredentials;
+        }
+
+        public AdCredentials GetDeliveryCredentials()
+        {
+            return credentials.Value.AdCredentials;
         }
     }
 }

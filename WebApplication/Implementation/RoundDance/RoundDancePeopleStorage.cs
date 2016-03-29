@@ -1,12 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
 using Newtonsoft.Json;
+using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects;
 
-namespace SKBKontur.Treller.WebApplication.Services.RoundDance
+namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 {
     public class RoundDancePeopleStorage : IRoundDancePeopleStorage
     {
@@ -16,6 +16,7 @@ namespace SKBKontur.Treller.WebApplication.Services.RoundDance
 
         public RoundDancePeopleStorage()
         {
+            #region default people storage
             startVariant = new[]
             {
 #region peoples left
@@ -344,6 +345,7 @@ namespace SKBKontur.Treller.WebApplication.Services.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 23), Direction = Direction.SpeedyFeatures},
                     }},
             };
+#endregion
         }
 
         private static RoundDancePeople[] GetCachedPeoples()
@@ -389,18 +391,6 @@ namespace SKBKontur.Treller.WebApplication.Services.RoundDance
         {
             peoples = peoples ?? GetCachedPeoples() ?? GetStartVariant();
             return peoples;
-        }
-
-        public Dictionary<Direction, int> GetDirectionResourceNeeds()
-        {
-            return new Dictionary<Direction, int>
-            {
-                {Direction.Crm, 2},
-                {Direction.Infrastructure, 0},
-                {Direction.ProductBilling, 2},
-                {Direction.Support, 5},
-                {Direction.ÑaServices, 4}
-            };
         }
     }
 }

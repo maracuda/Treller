@@ -5,6 +5,6 @@ namespace SKBKontur.Treller.WebApplication.Services.News
         public string NewsText { get; set; }
         public string NewsHeader { get; set; }
 
-        public NewCardNewsModel[] Cards { get; set; }
+        public CardNewsModel[] Cards { get; set; }
     }
 }

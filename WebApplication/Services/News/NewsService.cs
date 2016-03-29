@@ -61,7 +61,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
                 {
                     var cardStateInfo = cardStateInfoBuilder.Build(cardActions[card.Id].ToArray(), boardSettings, boardLists.ToDictionary(x => x.Key, x => x.ToArray()));
                     var cardReleaseDate = (card.DueDate ?? cardStateInfo.States.SafeGet(CardState.Released).IfNotNull(x => (DateTime?)x.BeginDate) ?? DateTime.Now).Date;
-                    return new NewCardNewsModel
+                    return new CardNewsModel
                     {
                         CardId = card.Id,
                         CardName = card.Name,
@@ -77,7 +77,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
                 .Where(x => x.CardReleaseDate >= DateTime.Now.Date.AddDays(-14))
                 .ToArray();
 
-            var currentModels = (cachedFileStorage.Find<NewCardNewsModel[]>(CardNewsName) ?? new NewCardNewsModel[0]).ToDictionary(x => x.CardId);
+            var currentModels = (cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0]).ToDictionary(x => x.CardId);
             foreach (var card in actualCards.Where(card => currentModels.ContainsKey(card.CardId)))
             {
                 var oldCard = currentModels[card.CardId];
@@ -91,7 +91,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
 
         public NewsViewModel GetNews()
         {
-            var cardsForNews = cachedFileStorage.Find<NewCardNewsModel[]>(CardNewsName) ?? new NewCardNewsModel[0];
+            var cardsForNews = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
             var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default();
 
             return new NewsViewModel
@@ -106,12 +106,12 @@ namespace SKBKontur.Treller.WebApplication.Services.News
             };
         }
 
-        private static NewsModel BuildNewsModel(NewCardNewsModel[] cards, bool isTechnicalNews, bool inHtmlStyle = false)
+        private static NewsModel BuildNewsModel(CardNewsModel[] cards, bool isTechnicalNews, bool inHtmlStyle = false)
         {
             var newLine = inHtmlStyle ? "<br/>" : Environment.NewLine;
             var news = new StringBuilder();
             DateTime releaseDate = new DateTime();
-            var cardsForSend = new List<NewCardNewsModel>();
+            var cardsForSend = new List<CardNewsModel>();
 
             cards = cards.Where(x => !x.IsPublished(isTechnicalNews) && !x.IsDeleted) // && x.PublishDate >= DateTime.Today
                          .OrderBy(x => x.CardReleaseDate)
@@ -173,9 +173,9 @@ namespace SKBKontur.Treller.WebApplication.Services.News
             });
         }
 
-        private void UpdateCard(string cardId, Action<NewCardNewsModel> updateCardAction)
+        private void UpdateCard(string cardId, Action<CardNewsModel> updateCardAction)
         {
-            var newsCards = cachedFileStorage.Find<NewCardNewsModel[]>(CardNewsName) ?? new NewCardNewsModel[0];
+            var newsCards = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
             var cardToDelete = newsCards.FirstOrDefault(x => x.CardId == cardId);
 
             if (cardToDelete == null)
@@ -200,7 +200,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
         private void SendNews(bool technical)
         {
             var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default();
-            var cards = cachedFileStorage.Find<NewCardNewsModel[]>(CardNewsName) ?? new NewCardNewsModel[0];
+            var cards = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
             var inHtmlStyle = true;
             var newsModel = BuildNewsModel(cards, technical, inHtmlStyle);
             if (newsModel == null || newsModel.Cards.Length == 0)
@@ -231,7 +231,7 @@ namespace SKBKontur.Treller.WebApplication.Services.News
 
         public bool IsAnyNewsExists()
         {
-            return (cachedFileStorage.Find<NewCardNewsModel[]>(CardNewsName) ?? new NewCardNewsModel[0]).Any(x => x.IsNewsExists() && !x.IsPublished() && !x.IsDeleted);
+            return (cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0]).Any(x => x.IsNewsExists() && !x.IsPublished() && !x.IsDeleted);
         }
     }
 }

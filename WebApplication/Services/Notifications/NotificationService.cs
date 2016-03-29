@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mail;
-using SKBKontur.Treller.WebApplication.Services.ActiveDirectory;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 
 namespace SKBKontur.Treller.WebApplication.Services.Notifications
 {
