@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Newtonsoft.Json;
 using SKBKontur.HttpInfrastructure.Clients;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
@@ -64,6 +63,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
                     {"password", credentials.Password},
                 });
 
+                // billy_treller:NkESuMOFm9h7ItFGeRmpuyDjOnF50Qneh1FKlCtSlI​
                 var authorizationData = httpClient.SendPost<StaffAuthorizationData>("https://passport.skbkontur.ru/authz/staff/oauth/token", null, form, null, "Basic YmlsbHlfdHJlbGxlcjpOa0VTdU1PRm05aDdJdEZHZVJtcHV5RGpPbkY1MFFuZWgxRktsQ3RTbEnigIs=");
                 _authoricationInfo = new StaffAuthoricationInfo(authorizationData);
             }

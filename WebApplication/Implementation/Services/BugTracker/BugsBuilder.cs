@@ -38,6 +38,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.BugTracker
                                           Url = item.Description
                                       };
                 }
+
                 if (item.Description.StartsWith(sprintStartUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     var sprintIndex = item.Description.IndexOf(sprintUrlEndWord, StringComparison.OrdinalIgnoreCase);

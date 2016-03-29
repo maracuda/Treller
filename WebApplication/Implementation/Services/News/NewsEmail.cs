@@ -1,3 +1,5 @@
+using SKBKontur.Treller.WebApplication.Implementation.Services.Notifications;
+
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 {
     public class NewsEmail
@@ -5,9 +7,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         public string TechnicalEmail { get; set; }
         public string ReleaseEmail { get; set; }
 
-        public static NewsEmail Default()
+        public static NewsEmail Default(INotificationCredentials notificationCredentials)
         {
-            return new NewsEmail { ReleaseEmail = "maylo@skbkontur.ru", TechnicalEmail = "maylo@skbkontur.ru" };
+            var defaultEmail = notificationCredentials.GetNotificationEmailAddress();
+            return new NewsEmail { ReleaseEmail = defaultEmail, TechnicalEmail = defaultEmail };
         }
 
         public string GetEmail(bool technical)

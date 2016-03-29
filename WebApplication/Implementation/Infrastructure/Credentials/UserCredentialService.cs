@@ -7,10 +7,11 @@ using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
 using SKBKontur.TaskManagerClient.Wiki.BusinessObjects;
 using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
+using SKBKontur.Treller.WebApplication.Implementation.Services.Notifications;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials
 {
-    public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService, IAdService
+    public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService, IAdService, INotificationCredentials
     {
         private static readonly string LogInFilePath = Path.Combine(HttpRuntime.AppDomainAppPath, "LogIn.json");
         private readonly Lazy<ClientsIntegrationCredentials> credentials;
@@ -44,6 +45,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
         public AdCredentials GetDeliveryCredentials()
         {
             return credentials.Value.AdCredentials;
+        }
+
+        public string GetNotificationEmailAddress()
+        {
+            return credentials.Value.NotificationEmailAddress;
         }
     }
 }

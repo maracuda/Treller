@@ -20,7 +20,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
         private readonly IBlocksBuilder blocksBuilder;
         private readonly INotificationService notificationService;
         private readonly IDigestService digestService;
-        private static bool isTimerInProgress;
+        private static bool _isTimerInProgress;
         private readonly Timer timer;
         private DateTime lastUpdateUtc;
         private const string TimestampFileName = "TrellerCacheCurrentTimestamp.json";
@@ -50,12 +50,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            if (isTimerInProgress)
+            if (_isTimerInProgress)
             {
                 return;
             }
 
-            isTimerInProgress = true;
+            _isTimerInProgress = true;
 
             try
             {
@@ -128,7 +128,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
             }
             finally
             {
-                isTimerInProgress = false;
+                _isTimerInProgress = false;
             }
         }
 
@@ -144,11 +144,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
         public void Start()
         {
             timer.Start();
-        }
-
-        public void Actualize()
-        {
-            TimerOnElapsed(null, null);
         }
     }
 }

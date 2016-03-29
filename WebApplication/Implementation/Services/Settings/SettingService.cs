@@ -158,11 +158,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             };
         }
 
-        public string[] GetDevelopingBoardIds()
-        {
-            return _settings.Value.Select(x => x.Id).ToArray();
-        }
-
         public BoardSettings[] GetDevelopingBoards()
         {
             return _settings.Value;

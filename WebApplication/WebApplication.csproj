@@ -251,6 +251,7 @@
     <Compile Include="Implementation\Services\News\NewsModel.cs" />
     <Compile Include="Implementation\Services\News\NewsService.cs" />
     <Compile Include="Implementation\Services\News\NewsViewModel.cs" />
+    <Compile Include="Implementation\Services\Notifications\INotificationCredentials.cs" />
     <Compile Include="Implementation\Services\Notifications\INotificationService.cs" />
     <Compile Include="Implementation\Services\Notifications\NotificationService.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />

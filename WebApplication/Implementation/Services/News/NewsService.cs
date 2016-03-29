@@ -30,13 +30,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
         private readonly INotificationService notificationService;
+        private readonly INotificationCredentials notificationCredentials;
 
         public NewsService(ICachedFileStorage cachedFileStorage,
                            ISettingService settingService,
                            ITaskCacher taskCacher,
                            ITaskManagerClient taskManagerClient,
                            ICardStateInfoBuilder cardStateInfoBuilder,
-                           INotificationService notificationService)
+                           INotificationService notificationService,
+                           INotificationCredentials notificationCredentials)
         {
             this.cachedFileStorage = cachedFileStorage;
             this.settingService = settingService;
@@ -44,6 +46,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
             this.notificationService = notificationService;
+            this.notificationCredentials = notificationCredentials;
         }
         #endregion
 
@@ -92,7 +95,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         public NewsViewModel GetNews()
         {
             var cardsForNews = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
-            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default();
+            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default(notificationCredentials);
 
             return new NewsViewModel
             {
@@ -199,7 +202,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         private void SendNews(bool technical)
         {
-            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default();
+            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default(notificationCredentials);
             var cards = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
             var inHtmlStyle = true;
             var newsModel = BuildNewsModel(cards, technical, inHtmlStyle);
@@ -217,7 +220,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public void UpdateEmail(string technicalEmail, string releaseEmail)
         {
-            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default();
+            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default(notificationCredentials);
 
             emails.ReleaseEmail = releaseEmail;
             emails.TechnicalEmail = technicalEmail;

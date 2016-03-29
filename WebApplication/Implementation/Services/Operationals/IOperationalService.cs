@@ -3,6 +3,5 @@
     public interface IOperationalService
     {
         void Start();
-        void Actualize();
     }
 }
