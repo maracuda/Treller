@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Notifications
 {

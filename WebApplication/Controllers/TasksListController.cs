@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using SKBKontur.BlocksMapping.Blocks;
 using System.Linq;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
 

@@ -1,7 +1,7 @@
 ﻿using SKBKontur.BlocksMapping.Abstrations;
 using SKBKontur.BlocksMapping.Mappings;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;

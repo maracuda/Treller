@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using SKBKontur.BlocksMapping.Abstrations;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.TaskDetalization
 {

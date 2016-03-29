@@ -1,4 +1,4 @@
-﻿using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
+﻿using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Blocks
 {

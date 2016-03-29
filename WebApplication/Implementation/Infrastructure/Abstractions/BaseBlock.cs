@@ -1,6 +1,6 @@
 using SKBKontur.BlocksMapping.Abstrations;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks
+namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions
 {
     public abstract class BaseBlock : IBlock
     {

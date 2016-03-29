@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks
+﻿namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions
 {
     public class ContextKeys
     {

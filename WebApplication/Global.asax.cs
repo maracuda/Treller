@@ -8,7 +8,7 @@ using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
 using System.Threading.Tasks;
 using SKBKontur.BlocksMapping.Blocks;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;

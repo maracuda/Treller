@@ -4,6 +4,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using SKBKontur.HttpInfrastructure.Clients;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
 {

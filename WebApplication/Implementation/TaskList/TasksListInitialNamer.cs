@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SKBKontur.BlocksMapping.Abstrations;
 using SKBKontur.BlocksMapping.BlockExtenssions;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.TaskList

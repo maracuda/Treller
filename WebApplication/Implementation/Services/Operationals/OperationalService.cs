@@ -1,7 +1,7 @@
 using System;
 using System.Timers;
 using SKBKontur.BlocksMapping.Blocks;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Digest;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;

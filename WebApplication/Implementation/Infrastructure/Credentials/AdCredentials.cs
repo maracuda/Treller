@@ -1,4 +1,4 @@
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions
+namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials
 {
     public class AdCredentials
     {

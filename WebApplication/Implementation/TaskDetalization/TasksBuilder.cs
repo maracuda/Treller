@@ -6,7 +6,7 @@ using SKBKontur.BlocksMapping.Attributes;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BugTracker;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
