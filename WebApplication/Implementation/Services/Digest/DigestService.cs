@@ -5,12 +5,12 @@ using System.Text;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.Treller.WebApplication.Blocks.Builders;
-using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
+using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
+using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
 {

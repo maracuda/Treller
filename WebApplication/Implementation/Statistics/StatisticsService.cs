@@ -5,10 +5,10 @@ using Microsoft.Ajax.Utilities;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Blocks.Builders;
-using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
+using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
+using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
 {

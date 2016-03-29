@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using SKBKontur.BlocksMapping.Blocks;
-using SKBKontur.Treller.WebApplication.Blocks;
-using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
-using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
 using System.Linq;
-using SKBKontur.Treller.WebApplication.Models.TaskList;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {

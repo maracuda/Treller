@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
+using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
 {

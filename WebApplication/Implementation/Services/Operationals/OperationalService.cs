@@ -1,14 +1,14 @@
 using System;
 using System.Timers;
 using SKBKontur.BlocksMapping.Blocks;
-using SKBKontur.Treller.WebApplication.Blocks;
-using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
-using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Blocks;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Digest;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Notifications;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
+using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
+using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
 {

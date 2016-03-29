@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using SKBKontur.Treller.WebApplication.Implementation.Activities;
-using SKBKontur.Treller.WebApplication.Implementation.Activities.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
