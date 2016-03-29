@@ -39,11 +39,6 @@ namespace SKBKontur.Infrastructure.ContainerConfiguration
 
         private static T GetSingle<T>(T[] instances)
         {
-//            if (typeof(T) == typeof(object))
-//            {
-//                return default(T);
-//            }
-
             if (instances.Length != 1)
             {
                 throw new ContainerGetException(typeof (T));
@@ -62,34 +57,7 @@ namespace SKBKontur.Infrastructure.ContainerConfiguration
 
         public IDependencyScope GetScope()
         {
-            return new MyScope(_serviceContainer.BeginScope(), this);
-        }
-    }
-
-    public class MyScope : IDependencyScope
-    {
-        private readonly Scope _scope;
-        private readonly IContainer _container;
-
-        public MyScope(Scope scope, IContainer container)
-        {
-            _scope = scope;
-            _container = container;
-        }
-
-        public void Dispose()
-        {
-            _scope.Dispose();
-        }
-
-        public object GetService(Type serviceType)
-        {
-            return _container.Get(serviceType);
-        }
-
-        public IEnumerable<object> GetServices(Type serviceType)
-        {
-            return _container.GetAll(serviceType);
+            return new ConainerImplementedScope(_serviceContainer.BeginScope(), this);
         }
     }
 }

@@ -1,20 +1,20 @@
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SKBKontur.HttpInfrastructure.Clients
 {
-    // TODO: make fluent!
     public interface IHttpClient
     {
-        Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, CookieContainer cookies = null);
-        T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, CookieContainer cookies = null);
+        T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null);
+        Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null);
+        string SendGetAsString(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null);
 
-        Task SendPostAsync<T>(string url, T body, Dictionary<string, string> queryParameters = null);
-        Task SendPostAsync(string url, Dictionary<string, string> queryParameters = null);
+        void SendPost<T>(string url, T body, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null, string authorizationLogin = null, string authorizationPassword = null);
+        T SendPost<T>(string url, Dictionary<string, string> queryParameters = null, HttpContent content = null, IEnumerable<Cookie> cookies = null, string authorizationLogin = null, string authorizationPassword = null);
         Task<CookieCollection> SendEncodedFormPostAsync(string url, Dictionary<string, string> formData);
 
-        Task<TResult> SendPostAsync<T, TResult>(string url, T body, Dictionary<string, string> queryParameters = null);
-        Task<TResult> SendPostAsync<TResult>(string url, Dictionary<string, string> queryParameters = null);
+        void SendDelete(string url, Dictionary<string, string> queryParameters, IEnumerable<Cookie> cookies = null);
     }
 }

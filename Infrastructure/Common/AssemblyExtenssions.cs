@@ -20,7 +20,7 @@ namespace SKBKontur.Infrastructure.Common
         // TODO: Плохое решение, в будущем переделать, унести в Customizer
         public static bool IsInternalAssembly(this string fullAssemblyName)
         {
-            return fullAssemblyName.StartsWith("SKBKontur", StringComparison.OrdinalIgnoreCase) || fullAssemblyName.Contains("Billy");
+            return fullAssemblyName.StartsWith("SKBKontur", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

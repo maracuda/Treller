@@ -11,22 +11,9 @@ namespace SKBKontur.HttpInfrastructure.Clients
 {
     public class HttpClient : IHttpClient
     {
-        public async Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, CookieContainer cookies = null)
+        public T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
-            using (var client = CreateHttpClient(cookies))
-            {
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                using (var response = await client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead))
-                {
-                    ValidateResponse(response);
-                    return await response.Content.ReadAsAsync<T>();
-                }
-            }
-        }
-
-        public T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, CookieContainer cookies = null)
-        {
-            using (var client = CreateHttpClient(cookies))
+            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
             {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 using (var response = client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead).Result)
@@ -37,30 +24,56 @@ namespace SKBKontur.HttpInfrastructure.Clients
             }
         }
 
-        private static void ValidateResponse(HttpResponseMessage response)
+        public async Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
-            if (!response.IsSuccessStatusCode)
+            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
             {
-                throw new HttpClientException(response);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (var response = await client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead))
+                {
+                    ValidateResponse(response);
+                    return await response.Content.ReadAsAsync<T>();
+                }
             }
         }
 
-        public async Task SendPostAsync<TSerialized>(string url, TSerialized body, Dictionary<string, string> queryParameters = null)
+        public string SendGetAsString(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
-            using (var client = CreateHttpClient())
+            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
             {
-                var requestUri = GetFullUrl(url, queryParameters);
-                var response = await client.PostAsJsonAsync(requestUri, body);
-                if (!response.IsSuccessStatusCode)
+                using (var response = client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead).Result)
+                {
+                    ValidateResponse(response);
+                    return response.Content.ReadAsStringAsync().Result;
+                }
+            }
+        }
+
+        public void SendPost<T>(string url, T body, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null, string authorizationLogin = null, string authorizationPassword = null)
+        {
+            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
+            {
+                UpdateHttpBasicCredentials(client, authorizationLogin, authorizationPassword);
+
+                using (var response = client.PostAsJsonAsync(GetFullUrl(url, queryParameters), body).Result)
                 {
                     ValidateResponse(response);
                 }
             }
         }
 
-        public async Task SendPostAsync(string url, Dictionary<string, string> queryParameters = null)
+        public T SendPost<T>(string url, Dictionary<string, string> queryParameters = null, HttpContent content = null, IEnumerable<Cookie> cookies = null, string authorizationLogin = null, string authorizationPassword = null)
         {
-            await SendPostAsync(url, (string)null, queryParameters);
+            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
+            {
+                UpdateHttpBasicCredentials(client, authorizationLogin, authorizationPassword);
+
+                using (var response = client.PostAsync(GetFullUrl(url, queryParameters), content).Result)
+                {
+                    ValidateResponse(response);
+                    return response.Content.ReadAsAsync<T>().Result;
+                }
+            }
         }
 
         public async Task<CookieCollection> SendEncodedFormPostAsync(string url, Dictionary<string, string> formData)
@@ -68,46 +81,82 @@ namespace SKBKontur.HttpInfrastructure.Clients
             var cookies = new CookieContainer();
             using (var client = CreateHttpClient(cookies))
             {
-                var response = await client.PostAsync(url, new FormUrlEncodedContent(formData));
-                if (!response.IsSuccessStatusCode)
+                using (var response = await client.PostAsync(url, new FormUrlEncodedContent(formData)))
+                {
+                    ValidateResponse(response);
+                    return cookies.GetCookies(new Uri(url));
+                }
+            }
+        }
+
+        public void SendDelete(string url, Dictionary<string, string> queryParameters, IEnumerable<Cookie> cookies = null)
+        {
+            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
+            {
+                using (var response = client.DeleteAsync(GetFullUrl(url, queryParameters)).Result)
                 {
                     ValidateResponse(response);
                 }
-                return cookies.GetCookies(new Uri(url));
             }
         }
 
-        public async Task<TResult> SendPostAsync<TSerialized, TResult>(string url, TSerialized body, Dictionary<string, string> queryParameters = null)
+        private static void UpdateHttpBasicCredentials(System.Net.Http.HttpClient client, string authorizationLogin, string authorizationPassword)
         {
-            using (var client = new System.Net.Http.HttpClient())
+            if (!string.IsNullOrWhiteSpace(authorizationLogin) && !string.IsNullOrWhiteSpace(authorizationPassword))
             {
-                var requestUri = GetFullUrl(url, queryParameters);
-                var response = await client.PostAsJsonAsync(requestUri, body);
-                if (!response.IsSuccessStatusCode)
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authorizationLogin, authorizationPassword);
+            }
+        }
+
+        private static void ValidateResponse(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            string additionalErrorMessage;
+            try
+            {    
+                additionalErrorMessage = response.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception)
+            {
+                additionalErrorMessage = null;
+            }
+
+            throw new HttpClientException(response, additionalErrorMessage);
+        }
+
+        private static CookieContainer CreateCookieContainer(IEnumerable<Cookie> cookies)
+        {
+            CookieContainer cookieContainer = null;
+            if (cookies != null)
+            {
+                cookieContainer = new CookieContainer();
+                foreach (var cookie in cookies)
                 {
-                    ValidateResponse(response);
+                    cookieContainer.Add(cookie);
                 }
-                return await response.Content.ReadAsAsync<TResult>();
             }
+            return cookieContainer;
         }
 
-        public async Task<TResult> SendPostAsync<TResult>(string url, Dictionary<string, string> queryParameters = null)
+        private static System.Net.Http.HttpClient CreateHttpClient(CookieContainer cookieContainer = null, ICredentials credentials = null)
         {
-            return await SendPostAsync<string, TResult>(url, null, queryParameters);
-        }
-
-        private static System.Net.Http.HttpClient CreateHttpClient(CookieContainer cookies = null)
-        {
-            if (cookies == null)
+            var handler = new HttpClientHandler();
+            
+            if (cookieContainer != null)
             {
-                return new System.Net.Http.HttpClient();
+                handler.CookieContainer = cookieContainer;
+                handler.UseCookies = true;
             }
 
-            var handler = new HttpClientHandler
-                              {
-                                  CookieContainer = cookies,
-                                  UseCookies = true,
-                              };
+            if (credentials != null)
+            {
+                handler.Credentials = credentials;
+            }
+
             return new System.Net.Http.HttpClient(handler, true);
         }
 
