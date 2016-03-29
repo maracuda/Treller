@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Ajax.Utilities;
+using SKBKontur.BlocksMapping.BlockExtenssions;
+using SKBKontur.Infrastructure.CommonExtenssions;
 
-namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
+namespace SKBKontur.Treller.WebApplication.Services.RoundDance
 {
     public class RoundDanceViewModelBuilder : IRoundDanceViewModelBuilder
     {
@@ -17,7 +19,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
         public RoundDanceViewModel Build()
         {
             var peoples = roundDancePeopleStorage.GetAll().Select(InnerBuild).ToArray();
-            var result = peoples.GroupBy(x => x.CurrentDirection).ToDictionary(x => x.Key, x => x.OrderByDescending(o => o.CurrentWeight.Weight).ToArray());
+            var result = peoples.GroupBy(x => x.CurrentDirection).ToDictionary(x => x.Key, x => x.OrderByDescending(o => o.CurrentWeight.Weight).ThenByDescending(a => a.DirectionWeights.SafeGet(Direction.Duty).IfNotNull(t => t.RotationWeight)).ToArray());
 
             return new RoundDanceViewModel
             {
@@ -26,6 +28,40 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
                 LastChanges = new RoundDancePeopleDirectionChange[0],
                 NearestChanges = new RoundDancePeopleDirectionChange[0]
             };
+        }
+
+        public RoundDanceViewModel BuildWithLinks()
+        {
+            var innerResult = new Dictionary<Direction, List<RoundDancePeopleViewModel[]>>();
+            var usedPeopleNames = new HashSet<string>();
+
+            var result = Build();
+            foreach (var peoples in result.DirectionPeoples)
+            {
+                innerResult.Add(peoples.Key, new List<RoundDancePeopleViewModel[]>());
+
+                foreach (var people in peoples.Value)
+                {
+                    if (!string.IsNullOrWhiteSpace(people.CurrentPairName))
+                    {
+                        var pair = peoples.Value.FirstOrDefault(x => x.People.Name.Contains(people.CurrentPairName, StringComparison.OrdinalIgnoreCase));
+                        if (pair != null)
+                        {
+                            innerResult[peoples.Key].Add(new []{people, pair});
+                            usedPeopleNames.Add(people.People.Name);
+                            usedPeopleNames.Add(pair.People.Name);
+                        }
+                    }
+                }
+
+                foreach (var singlePeople in peoples.Value.Where(x => !usedPeopleNames.Contains(x.People.Name)))
+                {
+                    innerResult[peoples.Key].Add(new []{ singlePeople });
+                }
+            }
+
+            result.AnotherDirectionPeoples = innerResult;
+            return result;
         }
 
         private static RoundDancePeopleViewModel InnerBuild(RoundDancePeople people)
@@ -78,6 +114,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
                 DirectionWeights = weights,
                 LastDirection = nextDirection != null ? nextDirection.Direction : (Direction?)null,
                 Suggest = suggest,
+                CurrentPairName = currentWorkPeriod.IfNotNull(x => x.PairName),
                 NextTransfers = nextTransfers.ToArray()
             };
         }

@@ -1,8 +1,9 @@
 ﻿@using System.Linq
 @using Microsoft.Ajax.Utilities
+@using SKBKontur.BlocksMapping.BlockExtenssions
 @using SKBKontur.Infrastructure.CommonExtenssions
-@using SKBKontur.Treller.WebApplication.Controllers.RoundDance
-@model SKBKontur.Treller.WebApplication.Controllers.RoundDance.RoundDanceViewModel
+@using SKBKontur.Treller.WebApplication.Services.RoundDance
+@model SKBKontur.Treller.WebApplication.Services.RoundDance.RoundDanceViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -39,13 +40,17 @@
             color: #ff6a00;
             font-weight: bold;
         }
+
+        .pair {
+            border-bottom: 1px dashed; 
+        }
     </style>
 </head>
 <body>
     <div>
         <h2>Текущие направления:</h2>
         <table class="tablerow">
-            @foreach (var pair in Model.DirectionPeoples)
+            @foreach (var pair in Model.AnotherDirectionPeoples)
             {
                 <tr>
                     <th>@pair.Key.GetEnumDescription()</th>
@@ -58,19 +63,47 @@
                     <th>FeatureTeam</th>
                 </tr>
 
-                foreach (var people in pair.Value)
+                foreach (var groupPeople in pair.Value)
                 {
-                    <tr>
+                    if (groupPeople.Length > 1)
+                    {
+                        <tr class="pair">
+                            <td></td>
+                            <td></td>
+                            <td></td>
 
-                        <td>@people.People.Name</td>
-                        <td>@people.CurrentWeight.Weight</td>
-                        <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                    foreach (var people in groupPeople)
+                    {
+                        <tr>
+                            <td>@people.People.Name</td>
+                            <td>@people.CurrentWeight.Weight</td>
+                            <td></td>
 
-                        <td>@people.DirectionWeights[Direction.SpeedyFeatures].RotationWeight</td>
-                        <td>@people.DirectionWeights[Direction.Infrastructure].RotationWeight</td>
-                        <td>@people.DirectionWeights[Direction.Duty].RotationWeight</td>
-                        <td>@people.GetFeatureTeamRotationWeight()</td>
-                    </tr>
+                            <td>@people.DirectionWeights[Direction.SpeedyFeatures].RotationWeight</td>
+                            <td>@people.DirectionWeights[Direction.Infrastructure].RotationWeight</td>
+                            <td>@people.DirectionWeights[Direction.Duty].RotationWeight</td>
+                            <td>@people.GetFeatureTeamRotationWeight()</td>
+                        </tr>
+                    }
+                    if (groupPeople.Length > 1)
+                    {
+                        <tr class="pair">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
                 }
             }
         </table>

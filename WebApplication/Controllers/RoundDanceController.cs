@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using SKBKontur.Treller.WebApplication.Controllers.RoundDance;
+using SKBKontur.Treller.WebApplication.Services.RoundDance;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
@@ -15,8 +15,15 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var viewModel = roundDanceViewModelBuilder.Build();
+            var viewModel = roundDanceViewModelBuilder.BuildWithLinks();
             return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult Duty()
+        {
+            var viewModel = roundDanceViewModelBuilder.Build();
+            return View("Duty", viewModel);
         }
     }
 }

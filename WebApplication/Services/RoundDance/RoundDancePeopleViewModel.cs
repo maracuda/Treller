@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 
-namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
+namespace SKBKontur.Treller.WebApplication.Services.RoundDance
 {
     public class RoundDancePeopleViewModel
     {
@@ -28,6 +28,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
         }
 
         public Direction CurrentDirection { get; set; }
+        public string CurrentPairName { get; set; }
         public RoundDanceDirectionWeight CurrentWeight { get { return DirectionWeights[CurrentDirection]; } }
         public DirectionTransferViewModel[] NextTransfers { get; set; }
 

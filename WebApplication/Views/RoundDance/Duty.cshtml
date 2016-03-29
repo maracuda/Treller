@@ -1,0 +1,57 @@
+﻿@using System.Linq
+@using SKBKontur.BlocksMapping.BlockExtenssions
+@using SKBKontur.Treller.WebApplication.Services.RoundDance
+@model RoundDanceViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE HTML>
+<!--[if IE]><![endif]-->
+<!--[if lt IE 7]><html class="ie ie-lt7 ie-lt8 ie-lt9"><![endif]-->
+<!--[if lt IE 8]><html class="ie ie-lt8 ie-lt9"><![endif]-->
+<!--[if lt IE 9]><html class="ie ie-lt9"><![endif]-->
+<!--[if gt IE 8]><html class="ie"><![endif]-->
+<!--[if !IE]><!--><html><!--<![endif]-->
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Хороводчество</title>
+    <meta name="robots" content="noindex, nofollow" />
+    
+    <style type="text/css">
+        .tablerow td, th {
+            padding: 5px 10px 5px;
+        }
+
+        .tablerow th {
+            padding-top: 20px;
+        }
+
+        .tablerow2 { font-weight: bold; }
+        .tablerow3 {
+            color: #6abf3d;
+            font-weight: bold;
+        }
+
+        .tablerow4 {
+            color: #ff6a00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Техническая помощь по проекту Контур.Биллинг</h2>
+        <h4>Дежурные каждый день участвуют в битве с различными несостыковками и часто очень заняты!</h4>
+        <h4>Но если вам нужно спасать мир, можно
+            <a href="@string.Format("mailto:{0}?subject=Дежурным Контур.Биллинга&body=Здравствуйте! Обращаемся к вам из проекта НАШ_ПРОЕКТ за технической консультацией.", string.Join("; ", (Model.DirectionPeoples.SafeGet(Direction.Duty) ?? new RoundDancePeopleViewModel[0]).Select(x => string.Format("{0} <{1}>", x.People.Name, x.People.Email))))">
+                написать дежурным
+            </a>
+        </h4>
+        <h4>
+            Если проблему можно решить в течение дня, пишите <a href="mailto:Ящик аналитиков Контур.Биллинга <ask.billing@skbkontur.ru>?subject=Команде Контур.Биллинга&body=Здравствуйте! Обращаемся к вам из проекта НАШ_ПРОЕКТ за технической консультацией.">дежурному аналитику</a>
+        </h4>
+</div>
+</body>
+@Html.Raw("</html>")

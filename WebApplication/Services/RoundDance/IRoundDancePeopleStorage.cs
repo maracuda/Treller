@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
+namespace SKBKontur.Treller.WebApplication.Services.RoundDance
 {
     public interface IRoundDancePeopleStorage
     {

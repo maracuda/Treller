@@ -1,4 +1,4 @@
-namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
+namespace SKBKontur.Treller.WebApplication.Services.RoundDance
 {
     public class RoundDanceDirectionWeight
     {

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
+namespace SKBKontur.Treller.WebApplication.Services.RoundDance
 {
     public enum Direction
     {
@@ -57,5 +57,14 @@ namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
 
         [Description("Сертификаты")]
         Certificates,
+
+        [Description("Детализация счета")]
+        BillDetalization,
+
+        [Description("Подключение ОБ")]
+        ObConnection,
+
+        [Description("Покупка модификатора")]
+        ModifierBuy,
     }
 }

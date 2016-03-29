@@ -15,6 +15,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         private readonly IBlocksBuilder blocksBuilder;
         private readonly Type[] defaultTasksListBlocks = { typeof(BoardsBlock), typeof(CardListBlock), typeof(BugsBlock) };
 
+
         public TasksListController(IBlocksBuilder blocksBuilder)
         {
             this.blocksBuilder = blocksBuilder;

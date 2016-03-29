@@ -1,12 +1,13 @@
 using System;
 
-namespace SKBKontur.Treller.WebApplication.Controllers.RoundDance
+namespace SKBKontur.Treller.WebApplication.Services.RoundDance
 {
     public class DirectionPeriod
     {
         public Direction Direction { get; set; }
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; private set; }
+        public string PairName { get; set; }
 
         public void SetNextPeriod(DirectionPeriod nextPeriod)
         {
