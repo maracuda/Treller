@@ -18,5 +18,8 @@ namespace SKBKontur.Treller.WebApplication.Services.VirtualMachines.BusinessObje
 
         [Description("Билд сервер 3 узлов")]
         BuildServer,
+
+        [Description("Cassanrda + Elastic 3 узлов")]
+        ThreeNodeJava,
     }
 }

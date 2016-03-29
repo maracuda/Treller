@@ -34,7 +34,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         [HttpPost]
         public ActionResult ExecuteCommand(string command, string login, string[] virtualMachineNames)
         {
-            if (login != "mayloe" && login != "yord")
+            if (login != "mayloe" && login != "yord" && login != "chicha")
             {
                 return RedirectToAction("Index", new {isLoginFailed = true});
             }
@@ -60,7 +60,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             }
             
 
-            var lastLogs = virtualMachinesExecuteLog.SelectLastLogs(10);
+            var lastLogs = virtualMachinesExecuteLog.SelectLastLogs(1000);
 
             var resultModel = new ShowLogsViewModel
             {

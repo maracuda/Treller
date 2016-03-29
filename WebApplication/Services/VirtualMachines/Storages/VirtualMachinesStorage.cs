@@ -30,6 +30,10 @@ namespace SKBKontur.Treller.WebApplication.Services.VirtualMachines.Storages
             new VirtualMachine { Name = "vm-billy-test5", Profile = VirtualMachineProfile.FunctionalCi },
 
             new VirtualMachine { Name = "vm-billy-build", Profile = VirtualMachineProfile.BuildServer },
+
+            new VirtualMachine { Name = "vm-bjava-3n1", Profile = VirtualMachineProfile.ThreeNodeJava },
+            new VirtualMachine { Name = "vm-bjava-3n2", Profile = VirtualMachineProfile.ThreeNodeJava },
+            new VirtualMachine { Name = "vm-bjava-3n3", Profile = VirtualMachineProfile.ThreeNodeJava },
         };
 
         public VirtualMachinesStorage()

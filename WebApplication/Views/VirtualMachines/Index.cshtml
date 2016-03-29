@@ -29,6 +29,57 @@
                                                          "get-service billy* | start-service"
             },
             {"Остановить все билли сервисы", "get-service billy* | stop-service"},
+            {"Replace в конфиг кассандры (с перезагрузкой)","Stop-Process -processname prunsrv* -Force -Confirm:$false"+Environment.NewLine +
+                                                            "Cd C:\\cassandra1.2\\conf"+Environment.NewLine +
+                                                            "(Get-Content cassandra.yaml) | Foreach-Object {$_ -replace \"auto_snapshot: true\", \"auto_snapshot: false\"} | Set-Content cassandra.yaml"+Environment.NewLine +
+                                                            "get-service \"cassandra\" | start-service"},
+            {"Обновить версию node.exe и npm (заменить урл - этот 5.3)", "Invoke-WebRequest \"https://nodejs.org/dist/v5.3.0/node-v5.3.0-x64.msi\" -OutFile \"c:\\node-v5.3.0-x64.msi\""+Environment.NewLine +
+                                                                                                "Start-Process msiexec.exe -ArgumentList \" /i c:\\node-v5.3.0-x64.msi /qn\" -wait"+Environment.NewLine +
+                                                                                                "node --version"+Environment.NewLine +
+                                                                                                "npm cache clean"},
+            {"Обновить эластик до 1.7.4","## ELASTIC INTALL"+Environment.NewLine +
+
+                                            "#variables"+Environment.NewLine +
+                                            "$newElasticVersion = \"elasticsearch-1.7.4\""+Environment.NewLine +
+                                            "$oldElasticVersion = \"elasticsearch-1.4.4\""+Environment.NewLine +
+                                            "$newDir = \"c:\\$newElasticVersion\""+Environment.NewLine +
+                                            "$oldDir = \"c:\\$oldElasticVersion\""+Environment.NewLine +
+                                            "$elasticServiceName = \"elasticsearch-service-x64\""+Environment.NewLine +
+                                            "$elasticZip = \"elasticSearch.zip\""+Environment.NewLine +Environment.NewLine +
+
+                                            "#download file"+Environment.NewLine +
+                                            "Invoke-WebRequest \"https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.4.zip\" -OutFile \"c:\\$elasticZip\""+Environment.NewLine +Environment.NewLine +
+
+                                            "#unzip"+Environment.NewLine +
+                                            "$shell = new-object -com shell.application"+Environment.NewLine +
+                                            "$zip = $shell.NameSpace(\"c:\\$elasticZip\")"+Environment.NewLine +
+                                            "foreach($item in $zip.items())"+Environment.NewLine +
+                                            "{"+Environment.NewLine +
+                                            "$shell.Namespace(\"c:\\\").copyhere($item)"+Environment.NewLine +
+                                            "}"+Environment.NewLine +Environment.NewLine +
+
+                                            "#stop elastic"+Environment.NewLine +
+                                            "get-service $elasticServiceName | stop-service"+Environment.NewLine +Environment.NewLine +
+
+                                            "#copy data and config"+Environment.NewLine +
+                                            "Copy-Item \"$oldDir\\data\" \"$newDir\\data\" -Recurse -Force"+Environment.NewLine +
+                                            "Copy-Item \"$oldDir\\config\" \"$newDir\" -Recurse -Force"+Environment.NewLine +Environment.NewLine +
+
+                                            "#delete old elastic service"+Environment.NewLine +
+                                            "$service = gwmi -class win32_service -Filter \"Name='$elasticServiceName'\""+Environment.NewLine +
+                                            "$service.Delete()"+Environment.NewLine +Environment.NewLine +
+
+                                            "#create new service"+Environment.NewLine +
+                                            "cd $newDir\\bin"+Environment.NewLine +
+                                            ".\\service.bat install"+Environment.NewLine +
+                                            "Set-Service -Name $elasticServiceName -StartupType Automatic"+Environment.NewLine +Environment.NewLine +
+
+                                            "#start service"+Environment.NewLine +
+                                            "get-service $elasticServiceName | start-service"+Environment.NewLine +Environment.NewLine +
+
+                                            "#delete elasticsearch.zip"+Environment.NewLine +
+                                            "Remove-Item \"c:\\$elasticZip\""},
+            {"Посмотреть версию эластика","curl http://localhost:9200"}                                                                                    
         };
     }
 
@@ -106,7 +157,7 @@
                 .prop("checked", this.checked);
         });
         $("#login").bind("change", function () {
-            if ($(this).val() === "mayloe" || $(this).val() === "yord") {
+            if ($(this).val() === "mayloe" || $(this).val() === "yord" || $(this).val() === "chicha") {
                 $("<a href=\"/VirtualMachines/ShowLogs\">Показать логи выполнения предыдущих запросов</a>").appendTo("#logs");
             }
             $("#login").unbind("change");
