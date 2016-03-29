@@ -2,26 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SKBKontur.TaskManagerClient.Abstractions;
-using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.HttpInfrastructure.Clients;
+using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Boards;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Cards;
 using Action = SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions.Action;
-using Board = SKBKontur.TaskManagerClient.BusinessObjects.Board;
-using BoardList = SKBKontur.TaskManagerClient.BusinessObjects.BoardList;
-using CardLabel = SKBKontur.TaskManagerClient.BusinessObjects.CardLabel;
+using Board = SKBKontur.TaskManagerClient.BusinessObjects.TaskManager.Board;
+using BoardList = SKBKontur.TaskManagerClient.BusinessObjects.TaskManager.BoardList;
+using CardLabel = SKBKontur.TaskManagerClient.BusinessObjects.TaskManager.CardLabel;
 using SKBKontur.TaskManagerClient.Extensions;
 
 namespace SKBKontur.TaskManagerClient.Trello
 {
     public class TrelloClient : ITaskManagerClient
     {
-        private readonly IHttpRequester httpClient;
+        private readonly IHttpClient httpClient;
         private readonly Dictionary<string, string> trelloParameters;
         private const int MaxActionsLimitCount = 1000;
 
-        public TrelloClient(IHttpRequester httpClient, ITrelloUserCredentialService trelloUserCredentialService)
+        public TrelloClient(IHttpClient httpClient, ITrelloUserCredentialService trelloUserCredentialService)
         {
             this.httpClient = httpClient;
             var trelloCredential = trelloUserCredentialService.GetCredentials();
@@ -35,12 +36,6 @@ namespace SKBKontur.TaskManagerClient.Trello
         public Task<Board[]> GetOpenBoardsAsync(string organizationIdOrName)
         {
             return GetTrelloDataAsync<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string>{{"filter", "open"}})
-                    .Await(x => x.Select(b => new Board { Id = b.Id, Name = b.Name, Url = b.Url, OrganizationId = b.IdOrganization }).ToArray());
-        }
-
-        public Task<Board[]> GetAllBoardsAsync(string organizationIdOrName)
-        {
-            return GetTrelloDataAsync<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string> { { "filter", "all" } })
                     .Await(x => x.Select(b => new Board { Id = b.Id, Name = b.Name, Url = b.Url, OrganizationId = b.IdOrganization }).ToArray());
         }
 

@@ -1,68 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using SKBKontur.HttpInfrastructure.Clients;
+using RestSharp.Serializers;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.Abstractions;
-using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using TrelloNet;
-using JsonSerializer = RestSharp.Serializers.JsonSerializer;
 
 namespace SKBKontur.Treller.TestTreller
 {
-    public class HttpRequester : IHttpRequester
-    {
-        private readonly IHttpClient httpClient;
-
-        public HttpRequester(IHttpClient httpClient)
-        {
-            this.httpClient = httpClient;
-        }
-
-        public Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
-        {
-            CookieContainer cookieContainer = null;
-            if (cookies != null)
-            {
-                cookieContainer = new CookieContainer();
-                foreach (var cookie in cookies)
-                {
-                    cookieContainer.Add(cookie);
-                }
-            }
-            return httpClient.SendGetAsync<T>(url, queryParameters, cookieContainer);
-        }
-
-        public T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Cookie>> SendPostEncodedAsync(string url, Dictionary<string, string> formUrlEncodedContent = null)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class TrelloUserCredentialService : ITrelloUserCredentialService
-    {
-        private static readonly string LogInFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LogIn.json");
-
-        public TrelloCredential GetCredentials()
-        {
-            return JsonConvert.DeserializeObject<ClientsIntegrationCredentials>(File.ReadAllText(LogInFilePath)).TrelloClientCredentials;
-        }
-    }
-
-    public class ClientsIntegrationCredentials
-    {
-        public TrelloCredential TrelloClientCredentials { get; set; }
-    }
-
     public static class Program
     {
         private static IContainer container;

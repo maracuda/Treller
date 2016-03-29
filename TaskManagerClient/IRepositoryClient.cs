@@ -1,4 +1,5 @@
-﻿using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
+﻿using System.Threading.Tasks;
+using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
 
 namespace SKBKontur.TaskManagerClient
 {
@@ -6,5 +7,7 @@ namespace SKBKontur.TaskManagerClient
     {
         RepoCommit[] SelectLastBranchCommits(string repoId, string branchName, int pageNumber, int pageSize);
         RepoBranch[] SelectAllBranches(string repoId);
+
+        Task<RepoBranch[]> SelectAllBranchesAsync(string repoId);
     }
 }

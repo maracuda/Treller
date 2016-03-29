@@ -47,5 +47,35 @@ namespace SKBKontur.TaskManagerClient.Extensions
         {
             return Await(new[] {task}, converter, resultFilter);
         }
+
+        public static T SafeRun<T>(this Func<Task<T>> funcToRun)
+        {
+            T result;
+            try
+            {
+                result = funcToRun().Result;
+            }
+            catch (Exception)
+            {
+                result = default(T);
+            }
+
+            return result;
+        }
+
+        public static T SafeResult<T>(this Task<T> runningTask)
+        {
+            T result;
+            try
+            {
+                result = runningTask.Result;
+            }
+            catch (Exception)
+            {
+                result = default(T);
+            }
+
+            return result;
+        }
     }
 }

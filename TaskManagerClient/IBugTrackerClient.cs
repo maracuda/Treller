@@ -1,4 +1,5 @@
-﻿using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
+﻿using SKBKontur.TaskManagerClient.BusinessObjects.BugTracker;
+using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace SKBKontur.TaskManagerClient
 {
@@ -12,5 +13,11 @@ namespace SKBKontur.TaskManagerClient
         string GetStrintUrlEndWord();
         string GetBaseUrl();
         string GetBrowseFilterUrl(string filter);
+
+        BugTrackerIssueAttachment[] GetAttachments(string issueId);
+        BugTrackerIssueComment[] GetComments(string issueId);
+
+        void DeleteAttachment(string issueId, string attachmentId);
+        void DeleteComment(string issueId, string commentId, bool permanently);
     }
 }

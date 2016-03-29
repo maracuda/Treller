@@ -40,22 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstractions\IGitLabCredentialService.cs" />
-    <Compile Include="Abstractions\IHttpRequester.cs" />
-    <Compile Include="Abstractions\ITrelloUserCredentialService.cs" />
-    <Compile Include="Abstractions\IYouTrackCredentialService.cs" />
-    <Compile Include="BusinessObjects\ActionType.cs" />
-    <Compile Include="BusinessObjects\Board.cs" />
-    <Compile Include="BusinessObjects\CardAction.cs" />
-    <Compile Include="BusinessObjects\BoardCard.cs" />
-    <Compile Include="BusinessObjects\BoardList.cs" />
-    <Compile Include="BusinessObjects\CardChecklist.cs" />
-    <Compile Include="BusinessObjects\CardLabel.cs" />
-    <Compile Include="BusinessObjects\CardLabelColor.cs" />
-    <Compile Include="BusinessObjects\ChecklistItem.cs" />
+    <Compile Include="CredentialServiceAbstractions\IGitLabCredentialService.cs" />
+    <Compile Include="CredentialServiceAbstractions\ITrelloUserCredentialService.cs" />
+    <Compile Include="CredentialServiceAbstractions\IWikiCredentialService.cs" />
+    <Compile Include="CredentialServiceAbstractions\IYouTrackCredentialService.cs" />
+    <Compile Include="BusinessObjects\BugTracker\BugTrackerIssueAttachment.cs" />
+    <Compile Include="BusinessObjects\BugTracker\BugTrackerIssueComment.cs" />
     <Compile Include="BusinessObjects\ContinuousIntegration\BuildModel.cs" />
-    <Compile Include="BusinessObjects\TrelloCredential.cs" />
-    <Compile Include="BusinessObjects\User.cs" />
+    <Compile Include="BusinessObjects\TaskManager\ActionType.cs" />
+    <Compile Include="BusinessObjects\TaskManager\Board.cs" />
+    <Compile Include="BusinessObjects\TaskManager\BoardCard.cs" />
+    <Compile Include="BusinessObjects\TaskManager\BoardList.cs" />
+    <Compile Include="BusinessObjects\TaskManager\CardAction.cs" />
+    <Compile Include="BusinessObjects\TaskManager\CardChecklist.cs" />
+    <Compile Include="BusinessObjects\TaskManager\CardLabel.cs" />
+    <Compile Include="BusinessObjects\TaskManager\CardLabelColor.cs" />
+    <Compile Include="BusinessObjects\TaskManager\ChecklistItem.cs" />
+    <Compile Include="BusinessObjects\TaskManager\User.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="GitLab\BusinessObjects\GitLabCredential.cs" />
     <Compile Include="GitLab\BusinessObjects\RepoBranch.cs" />
@@ -88,7 +89,9 @@
     <Compile Include="Trello\BusinessObjects\Cards\CardOverall.cs" />
     <Compile Include="Trello\BusinessObjects\Cards\CheckItem.cs" />
     <Compile Include="Trello\BusinessObjects\Cards\Checklist.cs" />
+    <Compile Include="Trello\BusinessObjects\TrelloCredential.cs" />
     <Compile Include="Trello\TrelloClient.cs" />
+    <Compile Include="Wiki\BusinessObjects\WikiCredential.cs" />
     <Compile Include="Wiki\WikiClient.cs" />
     <Compile Include="Youtrack\BusinessObjects\EntityCount.cs" />
     <Compile Include="Youtrack\BusinessObjects\Issue.cs" />
@@ -98,6 +101,12 @@
     <Compile Include="Youtrack\BusinessObjects\YouTrackIssueField.cs" />
     <Compile Include="Youtrack\BusinessObjects\YouTrackIssues.cs" />
     <Compile Include="Youtrack\YouTrackClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HttpInfrastructure\HttpInfrastructure.csproj">
+      <Project>{efa14151-08f6-4647-bced-c891cb1e53f5}</Project>
+      <Name>HttpInfrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

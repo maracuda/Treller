@@ -1,5 +1,5 @@
 using System;
-using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 
 namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions
 {

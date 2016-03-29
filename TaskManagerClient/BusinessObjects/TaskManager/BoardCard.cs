@@ -1,6 +1,6 @@
 using System;
 
-namespace SKBKontur.TaskManagerClient.BusinessObjects
+namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
 {
     public class BoardCard
     {

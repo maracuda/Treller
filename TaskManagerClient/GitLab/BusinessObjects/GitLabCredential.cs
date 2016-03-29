@@ -4,5 +4,6 @@ namespace SKBKontur.TaskManagerClient.GitLab.BusinessObjects
     {
         public string PrivateToken { get; set; }
         public string UserName { get; set; }
+        public string DefaultUrl { get; set; }
     }
 }

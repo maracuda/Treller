@@ -1,6 +1,6 @@
 using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient.Abstractions
+namespace SKBKontur.TaskManagerClient.CredentialServiceAbstractions
 {
     public interface IYouTrackCredentialService
     {
