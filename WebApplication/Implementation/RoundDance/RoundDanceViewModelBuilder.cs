@@ -20,15 +20,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
         public RoundDanceViewModel Build()
         {
             var peoples = roundDancePeopleStorage.GetAll().Select(InnerBuild).ToArray();
-            var result = peoples.GroupBy(x => x.CurrentDirection).ToDictionary(x => x.Key, x => x.OrderByDescending(o => o.CurrentWeight.Weight).ThenByDescending(a => a.DirectionWeights.SafeGet(Direction.Duty).IfNotNull(t => t.RotationWeight)).ToArray());
+            var result = peoples
+                            .GroupBy(x => x.CurrentDirection)
+                            .ToDictionary(x => x.Key, 
+                                          x => x.OrderByDescending(o => o.CurrentWeight.Weight)
+                                                .ThenByDescending(a => a.DirectionWeights
+                                                                        .SafeGet(Direction.Duty)
+                                                                        .IfNotNull(t => t.RotationWeight))
+                                                .ToArray());
 
-            return new RoundDanceViewModel
-            {
-                DirectionPeoples = result,
-                NearestRoundDances = new RoundDancePeopleViewModel[0],
-                LastChanges = new RoundDancePeopleDirectionChange[0],
-                NearestChanges = new RoundDancePeopleDirectionChange[0]
-            };
+            return new RoundDanceViewModel { DirectionPeoples = result };
         }
 
         public RoundDanceViewModel BuildWithLinks()

@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using SKBKontur.Treller.WebApplication.Services.News;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {

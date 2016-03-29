@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using SKBKontur.Treller.WebApplication.Services.VirtualMachines.BusinessObjects;
-using SKBKontur.Treller.WebApplication.Services.VirtualMachines.Logging;
-using SKBKontur.Treller.WebApplication.Services.VirtualMachines.Services;
-using SKBKontur.Treller.WebApplication.Services.VirtualMachines.Storages;
+using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
+using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Logging;
+using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Services;
+using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Storages;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {

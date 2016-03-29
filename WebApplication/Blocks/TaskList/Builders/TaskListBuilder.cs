@@ -8,11 +8,11 @@ using SKBKontur.Treller.WebApplication.Blocks.Builders;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
-using SKBKontur.Treller.WebApplication.Services.Settings;
-using SKBKontur.Treller.WebApplication.Services.TaskCacher;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
+using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
+using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using WebGrease.Css.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders

@@ -1,6 +1,6 @@
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
-using SKBKontur.Treller.WebApplication.Services.Settings;
+using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {

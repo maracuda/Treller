@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Services.Statistics;
+using SKBKontur.Treller.WebApplication.Implementation.Statistics;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models
 {

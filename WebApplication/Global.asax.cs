@@ -11,8 +11,8 @@ using SKBKontur.BlocksMapping.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.ViewModels;
-using SKBKontur.Treller.WebApplication.Services.TaskCacher;
-using SKBKontur.Treller.WebApplication.Services.VirtualMachines.Runspaces;
+using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals;
+using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces;
 
 namespace SKBKontur.Treller.WebApplication
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Web.Mvc;
-using SKBKontur.Treller.WebApplication.Services.Statistics;
+using SKBKontur.Treller.WebApplication.Implementation.Statistics;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
