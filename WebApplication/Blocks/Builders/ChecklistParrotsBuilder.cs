@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.Builders
 {

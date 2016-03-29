@@ -1,4 +1,4 @@
-﻿using SKBKontur.TaskManagerClient.BusinessObjects;
+﻿using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks

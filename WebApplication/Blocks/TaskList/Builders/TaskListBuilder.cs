@@ -4,7 +4,6 @@ using System.Linq;
 using SKBKontur.BlocksMapping.Attributes;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Blocks.Builders;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
 using SKBKontur.Treller.WebApplication.Blocks.TaskList.Blocks;
@@ -13,6 +12,8 @@ using SKBKontur.Treller.WebApplication.Services.Settings;
 using SKBKontur.Treller.WebApplication.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Extensions;
 using SKBKontur.BlocksMapping.BlockExtenssions;
+using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using WebGrease.Css.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
 {
@@ -61,7 +62,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         [BlockModelParameter("boardIds")]
         private string[] BuildSettings(Dictionary<string, BoardSettings> settings)
         {
@@ -69,56 +69,57 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
+        [BlockModelParameter("rcBranches")]
         public SimpleRepoBranch[] BuildReleaseCandidateBranches()
         {
             return releaseCandidateService.WhatBranchesInReleaseCandidate();
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
+        public SimpleRepoBranch[] BuildReleaseCandidateReleasedBranches([BlockModelParameter("rcBranches")] SimpleRepoBranch[] rcBranches)
+        {
+            var isReleased = releaseCandidateService.CheckForReleased(rcBranches);
+            rcBranches.ForEach(x => x.IsReleased = isReleased[x.Name]);
+            return rcBranches.Where(x => !x.IsReleased).ToArray();
+        }
+
+        [BlockModel(ContextKeys.TasksKey)]
         private BoardCard[] BuildCards([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardCards);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private ILookup<string, BoardList> BuildBoardLists([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private Dictionary<string, User> BuildUsers([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardUsersAsync(ids).Result, TaskCacherStoredTypes.BoardUsers).ToDictionary(x => x.Id);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private ILookup<string, CardAction> BuildCardActions([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetActionsForBoardCardsAsync(ids).Result, TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private Board[] BuildBoards([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardsAsync(ids).Result, TaskCacherStoredTypes.Boards);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private ILookup<string, CardChecklist> BuildCardChecklists([BlockModelParameter("boardIds")] string[] boardIds)
         {
             return taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardChecklistsAsync(ids).Result, TaskCacherStoredTypes.BoardChecklists).ToLookup(x => x.CardId);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private CardStateOverallViewModel[] BuildCards(BoardCard[] cards, Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
                                                    Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
                                                    ILookup<string, CardChecklist> cardChecklists, SimpleRepoBranch[] branches,
@@ -146,7 +147,6 @@ namespace SKBKontur.Treller.WebApplication.Blocks.TaskList.Builders
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-//        [BlockModel(ContextKeys.PeopleLoadPoolKey)]
         private Dictionary<string, BugsInfoViewModel> BuildBugsInfo(ILookup<string, CardChecklist> cardChecklists)
         {
             return cardChecklists.ToDictionary(x => x.Key, x => bugsBuilder.Build(x));

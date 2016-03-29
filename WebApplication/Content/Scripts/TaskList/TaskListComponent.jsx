@@ -38,6 +38,21 @@ var TaskListComponent = React.createClass({
 					CS <BugsLink {...this.state.bugsBlock.CsCurrent} />,
 					В тестировании <BugsLink {...this.state.bugsBlock.BillyNotVerified} />
                 </h4>
+				<div>
+					<a className="treller-link" href="/VirtualMachines">Управление виртуальными машинами</a>
+				</div>
+				<div>
+					<a className="treller-link" href="/News">Управление новостями по релизам</a>
+				</div>
+				<div>
+					<a className="treller-link" href="/Statistics">Статистика работы команды</a>
+				</div>
+				<div>
+					<a className="treller-link" href="/RoundDance">Хороводы</a>
+				</div>
+				<div>
+					<a className="treller-link" href="/Generator">Генератор забавных фраз для ошибок</a>
+				</div>
             </SiteHeader>
             {taskListGroups}
         </div>;

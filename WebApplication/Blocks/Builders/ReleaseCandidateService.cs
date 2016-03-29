@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
 
@@ -9,7 +10,15 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
     public class ReleaseCandidateService : IReleaseCandidateService
     {
         private readonly IRepositoryClient repositoryClient;
-        private static HashSet<string> noTrackedBrancheNames = new HashSet<string>(new []{ "RC", "release", "hotfixes", "Autotests" });
+        private const string GitLabRepositoryId = "584";
+        private const string ReleaseCandidateBranchName = "RC";
+        private const string ReleaseBranchName = "release";
+        private static HashSet<string> noTrackedBrancheNames = 
+            new HashSet<string>(new[]
+            {
+                ReleaseCandidateBranchName, ReleaseBranchName, "hotfixes", "Autotests"
+            });
+
 
         public ReleaseCandidateService(IRepositoryClient repositoryClient)
         {
@@ -21,12 +30,12 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
             var pageNumber = 0;
             var result = new Dictionary<string, SimpleRepoBranch>(StringComparer.OrdinalIgnoreCase);
             // todo : Remove hardcode
-            var branches = repositoryClient.SelectAllBranches("584").Select(x => x.Name).ToArray();
+            var branches = repositoryClient.SelectAllBranches(GitLabRepositoryId).Select(x => x.Name).ToArray();
 
             RepoCommit releaseCandidateBranchedCommit = null;
             while (releaseCandidateBranchedCommit == null)
             {
-                var repoCommits = repositoryClient.SelectLastBranchCommits("584", "RC", pageNumber++, 100);
+                var repoCommits = repositoryClient.SelectLastBranchCommits(GitLabRepositoryId, ReleaseCandidateBranchName, pageNumber++, 100);
                 foreach (var repoCommit in repoCommits)
                 {
                     if (!IsBranchMergeOperation(repoCommit.Title))
@@ -34,13 +43,13 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                         continue;
                     }
 
-                    if (IsBranchMergeOperation(repoCommit.Title, "RC", "release") || IsBranchMergeOperation(repoCommit.Title, "Billy_2.5.13", "release"))
+                    if (IsBranchMergeOperation(repoCommit.Title, ReleaseCandidateBranchName, ReleaseBranchName))
                     {
                         releaseCandidateBranchedCommit = repoCommit;
                         break;
                     }
 
-                    var mergedBranch = branches.FirstOrDefault(branch => IsBranchMergeOperation(repoCommit.Title, branch, "RC"));
+                    var mergedBranch = branches.FirstOrDefault(branch => IsBranchMergeOperation(repoCommit.Title, branch, ReleaseCandidateBranchName));
                     if (mergedBranch != null && !result.ContainsKey(mergedBranch))
                     {
                         result.Add(mergedBranch, new SimpleRepoBranch
@@ -52,6 +61,21 @@ namespace SKBKontur.Treller.WebApplication.Blocks.Builders
                 }
             }
             return result.Select(x => x.Value).Where(x => !noTrackedBrancheNames.Contains(x.Name)).ToArray();
+        }
+
+        public Dictionary<string, bool> CheckForReleased(SimpleRepoBranch[] rcBranches)
+        {
+            var result = rcBranches.DistinctBy(x => x.Name).ToDictionary(x => x.Name, x => false);
+            foreach (var branch in rcBranches)
+            {
+                var repoCommits = repositoryClient.SelectLastBranchCommits(GitLabRepositoryId, branch.Name, 0, 10);
+                if (repoCommits.Where(repoCommit => IsBranchMergeOperation(repoCommit.Title)).Any(repoCommit => IsBranchMergeOperation(repoCommit.Title, branch.Name, ReleaseBranchName)))
+                {
+                    result[branch.Name] = true;
+                }
+            }
+
+            return result;
         }
 
         private static bool IsBranchMergeOperation(string repoCommitMessage)

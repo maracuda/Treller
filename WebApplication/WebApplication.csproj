@@ -110,6 +110,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -186,10 +187,8 @@
   <ItemGroup>
     <Compile Include="Abstractions\AsyncRunner.cs" />
     <Compile Include="Abstractions\ClientsIntegrationCredentials.cs" />
-    <Compile Include="Abstractions\DefaultExceptionHandler.cs" />
     <Compile Include="Abstractions\DomainService.cs" />
     <Compile Include="Abstractions\IocContainer.cs" />
-    <Compile Include="Abstractions\HttpRequester.cs" />
     <Compile Include="Abstractions\UserCredentialService.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -261,30 +260,25 @@
     <Compile Include="Blocks\TaskList\ViewModels\CardProgressInfoViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\CardStageInfoViewModel.cs" />
     <Compile Include="Blocks\TaskList\ViewModels\ShowMode.cs" />
+    <Compile Include="Controllers\ActivitiesController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\GeneratorController.cs" />
     <Compile Include="Controllers\VirtualMachinesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\RoundDanceController.cs" />
-    <Compile Include="Controllers\RoundDance\Direction.cs" />
-    <Compile Include="Controllers\RoundDance\DirectionPeriod.cs" />
-    <Compile Include="Controllers\RoundDance\DirectionTransferViewModel.cs" />
-    <Compile Include="Controllers\RoundDance\IRoundDancePeopleStorage.cs" />
-    <Compile Include="Controllers\RoundDance\IRoundDanceViewModelBuilder.cs" />
-    <Compile Include="Controllers\RoundDance\RoundDanceDirectionWeight.cs" />
-    <Compile Include="Controllers\RoundDance\RoundDancePeople.cs" />
-    <Compile Include="Controllers\RoundDance\RoundDancePeopleDirectionChange.cs" />
-    <Compile Include="Controllers\RoundDance\RoundDancePeopleStorage.cs" />
-    <Compile Include="Controllers\RoundDance\RoundDancePeopleViewModel.cs" />
-    <Compile Include="Controllers\RoundDance\RoundDanceViewModel.cs" />
-    <Compile Include="Controllers\RoundDance\RoundDanceViewModelBuilder.cs" />
-    <Compile Include="Controllers\RoundDance\SuggestDirectionViewModel.cs" />
     <Compile Include="Controllers\TaskInfoController.cs" />
     <Compile Include="Controllers\TasksListController.cs" />
     <Compile Include="Extensions\EntityExtenssions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ReactConfigurationExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Fan\Activities\Activity.cs" />
+    <Compile Include="Fan\Activities\ActivityFormat.cs" />
+    <Compile Include="Fan\Activities\ActivityItem.cs" />
+    <Compile Include="Fan\Activities\DepartureEventStorage.cs" />
+    <Compile Include="Fan\Activities\EventViewModel.cs" />
+    <Compile Include="Fan\Activities\IDepartureEventStorage.cs" />
     <Compile Include="Fan\IPhraseGenerator.cs" />
     <Compile Include="Fan\PhraseGenerator.cs" />
     <Compile Include="Global.asax.cs">
@@ -292,12 +286,35 @@
     </Compile>
     <Compile Include="Models\TaskList\TaskListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ActiveDirectory\AdCredentials.cs" />
+    <Compile Include="Services\ActiveDirectory\AdService.cs" />
+    <Compile Include="Services\ActiveDirectory\IAdService.cs" />
+    <Compile Include="Services\Digest\DigestService.cs" />
+    <Compile Include="Services\Digest\IDigestService.cs" />
+    <Compile Include="Services\Digest\ISocialNetworkClient.cs" />
+    <Compile Include="Services\Digest\StaffAuthClient.cs" />
+    <Compile Include="Services\Digest\StaffClient.cs" />
     <Compile Include="Services\News\NewsService.cs" />
     <Compile Include="Services\News\INewsService.cs" />
     <Compile Include="Services\News\NewCardNewsModel.cs" />
     <Compile Include="Services\News\NewsEmail.cs" />
     <Compile Include="Services\News\NewsModel.cs" />
     <Compile Include="Services\News\NewsViewModel.cs" />
+    <Compile Include="Services\Notifications\INotificationService.cs" />
+    <Compile Include="Services\Notifications\NotificationService.cs" />
+    <Compile Include="Services\RoundDance\Direction.cs" />
+    <Compile Include="Services\RoundDance\DirectionPeriod.cs" />
+    <Compile Include="Services\RoundDance\DirectionTransferViewModel.cs" />
+    <Compile Include="Services\RoundDance\IRoundDancePeopleStorage.cs" />
+    <Compile Include="Services\RoundDance\IRoundDanceViewModelBuilder.cs" />
+    <Compile Include="Services\RoundDance\RoundDanceDirectionWeight.cs" />
+    <Compile Include="Services\RoundDance\RoundDancePeople.cs" />
+    <Compile Include="Services\RoundDance\RoundDancePeopleDirectionChange.cs" />
+    <Compile Include="Services\RoundDance\RoundDancePeopleStorage.cs" />
+    <Compile Include="Services\RoundDance\RoundDancePeopleViewModel.cs" />
+    <Compile Include="Services\RoundDance\RoundDanceViewModel.cs" />
+    <Compile Include="Services\RoundDance\RoundDanceViewModelBuilder.cs" />
+    <Compile Include="Services\RoundDance\SuggestDirectionViewModel.cs" />
     <Compile Include="Services\Settings\BoardSettings.cs" />
     <Compile Include="Services\Settings\ISettingService.cs" />
     <Compile Include="Services\Settings\SettingService.cs" />
@@ -440,6 +457,9 @@
     <Content Include="Views\Generator\Index.cshtml" />
     <Content Include="Views\RoundDance\Index.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
+    <None Include="Views\Activities\Index.cshtml" />
+    <None Include="Views\Help\Index.cshtml" />
+    <Content Include="Views\RoundDance\Duty.cshtml" />
     <None Include="Views\VirtualMachines\Index.cshtml" />
     <None Include="Views\Statistics\Index.cshtml" />
     <None Include="Views\VirtualMachines\ShowLogs.cshtml" />

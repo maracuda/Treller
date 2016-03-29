@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Storages;
 
 namespace SKBKontur.Treller.WebApplication.Services.Settings
@@ -20,7 +20,7 @@ namespace SKBKontur.Treller.WebApplication.Services.Settings
             _settings = new Lazy<BoardSettings[]>(() => GetBoardSettings(cachedFileStorage, taskManagerClient), true);
         }
 
-        private static HashSet<string> exceptBoardNames = new HashSet<string>(new[] { "dev", "FeaturePool", "Manager Tasks", "Архив", "Оптимизация ТП", "Стратегия 2014", "Стратегия 2015", "Стратегия 2016", "Billing", "CRM", "dev_old" });
+        private static HashSet<string> exceptBoardNames = new HashSet<string>(new[] { "dev", "FeaturePool", "Manager Tasks", "Архив", "Оптимизация ТП", "Стратегия 2014", "Стратегия 2015", "Стратегия 2016", "Billing", "CRM", "dev_old", "Автотесты" });
         private const string OrganizationName = "konturbilling";
 
         private static readonly BoardSettings[] DefaultSettings = new[]

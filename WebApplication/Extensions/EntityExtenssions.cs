@@ -1,6 +1,6 @@
 ﻿using System;
-using SKBKontur.TaskManagerClient.BusinessObjects;
 using System.Linq;
+using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 
 namespace SKBKontur.Treller.WebApplication.Extensions
 {

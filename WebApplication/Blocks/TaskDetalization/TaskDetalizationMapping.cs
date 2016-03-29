@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SKBKontur.BlocksMapping.Abstrations;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.BlocksMapping.Mappings;
-using SKBKontur.TaskManagerClient.BusinessObjects;
+using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Blocks.Parts;
 using SKBKontur.Treller.WebApplication.Blocks.TaskDetalization.Models;
