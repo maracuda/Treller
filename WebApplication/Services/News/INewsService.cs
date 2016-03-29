@@ -9,6 +9,7 @@
         void SendTechnicalNews();
         void SendNews();
         void UpdateEmail(string technicalEmail, string releaseEmail);
+        void UpdateEmailToBattleValues();
         bool IsAnyNewsExists();
     }
 }

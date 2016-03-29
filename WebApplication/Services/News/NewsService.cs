@@ -224,6 +224,11 @@ namespace SKBKontur.Treller.WebApplication.Services.News
             cachedFileStorage.Write(NewsEmailsStoreName, emails);
         }
 
+        public void UpdateEmailToBattleValues()
+        {
+            UpdateEmail("tech.news.billing@skbkontur.ru", "news.billing@skbkontur.ru");
+        }
+
         public bool IsAnyNewsExists()
         {
             return (cachedFileStorage.Find<NewCardNewsModel[]>(CardNewsName) ?? new NewCardNewsModel[0]).Any(x => x.IsNewsExists() && !x.IsPublished() && !x.IsDeleted);

@@ -65,7 +65,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public ActionResult ResetBattleEmails()
         {
-            newsService.UpdateEmail("tech.news.billing@skbkontur.ru", "news.billing@skbkontur.ru");
+            newsService.UpdateEmailToBattleValues();
 
             return RedirectToAction("Index");
         }
