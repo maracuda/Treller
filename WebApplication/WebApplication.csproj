@@ -230,7 +230,6 @@
     <Compile Include="Implementation\RoundDance\BusinessObjects\DirectionTransferViewModel.cs" />
     <Compile Include="Implementation\RoundDance\BusinessObjects\RoundDanceDirectionWeight.cs" />
     <Compile Include="Implementation\RoundDance\BusinessObjects\RoundDancePeople.cs" />
-    <Compile Include="Implementation\RoundDance\BusinessObjects\RoundDancePeopleDirectionChange.cs" />
     <Compile Include="Implementation\RoundDance\BusinessObjects\RoundDancePeopleViewModel.cs" />
     <Compile Include="Implementation\RoundDance\BusinessObjects\RoundDanceViewModel.cs" />
     <Compile Include="Implementation\RoundDance\BusinessObjects\SuggestDirectionViewModel.cs" />
@@ -348,6 +347,11 @@
     <Content Include="Content\Colorbox\images\border1.png" />
     <Content Include="Content\Colorbox\images\border2.png" />
     <Content Include="Content\Colorbox\images\loading.gif" />
+    <Content Include="Content\css\backgr.jpg" />
+    <Content Include="Content\css\duty.css" />
+    <Content Include="Content\css\fonts.css" />
+    <Content Include="Content\css\normalize.css" />
+    <Content Include="Content\css\tilteffect.css" />
     <Content Include="Content\Layout\Layout.css" />
     <Content Include="Content\News\News.css" />
     <Content Include="Content\normalize.css" />
@@ -395,6 +399,7 @@
     <Content Include="fonts\font-awesome\fonts\FontAwesome.otf" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\es5-sham.map" />
+    <Content Include="Content\css\.DS_Store" />
     <None Include="Scripts\jquery-1.11.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -407,6 +412,7 @@
     <Content Include="Scripts\jquery-1.11.1.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="Scripts\jquery-1.11.1.min.map" />
+    <Content Include="Scripts\js\tiltfx.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\react\JSXTransformer-0.13.0.js" />

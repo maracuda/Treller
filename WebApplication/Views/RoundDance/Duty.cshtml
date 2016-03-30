@@ -1,57 +1,57 @@
 ﻿@using System.Linq
 @using SKBKontur.BlocksMapping.BlockExtenssions
+@using SKBKontur.Infrastructure.CommonExtenssions
 @using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects
 @model RoundDanceViewModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
-<!DOCTYPE HTML>
-<!--[if IE]><![endif]-->
-<!--[if lt IE 7]><html class="ie ie-lt7 ie-lt8 ie-lt9"><![endif]-->
-<!--[if lt IE 8]><html class="ie ie-lt8 ie-lt9"><![endif]-->
-<!--[if lt IE 9]><html class="ie ie-lt9"><![endif]-->
-<!--[if gt IE 8]><html class="ie"><![endif]-->
-<!--[if !IE]><!--><html><!--<![endif]-->
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>Хороводчество</title>
-    <meta name="robots" content="noindex, nofollow" />
-    
-    <style type="text/css">
-        .tablerow td, th {
-            padding: 5px 10px 5px;
-        }
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width" initial-scale="1">
+        <title>Помощь</title>
+        <link rel="stylesheet" type="text/css" href="~/Content/css/tilteffect.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/css/duty.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/css/fonts.css"/>
+        <link rel="stylesheet" type="text/css" href="~/Content/css/normalize.css" />
+        <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body style="padding: 0px;">
+        <div class="container" style="padding: 0px;">
+            <div class="header">
+                <h1>
+                    Техническая помощь <br>
+                    по&nbsp;Контур.Биллингу
+                </h1>
+                <p class="text">
+                    Каждый день дежурные решают много проблем, поэтому часто очень заняты! <br>
+                </p>
+                <p class="text">
+                    Хочу решить проблему сейчас <br>
+                    <a href="@string.Format("mailto:{0}?subject=Дежурным Контур.Биллинга&body=Здравствуйте! Обращаемся к вам из проекта НАШ_ПРОЕКТ за технической консультацией.", string.Join("; ", (Model.DirectionPeoples.SafeGet(Direction.Duty.GetEnumDescription()) ?? new RoundDancePeopleViewModel[0]).Select(x => string.Format("{0} <{1}>", x.People.Name, x.People.Email))))">
+                        напишите дежурным
+                    </a>
+                </p>
+                <p class="text">
+                    Хочу решить в&nbsp;течение дня
+                    <a href="mailto:Ящик аналитиков
+					        Контур.Биллинга <ask.billing@skbkontur.ru>?subject=Команде Контур.Биллинга&amp;body=Здравствуйте!
+					        Обращаемся к вам из проекта НАШ_ПРОЕКТ за технической консультацией.">
+                        пишите дежурному аналитику
+                    </a>
+                </p>
+            </div>
+            <!-- <div class="gradient"></div> -->
+            <img src="../../Content/css/backgr.jpg" alt="" class="image tilt-effect" data-tilt-options='{ "opacity" : 0.3, "extraImgs" : 3, "movement": { "perspective" : 1200, "translateX" : -7, "translateY" : -7, "rotateX" : -10, "rotateY" : -10 } }'>
+        </div>
+        <script src="../../Scripts/js/tiltfx.js"></script>
+    </body>
 
-        .tablerow th {
-            padding-top: 20px;
-        }
-
-        .tablerow2 { font-weight: bold; }
-        .tablerow3 {
-            color: #6abf3d;
-            font-weight: bold;
-        }
-
-        .tablerow4 {
-            color: #ff6a00;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <div>
-        <h2>Техническая помощь по проекту Контур.Биллинг</h2>
-        <h4>Дежурные каждый день участвуют в битве с различными несостыковками и часто очень заняты!</h4>
-        <h4>Но если вам нужно спасать мир, можно
-            <a href="@string.Format("mailto:{0}?subject=Дежурным Контур.Биллинга&body=Здравствуйте! Обращаемся к вам из проекта НАШ_ПРОЕКТ за технической консультацией.", string.Join("; ", (Model.DirectionPeoples.SafeGet(Direction.Duty) ?? new RoundDancePeopleViewModel[0]).Select(x => string.Format("{0} <{1}>", x.People.Name, x.People.Email))))">
-                написать дежурным
-            </a>
-        </h4>
-        <h4>
-            Если проблему можно решить в течение дня, пишите <a href="mailto:Ящик аналитиков Контур.Биллинга <ask.billing@skbkontur.ru>?subject=Команде Контур.Биллинга&body=Здравствуйте! Обращаемся к вам из проекта НАШ_ПРОЕКТ за технической консультацией.">дежурному аналитику</a>
-        </h4>
-</div>
-</body>
 @Html.Raw("</html>")
