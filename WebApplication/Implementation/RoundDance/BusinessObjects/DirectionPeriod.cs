@@ -23,9 +23,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObj
             EndDate = nextPeriod.BeginDate.AddDays(-1);
         }
 
-        public void SetAsCurrentPeriod()
+        public string GetPeriodString()
         {
-            EndDate = DateTime.Now.Date;
+            return EndDate.HasValue
+                ? string.Format("{0:dd.MM.yyyy} - {1:dd.MM.yyyy}", BeginDate, EndDate)
+                : BeginDate.ToString("dd.MM.yyyy");
         }
     }
 }

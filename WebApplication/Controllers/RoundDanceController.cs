@@ -19,22 +19,22 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var viewModel = roundDanceViewModelBuilder.BuildWithLinks();
+            var viewModel = roundDanceViewModelBuilder.Build();
             return View("Index", viewModel);
         }
 
         [HttpGet]
         public ActionResult Duty()
         {
-            var viewModel = roundDanceViewModelBuilder.Build();
-            return View("Duty", viewModel);
+            var duty = roundDanceViewModelBuilder.BuildDuty();
+            return View("Duty", duty);
         }
 
         [HttpPost]
         public ActionResult AddRoundDance(string name, string direction, string beginDate, string pairName, string email)
         {
-            var beginDateResult = ParseToDateTime(beginDate);
-            if (beginDateResult.HasValue)
+            var beginDateResult = string.IsNullOrEmpty(beginDate) ? DateTime.Now.Date : ParseToDateTime(beginDate);
+            if (beginDateResult.HasValue && !string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(direction))
             {
                 roundDancePeopleStorage.AddNew(name, direction, beginDateResult.Value, email, pairName);
             }

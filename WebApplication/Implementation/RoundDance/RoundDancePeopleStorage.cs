@@ -9,7 +9,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
     public class RoundDancePeopleStorage : IRoundDancePeopleStorage
     {
         private readonly ICachedFileStorage cachedFileStorage;
-        private readonly RoundDancePeople[] startVariant;
+        private readonly Dictionary<string, RoundDancePeople> startVariant;
         private Dictionary<string, RoundDancePeople> peoples;
         private const string FileName = "RoundDancePeoples";
 
@@ -345,7 +345,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.Duty},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 23), DefaultDirection = Direction.SpeedyFeatures},
                     }},
-            };
+            }.ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
 #endregion
         }
 
@@ -354,37 +354,20 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
             return cachedFileStorage.Find<Dictionary<string, RoundDancePeople>>(FileName);
         }
 
-        private RoundDancePeople[] GetStartVariant()
-        {
-            var dancePeoples = startVariant;
-
-            foreach (var people in dancePeoples)
-            {
-                DirectionPeriod lastPeriod = null;
-                foreach (var period in people.WorkPeriods)
-                {
-                    if (lastPeriod != null)
-                    {
-                        if (lastPeriod.BeginDate >= period.BeginDate)
-                        {
-                            throw new ArgumentOutOfRangeException(String.Format("period is bad for {0}", people.Name));
-                        }
-
-                        lastPeriod.SetNextPeriod(period);
-                    }
-                    
-                    lastPeriod = period;
-                }
-
-                people.WorkPeriods.Last().SetAsCurrentPeriod();
-            }
-
-            return dancePeoples;
-        }
-
         public RoundDancePeople[] GetAll()
         {
-            peoples = peoples ?? GetCachedPeoples() ?? GetStartVariant().ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
+            peoples = peoples ?? GetCachedPeoples();
+            
+            if (peoples == null)
+            {
+                peoples = startVariant;
+                foreach (var people in peoples)
+                {
+                    FixEndDateAndOrder(people.Value);
+                }
+                cachedFileStorage.Write(FileName, peoples);
+            }
+
             return peoples.Select(x => x.Value).ToArray();
         }
 
@@ -402,12 +385,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
             }
             else if (!peoples[name].WorkPeriods.Any(x => x.Direction == direction && x.BeginDate == beginDate))
             {
-                peoples[name].WorkPeriods.Add(new DirectionPeriod
+                var oldPeriods = peoples[name].WorkPeriods;
+                oldPeriods.Add(new DirectionPeriod
                 {
                     Direction = direction,
                     BeginDate = beginDate,
                     PairName = pairName
                 });
+
+                FixEndDateAndOrder(peoples[name]);
             }
             else
             {
@@ -426,6 +412,22 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 
             peoples[name].WorkPeriods.RemoveAll(x => x.BeginDate == beginDate && x.Direction == direction);
             cachedFileStorage.Write(FileName, peoples);
+        }
+
+        private static void FixEndDateAndOrder(RoundDancePeople people)
+        {
+            var orderedPeriods = people.WorkPeriods.OrderBy(x => x.BeginDate).ToList();
+
+            DirectionPeriod lastPeriod = null;
+            foreach (var period in orderedPeriods)
+            {
+                if (lastPeriod != null)
+                {
+                    lastPeriod.SetNextPeriod(period);
+                }
+                lastPeriod = period;
+            }
+            people.WorkPeriods = orderedPeriods;
         }
     }
 }

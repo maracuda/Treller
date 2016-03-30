@@ -1,6 +1,4 @@
 ﻿@using System.Linq
-@using Microsoft.Ajax.Utilities
-@using SKBKontur.Infrastructure.CommonExtenssions
 @using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects
 @model RoundDanceViewModel
 
@@ -49,7 +47,7 @@
     <div>
         <h2>Текущие направления:</h2>
         <table class="tablerow">
-            @foreach (var pair in Model.AnotherDirectionPeoples)
+            @foreach (var pair in Model.PeoplesByDirections)
             {
                 <tr>
                     <th>@pair.Key</th>
@@ -62,59 +60,50 @@
                     <th>FeatureTeam</th>
                 </tr>
 
-                foreach (var groupPeople in pair.Value)
+                foreach (var people in pair.Value)
                 {
-                    if (groupPeople.Length > 1)
-                    {
-                        <tr class="pair">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    }
-                    foreach (var people in groupPeople)
-                    {
-                        <tr>
-                            @using (Html.BeginForm("AddRoundDance", "RoundDance", FormMethod.Post))
-                            {
-                                <td>@people.People.Name @Html.Hidden("name", @people.People.Name)</td>
-                                <td>@people.CurrentWeight.Weight</td>
-                                <td></td>
-
-                                <td>@people.DirectionWeights[Direction.SpeedyFeatures.GetEnumDescription()].RotationWeight</td>
-                                <td>@people.DirectionWeights[Direction.Infrastructure.GetEnumDescription()].RotationWeight</td>
-                                <td>@people.DirectionWeights[Direction.Duty.GetEnumDescription()].RotationWeight</td>
-                                <td>@people.FeatureTeamRotationWeight</td>
-                                <td>@Html.DropDownList("direction", Model.AllActualDirections.Select(x => new SelectListItem { Value = x, Selected = true, Text = x }))</td>
-                                <td>@Html.TextBox("beginDate", DateTime.Now.ToString("dd.MM.yyyy"), new { title = "Начало хоровода", @class = "news_actualize_text_area" })</td>
-                                <td>@Html.TextBox("pairName", "", new { title = "Фамилия, с кем в паре", @class = "news_actualize_text_area" })</td>
-                                <td><input type="submit" value="Хороводить!" class="news__button news_actualize_button"/></td>
-                            }
-                        </tr>
-                    }
-                    if (groupPeople.Length > 1)
-                    {
-                        <tr class="pair">
-                            <td></td>
-                            <td></td>
+                    <tr>
+                        @using (Html.BeginForm("AddRoundDance", "RoundDance", FormMethod.Post))
+                        {
+                            <td>@people.Name @Html.Hidden("name", @people.Name)</td>
+                            <td>@people.CurrentWeight</td>
                             <td></td>
 
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    }
+                            <td>@people.SpeedyWeight</td>
+                            <td>@people.InfrastructureWeight</td>
+                            <td>@people.DutyWeight</td>
+                            <td>@people.FeatureWeight</td>
+                            <td>@Html.DropDownList("direction", Model.AllActualDirections.Select(x => new SelectListItem { Value = x, Selected = true, Text = x }))</td>
+                            <td>@Html.TextBox("beginDate", DateTime.Now.AddDays(1).ToString("dd.MM.yyyy"), new {title = "Начало хоровода", @class = "news_actualize_text_area"})</td>
+@*                            <td>@Html.TextBox("pairName", "", new {title = "Фамилия, с кем в паре", @class = "news_actualize_text_area"})</td>*@
+                            <td><input type="submit" value="Хороводить!" class="news__button news_actualize_button"/></td>
+                        }
+                    </tr>
                 }
             }
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Имя новичка</th>
+                <th>Почта для дежурства</th>
+                <th>Направление</th>
+                <th>С кем в паре?</th>
+            </tr>
+            <tr>
+                @using (Html.BeginForm("AddRoundDance", "RoundDance", FormMethod.Post))
+                {
+                    <td></td>
+                    <td></td>
+                    <td>@Html.TextBox("name", "")</td>
+                    <td>@Html.TextBox("email", "")</td>
+                    <td>@Html.DropDownList("direction", Model.AllActualDirections.Select(x => new SelectListItem {Value = x, Selected = true, Text = x}))</td>
+                    <td>@Html.TextBox("pairName", "", new {title = "Фамилия, с кем в паре", @class = "news_actualize_text_area"})</td>
+                    <td><input type="submit" value="Добавить в хороводы" class="news__button news_actualize_button"/></td>
+                }
+            </tr>
         </table>
 
-        @if (Model.DirectionPeoples.SelectMany(x => x.Value).Any(x => x.Suggest != null && !x.Suggest.IsSuggestDirection && x.Suggest.SuggestDate <= DateTime.Now.Date))
+        @if (Model.OldRoundDances.Any())
         {
             <h2>Недавно отхороводились:</h2>
             <table class="tablerow">
@@ -125,17 +114,13 @@
                     <th>Когда</th>
                 </tr>
 
-                @foreach (var suggest in Model.DirectionPeoples
-                    .SelectMany(x => x.Value)
-                    .Where(x => x.Suggest != null && !x.Suggest.IsSuggestDirection && x.Suggest.SuggestDate <= DateTime.Now.Date)
-                    .Select(x => x.Suggest)
-                    .OrderBy(x => x.NewDirection))
+                @foreach (var people in Model.OldRoundDances.OrderByDescending(x => x.RoundDanceDate))
                 {
                     <tr>
-                        <td>@suggest.Name</td>
-                        <td>@suggest.OldDirection</td>
-                        <td>@(suggest.NewDirection)</td>
-                        <td>@suggest.SuggestDate.IfNotNull(x => x.Value.ToString("dd.MM.yyyy"))</td>
+                        <td>@people.Name</td>
+                        <td>@people.OldDirection</td>
+                        <td>@people.FutureDirection</td>
+                        <td>@people.When</td>
                     </tr>
                 }
             </table>
@@ -150,20 +135,15 @@
                 <th>Когда</th>
             </tr>
 
-            @foreach (var suggest in Model.DirectionPeoples
-                .SelectMany(x => x.Value)
-                .Where(x => x.NextTransfers != null && x.NextTransfers.Length > 0)
-                .SelectMany(x => x.NextTransfers)
-                .OrderBy(x => x.TransferDate)
-                .ThenBy(x => x.NewDirection))
+            @foreach (var suggest in Model.FutureRoundDances.OrderBy(x => x.RoundDanceDate))
             {
                 using (Html.BeginForm("RemoveFromNextRoundDance", "RoundDance", FormMethod.Post))
                 {
                     <tr>
                         <td>@suggest.Name @Html.Hidden("name", suggest.Name)</td>
                         <td>@suggest.OldDirection</td>
-                        <td>@suggest.NewDirection @Html.Hidden("direction", suggest.NewDirection)</td>
-                        <td>@suggest.TransferDates @Html.Hidden("beginDate", suggest.TransferDate.ToString("dd.MM.yyyy"))</td>
+                        <td>@suggest.FutureDirection @Html.Hidden("direction", suggest.FutureDirection)</td>
+                        <td>@suggest.When @Html.Hidden("beginDate", suggest.RoundDanceDate.ToString("dd.MM.yyyy"))</td>
                         <td><input type="submit" value="Отменить!" class="news__button news_actualize_button" /></td>
                     </tr>
                 }

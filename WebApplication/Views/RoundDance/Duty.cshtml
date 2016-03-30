@@ -1,8 +1,5 @@
-﻿@using System.Linq
-@using SKBKontur.BlocksMapping.BlockExtenssions
-@using SKBKontur.Infrastructure.CommonExtenssions
-@using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects
-@model RoundDanceViewModel
+﻿@using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects
+@model DutyViewModel
 
 @{
     Layout = null;
@@ -35,7 +32,7 @@
                 </p>
                 <p class="text">
                     Хочу решить проблему сейчас <br>
-                    <a href="@string.Format("mailto:{0}?subject=Дежурным Контур.Биллинга&body=Здравствуйте! Обращаемся к вам из проекта НАШ_ПРОЕКТ за технической консультацией.", string.Join("; ", (Model.DirectionPeoples.SafeGet(Direction.Duty.GetEnumDescription()) ?? new RoundDancePeopleViewModel[0]).Select(x => string.Format("{0} <{1}>", x.People.Name, x.People.Email))))">
+                    <a href="@string.Format("mailto:{0}?subject=Дежурным Контур.Биллинга&body=Здравствуйте! Обращаемся к вам из проекта НАШ_ПРОЕКТ за технической консультацией.", string.Join("; ", Model.Peoples.Select(x => string.Format("{0} <{1}>", x.Name, x.Email))))">
                         напишите дежурным
                     </a>
                 </p>

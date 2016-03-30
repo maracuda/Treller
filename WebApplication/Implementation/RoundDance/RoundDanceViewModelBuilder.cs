@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Ajax.Utilities;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects;
@@ -23,178 +22,137 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 
         public RoundDanceViewModel Build()
         {
-            var peoples = roundDancePeopleStorage.GetAll().Select(InnerBuild).ToArray();
-            var result = peoples
-                            .GroupBy(x => x.CurrentDirection)
-                            .ToDictionary(x => x.Key, 
-                                          x => x.OrderByDescending(o => o.CurrentWeight.Weight)
-                                                .ThenByDescending(a => a.DirectionWeights
-                                                                        .SafeGet(Direction.Duty.GetEnumDescription())
-                                                                        .IfNotNull(t => t.RotationWeight))
-                                                .ToArray());
+            var peoples = roundDancePeopleStorage.GetAll();
 
-            return new RoundDanceViewModel { DirectionPeoples = result };
-        }
+            var byDirections = peoples
+                                .GroupBy(x => x.GetCurrentDirection)
+                                .ToDictionary(x => x.Key, x => x.Select(BuildPeopleWeights).ToArray());
 
-        public RoundDanceViewModel BuildWithLinks()
-        {
-            var innerResult = new Dictionary<string, List<RoundDancePeopleViewModel[]>>();
-            var usedPeopleNames = new HashSet<string>();
+            var actualDirections = settingService
+                .GetDevelopingBoards()
+                .Select(x => x.Name)
+                .Union(NotFeatureTeamDirections)
+                .Distinct()
+                .ToArray();
 
-            var result = Build();
-            foreach (var peoples in result.DirectionPeoples)
+
+            var oldRounds = peoples.Select(TryBuildOldRoundDance).Where(x => x != null).ToArray();
+            var futureRounds = peoples.Select(TryBuildFutureRoundDance).Where(x => x != null).ToArray();
+
+            return new RoundDanceViewModel
             {
-                innerResult.Add(peoples.Key, new List<RoundDancePeopleViewModel[]>());
-
-                foreach (var people in peoples.Value)
-                {
-                    if (!string.IsNullOrWhiteSpace(people.CurrentPairName))
-                    {
-                        var pair = peoples.Value.FirstOrDefault(x => x.People.Name.Contains(people.CurrentPairName, StringComparison.OrdinalIgnoreCase));
-                        if (pair != null)
-                        {
-                            innerResult[peoples.Key].Add(new []{people, pair});
-                            usedPeopleNames.Add(people.People.Name);
-                            usedPeopleNames.Add(pair.People.Name);
-                        }
-                    }
-                }
-
-                foreach (var singlePeople in peoples.Value.Where(x => !usedPeopleNames.Contains(x.People.Name)))
-                {
-                    innerResult[peoples.Key].Add(new []{ singlePeople });
-                }
-            }
-
-            result.AnotherDirectionPeoples = innerResult;
-            result.AllActualDirections = settingService.GetDevelopingBoards().Select(x => x.Name).Union(new[] { Direction.Duty.GetEnumDescription() }).ToArray();
-
-            return result;
-        }
-
-        private static RoundDancePeopleViewModel InnerBuild(RoundDancePeople people)
-        {
-            var nowTime = DateTime.Now;
-            var now = nowTime.Date;
-
-            var currentWorkPeriod = people.WorkPeriods.FirstOrDefault(x => nowTime > x.BeginDate && nowTime < x.EndDate) 
-                                 ?? people.WorkPeriods.LastOrDefault(x => x.BeginDate <= now || x.EndDate >= now);
-            var currentDirection = currentWorkPeriod.IfNotNull(x => x.Direction) ?? Direction.Leave.GetEnumDescription();
-            var nextDirection = people.WorkPeriods.LastOrDefault(x => x.Direction != currentDirection);
-            var weights = BuildWeight(people).OrderBy(t => t.Direction).ToDictionary(x => x.Direction);
-            var currentWeight = weights[currentDirection];
-
-            SuggestDirectionViewModel suggest = null;
-            if (currentWeight.Weight < 5 || (currentWorkPeriod != null && (now - currentWorkPeriod.BeginDate).Days <= 4))
-            {
-                suggest = new SuggestDirectionViewModel
-                {
-                    IsSuggestDirection = false,
-                    NewDirection = currentDirection,
-                    OldDirection = nextDirection != null ? nextDirection.Direction : null,
-                    SuggestDate = currentWorkPeriod.IfNotNull(x => (DateTime?)x.BeginDate),
-                    Name = people.Name
-                };
-            }
-
-            DirectionPeriod lastDirectionPeriod = null;
-            var nextTransfers = new List<DirectionTransferViewModel>();
-            foreach (var workPeriod in people.WorkPeriods)
-            {
-                if (workPeriod.BeginDate > now)
-                {
-                    nextTransfers.Add(new DirectionTransferViewModel
-                    {
-                        Name = people.Name,
-                        NewDirection = workPeriod.Direction,
-                        TransferDate = workPeriod.BeginDate,
-                        TransferEndDate = workPeriod.EndDate == now ? (DateTime?) null : workPeriod.EndDate,
-                        OldDirection = lastDirectionPeriod.IfNotNull(x => x.Direction) ?? Direction.Leave.GetEnumDescription()
-                    });
-                }
-                lastDirectionPeriod = workPeriod;
-            }
-
-            return new RoundDancePeopleViewModel
-            {
-                People = people,
-                CurrentDirection = currentDirection,
-                DirectionWeights = weights,
-                FeatureTeamRotationWeight = GetFeatureTeamRotationWeight(people, weights),
-                LastDirection = nextDirection != null ? nextDirection.Direction : null,
-                Suggest = suggest,
-                CurrentPairName = currentWorkPeriod.IfNotNull(x => x.PairName),
-                NextTransfers = nextTransfers.ToArray()
+                PeoplesByDirections = byDirections,
+                AllActualDirections = actualDirections,
+                OldRoundDances = oldRounds,
+                FutureRoundDances = futureRounds
             };
         }
 
-        private static decimal GetFeatureTeamRotationWeight(RoundDancePeople people, Dictionary<string, RoundDanceDirectionWeight> weights)
+        public DutyViewModel BuildDuty()
         {
-            var directions = people.WorkPeriods.Select(x => x.Direction).Where(x => !NotFeatureTeamDirections.Contains(x));
+            var peoples = roundDancePeopleStorage.GetAll();
+            var dutyPeoples = peoples.Where(x => x.GetCurrentDirection == Direction.Duty.GetEnumDescription())
+                                     .Select(x => new PeopleDutyViewModel { Name = x.Name, Email = x.Email })
+                                     .ToArray();
 
-            var result = 100M;
-            foreach (var direction in directions)
+            return new DutyViewModel
             {
-                var ft = weights.SafeGet(direction);
-                if (ft != null && ft.RotationWeight < result)
-                {
-                    result = ft.RotationWeight;
-                }
-            }
-
-            return result;
+                Peoples = dutyPeoples
+            };
         }
 
-        private static RoundDanceDirectionWeight[] BuildWeight(RoundDancePeople people)
+        private static PeopleRoundDanceResultViewModel TryBuildOldRoundDance(RoundDancePeople people)
         {
-            var result = people
+            var lastChangeIndex = people.WorkPeriods.FindLastIndex(x => x.BeginDate <= DateTime.Now.Date && x.BeginDate.AddDays(4) > DateTime.Now.Date && x.Direction != people.GetCurrentDirection);
+
+            return lastChangeIndex >= 0
+                ? CreatePeople(people.Name,
+                    (lastChangeIndex > 1 ? people.WorkPeriods[lastChangeIndex - 1] : null).IfNotNull(x => x.Direction),
+                    people.WorkPeriods[lastChangeIndex])
+                : null;
+        }
+
+        private static PeopleRoundDanceResultViewModel TryBuildFutureRoundDance(RoundDancePeople people)
+        {
+            var futureIndex = people.WorkPeriods.FindIndex(x => x.BeginDate > DateTime.Now.Date && x.Direction != people.GetCurrentDirection);
+
+            return futureIndex >= 0
+                ? CreatePeople(people.Name, people.GetCurrentDirection, people.WorkPeriods[futureIndex])
+                : null;
+        }
+
+        private static PeopleRoundDanceResultViewModel CreatePeople(string peopleName, string oldDirection, DirectionPeriod futureDirection)
+        {
+            return new PeopleRoundDanceResultViewModel
+            {
+                Name = peopleName,
+                OldDirection = oldDirection,
+
+                FutureDirection = futureDirection.Direction,
+                RoundDanceDate = futureDirection.BeginDate,
+                When = futureDirection.GetPeriodString()
+            };
+        }
+
+        private static PeopleRoundDanceViewModel BuildPeopleWeights(RoundDancePeople people)
+        {
+            var weights = people
                 .WorkPeriods
                 .GroupBy(x => x.Direction)
-                .Select(x => BuildDirection(x.Where(d => d.Direction == x.Key).ToArray()))
-                .ToArray();
+                .ToDictionary(x => x.Key, x => CalculateWeight(x.ToArray()));
 
-            // Добиваем остальных неправильно!
-            return Enum.GetValues(typeof (Direction))
-                .Cast<Direction>()
-                .Where(x => result.All(r => r.Direction != x.GetEnumDescription()))
-                .Select(x => new RoundDanceDirectionWeight
-                {
-                    Direction = x.GetEnumDescription(),
-                    Weight = 0,
-                    RotationWeight = 100
-                }).Union(result).ToArray();
+            var futureWeights = weights.Where(x => !NotFeatureTeamDirections.Contains(x.Key)).Select(x => x.Value.Weight).ToArray();
 
+            return new PeopleRoundDanceViewModel
+            {
+                Name = people.Name,
+                CurrentWeight = weights.SafeGet(people.GetCurrentDirection).IfNotNull(x => x.Weight),
+                
+                DutyWeight = weights.SafeGet(Direction.Duty.GetEnumDescription()).IfNotNull(x => x.RotationWeight, 100M),
+                InfrastructureWeight = weights.SafeGet(Direction.Infrastructure.GetEnumDescription()).IfNotNull(x => x.RotationWeight, 100M),
+                SpeedyWeight = weights.SafeGet(Direction.SpeedyFeatures.GetEnumDescription()).IfNotNull(x => x.RotationWeight, 100M),
+
+                FeatureWeight = 100 - (futureWeights.Length > 0 ? futureWeights.Max() : 0M)
+            };
         }
 
-        private static RoundDanceDirectionWeight BuildDirection(DirectionPeriod[] periods)
+        private static RoundDanceDirectionWeight CalculateWeight(DirectionPeriod[] periods)
         {
-            var directionWeight = 0;
+            var weightResult = 0;
             var now = DateTime.Now.Date;
-            var direction = periods.First().Direction;
+            var direction = periods[0].Direction;
+            var isServiceDirection = NotFeatureTeamDirections.Contains(direction);
+            var maxDaysInCalculation = isServiceDirection ? 40 : 90;
+            var lastBeginDate = now.AddDays(-maxDaysInCalculation);
+            var maxWeight = maxDaysInCalculation*maxDaysInCalculation;
 
-            var actualPeriods = periods.Where(x => x.BeginDate <= DateTime.Now.Date);
-            var isServiceDirection = direction == Direction.Infrastructure.GetEnumDescription() || direction == Direction.Duty.GetEnumDescription();
-
-            foreach (var period in actualPeriods)
+            foreach (var period in periods)
             {
-                var endDate = period.EndDate > now ? now : period.EndDate;
-                var daysCount = ((endDate ?? now) - period.BeginDate).Days + 1;
-                var daysDiff = (isServiceDirection ? 40 : 90) - (now - (endDate ?? now)).Days;
-
-                if (daysDiff > 0)
+                if (period.BeginDate > now || (period.EndDate.HasValue && period.EndDate.Value.AddDays(maxDaysInCalculation) <= now))
                 {
-                    directionWeight += daysCount*daysDiff;
+                    continue;
+                }
+
+                var endDate = ((period.EndDate.HasValue && period.EndDate.Value > now) || !period.EndDate.HasValue) ? now : period.EndDate.Value;
+                var beginDate = period.BeginDate > lastBeginDate ? period.BeginDate : lastBeginDate;
+
+                var daysCount = (endDate - beginDate).TotalDays;
+                var koeff = maxDaysInCalculation - (int) (now - endDate).TotalDays;
+
+                weightResult += (int)daysCount*koeff;
+                
+                if (weightResult > maxWeight)
+                {
+                    weightResult = maxWeight;
+                    break;
                 }
             }
 
-            
-            var maxWeight = isServiceDirection ? 14*41 : 90*91;
-            
             return new RoundDanceDirectionWeight
             {
                 Direction = direction,
-                Weight = ToPercent(directionWeight, maxWeight),
-                RotationWeight = maxWeight < directionWeight ? 0 : ToPercent(maxWeight - directionWeight, maxWeight)
+                Weight = ToPercent(weightResult, maxWeight),
+                RotationWeight = ToPercent(maxWeight - weightResult, maxWeight)
             };
         }
 
