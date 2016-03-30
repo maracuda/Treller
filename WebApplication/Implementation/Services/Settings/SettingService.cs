@@ -5,6 +5,7 @@ using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
 {
@@ -28,7 +29,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             new BoardSettings
                 {
                     Id = "552ab670e01e4af28afdc2c2",
-                    Name = "Биллинг продуктов",
+                    Name = "Шустрые задачи",
                     DevelopListName = "Dev",
                     AnalyticListName = "Analytics & Design",
                     ReviewListName = "Review",
@@ -36,7 +37,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
                     TestingListName = "Testing",
                     WaitForReleaseListName = "Wait for release",
                     IsDeleted = true,
-                    IsServiceTeamBoard = true
+                    IsServiceTeamBoard = true,
+                    DefaultDirection = Direction.SpeedyFeatures
                 },
             new BoardSettings
                 {
@@ -71,7 +73,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
                     DevelopPresentationListName = "",
                     TestingListName = "Testing",
                     WaitForReleaseListName = "Wait for release",
-                    IsServiceTeamBoard = true
+                    IsServiceTeamBoard = true,
+                    DefaultDirection = Direction.Infrastructure
                 },
             new BoardSettings
                 {
@@ -146,7 +149,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             return new BoardSettings
             {
                 Id = board.Id,
-                Name = board.Name,
+                Name = boardData != null ? boardData.Name : board.Name,
                 IsDeleted = false,
                 IsServiceTeamBoard = boardData != null && boardData.IsServiceTeamBoard,
                 WaitForReleaseListName = boardData != null ? boardData.WaitForReleaseListName : "Wait for release",

@@ -1,3 +1,5 @@
+using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects;
+
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
 {
     public class BoardSettings
@@ -12,5 +14,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
         public string WaitForReleaseListName { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsServiceTeamBoard { get; set; }
+        public Direction? DefaultDirection { get; set; }
     }
 }
