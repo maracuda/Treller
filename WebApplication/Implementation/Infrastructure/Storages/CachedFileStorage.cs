@@ -1,4 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Web;
@@ -9,12 +11,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storage
     public class CachedFileStorage : ICachedFileStorage
     {
         private readonly static string FileNamePattern = Path.Combine(HttpRuntime.AppDomainAppPath, "Store_{0}.json");
-        private readonly ConcurrentDictionary<string, dynamic> _cache = new ConcurrentDictionary<string, dynamic>();
+        private readonly ConcurrentDictionary<string, dynamic> cache = new ConcurrentDictionary<string, dynamic>();
 
         public T Find<T>(string storeName)
         {
             object result;
-            if (_cache.TryGetValue(storeName, out result))
+            if (cache.TryGetValue(storeName, out result))
             {
                 return (T)result;
             }
@@ -23,7 +25,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storage
             if (File.Exists(fileName))
             {
                 result = JsonConvert.DeserializeObject(File.ReadAllText(fileName, Encoding.UTF8), typeof(T));
-                _cache.TryAdd(storeName, result);
+                cache.TryAdd(storeName, result);
                 return (T)result;
             }
 
@@ -33,11 +35,33 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storage
         public void Write<T>(string storeName, T serializedEntity)
         {
             dynamic stored;
-            _cache.TryRemove(storeName, out stored);
-            _cache.TryAdd(storeName, serializedEntity);
+            cache.TryRemove(storeName, out stored);
+            cache.TryAdd(storeName, serializedEntity);
 
             var contents = JsonConvert.SerializeObject(serializedEntity);
-            File.WriteAllText(GetFileName(storeName), contents);
+            var stopwatch = Stopwatch.StartNew();
+
+            while (!RecurcyWrite(storeName, contents))
+            {
+                if (stopwatch.Elapsed.TotalSeconds > 5)
+                {
+                    stopwatch.Stop();
+                    throw new Exception(string.Format("Can't write file {0} for 5 seconds", storeName));
+                }
+            }
+        }
+
+        private static bool RecurcyWrite(string fileStoreName, string fileBody)
+        {
+            try
+            {
+                File.WriteAllText(GetFileName(fileStoreName), fileBody);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static string GetFileName(string storeName)
