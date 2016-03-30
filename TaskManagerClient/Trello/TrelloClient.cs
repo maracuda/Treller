@@ -39,6 +39,19 @@ namespace SKBKontur.TaskManagerClient.Trello
                     .Await(x => x.Select(b => new Board { Id = b.Id, Name = b.Name, Url = b.Url, OrganizationId = b.IdOrganization }).ToArray());
         }
 
+        public Board[] GetOpenBoards(string organizationIdOrName)
+        {
+            return GetTrelloData<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string> {{"filter", "open"}})
+                    .Select(board => new Board
+                    {
+                        Id = board.Id,
+                        Name = board.Name,
+                        Url = board.Url,
+                        OrganizationId = board.IdOrganization
+                    })
+                    .ToArray();
+        }
+
         public Board[] GetAllBoards(string organizationIdOrName)
         {
             return GetTrelloData<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards",

@@ -37,5 +37,10 @@ namespace SKBKontur.Infrastructure.CommonExtenssions
 
             return input.IndexOf(value, comparison) >= 0;
         }
+
+        public static TVal IfNotNull<T, TVal>(this T value, Func<T, TVal> valueFunc, TVal defaultValue = default(TVal)) where T : class
+        {
+            return value != null ? valueFunc(value) : defaultValue;
+        }
     }
 }

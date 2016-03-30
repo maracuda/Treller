@@ -137,8 +137,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
         private static BoardSettings[] GetBoardSettings(ITaskManagerClient taskManagerClient)
         {
             var allBoards =
-                taskManagerClient.GetOpenBoardsAsync(OrganizationName)
-                    .Result.Where(x => !exceptBoardNames.Contains(x.Name))
+                taskManagerClient.GetOpenBoards(OrganizationName)
+                    .Where(x => !exceptBoardNames.Contains(x.Name))
                     .ToArray();
             var settings = DefaultSettings.ToDictionary(x => x.Id);
             return allBoards.Select(x => BuildBoardSettings(x, settings.SafeGet(x.Id))).ToArray();

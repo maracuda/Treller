@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using Newtonsoft.Json;
 using SKBKontur.HttpInfrastructure.Clients;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
@@ -22,7 +23,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
         public void Feed(string message)
         {
             var authData = GetAuthorizationData();
-            httpClient.SendPost("https://staff.skbkontur.ru/api/feed/group_3423", new StaffFeedModel(message), null, null, authData.Login, authData.Password);
+            httpClient.SendPost("https://staff.skbkontur.ru/api/feed/group_3423", new StaffFeedModel(message), null, null, authData.AuthType, authData.Token);
         }
 
         public class StaffFeedModel
@@ -63,8 +64,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
                     {"password", credentials.Password},
                 });
 
-                // billy_treller:NkESuMOFm9h7ItFGeRmpuyDjOnF50Qneh1FKlCtSlI​
-                var authorizationData = httpClient.SendPost<StaffAuthorizationData>("https://passport.skbkontur.ru/authz/staff/oauth/token", null, form, null, "Basic YmlsbHlfdHJlbGxlcjpOa0VTdU1PRm05aDdJdEZHZVJtcHV5RGpPbkY1MFFuZWgxRktsQ3RTbEnigIs=");
+                var authToken = Convert.ToBase64String(Encoding.UTF8.GetBytes("billy_treller:NkESuMOFm9h7ItFGeRmpuyDjOnF50Qneh1FKlCtSlI​"));
+                var authorizationData = httpClient.SendPost<StaffAuthorizationData>("https://passport.skbkontur.ru/authz/staff/oauth/token", null, form, null, "Basic", authToken);
                 _authoricationInfo = new StaffAuthoricationInfo(authorizationData);
             }
 
@@ -90,8 +91,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
 
             private StaffAuthorizationData Data { get; set; }
             public bool IsActive { get { return DateTime.Now > estimateTime; } }
-            public string Login { get { return Data.token_type; } }
-            public string Password { get { return Data.access_token; } }
+            public string AuthType { get { return Data.token_type; } }
+            public string Token { get { return Data.access_token; } }
         }
     }
 }

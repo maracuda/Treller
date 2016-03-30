@@ -49,11 +49,11 @@ namespace SKBKontur.HttpInfrastructure.Clients
             }
         }
 
-        public void SendPost<T>(string url, T body, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null, string authorizationLogin = null, string authorizationPassword = null)
+        public void SendPost<T>(string url, T body, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null, string authHttpType = null, string authorizationToken = null)
         {
             using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
             {
-                UpdateHttpBasicCredentials(client, authorizationLogin, authorizationPassword);
+                UpdateHttpBasicCredentials(client, authHttpType, authorizationToken);
 
                 using (var response = client.PostAsJsonAsync(GetFullUrl(url, queryParameters), body).Result)
                 {
@@ -62,11 +62,11 @@ namespace SKBKontur.HttpInfrastructure.Clients
             }
         }
 
-        public T SendPost<T>(string url, Dictionary<string, string> queryParameters = null, HttpContent content = null, IEnumerable<Cookie> cookies = null, string authorizationLogin = null, string authorizationPassword = null)
+        public T SendPost<T>(string url, Dictionary<string, string> queryParameters = null, HttpContent content = null, IEnumerable<Cookie> cookies = null, string authHttpType = null, string authorizationToken = null)
         {
             using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
             {
-                UpdateHttpBasicCredentials(client, authorizationLogin, authorizationPassword);
+                UpdateHttpBasicCredentials(client, authHttpType, authorizationToken);
 
                 using (var response = client.PostAsync(GetFullUrl(url, queryParameters), content).Result)
                 {
@@ -100,12 +100,9 @@ namespace SKBKontur.HttpInfrastructure.Clients
             }
         }
 
-        private static void UpdateHttpBasicCredentials(System.Net.Http.HttpClient client, string authorizationLogin, string authorizationPassword)
+        private static void UpdateHttpBasicCredentials(System.Net.Http.HttpClient client, string authHttpType, string authorizationToken)
         {
-            if (!string.IsNullOrWhiteSpace(authorizationLogin) && !string.IsNullOrWhiteSpace(authorizationPassword))
-            {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authorizationLogin, authorizationPassword);
-            }
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authHttpType, authorizationToken);
         }
 
         private static void ValidateResponse(HttpResponseMessage response)

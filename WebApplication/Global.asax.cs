@@ -6,12 +6,7 @@ using LightInject;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
-using System.Threading.Tasks;
-using SKBKontur.BlocksMapping.Blocks;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals;
-using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
-using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces;
 
 namespace SKBKontur.Treller.WebApplication
@@ -39,12 +34,6 @@ namespace SKBKontur.Treller.WebApplication
             BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             runspacePool = container.Get<IVirtualMachinesRunspacePool>();
-            Task.Factory.StartNew(() => WarmUp(container));
-        }
-
-        private static void WarmUp(IContainer container)
-        {
-            var warmedBlocks = container.Get<IBlocksBuilder>().BuildBlocks(ContextKeys.TasksKey, new[] { typeof(BoardsBlock), typeof(CardListBlock) }, new CardListEnterModel { BoardIds = new string[0], ShowMode = ShowMode.All }).Result;
             container.Get<IOperationalService>().Start();
         }
 
