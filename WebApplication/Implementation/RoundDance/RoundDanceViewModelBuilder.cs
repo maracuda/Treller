@@ -5,16 +5,20 @@ using Microsoft.Ajax.Utilities;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects;
+using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 {
     public class RoundDanceViewModelBuilder : IRoundDanceViewModelBuilder
     {
         private readonly IRoundDancePeopleStorage roundDancePeopleStorage;
+        private readonly ISettingService settingService;
+        private readonly static HashSet<string> NotFeatureTeamDirections = new HashSet<string>(new[] { "Инфраструктура", "Дежурство", "Отпуск", "Болезнь", "Шустрые задачи" });
 
-        public RoundDanceViewModelBuilder(IRoundDancePeopleStorage roundDancePeopleStorage)
+        public RoundDanceViewModelBuilder(IRoundDancePeopleStorage roundDancePeopleStorage, ISettingService settingService)
         {
             this.roundDancePeopleStorage = roundDancePeopleStorage;
+            this.settingService = settingService;
         }
 
         public RoundDanceViewModel Build()
@@ -25,7 +29,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                             .ToDictionary(x => x.Key, 
                                           x => x.OrderByDescending(o => o.CurrentWeight.Weight)
                                                 .ThenByDescending(a => a.DirectionWeights
-                                                                        .SafeGet(Direction.Duty)
+                                                                        .SafeGet(Direction.Duty.GetEnumDescription())
                                                                         .IfNotNull(t => t.RotationWeight))
                                                 .ToArray());
 
@@ -34,7 +38,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 
         public RoundDanceViewModel BuildWithLinks()
         {
-            var innerResult = new Dictionary<Direction, List<RoundDancePeopleViewModel[]>>();
+            var innerResult = new Dictionary<string, List<RoundDancePeopleViewModel[]>>();
             var usedPeopleNames = new HashSet<string>();
 
             var result = Build();
@@ -63,6 +67,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
             }
 
             result.AnotherDirectionPeoples = innerResult;
+            result.AllActualDirections = settingService.GetDevelopingBoards().Select(x => x.Name).Union(new[] { Direction.Duty.GetEnumDescription() }).ToArray();
+
             return result;
         }
 
@@ -73,7 +79,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 
             var currentWorkPeriod = people.WorkPeriods.FirstOrDefault(x => nowTime > x.BeginDate && nowTime < x.EndDate) 
                                  ?? people.WorkPeriods.LastOrDefault(x => x.BeginDate <= now || x.EndDate >= now);
-            var currentDirection = currentWorkPeriod.IfNotNull(x => (Direction?)x.Direction) ?? Direction.Leave;
+            var currentDirection = currentWorkPeriod.IfNotNull(x => x.Direction) ?? Direction.Leave.GetEnumDescription();
             var nextDirection = people.WorkPeriods.LastOrDefault(x => x.Direction != currentDirection);
             var weights = BuildWeight(people).OrderBy(t => t.Direction).ToDictionary(x => x.Direction);
             var currentWeight = weights[currentDirection];
@@ -85,7 +91,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                 {
                     IsSuggestDirection = false,
                     NewDirection = currentDirection,
-                    OldDirection = nextDirection != null ? nextDirection.Direction : (Direction?)null,
+                    OldDirection = nextDirection != null ? nextDirection.Direction : null,
                     SuggestDate = currentWorkPeriod.IfNotNull(x => (DateTime?)x.BeginDate),
                     Name = people.Name
                 };
@@ -103,7 +109,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         NewDirection = workPeriod.Direction,
                         TransferDate = workPeriod.BeginDate,
                         TransferEndDate = workPeriod.EndDate == now ? (DateTime?) null : workPeriod.EndDate,
-                        OldDirection = lastDirectionPeriod.IfNotNull(x => (Direction?)x.Direction) ?? Direction.Leave
+                        OldDirection = lastDirectionPeriod.IfNotNull(x => x.Direction) ?? Direction.Leave.GetEnumDescription()
                     });
                 }
                 lastDirectionPeriod = workPeriod;
@@ -114,11 +120,29 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                 People = people,
                 CurrentDirection = currentDirection,
                 DirectionWeights = weights,
-                LastDirection = nextDirection != null ? nextDirection.Direction : (Direction?)null,
+                FeatureTeamRotationWeight = GetFeatureTeamRotationWeight(people, weights),
+                LastDirection = nextDirection != null ? nextDirection.Direction : null,
                 Suggest = suggest,
                 CurrentPairName = currentWorkPeriod.IfNotNull(x => x.PairName),
                 NextTransfers = nextTransfers.ToArray()
             };
+        }
+
+        private static decimal GetFeatureTeamRotationWeight(RoundDancePeople people, Dictionary<string, RoundDanceDirectionWeight> weights)
+        {
+            var directions = people.WorkPeriods.Select(x => x.Direction).Where(x => !NotFeatureTeamDirections.Contains(x));
+
+            var result = 100M;
+            foreach (var direction in directions)
+            {
+                var ft = weights.SafeGet(direction);
+                if (ft != null && ft.RotationWeight < result)
+                {
+                    result = ft.RotationWeight;
+                }
+            }
+
+            return result;
         }
 
         private static RoundDanceDirectionWeight[] BuildWeight(RoundDancePeople people)
@@ -129,12 +153,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                 .Select(x => BuildDirection(x.Where(d => d.Direction == x.Key).ToArray()))
                 .ToArray();
 
+            // Добиваем остальных неправильно!
             return Enum.GetValues(typeof (Direction))
                 .Cast<Direction>()
-                .Where(x => result.All(r => r.Direction != x))
+                .Where(x => result.All(r => r.Direction != x.GetEnumDescription()))
                 .Select(x => new RoundDanceDirectionWeight
                 {
-                    Direction = x,
+                    Direction = x.GetEnumDescription(),
                     Weight = 0,
                     RotationWeight = 100
                 }).Union(result).ToArray();
@@ -148,13 +173,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
             var direction = periods.First().Direction;
 
             var actualPeriods = periods.Where(x => x.BeginDate <= DateTime.Now.Date);
-            var isServiceDirection = direction == Direction.Infrastructure || direction == Direction.Duty;
+            var isServiceDirection = direction == Direction.Infrastructure.GetEnumDescription() || direction == Direction.Duty.GetEnumDescription();
 
             foreach (var period in actualPeriods)
             {
                 var endDate = period.EndDate > now ? now : period.EndDate;
-                var daysCount = (endDate - period.BeginDate).Days + 1;
-                var daysDiff = (isServiceDirection ? 40 : 90) - (now - endDate).Days;
+                var daysCount = ((endDate ?? now) - period.BeginDate).Days + 1;
+                var daysDiff = (isServiceDirection ? 40 : 90) - (now - (endDate ?? now)).Days;
 
                 if (daysDiff > 0)
                 {

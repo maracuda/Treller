@@ -4,7 +4,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObj
 {
     public class RoundDanceViewModel
     {
-        public Dictionary<Direction, RoundDancePeopleViewModel[]> DirectionPeoples { get; set; }
-        public Dictionary<Direction, List<RoundDancePeopleViewModel[]>> AnotherDirectionPeoples { get; set; }
+        public Dictionary<string, RoundDancePeopleViewModel[]> DirectionPeoples { get; set; }
+        public Dictionary<string, List<RoundDancePeopleViewModel[]>> AnotherDirectionPeoples { get; set; }
+        public string[] AllActualDirections { get; set; }
     }
 }

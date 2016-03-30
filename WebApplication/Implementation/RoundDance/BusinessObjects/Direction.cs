@@ -61,10 +61,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObj
         [Description("Детализация счета")]
         BillDetalization,
 
-        [Description("Подключение ОБ")]
+        [Description("Продажи ОБ")]
         ObConnection,
 
-        [Description("Покупка модификатора")]
+        [Description("Модификаторы")]
         ModifierBuy,
     }
 }

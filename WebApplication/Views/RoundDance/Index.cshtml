@@ -52,7 +52,7 @@
             @foreach (var pair in Model.AnotherDirectionPeoples)
             {
                 <tr>
-                    <th>@pair.Key.GetEnumDescription()</th>
+                    <th>@pair.Key</th>
                     <th>Вес</th>
                     <th>Вес, куда ротироваться</th>
 
@@ -80,14 +80,21 @@
                     foreach (var people in groupPeople)
                     {
                         <tr>
-                            <td>@people.People.Name</td>
-                            <td>@people.CurrentWeight.Weight</td>
-                            <td></td>
+                            @using (Html.BeginForm("AddRoundDance", "RoundDance", FormMethod.Post))
+                            {
+                                <td>@people.People.Name @Html.Hidden("name", @people.People.Name)</td>
+                                <td>@people.CurrentWeight.Weight</td>
+                                <td></td>
 
-                            <td>@people.DirectionWeights[Direction.SpeedyFeatures].RotationWeight</td>
-                            <td>@people.DirectionWeights[Direction.Infrastructure].RotationWeight</td>
-                            <td>@people.DirectionWeights[Direction.Duty].RotationWeight</td>
-                            <td>@people.GetFeatureTeamRotationWeight()</td>
+                                <td>@people.DirectionWeights[Direction.SpeedyFeatures.GetEnumDescription()].RotationWeight</td>
+                                <td>@people.DirectionWeights[Direction.Infrastructure.GetEnumDescription()].RotationWeight</td>
+                                <td>@people.DirectionWeights[Direction.Duty.GetEnumDescription()].RotationWeight</td>
+                                <td>@people.FeatureTeamRotationWeight</td>
+                                <td>@Html.DropDownList("direction", Model.AllActualDirections.Select(x => new SelectListItem { Value = x, Selected = true, Text = x }))</td>
+                                <td>@Html.TextBox("beginDate", DateTime.Now.ToString("dd.MM.yyyy"), new { title = "Начало хоровода", @class = "news_actualize_text_area" })</td>
+                                <td>@Html.TextBox("pairName", "", new { title = "Фамилия, с кем в паре", @class = "news_actualize_text_area" })</td>
+                                <td><input type="submit" value="Хороводить!" class="news__button news_actualize_button"/></td>
+                            }
                         </tr>
                     }
                     if (groupPeople.Length > 1)
@@ -126,8 +133,8 @@
                 {
                     <tr>
                         <td>@suggest.Name</td>
-                        <td>@suggest.OldDirection.IfNotNull(x => x.GetEnumDescription())</td>
-                        <td>@(suggest.NewDirection.GetEnumDescription())</td>
+                        <td>@suggest.OldDirection</td>
+                        <td>@(suggest.NewDirection)</td>
                         <td>@suggest.SuggestDate.IfNotNull(x => x.Value.ToString("dd.MM.yyyy"))</td>
                     </tr>
                 }
@@ -150,12 +157,16 @@
                 .OrderBy(x => x.TransferDate)
                 .ThenBy(x => x.NewDirection))
             {
-                <tr>
-                    <td>@suggest.Name</td>
-                    <td>@suggest.OldDirection.GetEnumDescription()</td>
-                    <td>@(suggest.NewDirection.GetEnumDescription())</td>
-                    <td>@(!suggest.TransferEndDate.HasValue ? suggest.TransferDate.ToString("dd.MM.yyyy") : string.Format("{0:dd.MM.yyyy} - {1:dd.MM.yyyy}", suggest.TransferDate, suggest.TransferEndDate.Value))</td>
-                </tr>
+                using (Html.BeginForm("RemoveFromNextRoundDance", "RoundDance", FormMethod.Post))
+                {
+                    <tr>
+                        <td>@suggest.Name @Html.Hidden("name", suggest.Name)</td>
+                        <td>@suggest.OldDirection</td>
+                        <td>@suggest.NewDirection @Html.Hidden("direction", suggest.NewDirection)</td>
+                        <td>@suggest.TransferDates @Html.Hidden("beginDate", suggest.TransferDate.ToString("dd.MM.yyyy"))</td>
+                        <td><input type="submit" value="Отменить!" class="news__button news_actualize_button" /></td>
+                    </tr>
+                }
             }
         </table>
 </div>
