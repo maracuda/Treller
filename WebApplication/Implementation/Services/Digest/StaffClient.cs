@@ -11,13 +11,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
     public class StaffClient : ISocialNetworkClient
     {
         private readonly IHttpClient httpClient;
-        private readonly IAdService adService;
+        private readonly IStaffAdCredentialService staffAdCredential;
         private static StaffAuthoricationInfo _authoricationInfo;
 
-        public StaffClient(IHttpClient httpClient, IAdService adService)
+        public StaffClient(IHttpClient httpClient, IStaffAdCredentialService staffAdCredential)
         {
             this.httpClient = httpClient;
-            this.adService = adService;
+            this.staffAdCredential = staffAdCredential;
         }
 
         public void Feed(string message)
@@ -55,7 +55,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
         {
             if (_authoricationInfo == null || !_authoricationInfo.IsActive)
             {
-                var credentials = adService.GetDeliveryCredentials();
+                var credentials = staffAdCredential.GetStaffCredentials();
                 var form = new FormUrlEncodedContent(new Dictionary<string,string>
                 {
                     {"grant_type", "password"},

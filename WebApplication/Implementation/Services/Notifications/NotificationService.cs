@@ -2,21 +2,25 @@
 using System.Net;
 using System.Net.Mail;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Notifications
 {
     public class NotificationService : INotificationService
     {
         private readonly IAdService adService;
+        private readonly ICachedFileStorage cachedFileStorage;
         private const string AnalitycsEmail = "ask.billing@skbkontur.ru";
-        private readonly string notificationReciever;
+        private const string DefaultNoficationRecipientEmail = "maylo@skbkontur.ru";
+        private const string NotificationFileName = "NotificationEmail";
+        private string notificationRecipientEmail;
         private readonly string senderEmail;
 
-        public NotificationService(IAdService adService, INotificationCredentials notificationCredentials)
+        public NotificationService(IAdService adService, ICachedFileStorage cachedFileStorage)
         {
             this.adService = adService;
+            this.cachedFileStorage = cachedFileStorage;
             senderEmail = string.Format("{0}@skbkontur.ru", adService.GetDeliveryCredentials().Login);
-            notificationReciever = notificationCredentials.GetNotificationEmailAddress();
         }
 
         public void SendErrorReport(string errorHeader, Exception exception)
@@ -25,7 +29,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Notifications
 
             using (var smtpClient = CreateClientWithCredentials())
             {
-                smtpClient.Send(new MailMessage(senderEmail, notificationReciever, errorHeader, body));
+                smtpClient.Send(new MailMessage(senderEmail, GetNotificationRecipient(), errorHeader, body));
             }
         }
 
@@ -35,6 +39,18 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Notifications
             {
                 smtpClient.Send(new MailMessage(senderEmail, recipientEmail, messageHeader, messageBody) { IsBodyHtml = inHtmlStyle, ReplyToList = { AnalitycsEmail } });
             }
+        }
+
+        public void ChangeNotificationRecipient(string newEmail)
+        {
+            notificationRecipientEmail = newEmail;
+            cachedFileStorage.Write(NotificationFileName, newEmail);
+        }
+
+        public string GetNotificationRecipient()
+        {
+            notificationRecipientEmail = notificationRecipientEmail ?? cachedFileStorage.Find<string>(NotificationFileName) ?? DefaultNoficationRecipientEmail;
+            return notificationRecipientEmail;
         }
 
         private SmtpClient CreateClientWithCredentials()

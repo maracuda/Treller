@@ -12,7 +12,6 @@ using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
-using WebGrease.Css.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 {
@@ -30,15 +29,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
         private readonly INotificationService notificationService;
-        private readonly INotificationCredentials notificationCredentials;
 
         public NewsService(ICachedFileStorage cachedFileStorage,
                            ISettingService settingService,
                            ITaskCacher taskCacher,
                            ITaskManagerClient taskManagerClient,
                            ICardStateInfoBuilder cardStateInfoBuilder,
-                           INotificationService notificationService,
-                           INotificationCredentials notificationCredentials)
+                           INotificationService notificationService)
         {
             this.cachedFileStorage = cachedFileStorage;
             this.settingService = settingService;
@@ -46,7 +43,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
             this.notificationService = notificationService;
-            this.notificationCredentials = notificationCredentials;
         }
         #endregion
 
@@ -95,7 +91,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         public NewsViewModel GetNews()
         {
             var cardsForNews = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
-            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default(notificationCredentials);
+            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? CreateDefaultEmail();
 
             return new NewsViewModel
             {
@@ -106,6 +102,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                 NotActualCards = cardsForNews.Where(x => x.IsPublished() || x.IsDeleted).ToArray(),
                 CardsWihoutNews = cardsForNews.Where(x => !x.IsPublished() && !x.IsDeleted && !x.IsNewsExists()).ToArray(),
                 ActualCards = cardsForNews.Where(x => !x.IsPublished() && !x.IsDeleted && x.IsNewsExists()).ToArray()
+            };
+        }
+
+        private NewsEmail CreateDefaultEmail()
+        {
+            return new NewsEmail
+            {
+                TechnicalEmail = notificationService.GetNotificationRecipient(),
+                ReleaseEmail = notificationService.GetNotificationRecipient()
             };
         }
 
@@ -202,7 +207,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         private void SendNews(bool technical)
         {
-            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default(notificationCredentials);
+            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? CreateDefaultEmail();
             var cards = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
             var inHtmlStyle = true;
             var newsModel = BuildNewsModel(cards, technical, inHtmlStyle);
@@ -214,13 +219,17 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             var body = string.Format("{1}{0}{0}Вы можете ответить на это письмо, если у вас возникли вопросы или комментарии касающиеся релизов{0}{0}--{0}С уважением, команда Контур.Биллинг", inHtmlStyle ? "<br/>" : Environment.NewLine, newsModel.NewsText);
             notificationService.SendMessage(emails.GetEmail(technical), newsModel.NewsHeader, body, inHtmlStyle);
 
-            newsModel.Cards.ForEach(x => x.Publish(technical));
+            foreach (var card in newsModel.Cards)
+            {
+                card.Publish(technical);
+            }
+            
             cachedFileStorage.Write(CardNewsName, cards);
         }
 
         public void UpdateEmail(string technicalEmail, string releaseEmail)
         {
-            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? NewsEmail.Default(notificationCredentials);
+            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? CreateDefaultEmail();
 
             emails.ReleaseEmail = releaseEmail;
             emails.TechnicalEmail = technicalEmail;

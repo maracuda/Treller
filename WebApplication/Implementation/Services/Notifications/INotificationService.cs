@@ -6,5 +6,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Notifications
     {
         void SendErrorReport(string errorHeader, Exception ex);
         void SendMessage(string recipientEmail, string messageHeader, string messageBody, bool inHtmlStyle);
+        void ChangeNotificationRecipient(string newEmail);
+        string GetNotificationRecipient();
     }
 }

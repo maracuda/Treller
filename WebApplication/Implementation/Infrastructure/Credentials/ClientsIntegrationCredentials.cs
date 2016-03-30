@@ -12,6 +12,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
         public YouTrackCredential YouTrackCredentials { get; set; }
         public WikiCredential WikiCredentials { get; set; }
         public AdCredentials AdCredentials { get; set; }
+        public AdCredentials StaffAdCredentials { get; set; }
         public string NotificationEmailAddress { get; set; }
     }
 }

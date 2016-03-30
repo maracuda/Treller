@@ -7,7 +7,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObj
     {
         public string Direction { get; set; }
         public DateTime BeginDate { get; set; }
-        public DateTime? EndDate { get; private set; }
+        public DateTime? EndDate { get; set; }
         public string PairName { get; set; }
 
         public Direction? DefaultDirection
