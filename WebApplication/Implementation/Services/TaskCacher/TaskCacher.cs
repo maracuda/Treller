@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web;
-using Newtonsoft.Json;
+using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Notifications;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher
 {
     public class TaskCacher : ITaskCacher
     {
         private readonly ITaskManagerClient taskManagerClient;
-        private readonly INotificationService notificationService;
+        private readonly IFileSystemHandler fileSystemHandler;
         private readonly ConcurrentDictionary<CacheKey, CacheResult> cache;
         private readonly HashSet<ActionType> checklistActions = new HashSet<ActionType>(new []{ ActionType.AddChecklistToCard, ActionType.ConvertToCardFromCheckItem, ActionType.RemoveChecklistFromCard, ActionType.UpdateCheckItemStateOnCard, ActionType.UpdateChecklist });
         private readonly Dictionary<TaskCacherStoredTypes, Type> storKeys = new Dictionary<TaskCacherStoredTypes, Type>
@@ -27,7 +23,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher
                                                                                     {TaskCacherStoredTypes.BoardUsers, typeof(StoredObject<User[]>)},
                                                                                     {TaskCacherStoredTypes.Boards, typeof(StoredObject<Board[]>)}
                                                                                 };
-        private static readonly string StorFilePattern = Path.Combine(HttpRuntime.AppDomainAppPath, "TrellerCache{0}.json");
         
         private readonly ConcurrentDictionary<Type, ConcurrentDictionary<string, dynamic>> buildedEntities = new ConcurrentDictionary<Type, ConcurrentDictionary<string, dynamic>>(new []
                                                                                                                { 
@@ -39,30 +34,26 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher
                                                                                                                    new KeyValuePair<Type, ConcurrentDictionary<string, dynamic>>(typeof(Board[]), new ConcurrentDictionary<string, dynamic>(3, 10)),
                                                                                                                });
 
-        public TaskCacher(ITaskManagerClient taskManagerClient, INotificationService notificationService)
+        public TaskCacher(ITaskManagerClient taskManagerClient, IFileSystemHandler fileSystemHandler)
         {
             this.taskManagerClient = taskManagerClient;
-            this.notificationService = notificationService;
+            this.fileSystemHandler = fileSystemHandler;
             cache = new ConcurrentDictionary<CacheKey, CacheResult>(3, 6);
 
             foreach (var storKey in storKeys)
             {
-                var fileName = string.Format(StorFilePattern, storKey.Key);
-                if (File.Exists(fileName))
+                var fileName = GetFileName(storKey.Key);
+
+                var result = fileSystemHandler.FindSafeInJsonUtf8File(fileName, storKey.Value) as IStoredObject;
+                if (result == null)
                 {
-                    var result = (IStoredObject)JsonConvert.DeserializeObject(File.ReadAllText(fileName, Encoding.UTF8), storKey.Value);
-                    if (result == null)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    var key = new CacheKey(storKey.Key, result.BoardIds);
-                    cache.TryAdd(key, new CacheResult(storKey.Key, null, result.Result));
-
-                    foreach (var entity in result.Result)
-                    {
-                        buildedEntities[storKey.Value.GenericTypeArguments[0]][entity.Id] = entity;
-                    }
+                cache.TryAdd(new CacheKey(storKey.Key, result.BoardIds), new CacheResult(storKey.Key, null, result.Result));
+                foreach (var entity in result.Result)
+                {
+                    buildedEntities[storKey.Value.GenericTypeArguments[0]][entity.Id] = entity;
                 }
             }
         }
@@ -137,14 +128,21 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher
         private T Load<T>(Func<string[], T> loadAction, CacheKey cacheKey)
         {
             var result = (dynamic)loadAction(cacheKey.GetBoardIds());
-            var contents = JsonConvert.SerializeObject(new StoredObject<T> {BoardIds = cacheKey.GetBoardIds(), LastResult = result});
-            File.WriteAllText(string.Format(StorFilePattern, cacheKey.StoredType), contents);
+            var storedObject = new StoredObject<T> {BoardIds = cacheKey.GetBoardIds(), LastResult = result};
+            var fileName = GetFileName(cacheKey.StoredType);
+
+            fileSystemHandler.WriteInJsonUtf8File(fileName, storedObject);
 
             foreach (var entity in result)
             {
                 buildedEntities[typeof (T)][entity.Id] = entity;
             }
             return result;
+        }
+
+        private static string GetFileName(TaskCacherStoredTypes storedType)
+        {
+            return string.Format("TrellerCache{0}.json", storedType);
         }
 
         private struct CacheKey

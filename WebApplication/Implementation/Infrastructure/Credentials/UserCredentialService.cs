@@ -1,7 +1,5 @@
 using System;
-using System.IO;
-using System.Web;
-using Newtonsoft.Json;
+using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
@@ -12,12 +10,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
 {
     public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService, IAdService, IStaffAdCredentialService
     {
-        private static readonly string LogInFilePath = Path.Combine(HttpRuntime.AppDomainAppPath, "LogIn.json");
         private readonly Lazy<ClientsIntegrationCredentials> credentials;
 
-        public UserCredentialService()
+        public UserCredentialService(IFileSystemHandler fileSystemHandler)
         {
-            credentials = new Lazy<ClientsIntegrationCredentials>(() => JsonConvert.DeserializeObject<ClientsIntegrationCredentials>(File.ReadAllText(LogInFilePath)));
+            credentials = new Lazy<ClientsIntegrationCredentials>(() => fileSystemHandler.FindSafeInJsonUtf8File<ClientsIntegrationCredentials>("LogIn.json"));
         }
 
         public TrelloCredential GetCredentials()

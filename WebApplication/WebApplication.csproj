@@ -223,6 +223,7 @@
     <Compile Include="Implementation\Infrastructure\Extensions\EnumerableExtensions.cs" />
     <Compile Include="Implementation\Infrastructure\Extensions\ReactConfigurationExtensions.cs" />
     <Compile Include="Implementation\Infrastructure\Extensions\StringExtensions.cs" />
+    <Compile Include="Implementation\Infrastructure\FileSystemHandler.cs" />
     <Compile Include="Implementation\Infrastructure\Storages\CachedFileStorage.cs" />
     <Compile Include="Implementation\Infrastructure\Storages\ICachedFileStorage.cs" />
     <Compile Include="Implementation\PhraseGeneration\IPhraseGenerator.cs" />
