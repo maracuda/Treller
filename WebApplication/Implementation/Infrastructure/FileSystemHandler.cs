@@ -53,9 +53,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
             var stopwatch = Stopwatch.StartNew();
 
             Exception exception;
-            while (!RecurcyWrite(fullName, serializedEntity, out exception))
+            var attempt = 0;
+            while (!RecurcyWrite(fullName, serializedEntity, ref attempt, out exception))
             {
-                if (stopwatch.Elapsed.TotalSeconds > 5)
+                if (stopwatch.Elapsed.TotalSeconds > 5 && attempt > 5)
                 {
                     stopwatch.Stop();
                     throw new Exception(string.Format("Can't write file {0} for 5 seconds", fullName), exception);
@@ -63,7 +64,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
             }
         }
 
-        private static bool RecurcyWrite(string fullName, string serializedEntity, out Exception exception)
+        private static bool RecurcyWrite(string fullName, string serializedEntity, ref int attempt, out Exception exception)
         {
             try
             {
@@ -75,6 +76,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
             {
                 exception = ex;
                 return false;
+            }
+            finally
+            {
+                attempt++;
             }
         }
 
