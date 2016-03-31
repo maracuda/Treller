@@ -52,25 +52,28 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
             var serializedEntity = JsonConvert.SerializeObject(entity);
             var stopwatch = Stopwatch.StartNew();
 
-            while (!RecurcyWrite(fullName, serializedEntity))
+            Exception exception;
+            while (!RecurcyWrite(fullName, serializedEntity, out exception))
             {
                 if (stopwatch.Elapsed.TotalSeconds > 5)
                 {
                     stopwatch.Stop();
-                    throw new Exception(string.Format("Can't write file {0} for 5 seconds", fullName));
+                    throw new Exception(string.Format("Can't write file {0} for 5 seconds", fullName), exception);
                 }
             }
         }
 
-        private static bool RecurcyWrite(string fullName, string serializedEntity)
+        private static bool RecurcyWrite(string fullName, string serializedEntity, out Exception exception)
         {
             try
             {
                 File.WriteAllText(fullName, serializedEntity, Encoding.UTF8);
+                exception = null;
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                exception = ex;
                 return false;
             }
         }
