@@ -1,25 +1,25 @@
-using System.ComponentModel;
+п»їusing System.ComponentModel;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects
 {
     public enum VirtualMachineProfile
     {
-        [Description("Тестовые стенды")]
+        [Description("РўРµСЃС‚РѕРІС‹Рµ СЃС‚РµРЅРґС‹")]
         Stand,
 
-        [Description("Интеграционные и юнит тесты")]
+        [Description("РРЅС‚РµРіСЂР°С†РёРѕРЅРЅС‹Рµ Рё СЋРЅРёС‚ С‚РµСЃС‚С‹")]
         Ci,
 
-        [Description("Функциональные тесты")]
+        [Description("Р¤СѓРЅРєС†РёРѕРЅР°Р»СЊРЅС‹Рµ С‚РµСЃС‚С‹")]
         FunctionalCi,
 
-        [Description("3 узла")]
+        [Description("3 СѓР·Р»Р°")]
         ThreeNode,
 
-        [Description("Билд сервер 3 узлов")]
+        [Description("Р‘РёР»Рґ СЃРµСЂРІРµСЂ 3 СѓР·Р»РѕРІ")]
         BuildServer,
 
-        [Description("Cassanrda + Elastic 3 узлов")]
+        [Description("Cassanrda + Elastic 3 СѓР·Р»РѕРІ")]
         ThreeNodeJava,
     }
 }

@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Timers;
 using SKBKontur.BlocksMapping.Blocks;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
@@ -68,7 +68,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                 }
                 catch (Exception ex)
                 {
-                    notificationService.SendErrorReport("Актуализатор кэша не смог отработать!", ex);
+                    notificationService.SendErrorReport("РђРєС‚СѓР°Р»РёР·Р°С‚РѕСЂ РєСЌС€Р° РЅРµ СЃРјРѕРі РѕС‚СЂР°Р±РѕС‚Р°С‚СЊ!", ex);
                     return;
                 }
 
@@ -88,7 +88,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                 }
                 catch (Exception ex)
                 {
-                    notificationService.SendErrorReport("Проблема в обновлении данных для новостей", ex);
+                    notificationService.SendErrorReport("РџСЂРѕР±Р»РµРјР° РІ РѕР±РЅРѕРІР»РµРЅРёРё РґР°РЅРЅС‹С… РґР»СЏ РЅРѕРІРѕСЃС‚РµР№", ex);
                     return;
                 }
                 
@@ -105,7 +105,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                     {
                         if ((DateTime.Now - lastNewsError).TotalDays > 1)
                         {
-                            notificationService.SendErrorReport("Не смог отправить новости!", ex);
+                            notificationService.SendErrorReport("РќРµ СЃРјРѕРі РѕС‚РїСЂР°РІРёС‚СЊ РЅРѕРІРѕСЃС‚Рё!", ex);
                         }
                         lastNewsError = DateTime.Now;
                     }
@@ -120,7 +120,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                 {
                     if ((DateTime.Now - lastError).TotalDays > 1)
                     {
-                        notificationService.SendErrorReport("Не смог отправить в дайджест!", ex);
+                        notificationService.SendErrorReport("РќРµ СЃРјРѕРі РѕС‚РїСЂР°РІРёС‚СЊ РІ РґР°Р№РґР¶РµСЃС‚!", ex);
                     }
                     lastError = DateTime.Now;
                 }

@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,7 +55,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             var cardActions = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetActionsForBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
 
             var actualCards = cards
-                .Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase) && x.LastActivity.Date > DateTime.Now.Date.AddDays(-30))
+                .Where(x => !x.Name.Contains("РђРІС‚РѕС‚РµСЃС‚С‹", StringComparison.OrdinalIgnoreCase) && x.LastActivity.Date > DateTime.Now.Date.AddDays(-30))
                 .Select(card =>
                 {
                     var cardStateInfo = cardStateInfoBuilder.Build(cardActions[card.Id].ToArray(), boardSettings, boardLists.ToDictionary(x => x.Key, x => x.ToArray()));
@@ -136,13 +136,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
                 if (card.CardReleaseDate != releaseDate)
                 {
-                    news.AppendFormat("Вечером {1:D} {0}:", card.CardReleaseDate >= DateTime.Today ? "будем релизить" : "состоялся релиз", card.CardReleaseDate);
+                    news.AppendFormat("Р’РµС‡РµСЂРѕРј {1:D} {0}:", card.CardReleaseDate >= DateTime.Today ? "Р±СѓРґРµРј СЂРµР»РёР·РёС‚СЊ" : "СЃРѕСЃС‚РѕСЏР»СЃСЏ СЂРµР»РёР·", card.CardReleaseDate);
                     news.Append(newLine);
                     news.Append(newLine);
                 }
                 releaseDate = card.CardReleaseDate;
 
-                news.Append(inHtmlStyle ? "<b>" : "Задача: ");
+                news.Append(inHtmlStyle ? "<b>" : "Р—Р°РґР°С‡Р°: ");
                 news.Append(card.CardName);
                 news.Append(inHtmlStyle ? "</b>" : "");
                 news.Append(newLine);
@@ -160,7 +160,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             return new NewsModel
             {
                 Cards = cardsForSend.ToArray(),
-                NewsHeader = isTechnicalNews ? "Технические релизы Контур.Биллинг" : "Релизы Контур.Биллинг",
+                NewsHeader = isTechnicalNews ? "РўРµС…РЅРёС‡РµСЃРєРёРµ СЂРµР»РёР·С‹ РљРѕРЅС‚СѓСЂ.Р‘РёР»Р»РёРЅРі" : "Р РµР»РёР·С‹ РљРѕРЅС‚СѓСЂ.Р‘РёР»Р»РёРЅРі",
                 NewsText = news.ToString()
             };
         }
@@ -216,7 +216,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                 return;
             }
 
-            var body = string.Format("{1}{0}{0}Вы можете ответить на это письмо, если у вас возникли вопросы или комментарии касающиеся релизов{0}{0}--{0}С уважением, команда Контур.Биллинг", inHtmlStyle ? "<br/>" : Environment.NewLine, newsModel.NewsText);
+            var body = string.Format("{1}{0}{0}Р’С‹ РјРѕР¶РµС‚Рµ РѕС‚РІРµС‚РёС‚СЊ РЅР° СЌС‚Рѕ РїРёСЃСЊРјРѕ, РµСЃР»Рё Сѓ РІР°СЃ РІРѕР·РЅРёРєР»Рё РІРѕРїСЂРѕСЃС‹ РёР»Рё РєРѕРјРјРµРЅС‚Р°СЂРёРё РєР°СЃР°СЋС‰РёРµСЃСЏ СЂРµР»РёР·РѕРІ{0}{0}--{0}РЎ СѓРІР°Р¶РµРЅРёРµРј, РєРѕРјР°РЅРґР° РљРѕРЅС‚СѓСЂ.Р‘РёР»Р»РёРЅРі", inHtmlStyle ? "<br/>" : Environment.NewLine, newsModel.NewsText);
             notificationService.SendMessage(emails.GetEmail(technical), newsModel.NewsHeader, body, inHtmlStyle);
 
             foreach (var card in newsModel.Cards)

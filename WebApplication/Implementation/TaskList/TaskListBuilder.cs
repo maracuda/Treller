@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.Attributes;
@@ -128,7 +128,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
                                                    Dictionary<string, BugsInfoViewModel> bugs, CardListEnterModel cardListEnterModel)
         {
             var rcBranches = new HashSet<string>(branches.Select(x => x.Name));
-            return cards.Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase))
+            return cards.Where(x => !x.Name.Contains("РђРІС‚РѕС‚РµСЃС‚С‹", StringComparison.OrdinalIgnoreCase))
                         .Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches, bugs.SafeGet(card.Id)))
                         .Where(x => x.StageInfo.State != CardState.BeforeDevelop && x.StageInfo.State != CardState.Unknown && x.StageInfo.State != CardState.Released)
                         .Where(x => cardListEnterModel.ShowMode == ShowMode.All || 
@@ -158,42 +158,42 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
         [BlockModelParameter("battleBugsCount")]
         private BugsCountLinkInfoViewModel BuildBattleBugsInfo()
         {
-            return BuildCountLink("#Billy #Battle #Unresolved", "Все баги с боевой площадки");
+            return BuildCountLink("#Billy #Battle #Unresolved", "Р’СЃРµ Р±Р°РіРё СЃ Р±РѕРµРІРѕР№ РїР»РѕС‰Р°РґРєРё");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("battleBugsUnassignedCount")]
         private BugsCountLinkInfoViewModel BuildBattleBugsUnassignedInfo()
         {
-            return BuildCountLink("#Billy #Battle #Unassigned #Unresolved", "Неназначенные баги с боевой");
+            return BuildCountLink("#Billy #Battle #Unassigned #Unresolved", "РќРµРЅР°Р·РЅР°С‡РµРЅРЅС‹Рµ Р±Р°РіРё СЃ Р±РѕРµРІРѕР№");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("currentBillyBugsCount")]
         private BugsCountLinkInfoViewModel GetBillyCurrentBugsCount()
         {
-            return BuildCountLink("#Billy #Unresolved #Unassigned", "Неназначенные баги");
+            return BuildCountLink("#Billy #Unresolved #Unassigned", "РќРµРЅР°Р·РЅР°С‡РµРЅРЅС‹Рµ Р±Р°РіРё");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("overallBillyBugsCount")]
         private BugsCountLinkInfoViewModel GetBillyOverallBugsCount()
         {
-            return BuildCountLink("#Billy #Unresolved", "Все баги билли");
+            return BuildCountLink("#Billy #Unresolved", "Р’СЃРµ Р±Р°РіРё Р±РёР»Р»Рё");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("currentCSBugsCount")]
         private BugsCountLinkInfoViewModel GetCSCurrentBugsCount()
         {
-            return BuildCountLink("#CS -Resolved", "Все баги КС");
+            return BuildCountLink("#CS -Resolved", "Р’СЃРµ Р±Р°РіРё РљРЎ");
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("billyNotVerified")]
         private BugsCountLinkInfoViewModel GetBillyNotVerifed()
         {
-            return BuildCountLink("#Billy #Resolved -Verified -Obsolete Type: Bug, Task, Feature", "Закрытые, но не подтвержденные");
+            return BuildCountLink("#Billy #Resolved -Verified -Obsolete Type: Bug, Task, Feature", "Р—Р°РєСЂС‹С‚С‹Рµ, РЅРѕ РЅРµ РїРѕРґС‚РІРµСЂР¶РґРµРЅРЅС‹Рµ");
         }
 
         private BugsCountLinkInfoViewModel BuildCountLink(string filterString, string description)

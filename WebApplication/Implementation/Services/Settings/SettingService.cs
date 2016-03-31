@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
@@ -21,7 +21,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             _settings = new Lazy<BoardSettings[]>(() => GetBoardSettings(cachedFileStorage, taskManagerClient), true);
         }
 
-        private static HashSet<string> exceptBoardNames = new HashSet<string>(new[] { "dev", "FeaturePool", "Manager Tasks", "Архив", "Оптимизация ТП", "Стратегия 2014", "Стратегия 2015", "Стратегия 2016", "Billing", "CRM", "dev_old", "Автотесты" });
+        private static HashSet<string> exceptBoardNames = new HashSet<string>(new[] { "dev", "FeaturePool", "Manager Tasks", "РђСЂС…РёРІ", "РћРїС‚РёРјРёР·Р°С†РёСЏ РўРџ", "РЎС‚СЂР°С‚РµРіРёСЏ 2014", "РЎС‚СЂР°С‚РµРіРёСЏ 2015", "РЎС‚СЂР°С‚РµРіРёСЏ 2016", "Billing", "CRM", "dev_old", "РђРІС‚РѕС‚РµСЃС‚С‹" });
         private const string OrganizationName = "konturbilling";
 
         private static readonly BoardSettings[] DefaultSettings = new[]
@@ -29,7 +29,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             new BoardSettings
                 {
                     Id = "552ab670e01e4af28afdc2c2",
-                    Name = "Шустрые задачи",
+                    Name = "РЁСѓСЃС‚СЂС‹Рµ Р·Р°РґР°С‡Рё",
                     DevelopListName = "Dev",
                     AnalyticListName = "Analytics & Design",
                     ReviewListName = "Review",
@@ -43,7 +43,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             new BoardSettings
                 {
                     Id = "552aae2b8ca279a4eb485af7",
-                    Name = "Услуги УЦ",
+                    Name = "РЈСЃР»СѓРіРё РЈР¦",
                     DevelopListName = "Dev",
                     AnalyticListName = "Analytics & Design",
                     ReviewListName = "Review",
@@ -54,7 +54,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             new BoardSettings
                 {
                     Id = "552ab5e211d6ae9b61dbaa77",
-                    Name = "Оптимизация ТП",
+                    Name = "РћРїС‚РёРјРёР·Р°С†РёСЏ РўРџ",
                     DevelopListName = "Dev",
                     AnalyticListName = "Analytics & Design",
                     ReviewListName = "Review",
@@ -66,7 +66,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             new BoardSettings
                 {
                     Id = "552ab2abc66faf3bec7915f4",
-                    Name = "Инфраструктура",
+                    Name = "РРЅС„СЂР°СЃС‚СЂСѓРєС‚СѓСЂР°",
                     DevelopListName = "Dev",
                     AnalyticListName = "",
                     ReviewListName = "Review",
@@ -79,7 +79,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             new BoardSettings
                 {
                     Id = "557e531fe71fe22dd72d1348",
-                    Name = "Партнерка",
+                    Name = "РџР°СЂС‚РЅРµСЂРєР°",
                     DevelopListName = "Dev",
                     AnalyticListName = "Analytics&Desing",
                     ReviewListName = "Review",
@@ -91,7 +91,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             new BoardSettings
                 {
                     Id = "55dc679888eb0faddaf201b2",
-                    Name = "Сценарий продления",
+                    Name = "РЎС†РµРЅР°СЂРёР№ РїСЂРѕРґР»РµРЅРёСЏ",
                     DevelopListName = "Dev",
                     AnalyticListName = "Analytics&Desing",
                     ReviewListName = "Review",
@@ -102,7 +102,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
             new BoardSettings
                 {
                     Id = "55d55d17e6ca1d101fe0061c",
-                    Name = "Вендоры",
+                    Name = "Р’РµРЅРґРѕСЂС‹",
                     DevelopListName = "Dev",
                     AnalyticListName = "",
                     ReviewListName = "Review",

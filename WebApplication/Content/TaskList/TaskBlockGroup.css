@@ -17,11 +17,6 @@
     display: none;
 }
 
-/* todo: если первая група нужна открытой */
-/*.task-block-group:first-child .task-block-group-body {
-    display: block;
-}*/
-
 .task-block-group-legend {
     display: inline-block;
     margin-left: 16px;

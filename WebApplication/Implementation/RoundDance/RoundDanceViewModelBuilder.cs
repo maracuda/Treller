@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
@@ -12,7 +12,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
     {
         private readonly IRoundDancePeopleStorage roundDancePeopleStorage;
         private readonly ISettingService settingService;
-        private readonly static HashSet<string> NotFeatureTeamDirections = new HashSet<string>(new[] { "Инфраструктура", "Дежурство", "Отпуск", "Болезнь", "Шустрые задачи" });
+        private readonly static HashSet<string> NotFeatureTeamDirections = new HashSet<string>(new[] { "РРЅС„СЂР°СЃС‚СЂСѓРєС‚СѓСЂР°", "Р”РµР¶СѓСЂСЃС‚РІРѕ", "РћС‚РїСѓСЃРє", "Р‘РѕР»РµР·РЅСЊ", "РЁСѓСЃС‚СЂС‹Рµ Р·Р°РґР°С‡Рё" });
 
         public RoundDanceViewModelBuilder(IRoundDancePeopleStorage roundDancePeopleStorage, ISettingService settingService)
         {

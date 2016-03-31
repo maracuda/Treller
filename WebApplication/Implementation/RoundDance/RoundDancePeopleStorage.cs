@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
@@ -21,7 +21,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
             startVariant = new[]
             {
 #region peoples left
-                //                new RoundDancePeople { Name = " ÛÌ ¿Ì‰ÂÈ", Email = "scalder@skbkontur.ru",
+                //                new RoundDancePeople { Name = "–ö—É–Ω –ê–Ω–¥—Ä–µ–π", Email = "scalder@skbkontur.ru",
 //                    WorkPeriods = new []
 //                    {
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 27), DefaultDirection = DefaultDirection.Infrastructure },
@@ -33,7 +33,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 17), DefaultDirection = DefaultDirection.SpeedyFeatures },
 //                    }},
 
-//                new RoundDancePeople { Name = "ŒÍÒ‡Ì‡ «‡ÔÓÓÊÂˆ", Email = "oksanchike@skbkontur.ru",
+//                new RoundDancePeople { Name = "–û–∫—Å–∞–Ω–∞ –ó–∞–ø–æ—Ä–æ–∂–µ—Ü", Email = "oksanchike@skbkontur.ru",
 //                    WorkPeriods = new []
 //                    {
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 24), DefaultDirection = DefaultDirection.ProlongationScenario, },
@@ -46,10 +46,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 12, 10), DefaultDirection = DefaultDirection.SpeedyFeatures},
 //                    }},
 
-//                new RoundDancePeople { Name = "ÀÂ¯‡ –ÓÏ‡ÌÓ‚ÒÍËÈ", Email = "logicman@skbkontur.ru",
+//                new RoundDancePeople { Name = "–õ–µ—à–∞ –†–æ–º–∞–Ω–æ–≤—Å–∫–∏–π", Email = "logicman@skbkontur.ru",
 //                    WorkPeriods = new []
 //                    {
-//                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = DefaultDirection.—aServices, },
+//                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = DefaultDirection.–°aServices, },
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 05, 18), DefaultDirection = DefaultDirection.ProductBilling,  },
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 06, 20), DefaultDirection = DefaultDirection.Infrastructure,  },
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 06), DefaultDirection = DefaultDirection.Support, },
@@ -69,10 +69,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 //                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 01), DefaultDirection = DefaultDirection.SpeedyFeatures, },
 //                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 15), DefaultDirection = DefaultDirection.Leave },
 //                    }},
-//                new RoundDancePeople { Name = "—ÂÂÊ‡ –ÓÊËÌ", Email = "s.rozhin@skbkontur.ru",
+//                new RoundDancePeople { Name = "–°–µ—Ä–µ–∂–∞ –†–æ–∂–∏–Ω", Email = "s.rozhin@skbkontur.ru",
 //                    WorkPeriods = new []
 //                    {
-//                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = DefaultDirection.—aServices,  },
+//                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = DefaultDirection.–°aServices,  },
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 13), DefaultDirection = DefaultDirection.Support, },
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 12), DefaultDirection = DefaultDirection.Leave, },
 //                        new DirectionPeriod { BeginDate = new DateTime(2015, 08, 31), DefaultDirection = DefaultDirection.Duty, },
@@ -86,7 +86,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                 // DefaultDirection = Support
                 // DefaultDirection = ProductBilling
 #endregion
-                new RoundDancePeople { Name = " ‡Úˇ «ÂÎÂÌËÌ‡", Email = "fea@skbkontur.ru",
+                new RoundDancePeople { Name = "–ö–∞—Ç—è –ó–µ–ª–µ–Ω–∏–Ω–∞", Email = "fea@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.ProductBilling },
@@ -99,11 +99,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2015, 12, 21), DefaultDirection = Direction.SpeedyFeatures },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 01, 19), DefaultDirection = Direction.Infrastructure },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 02, 08), DefaultDirection = Direction.Duty },
-                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 15), DefaultDirection = Direction.SpeedyFeatures, PairName = "ÃÛ‡¯Ó‚"},
+                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 15), DefaultDirection = Direction.SpeedyFeatures, PairName = "–ú—É—Ä–∞—à–æ–≤"},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 09), DefaultDirection = Direction.Infrastructure},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.ObConnection},
                     }},
-                new RoundDancePeople { Name = "œ‡‚ÂÎ ¿ÎÂÍÒ‡Ì‰Ó‚", Email = "paul@skbkontur.ru",
+                new RoundDancePeople { Name = "–ü–∞–≤–µ–ª –ê–ª–µ–∫—Å–∞–Ω–¥—Ä–æ–≤", Email = "paul@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.ProductBilling},
@@ -122,15 +122,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2015, 12, 07), DefaultDirection = Direction.Duty, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 12, 14), DefaultDirection = Direction.SpeedyFeatures, },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 01, 25), DefaultDirection = Direction.Duty, },
-                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 01), DefaultDirection = Direction.SpeedyFeatures, PairName = "¡ÛÎ‡ÍÓ‚" },
-                        new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.Infrastructure, PairName = "ƒËÏÓ‚" },
+                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 01), DefaultDirection = Direction.SpeedyFeatures, PairName = "–ë—É—Ä–ª–∞–∫–æ–≤" },
+                        new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.Infrastructure, PairName = "–î–∏–º–æ–≤" },
                     }},
-                new RoundDancePeople { Name = "ÀÂ‚ ƒËÏÓ‚", Email = "dimov@skbkontur.ru",
+                new RoundDancePeople { Name = "–õ–µ–≤ –î–∏–º–æ–≤", Email = "dimov@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.Infrastructure },
                     }},
-                new RoundDancePeople { Name = "ÕËÍËÚ‡ ¡ÛÎ‡ÍÓ‚", Email = "burlakov.nick@skbkontur.ru",
+                new RoundDancePeople { Name = "–ù–∏–∫–∏—Ç–∞ –ë—É—Ä–ª–∞–∫–æ–≤", Email = "burlakov.nick@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2015, 04, 04), DefaultDirection = Direction.ProductBilling,   },
@@ -158,7 +158,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2016, 02, 15), DefaultDirection = Direction.SpeedyFeatures, },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.Duty, },
                     }},
-                new RoundDancePeople { Name = "—ÚÂÔ‡Ì ÃÛ‡¯Ó‚", Email = "murashov_sv@skbkontur.ru",
+                new RoundDancePeople { Name = "–°—Ç–µ–ø–∞–Ω –ú—É—Ä–∞—à–æ–≤", Email = "murashov_sv@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2015, 10, 20), DefaultDirection = Direction.Infrastructure,},
@@ -170,7 +170,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2016, 02, 15), DefaultDirection = Direction.SpeedyFeatures },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.ModifierBuy},
                     }},
-                new RoundDancePeople { Name = "»„Ó¸ Ã‡Ï‡È", Email = "i.mamay@skbkontur.ru",
+                new RoundDancePeople { Name = "–ò–≥–æ—Ä—å –ú–∞–º–∞–π", Email = "i.mamay@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2015, 08, 10), DefaultDirection = Direction.Infrastructure, },
@@ -186,10 +186,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2015, 12, 21), DefaultDirection = Direction.Duty, },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 01, 11), DefaultDirection = Direction.SpeedyFeatures, },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 01, 12), DefaultDirection = Direction.Infrastructure, },
-                        new DirectionPeriod { BeginDate = new DateTime(2016, 01, 14), DefaultDirection = Direction.SpeedyFeatures, PairName = "»‚‡ÌÓ‚" },
-                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 10), DefaultDirection = Direction.BillDetalization, PairName = "»‚‡ÌÓ‚" },
+                        new DirectionPeriod { BeginDate = new DateTime(2016, 01, 14), DefaultDirection = Direction.SpeedyFeatures, PairName = "–ò–≤–∞–Ω–æ–≤" },
+                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 10), DefaultDirection = Direction.BillDetalization, PairName = "–ò–≤–∞–Ω–æ–≤" },
                     }},
-                new RoundDancePeople { Name = "ÀÂ¯‡ »‚‡ÌÓ‚", Email = "a.ivanov@skbkontur.ru",
+                new RoundDancePeople { Name = "–õ–µ—à–∞ –ò–≤–∞–Ω–æ–≤", Email = "a.ivanov@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.ProductBilling, },
@@ -208,13 +208,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2016, 01, 18), DefaultDirection = Direction.SpeedyFeatures},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 02, 10), DefaultDirection = Direction.BillDetalization },
                     }},
-                new RoundDancePeople { Name = "∆ÂÌˇ  Î˛ÍËÌ", Email = "johneg@skbkontur.ru",
+                new RoundDancePeople { Name = "–ñ–µ–Ω—è –ö–ª—é–∫–∏–Ω", Email = "johneg@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.Support, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 06, 02), DefaultDirection = Direction.Crm,  },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 06, 10), DefaultDirection = Direction.Support,  },
-                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 13), DefaultDirection = Direction.—aServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 13), DefaultDirection = Direction.–°aServices, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 08, 17), DefaultDirection = Direction.Leave, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 09, 07), DefaultDirection = Direction.Duty, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 09, 14), DefaultDirection = Direction.SpeedyFeatures},
@@ -224,18 +224,18 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2015, 12, 28), DefaultDirection = Direction.Leave},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 01, 12), DefaultDirection = Direction.Duty},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 01, 18), DefaultDirection = Direction.SpeedyFeatures},
-                        new DirectionPeriod { BeginDate = new DateTime(2016, 01, 25), DefaultDirection = Direction.Infrastructure, PairName = "ÿ‡ÎËÌ" },
+                        new DirectionPeriod { BeginDate = new DateTime(2016, 01, 25), DefaultDirection = Direction.Infrastructure, PairName = "–®–∞–ª–∏–Ω" },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 02, 15), DefaultDirection = Direction.Duty },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 02, 24), DefaultDirection = Direction.Infrastructure },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 09), DefaultDirection = Direction.SpeedyFeatures},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.Duty},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 23), DefaultDirection = Direction.SpeedyFeatures},
                     }},
-                new RoundDancePeople { Name = "¿ÌÚÓÌ ≈ÊÓ‚", Email = "anton.ezhov@skbkontur.ru",
+                new RoundDancePeople { Name = "–ê–Ω—Ç–æ–Ω –ï–∂–æ–≤", Email = "anton.ezhov@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.Support,  },
-                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 06), DefaultDirection = Direction.—aServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 06), DefaultDirection = Direction.–°aServices, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 08, 16), DefaultDirection = Direction.CaTariffsAndDiscounts, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 09, 01), DefaultDirection = Direction.Leave, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 09, 18), DefaultDirection = Direction.SpeedyFeatures, },
@@ -244,13 +244,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2015, 11, 23), DefaultDirection = Direction.SpeedyFeatures},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 01, 18), DefaultDirection = Direction.Duty},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 01, 25), DefaultDirection = Direction.SpeedyFeatures, },
-                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 08), DefaultDirection = Direction.Infrastructure, PairName = "◊Ë˜ÂÒÍËÈ" },
+                        new DirectionPeriod { BeginDate = new DateTime(2016, 02, 08), DefaultDirection = Direction.Infrastructure, PairName = "–ß–∏—á–µ—Ä—Å–∫–∏–π" },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 02, 24), DefaultDirection = Direction.Duty },
-                        new DirectionPeriod { BeginDate = new DateTime(2016, 03, 09), DefaultDirection = Direction.SpeedyFeatures, PairName = " Î˛ÍËÌ"},
+                        new DirectionPeriod { BeginDate = new DateTime(2016, 03, 09), DefaultDirection = Direction.SpeedyFeatures, PairName = "–ö–ª—é–∫–∏–Ω"},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.Leave},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 28), DefaultDirection = Direction.SpeedyFeatures},
                     }},
-                new RoundDancePeople { Name = "¿Ì‰ÂÈ ÿ‡ÎËÌ", Email = "shalin@skbkontur.ru",
+                new RoundDancePeople { Name = "–ê–Ω–¥—Ä–µ–π –®–∞–ª–∏–Ω", Email = "shalin@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.ProductBilling, },
@@ -278,10 +278,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.ObConnection},
                     }},
                 // DefaultDirection = CaServices
-                new RoundDancePeople { Name = "—‡¯‡ ◊Ë˜ÂÒÍËÈ", Email = "chicherskiy@skbkontur.ru",
+                new RoundDancePeople { Name = "–°–∞—à–∞ –ß–∏—á–µ—Ä—Å–∫–∏–π", Email = "chicherskiy@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
-                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.—aServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.–°aServices, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 07, 13), DefaultDirection = Direction.Leave, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 07, 27), DefaultDirection = Direction.Duty, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 08, 10), DefaultDirection = Direction.ProductBilling, },
@@ -300,10 +300,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2016, 02, 24), DefaultDirection = Direction.Duty},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 09), DefaultDirection = Direction.SpeedyFeatures},
                     }},
-                new RoundDancePeople { Name = "ﬁ‡ —ÛÒÎÓ‚", Email = "suslov_yura@skbkontur.ru",
+                new RoundDancePeople { Name = "–Æ—Ä–∞ –°—É—Å–ª–æ–≤", Email = "suslov_yura@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
-                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.—aServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 04, 06), DefaultDirection = Direction.–°aServices, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 06, 30), DefaultDirection = Direction.Crm, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 08, 24), DefaultDirection = Direction.ProlongationScenario, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 10, 12), DefaultDirection = Direction.Duty, },
@@ -317,10 +317,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 09), DefaultDirection = Direction.Duty, },
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 21), DefaultDirection = Direction.ModifierBuy},
                     }},
-                new RoundDancePeople { Name = "—‡¯‡  ÛÎËÍÓ‚", Email = "a.kulikov@skbkontur.ru",
+                new RoundDancePeople { Name = "–°–∞—à–∞ –ö—É–ª–∏–∫–æ–≤", Email = "a.kulikov@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
-                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 01), DefaultDirection = Direction.—aServices, },
+                        new DirectionPeriod { BeginDate = new DateTime(2015, 07, 01), DefaultDirection = Direction.–°aServices, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 08, 19), DefaultDirection = Direction.SpeedyFeatures, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 09, 21), DefaultDirection = Direction.Duty, },
                         new DirectionPeriod { BeginDate = new DateTime(2015, 09, 28), DefaultDirection = Direction.Infrastructure, },
@@ -338,7 +338,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 09), DefaultDirection = Direction.SpeedyFeatures},
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 23), DefaultDirection = Direction.Duty},
                     }},
-                new RoundDancePeople { Name = " ËËÎÎ »‚‡ÌÓ‚", Email = "ikp@skbkontur.ru",
+                new RoundDancePeople { Name = "–ö–∏—Ä–∏–ª–ª –ò–≤–∞–Ω–æ–≤", Email = "ikp@skbkontur.ru",
                     WorkPeriods = new List<DirectionPeriod>
                     {
                         new DirectionPeriod { BeginDate = new DateTime(2016, 03, 09), DefaultDirection = Direction.Infrastructure},

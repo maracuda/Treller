@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -152,7 +152,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskDetalization
             var result = CreateBasePart<CardBeforeDevelopPartBlock>(stateInfo, CardState.BeforeDevelop, checklists);
             if (result != null && stateInfo.States.Any(x => x.Key >= CardState.Develop))
             {
-                result.Description = "Карточка ушла на доработку в аналитику";
+                result.Description = "РљР°СЂС‚РѕС‡РєР° СѓС€Р»Р° РЅР° РґРѕСЂР°Р±РѕС‚РєСѓ РІ Р°РЅР°Р»РёС‚РёРєСѓ";
             }
             
             return result;

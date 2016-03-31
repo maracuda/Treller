@@ -1,40 +1,40 @@
-using System.ComponentModel;
+п»їusing System.ComponentModel;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models
 {
     public enum CardState
     {
-        [Description("Неизвестно")]
+        [Description("РќРµРёР·РІРµСЃС‚РЅРѕ")]
         Unknown,
 
-        [Description("Пул задач")]
+        [Description("РџСѓР» Р·Р°РґР°С‡")]
         BeforeDevelop,
 
-        [Description("Аналитика")]
+        [Description("РђРЅР°Р»РёС‚РёРєР°")]
         Analityc,
 
-        [Description("Презентация аналитики")]
+        [Description("РџСЂРµР·РµРЅС‚Р°С†РёСЏ Р°РЅР°Р»РёС‚РёРєРё")]
         AnalitycPresentation,
 
-        [Description("Разработка")]
+        [Description("Р Р°Р·СЂР°Р±РѕС‚РєР°")]
         Develop,
 
-        [Description("Ревью")]
+        [Description("Р РµРІСЊСЋ")]
         Review,
 
-        [Description("Презентация")]
+        [Description("РџСЂРµР·РµРЅС‚Р°С†РёСЏ")]
         Presentation,
 
-        [Description("Тестирование")]
+        [Description("РўРµСЃС‚РёСЂРѕРІР°РЅРёРµ")]
         Testing,
 
-        [Description("Ждёт релиз")]
+        [Description("Р–РґС‘С‚ СЂРµР»РёР·")]
         ReleaseWaiting,
 
-        [Description("В релизе")]
+        [Description("Р’ СЂРµР»РёР·Рµ")]
         Released,
 
-        [Description("В архиве")]
+        [Description("Р’ Р°СЂС…РёРІРµ")]
         Archived,
     }
 }

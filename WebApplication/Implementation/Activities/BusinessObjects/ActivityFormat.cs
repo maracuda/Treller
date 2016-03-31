@@ -1,22 +1,22 @@
-using System.ComponentModel;
+п»їusing System.ComponentModel;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Activities.BusinessObjects
 {
     public enum ActivityFormat
     {
-        [Description("Игровой")]
+        [Description("РРіСЂРѕРІРѕР№")]
         Game,
         
-        [Description("Доклад-дискуссия")]
+        [Description("Р”РѕРєР»Р°Рґ-РґРёСЃРєСѓСЃСЃРёСЏ")]
         PresentationWithDiscussion,
 
-        [Description("Дискуссия")]
+        [Description("Р”РёСЃРєСѓСЃСЃРёСЏ")]
         Discussion,
 
-        [Description("Доклад + вопросы")]
+        [Description("Р”РѕРєР»Р°Рґ + РІРѕРїСЂРѕСЃС‹")]
         Presentation,
 
-        [Description("Определяется участниками")]
+        [Description("РћРїСЂРµРґРµР»СЏРµС‚СЃСЏ СѓС‡Р°СЃС‚РЅРёРєР°РјРё")]
         NotSelectedYet,
         
         [Description("")]

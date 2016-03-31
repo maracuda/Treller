@@ -1,70 +1,70 @@
-using System.ComponentModel;
+п»їusing System.ComponentModel;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects
 {
     public enum Direction
     {
-        [Description("Биллинг")]
+        [Description("Р‘РёР»Р»РёРЅРі")]
         ProductBilling = 0,
 
-        [Description("ТП")]
+        [Description("РўРџ")]
         Support,
 
-        [Description("УЦ")]
-        СaServices,
+        [Description("РЈР¦")]
+        РЎaServices,
 
-        [Description("Партнерка")]
+        [Description("РџР°СЂС‚РЅРµСЂРєР°")]
         Crm,
 
-        [Description("Инфраструктура")]
+        [Description("РРЅС„СЂР°СЃС‚СЂСѓРєС‚СѓСЂР°")]
         Infrastructure,
 
-        [Description("Отпуск")]
+        [Description("РћС‚РїСѓСЃРє")]
         Leave,
 
-        [Description("Болезнь")]
+        [Description("Р‘РѕР»РµР·РЅСЊ")]
         Sickness,
 
-        [Description("Дежурство")]
+        [Description("Р”РµР¶СѓСЂСЃС‚РІРѕ")]
         Duty,
 
-        [Description("Шустрые задачи")]
+        [Description("РЁСѓСЃС‚СЂС‹Рµ Р·Р°РґР°С‡Рё")]
         SpeedyFeatures,
 
-        [Description("Тарифы и скидки УЦ")]
+        [Description("РўР°СЂРёС„С‹ Рё СЃРєРёРґРєРё РЈР¦")]
         CaTariffsAndDiscounts,
 
-        [Description("Вендоры")]
+        [Description("Р’РµРЅРґРѕСЂС‹")]
         Vendors,
 
-        [Description("Сценарий продления")]
+        [Description("РЎС†РµРЅР°СЂРёР№ РїСЂРѕРґР»РµРЅРёСЏ")]
         ProlongationScenario,
 
-        [Description("Связи Д-агента")]
+        [Description("РЎРІСЏР·Рё Р”-Р°РіРµРЅС‚Р°")]
         LinksDeliveryAgent,
 
-        [Description("Миграция УЦ")]
+        [Description("РњРёРіСЂР°С†РёСЏ РЈР¦")]
         CaMigration,
 
-        [Description("Роуминг ДД")]
+        [Description("Р РѕСѓРјРёРЅРі Р”Р”")]
         RomingDiadoc,
 
-        [Description("Физики")]
+        [Description("Р¤РёР·РёРєРё")]
         Fisics,
 
         [Description("Fop")]
         Fop,
 
-        [Description("Сертификаты")]
+        [Description("РЎРµСЂС‚РёС„РёРєР°С‚С‹")]
         Certificates,
 
-        [Description("Детализация счета")]
+        [Description("Р”РµС‚Р°Р»РёР·Р°С†РёСЏ СЃС‡РµС‚Р°")]
         BillDetalization,
 
-        [Description("Продажи ОБ")]
+        [Description("РџСЂРѕРґР°Р¶Рё РћР‘")]
         ObConnection,
 
-        [Description("Модификаторы")]
+        [Description("РњРѕРґРёС„РёРєР°С‚РѕСЂС‹")]
         ModifierBuy,
     }
 }
