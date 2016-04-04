@@ -123,8 +123,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
             var direction = periods[0].Direction;
             var isServiceDirection = NotFeatureTeamDirections.Contains(direction);
             var maxDaysInCalculation = isServiceDirection ? 40 : 90;
+            var maxDaysInCalculationValue = isServiceDirection ? 14 : 45;
             var lastBeginDate = now.AddDays(-maxDaysInCalculation);
-            var maxWeight = maxDaysInCalculation*maxDaysInCalculation;
+            var maxWeight = maxDaysInCalculation * maxDaysInCalculationValue;
 
             foreach (var period in periods)
             {
