@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
 
@@ -34,7 +34,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         private string BuildCardNews(bool isTechnicalNews)
         {
-            var marker = isTechnicalNews ? "**Технические новости**" : "**Новости**";
+            var marker = isTechnicalNews ? "**РўРµС…РЅРёС‡РµСЃРєРёРµ РЅРѕРІРѕСЃС‚Рё**" : "**РќРѕРІРѕСЃС‚Рё**";
             var isPublished = (isTechnicalNews && IsTechnicalNewsPublished) || (!isTechnicalNews && IsNewsPublished);
 
             if (IsDeleted || isPublished || string.IsNullOrWhiteSpace(CardDescription))
