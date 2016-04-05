@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Microsoft.Ajax.Utilities;
@@ -136,7 +137,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
                 if (card.CardReleaseDate != releaseDate)
                 {
-                    news.AppendFormat("Вечером {1:D} {0}:", card.CardReleaseDate >= DateTime.Today ? "будем релизить" : "состоялся релиз", card.CardReleaseDate);
+                    news.AppendFormat("Вечером {1} {0}:", card.CardReleaseDate >= DateTime.Today ? "будем релизить" : "состоялся релиз", card.CardReleaseDate.ToString("D", new CultureInfo("ru-RU", false)));
                     news.Append(newLine);
                     news.Append(newLine);
                 }
