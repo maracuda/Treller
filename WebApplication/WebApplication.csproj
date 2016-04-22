@@ -198,7 +198,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ActivitiesController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
-    <Compile Include="Controllers\GeneratorController.cs" />
     <Compile Include="Controllers\VirtualMachinesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
@@ -232,8 +231,6 @@
     <Compile Include="Implementation\Infrastructure\FileSystemHandler.cs" />
     <Compile Include="Implementation\Infrastructure\Storages\CachedFileStorage.cs" />
     <Compile Include="Implementation\Infrastructure\Storages\ICachedFileStorage.cs" />
-    <Compile Include="Implementation\PhraseGeneration\IPhraseGenerator.cs" />
-    <Compile Include="Implementation\PhraseGeneration\PhraseGenerator.cs" />
     <Compile Include="Implementation\RoundDance\BusinessObjects\Direction.cs" />
     <Compile Include="Implementation\RoundDance\BusinessObjects\DirectionPeriod.cs" />
     <Compile Include="Implementation\RoundDance\BusinessObjects\DirectionTransferViewModel.cs" />
@@ -466,7 +463,6 @@
     <Content Include="Views\Shared\Partial\BaseBlock.cshtml" />
     <Content Include="Views\Shared\Partial\Parrots.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\UserAvatarViewModel.cshtml" />
-    <Content Include="Views\Generator\Index.cshtml" />
     <Content Include="Views\RoundDance\Index.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <None Include="Views\Activities\Index.cshtml" />
