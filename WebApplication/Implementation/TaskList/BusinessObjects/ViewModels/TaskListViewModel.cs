@@ -4,7 +4,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjec
 {
     public class TaskListViewModel
     {
-        public BaseCardListBlock BoardsBlock { get; set; }
+        public BoardsBlock BoardsBlock { get; set; }
         public BaseCardListBlock BugsBlock { get; set; }
         public BaseCardListBlock TaskList { get; set; }
     }

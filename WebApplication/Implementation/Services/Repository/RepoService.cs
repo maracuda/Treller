@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient.Repository.Clients;
 using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
@@ -56,6 +57,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
                 }
             }
             return result.Select(x => x.Value).Where(x => !repoSettings.NotTrackedBrancheNames.Contains(x.Name)).ToArray();
+        }
+
+        public Task<RepoBranchModel[]> SelectBranchesMergedToReleaseCandidateAsync()
+        {
+            return Task.Run(() => SelectBranchesMergedToReleaseCandidate());
         }
 
         public RepoBranch[] SearchForOldBranches(TimeSpan olderThan)
