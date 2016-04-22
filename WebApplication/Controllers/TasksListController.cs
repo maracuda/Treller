@@ -11,18 +11,15 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public class TasksListController : Controller
     {
-        private readonly IBlocksBuilder blocksBuilder;
         private readonly IRepoService repoService;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly Type[] defaultTasksListBlocks = { typeof(BoardsBlock), typeof(CardListBlock), typeof(BugsBlock) };
 
 
         public TasksListController(
-            IBlocksBuilder blocksBuilder,
             IRepoService repoService,
             ITaskManagerClient taskManagerClient)
         {
-            this.blocksBuilder = blocksBuilder;
             this.repoService = repoService;
             this.taskManagerClient = taskManagerClient;
         }
