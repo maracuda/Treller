@@ -1,4 +1,4 @@
-using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
+using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
 using SKBKontur.TaskManagerClient.Wiki.BusinessObjects;
 using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;

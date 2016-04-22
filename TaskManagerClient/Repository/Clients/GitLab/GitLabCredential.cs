@@ -1,4 +1,4 @@
-namespace SKBKontur.TaskManagerClient.GitLab.BusinessObjects
+namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
 {
     public class GitLabCredential
     {

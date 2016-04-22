@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
+using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient
+namespace SKBKontur.TaskManagerClient.Repository.Clients
 {
     public interface IRepositoryClient
     {

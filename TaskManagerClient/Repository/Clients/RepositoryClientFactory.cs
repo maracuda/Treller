@@ -1,8 +1,7 @@
 ﻿using SKBKontur.HttpInfrastructure.Clients;
-using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.GitLab;
+using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
 
-namespace SKBKontur.TaskManagerClient
+namespace SKBKontur.TaskManagerClient.Repository.Clients
 {
     public class RepositoryClientFactory : IRepositoryClientFactory
     {

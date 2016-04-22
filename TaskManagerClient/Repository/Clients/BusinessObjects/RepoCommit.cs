@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.TaskManagerClient.GitLab.BusinessObjects
+namespace SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects
 {
     public class RepoCommit
     {

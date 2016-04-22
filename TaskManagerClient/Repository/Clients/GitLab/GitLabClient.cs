@@ -2,10 +2,9 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using SKBKontur.HttpInfrastructure.Clients;
-using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
+using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient.GitLab
+namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
 {
     public class GitLabClient : IRepositoryClient
     {

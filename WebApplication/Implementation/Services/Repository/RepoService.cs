@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.Infrastructure.CommonExtenssions;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.GitLab.BusinessObjects;
+using SKBKontur.TaskManagerClient.Repository.Clients;
+using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
 {

@@ -37,7 +37,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CredentialServiceAbstractions\IGitLabCredentialService.cs" />
     <Compile Include="CredentialServiceAbstractions\ITrelloUserCredentialService.cs" />
     <Compile Include="CredentialServiceAbstractions\IWikiCredentialService.cs" />
     <Compile Include="CredentialServiceAbstractions\IYouTrackCredentialService.cs" />
@@ -55,18 +54,19 @@
     <Compile Include="BusinessObjects\TaskManager\ChecklistItem.cs" />
     <Compile Include="BusinessObjects\TaskManager\User.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
-    <Compile Include="GitLab\BusinessObjects\GitLabCredential.cs" />
-    <Compile Include="GitLab\BusinessObjects\RepoBranch.cs" />
-    <Compile Include="GitLab\BusinessObjects\RepoCommit.cs" />
-    <Compile Include="GitLab\GitLabClient.cs" />
     <Compile Include="IBugTrackerClient.cs" />
     <Compile Include="IContinuousIntegrationClient.cs" />
-    <Compile Include="IRepositoryClient.cs" />
-    <Compile Include="IRepositoryClientFactory.cs" />
     <Compile Include="ITaskManagerClient.cs" />
     <Compile Include="IWikiClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepositoryClientFactory.cs" />
+    <Compile Include="Repository\Clients\BusinessObjects\RepoBranch.cs" />
+    <Compile Include="Repository\Clients\BusinessObjects\RepoCommit.cs" />
+    <Compile Include="Repository\Clients\GitLab\GitLabClient.cs" />
+    <Compile Include="Repository\Clients\GitLab\GitLabCredential.cs" />
+    <Compile Include="Repository\Clients\GitLab\IGitLabCredentialService.cs" />
+    <Compile Include="Repository\Clients\IRepositoryClient.cs" />
+    <Compile Include="Repository\Clients\IRepositoryClientFactory.cs" />
+    <Compile Include="Repository\Clients\RepositoryClientFactory.cs" />
     <Compile Include="TeamCity\BusinessObjects\TeamCityBuild.cs" />
     <Compile Include="TeamCity\TeamCityClient.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\Action.cs" />
@@ -107,6 +107,7 @@
       <Name>HttpInfrastructure</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
