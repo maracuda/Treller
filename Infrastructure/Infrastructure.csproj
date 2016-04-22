@@ -46,7 +46,6 @@
     <Compile Include="Common\AssemblyService.cs" />
     <Compile Include="Common\IAssemblyService.cs" />
     <Compile Include="Common\IFileSystemHandler.cs" />
-    <Compile Include="Common\TimeValue.cs" />
     <Compile Include="ContainerConfiguration\ContainerConfigurator.cs" />
     <Compile Include="ContainerConfiguration\Container.cs" />
     <Compile Include="ContainerConfiguration\ContainerGetException.cs" />
