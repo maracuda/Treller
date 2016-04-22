@@ -62,9 +62,11 @@
     <Compile Include="IBugTrackerClient.cs" />
     <Compile Include="IContinuousIntegrationClient.cs" />
     <Compile Include="IRepositoryClient.cs" />
+    <Compile Include="IRepositoryClientFactory.cs" />
     <Compile Include="ITaskManagerClient.cs" />
     <Compile Include="IWikiClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryClientFactory.cs" />
     <Compile Include="TeamCity\BusinessObjects\TeamCityBuild.cs" />
     <Compile Include="TeamCity\TeamCityClient.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\Action.cs" />

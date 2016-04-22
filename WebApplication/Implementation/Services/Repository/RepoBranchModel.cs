@@ -2,11 +2,11 @@
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
 {
-    public class SimpleRepoBranch
+    public class RepoBranchModel
     {
         public string Name { get; set; }
-        public string CommitTime { get { return LastCommitTime.ToString("dd.MM HH:mm"); } }
         public bool IsReleased { get; set; }
         public DateTime LastCommitTime { get; set; }
+        public string CommitTime => LastCommitTime.ToString("dd.MM HH:mm");
     }
 }

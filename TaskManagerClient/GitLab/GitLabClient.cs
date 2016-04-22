@@ -9,12 +9,14 @@ namespace SKBKontur.TaskManagerClient.GitLab
 {
     public class GitLabClient : IRepositoryClient
     {
+        private readonly string repoId;
         private readonly IHttpClient httpClient;
         private readonly Dictionary<string, string> credentialParameters;
         private readonly string gitLabDefaultUrl;
 
-        public GitLabClient(IHttpClient httpClient, IGitLabCredentialService gitLabCredentialService)
+        public GitLabClient(string repoId, IHttpClient httpClient, IGitLabCredentialService gitLabCredentialService)
         {
+            this.repoId = repoId;
             this.httpClient = httpClient;
             var credentials = gitLabCredentialService.GetGitLabCredentials();
             gitLabDefaultUrl = credentials.DefaultUrl;
@@ -25,7 +27,7 @@ namespace SKBKontur.TaskManagerClient.GitLab
                                    };
         }
 
-        public RepoCommit[] SelectLastBranchCommits(string repoId, string branchName, int pageNumber, int pageSize)
+        public RepoCommit[] SelectLastBranchCommits(string branchName, int pageNumber, int pageSize)
         {
             var parameters = new Dictionary<string, string>(credentialParameters)
                                  {
@@ -33,28 +35,26 @@ namespace SKBKontur.TaskManagerClient.GitLab
                                      {"page", pageNumber.ToString(CultureInfo.InvariantCulture)},
                                      {"per_page", pageSize.ToString(CultureInfo.InvariantCulture)},
                                  };
-
-            return httpClient.SendGetAsync<RepoCommit[]>(string.Format("{0}/api/v3/projects/{1}/repository/commits", gitLabDefaultUrl, repoId), parameters).Result;
+            return httpClient.SendGetAsync<RepoCommit[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/commits", parameters).Result;
         }
 
-        public RepoBranch[] SelectAllBranches(string repoId)
+        public RepoBranch[] SelectAllBranches()
         {
             var parameters = new Dictionary<string, string>(credentialParameters)
                                  {
                                      {"per_page", "1000"},
                                  };
 
-            return httpClient.SendGetAsync<RepoBranch[]>(string.Format("{0}/api/v3/projects/{1}/repository/branches", gitLabDefaultUrl, repoId), parameters).Result;
+            return httpClient.SendGetAsync<RepoBranch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters).Result;
         }
 
-        public Task<RepoBranch[]> SelectAllBranchesAsync(string repoId)
+        public Task<RepoBranch[]> SelectAllBranchesAsync()
         {
             var parameters = new Dictionary<string, string>(credentialParameters)
                                  {
                                      {"per_page", "1000"},
                                  };
-
-            return httpClient.SendGetAsync<RepoBranch[]>(string.Format("{0}/api/v3/projects/{1}/repository/branches", gitLabDefaultUrl, repoId), parameters);
+            return httpClient.SendGetAsync<RepoBranch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
         }
     }
 }

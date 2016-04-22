@@ -264,9 +264,11 @@
     <Compile Include="Implementation\Services\Notifications\NotificationService.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />
     <Compile Include="Implementation\Services\Operationals\OperationalService.cs" />
-    <Compile Include="Implementation\Services\Repository\IReleaseCandidateService.cs" />
-    <Compile Include="Implementation\Services\Repository\ReleaseCandidateService.cs" />
-    <Compile Include="Implementation\Services\Repository\SimpleRepoBranch.cs" />
+    <Compile Include="Implementation\Services\Repository\IRepoService.cs" />
+    <Compile Include="Implementation\Services\Repository\IRepoSettings.cs" />
+    <Compile Include="Implementation\Services\Repository\RepoService.cs" />
+    <Compile Include="Implementation\Services\Repository\RepoBranchModel.cs" />
+    <Compile Include="Implementation\Services\Repository\RepoSettings.cs" />
     <Compile Include="Implementation\Services\Settings\BoardSettings.cs" />
     <Compile Include="Implementation\Services\Settings\ISettingService.cs" />
     <Compile Include="Implementation\Services\Settings\SettingService.cs" />

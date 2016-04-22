@@ -6,6 +6,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjec
     public class BoardsBlock : BaseCardListBlock
     {
         public Board[] Boards { get; set; }
-        public SimpleRepoBranch[] BranchesInCandidateRelease { get; set; }
+        public RepoBranchModel[] BranchesModelInCandidateRelease { get; set; }
     }
 }
