@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
 {
@@ -6,7 +6,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
     {
         public string Name { get; set; }
         public bool IsReleased { get; set; }
-        public DateTime LastCommitTime { get; set; }
-        public string CommitTime => LastCommitTime.ToString("dd.MM HH:mm");
+        public RepoCommit LastCommit { get; set; }
     }
 }

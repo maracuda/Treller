@@ -21,7 +21,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
             repositoryClient = repositoryClientFactory.CreateGitLabClient(repoSettings.GitLabRepositoryId);
         }
 
-        public RepoBranchModel[] WhatBranchesInReleaseCandidate()
+        public RepoBranchModel[] SelectBranchesMergedToReleaseCandidate()
         {
             var pageNumber = 0;
             var result = new Dictionary<string, RepoBranchModel>(StringComparer.OrdinalIgnoreCase);
@@ -50,12 +50,20 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
                         result.Add(mergedBranch, new RepoBranchModel
                                                      {
                                                          Name = mergedBranch,
-                                                         LastCommitTime = repoCommit.Created_at
+                                                         LastCommit = repoCommit
                                                      });
                     }
                 }
             }
             return result.Select(x => x.Value).Where(x => !repoSettings.NotTrackedBrancheNames.Contains(x.Name)).ToArray();
+        }
+
+        public RepoBranch[] SearchForOldBranches(TimeSpan olderThan)
+        {
+            var minLastActivityDate = DateTime.Now.Subtract(olderThan);
+            return repositoryClient.SelectAllBranches()
+                                   .Where(x => x.LastCommit.Created_at < minLastActivityDate)
+                                   .ToArray();
         }
 
         public Dictionary<string, bool> CheckForReleased(RepoBranchModel[] rcBranchesModel)

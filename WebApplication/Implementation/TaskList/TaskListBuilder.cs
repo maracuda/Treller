@@ -74,7 +74,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
         [BlockModelParameter("rcBranchesModel")]
         public RepoBranchModel[] BuildReleaseCandidateBranches()
         {
-            return repoService.WhatBranchesInReleaseCandidate();
+            return repoService.SelectBranchesMergedToReleaseCandidate();
         }
 
         [BlockModel(ContextKeys.TasksKey)]
