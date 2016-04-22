@@ -54,13 +54,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         private BoardsBlock BuildBoardsBlock()
         {
-            var boardsTask = taskManagerClient.GetOpenBoardsAsync("konturbilling");
-            var repoTask = repoService.SelectBranchesMergedToReleaseCandidateAsync();
-
             return new BoardsBlock
             {
-                Boards = boardsTask.Result,
-                BranchesMergedToReleaseCandidate = repoTask.Result
+                BranchesMergedToReleaseCandidate = repoService.SelectBranchesMergedToReleaseCandidate()
             };
         }
     }
