@@ -50,9 +50,6 @@ var TaskListComponent = React.createClass({
 				<div>
 					<a className="treller-link" href="/RoundDance">Хороводы</a>
 				</div>
-				<div>
-					<a className="treller-link" href="/Generator">Генератор забавных фраз для ошибок</a>
-				</div>
             </SiteHeader>
             {taskListGroups}
         </div>;
