@@ -61,7 +61,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
 
         public Task<RepoBranchModel[]> SelectBranchesMergedToReleaseCandidateAsync()
         {
-            return Task.Run(() => SelectBranchesMergedToReleaseCandidate());
+            return Task.FromResult(SelectBranchesMergedToReleaseCandidate());
         }
 
         public RepoBranch[] SearchForOldBranches(TimeSpan olderThan)

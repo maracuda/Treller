@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using SKBKontur.BlocksMapping.Blocks;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
@@ -24,9 +23,12 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             this.taskManagerClient = taskManagerClient;
         }
 
-        public async Task<ActionResult> Index(ShowMode showMode = ShowMode.All)
+        public ActionResult Index(ShowMode showMode = ShowMode.All)
         {
-            var taskListViewModel = await CreateTaskListViewModel(showMode);
+            var taskListViewModel = new TaskListViewModel
+            {
+                BoardsBlock = BuildBoardsBlock().Result
+            };
 
             if (Request.IsAjaxRequest())
                 return Json(taskListViewModel, JsonRequestBehavior.AllowGet);
@@ -34,12 +36,12 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             return View("TasksList", taskListViewModel);
         }
 
-        private async Task<TaskListViewModel> CreateTaskListViewModel(ShowMode showMode)
+        /*private async Task<TaskListViewModel> CreateTaskListViewModel(ShowMode showMode)
         {
-            /*var cardListEnterModel = new CardListEnterModel { BoardIds = new string[0], ShowMode = showMode };
+            var cardListEnterModel = new CardListEnterModel { BoardIds = new string[0], ShowMode = showMode };
             var blocks = (await blocksBuilder.BuildBlocks(ContextKeys.TasksKey, defaultTasksListBlocks, cardListEnterModel))
                 .Cast<BaseCardListBlock>()
-                .ToArray();*/
+                .ToArray();
 
             return new TaskListViewModel
             {
@@ -47,13 +49,17 @@ namespace SKBKontur.Treller.WebApplication.Controllers
                 //BugsBlock = blocks.FirstOrDefault(x => x is BugsBlock),
                 //TaskList = blocks.FirstOrDefault(x => x is CardListBlock)
             };
-        }
+        }*/
 
-        private BoardsBlock BuildBoardsBlock()
+        private async Task<BoardsBlock> BuildBoardsBlock()
         {
+            var repoTask = repoService.SelectBranchesMergedToReleaseCandidateAsync();
+            var boardsTask = taskManagerClient.GetOpenBoardsAsync("konturbilling");
+
             return new BoardsBlock
             {
-                BranchesMergedToReleaseCandidate = repoService.SelectBranchesMergedToReleaseCandidate()
+                BranchesMergedToReleaseCandidate = await repoTask.ConfigureAwait(false),
+                Boards = await boardsTask.ConfigureAwait(false)
             };
         }
     }
