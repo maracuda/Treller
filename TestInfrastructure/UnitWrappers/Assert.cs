@@ -43,5 +43,15 @@ namespace SKBKontur.Treller.Tests.UnitWrappers
         {
             NUnit.Framework.Assert.That(actual, new DataContractConstraint<T>(expected), message);
         }
+
+        public static void IsNull(Object obj)
+        {
+            NUnit.Framework.Assert.IsNull(obj);
+        }
+
+        public static void IsNotNull(Object obj)
+        {
+            NUnit.Framework.Assert.IsNotNull(obj);
+        }
     }
 }

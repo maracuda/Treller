@@ -34,18 +34,18 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
                 var repoCommits = repositoryClient.SelectLastBranchCommits(repoSettings.ReleaseCandidateBranchName, pageNumber++, 100);
                 foreach (var repoCommit in repoCommits)
                 {
-                    if (!IsBranchMergeOperation(repoCommit.Title))
+                    if (!repoCommit.IsMerge())
                     {
                         continue;
                     }
 
-                    if (IsBranchMergeOperation(repoCommit.Title, repoSettings.ReleaseCandidateBranchName, repoSettings.ReleaseBranchName))
+                    if (repoCommit.IsMerge(repoSettings.ReleaseCandidateBranchName, repoSettings.ReleaseBranchName))
                     {
                         releaseCandidateBranchedCommit = repoCommit;
                         break;
                     }
 
-                    var mergedBranch = branches.FirstOrDefault(branch => IsBranchMergeOperation(repoCommit.Title, branch, repoSettings.ReleaseCandidateBranchName));
+                    var mergedBranch = branches.FirstOrDefault(branch => repoCommit.IsMerge(branch, repoSettings.ReleaseCandidateBranchName));
                     if (mergedBranch != null && !result.ContainsKey(mergedBranch))
                     {
                         result.Add(mergedBranch, new RepoBranchModel
@@ -68,7 +68,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
         {
             var minLastActivityDate = DateTime.Now.Subtract(olderThan);
             return repositoryClient.SelectAllBranches()
-                                   .Where(x => x.LastCommit.Created_at < minLastActivityDate)
+                                   .Where(x => x.Commit.Committed_date < minLastActivityDate)
                                    .ToArray();
         }
 
@@ -78,27 +78,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
             foreach (var branch in rcBranchesModel)
             {
                 var repoCommits = repositoryClient.SelectLastBranchCommits(branch.Name, 0, 10);
-                if (repoCommits.Where(repoCommit => IsBranchMergeOperation(repoCommit.Title)).Any(repoCommit => IsBranchMergeOperation(repoCommit.Title, branch.Name, repoSettings.ReleaseBranchName)))
+                if (repoCommits.Where(repoCommit => repoCommit.IsMerge()).Any(repoCommit => repoCommit.IsMerge(branch.Name, repoSettings.ReleaseBranchName)))
                 {
                     result[branch.Name] = true;
                 }
             }
-
             return result;
-        }
-
-        private static bool IsBranchMergeOperation(string repoCommitMessage)
-        {
-            return repoCommitMessage.StartsWith("Merge branch", StringComparison.OrdinalIgnoreCase)
-                   || repoCommitMessage.StartsWith("Merge remote-tracking branch", StringComparison.OrdinalIgnoreCase);
-        }
-
-        private static bool IsBranchMergeOperation(string repoCommitMessage, string fromBranch, string toBranch = null)
-        {
-            repoCommitMessage = repoCommitMessage.Replace("origin/", "").Replace(" remote-tracking ", " ");
-            return string.Equals(repoCommitMessage, $"Merge branch '{fromBranch}' into {toBranch}", StringComparison.OrdinalIgnoreCase)
-                   || (   repoCommitMessage.StartsWith($"Merge branch '{toBranch}' of ", StringComparison.OrdinalIgnoreCase)
-                          && repoCommitMessage.EndsWith($"into {fromBranch}", StringComparison.OrdinalIgnoreCase));
         }
     }
 }

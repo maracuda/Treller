@@ -54,6 +54,7 @@
     <Compile Include="MockWrappers\MyMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\IntegrationTests\ClientTests\GitlabClientTests.cs" />
+    <Compile Include="Tests\IntegrationTests\ClientTests\RepoCommitTest.cs" />
     <Compile Include="Tests\IntegrationTests\ClientTests\TrelloClientTest.cs" />
     <Compile Include="Tests\IntegrationTests\Configuration\ClientsIntegrationCredentials.cs" />
     <Compile Include="Tests\IntegrationTests\Configuration\CredentialService.cs" />

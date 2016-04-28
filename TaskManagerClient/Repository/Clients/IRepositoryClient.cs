@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
+﻿using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
 
 namespace SKBKontur.TaskManagerClient.Repository.Clients
 {
@@ -7,6 +6,5 @@ namespace SKBKontur.TaskManagerClient.Repository.Clients
     {
         RepoCommit[] SelectLastBranchCommits(string branchName, int pageNumber, int pageSize);
         RepoBranch[] SelectAllBranches();
-        Task<RepoBranch[]> SelectAllBranchesAsync();
     }
 }
