@@ -1,12 +1,12 @@
-﻿using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
+﻿using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.Treller.Tests.Tests.UnitTests;
 using SKBKontur.Treller.Tests.UnitWrappers;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
+namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
 {
     public class RepoCommitTest : UnitTest
     {
-        private readonly RepoCommit testCommit = new RepoCommit
+        private readonly Commit testCommit = new Commit
         {
             Id = "79d6fea771d7dd84a1df4d52d317b1411cd21bb9",
             Short_id = "79d6fea7",

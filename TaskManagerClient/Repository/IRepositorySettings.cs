@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
+namespace SKBKontur.TaskManagerClient.Repository
 {
-    public interface IRepoSettings
+    public interface IRepositorySettings
     {
-        string GitLabRepositoryId { get; }
+        string RepositoryId { get; }
         string ReleaseCandidateBranchName { get; }
         string ReleaseBranchName { get; }
         HashSet<string> NotTrackedBrancheNames { get; }

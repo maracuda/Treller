@@ -3,35 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SKBKontur.Infrastructure.CommonExtenssions;
+using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.TaskManagerClient.Repository.Clients;
-using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
+namespace SKBKontur.TaskManagerClient.Repository
 {
-    public class RepoService : IRepoService
+    public class Repository : IRepository
     {
         private readonly IRepositoryClient repositoryClient;
-        private readonly IRepoSettings repoSettings;
+        private readonly IRepositorySettings repositorySettings;
 
-        public RepoService(
-            IRepoSettings repoSettings,
+        public Repository(
+            IRepositorySettings repositorySettings,
             IRepositoryClientFactory repositoryClientFactory
             )
         {
-            this.repoSettings = repoSettings;
-            repositoryClient = repositoryClientFactory.CreateGitLabClient(repoSettings.GitLabRepositoryId);
+            this.repositorySettings = repositorySettings;
+            repositoryClient = repositoryClientFactory.CreateGitLabClient(repositorySettings.RepositoryId);
         }
 
-        public RepoBranchModel[] SelectBranchesMergedToReleaseCandidate()
+        public ReleasedBranch[] SelectBranchesMergedToReleaseCandidate()
         {
             var pageNumber = 0;
-            var result = new Dictionary<string, RepoBranchModel>(StringComparer.OrdinalIgnoreCase);
+            var result = new Dictionary<string, ReleasedBranch>(StringComparer.OrdinalIgnoreCase);
             var branches = repositoryClient.SelectAllBranches().Select(x => x.Name).ToArray();
 
-            RepoCommit releaseCandidateBranchedCommit = null;
+            Commit releaseCandidateBranchedCommit = null;
             while (releaseCandidateBranchedCommit == null)
             {
-                var repoCommits = repositoryClient.SelectLastBranchCommits(repoSettings.ReleaseCandidateBranchName, pageNumber++, 100);
+                var repoCommits = repositoryClient.SelectLastBranchCommits(repositorySettings.ReleaseCandidateBranchName, pageNumber++, 100);
                 foreach (var repoCommit in repoCommits)
                 {
                     if (!repoCommit.IsMerge())
@@ -39,16 +39,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
                         continue;
                     }
 
-                    if (repoCommit.IsMerge(repoSettings.ReleaseCandidateBranchName, repoSettings.ReleaseBranchName))
+                    if (repoCommit.IsMerge(repositorySettings.ReleaseCandidateBranchName, repositorySettings.ReleaseBranchName))
                     {
                         releaseCandidateBranchedCommit = repoCommit;
                         break;
                     }
 
-                    var mergedBranch = branches.FirstOrDefault(branch => repoCommit.IsMerge(branch, repoSettings.ReleaseCandidateBranchName));
+                    var mergedBranch = branches.FirstOrDefault(branch => repoCommit.IsMerge(branch, repositorySettings.ReleaseCandidateBranchName));
                     if (mergedBranch != null && !result.ContainsKey(mergedBranch))
                     {
-                        result.Add(mergedBranch, new RepoBranchModel
+                        result.Add(mergedBranch, new ReleasedBranch
                                                      {
                                                          Name = mergedBranch,
                                                          LastCommit = repoCommit
@@ -56,15 +56,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
                     }
                 }
             }
-            return result.Select(x => x.Value).Where(x => !repoSettings.NotTrackedBrancheNames.Contains(x.Name)).ToArray();
+            return result.Select(x => x.Value).Where(x => !repositorySettings.NotTrackedBrancheNames.Contains(x.Name)).ToArray();
         }
 
-        public Task<RepoBranchModel[]> SelectBranchesMergedToReleaseCandidateAsync()
+        public Task<ReleasedBranch[]> SelectBranchesMergedToReleaseCandidateAsync()
         {
             return Task.FromResult(SelectBranchesMergedToReleaseCandidate());
         }
 
-        public RepoBranch[] SearchForOldBranches(TimeSpan olderThan)
+        public Branch[] SearchForOldBranches(TimeSpan olderThan)
         {
             var minLastActivityDate = DateTime.Now.Subtract(olderThan);
             return repositoryClient.SelectAllBranches()
@@ -72,13 +72,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Repository
                                    .ToArray();
         }
 
-        public Dictionary<string, bool> CheckForReleased(RepoBranchModel[] rcBranchesModel)
+        public Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches)
         {
-            var result = rcBranchesModel.DistinctBy(x => x.Name).ToDictionary(x => x.Name, x => false);
-            foreach (var branch in rcBranchesModel)
+            var result = rcBranches.DistinctBy(x => x.Name).ToDictionary(x => x.Name, x => false);
+            foreach (var branch in rcBranches)
             {
                 var repoCommits = repositoryClient.SelectLastBranchCommits(branch.Name, 0, 10);
-                if (repoCommits.Where(repoCommit => repoCommit.IsMerge()).Any(repoCommit => repoCommit.IsMerge(branch.Name, repoSettings.ReleaseBranchName)))
+                if (repoCommits.Where(repoCommit => repoCommit.IsMerge()).Any(repoCommit => repoCommit.IsMerge(branch.Name, repositorySettings.ReleaseBranchName)))
                 {
                     result[branch.Name] = true;
                 }

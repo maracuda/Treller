@@ -1,8 +1,8 @@
 ﻿using SKBKontur.BlocksMapping.Abstrations;
 using SKBKontur.BlocksMapping.Mappings;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
 
@@ -15,7 +15,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
                 {
                     BlockMapper.Declare<CardListBlock, CardStateOverallViewModel[]>(x => x.OverallStateCards),
                     BlockMapper.Declare<BoardsBlock, Board[]>(x => x.Boards),
-                    BlockMapper.Declare<BoardsBlock, RepoBranchModel[]>(x => x.BranchesMergedToReleaseCandidate),
+                    BlockMapper.Declare<BoardsBlock, ReleasedBranch[]>(x => x.BranchesMergedToReleaseCandidate),
                     BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BattleUnassigned, "battleBugsUnassignedCount"),
                     BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BattleAssigned, "battleBugsCount"),
                     BlockMapper.Declare<BugsBlock, BugsCountLinkInfoViewModel>(x => x.BillyCurrent, "currentBillyBugsCount"),

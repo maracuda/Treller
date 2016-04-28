@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Threading.Tasks;
 using SKBKontur.HttpInfrastructure.Clients;
-using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
+using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 
 namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
 {
@@ -26,7 +25,7 @@ namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
                                    };
         }
 
-        public RepoCommit[] SelectLastBranchCommits(string branchName, int pageNumber, int pageSize)
+        public Commit[] SelectLastBranchCommits(string branchName, int pageNumber, int pageSize)
         {
             var parameters = new Dictionary<string, string>(credentialParameters)
                                  {
@@ -34,17 +33,17 @@ namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
                                      {"page", pageNumber.ToString(CultureInfo.InvariantCulture)},
                                      {"per_page", pageSize.ToString(CultureInfo.InvariantCulture)},
                                  };
-            return httpClient.SendGetAsync<RepoCommit[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/commits", parameters).Result;
+            return httpClient.SendGetAsync<Commit[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/commits", parameters).Result;
         }
 
-        public RepoBranch[] SelectAllBranches()
+        public Branch[] SelectAllBranches()
         {
             var parameters = new Dictionary<string, string>(credentialParameters)
                                  {
                                      {"per_page", "1000"},
                                  };
 
-            return httpClient.SendGetAsync<RepoBranch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters).Result;
+            return httpClient.SendGetAsync<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters).Result;
         }
     }
 }

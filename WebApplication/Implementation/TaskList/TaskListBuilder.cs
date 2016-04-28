@@ -6,10 +6,11 @@ using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using SKBKontur.TaskManagerClient.Repository;
+using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BugTracker;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
@@ -26,7 +27,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
         private readonly IUserAvatarViewModelBuilder userAvatarViewModelBuilder;
         private readonly ICardStageInfoBuilder cardStageInfoBuilder;
         private readonly ITaskCacher taskCacher;
-        private readonly IRepoService repoService;
+        private readonly IRepository repository;
         private readonly IBugTrackerClient bugTrackerClient;
         private readonly IWikiClient wikiClient;
         private readonly IBugsBuilder bugsBuilder;
@@ -36,7 +37,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
                                IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
                                ICardStageInfoBuilder cardStageInfoBuilder,
                                ITaskCacher taskCacher,
-                               IRepoService repoService,
+                               IRepository repository,
                                IBugTrackerClient bugTrackerClient,
                                IWikiClient wikiClient,
                                IBugsBuilder bugsBuilder)
@@ -46,7 +47,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
             this.userAvatarViewModelBuilder = userAvatarViewModelBuilder;
             this.cardStageInfoBuilder = cardStageInfoBuilder;
             this.taskCacher = taskCacher;
-            this.repoService = repoService;
+            this.repository = repository;
             this.bugTrackerClient = bugTrackerClient;
             this.wikiClient = wikiClient;
             this.bugsBuilder = bugsBuilder;
@@ -72,17 +73,17 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("rcBranchesModel")]
-        public RepoBranchModel[] BuildReleaseCandidateBranches()
+        public ReleasedBranch[] BuildReleaseCandidateBranches()
         {
-            return repoService.SelectBranchesMergedToReleaseCandidate();
+            return repository.SelectBranchesMergedToReleaseCandidate();
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-        public RepoBranchModel[] BuildReleaseCandidateReleasedBranches([BlockModelParameter("rcBranchesModel")] RepoBranchModel[] rcBranchesModel)
+        public ReleasedBranch[] BuildReleaseCandidateReleasedBranches([BlockModelParameter("rcBranchesModel")] ReleasedBranch[] rcBranches)
         {
-            var isReleased = repoService.CheckForReleased(rcBranchesModel);
-            rcBranchesModel.ForEach(x => x.IsReleased = isReleased[x.Name]);
-            return rcBranchesModel.Where(x => !x.IsReleased).ToArray();
+            var isReleased = repository.CheckForReleased(rcBranches);
+            rcBranches.ForEach(x => x.IsReleased = isReleased[x.Name]);
+            return rcBranches.Where(x => !x.IsReleased).ToArray();
         }
 
         [BlockModel(ContextKeys.TasksKey)]
@@ -124,10 +125,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
         [BlockModel(ContextKeys.TasksKey)]
         private CardStateOverallViewModel[] BuildCards(BoardCard[] cards, Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
                                                    Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
-                                                   ILookup<string, CardChecklist> cardChecklists, RepoBranchModel[] branchesModel,
+                                                   ILookup<string, CardChecklist> cardChecklists, ReleasedBranch[] branches,
                                                    Dictionary<string, BugsInfoViewModel> bugs, CardListEnterModel cardListEnterModel)
         {
-            var rcBranches = new HashSet<string>(branchesModel.Select(x => x.Name));
+            var rcBranches = new HashSet<string>(branches.Select(x => x.Name));
             return cards.Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase))
                         .Select(card => BuildCard(users, boardLists, boardSettings, cardActions, cardChecklists, card, rcBranches, bugs.SafeGet(card.Id)))
                         .Where(x => x.StageInfo.State != CardState.BeforeDevelop && x.StageInfo.State != CardState.Unknown && x.StageInfo.State != CardState.Released)

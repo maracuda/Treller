@@ -18,11 +18,6 @@ namespace SKBKontur.Infrastructure.CommonExtenssions
         {
             return collection.GroupBy(keySelector, keyComparer).Select(x => x.First());
         }
-        
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
-        {
-            return source == null || !source.Any();
-        }
 
         public static bool Contains(this string input, string value, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
         {

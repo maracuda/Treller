@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects
+namespace SKBKontur.TaskManagerClient.Repository.BusinessObjects
 {
-    public class RepoCommit
+    public class Commit
     {
         public string Id { get; set; }
         public string Short_id { get; set; }

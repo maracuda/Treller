@@ -1,10 +1,10 @@
-﻿using SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects;
+﻿using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 
 namespace SKBKontur.TaskManagerClient.Repository.Clients
 {
     public interface IRepositoryClient
     {
-        RepoCommit[] SelectLastBranchCommits(string branchName, int pageNumber, int pageSize);
-        RepoBranch[] SelectAllBranches();
+        Commit[] SelectLastBranchCommits(string branchName, int pageNumber, int pageSize);
+        Branch[] SelectAllBranches();
     }
 }

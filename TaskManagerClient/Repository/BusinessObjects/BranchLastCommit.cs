@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SKBKontur.TaskManagerClient.Repository.Clients.BusinessObjects
+namespace SKBKontur.TaskManagerClient.Repository.BusinessObjects
 {
-    public class RepoBranchLastCommit
+    public class BranchLastCommit
     {
         public string Id { get; set; }
         public string Message { get; set; }

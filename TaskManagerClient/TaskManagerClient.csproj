@@ -59,15 +59,20 @@
     <Compile Include="ITaskManagerClient.cs" />
     <Compile Include="IWikiClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\Clients\BusinessObjects\RepoBranch.cs" />
-    <Compile Include="Repository\Clients\BusinessObjects\RepoBranchLastCommit.cs" />
-    <Compile Include="Repository\Clients\BusinessObjects\RepoCommit.cs" />
+    <Compile Include="Repository\BusinessObjects\Branch.cs" />
+    <Compile Include="Repository\BusinessObjects\BranchLastCommit.cs" />
+    <Compile Include="Repository\BusinessObjects\Commit.cs" />
+    <Compile Include="Repository\BusinessObjects\ReleasedBranch.cs" />
     <Compile Include="Repository\Clients\GitLab\GitLabClient.cs" />
     <Compile Include="Repository\Clients\GitLab\GitLabCredential.cs" />
     <Compile Include="Repository\Clients\GitLab\IGitLabCredentialService.cs" />
     <Compile Include="Repository\Clients\IRepositoryClient.cs" />
     <Compile Include="Repository\Clients\IRepositoryClientFactory.cs" />
     <Compile Include="Repository\Clients\RepositoryClientFactory.cs" />
+    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\IRepositorySettings.cs" />
+    <Compile Include="Repository\Repository.cs" />
+    <Compile Include="Repository\RepositorySettings.cs" />
     <Compile Include="TeamCity\BusinessObjects\TeamCityBuild.cs" />
     <Compile Include="TeamCity\TeamCityClient.cs" />
     <Compile Include="Trello\BusinessObjects\Actions\Action.cs" />
@@ -106,6 +111,10 @@
     <ProjectReference Include="..\HttpInfrastructure\HttpInfrastructure.csproj">
       <Project>{efa14151-08f6-4647-bced-c891cb1e53f5}</Project>
       <Name>HttpInfrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{327bcda7-7088-40f0-bf33-43248348437d}</Project>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

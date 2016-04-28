@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Repository;
+using SKBKontur.TaskManagerClient.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
 
@@ -10,16 +10,16 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public class TasksListController : Controller
     {
-        private readonly IRepoService repoService;
+        private readonly IRepository repository;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly Type[] defaultTasksListBlocks = { typeof(BoardsBlock), typeof(CardListBlock), typeof(BugsBlock) };
 
 
         public TasksListController(
-            IRepoService repoService,
+            IRepository repository,
             ITaskManagerClient taskManagerClient)
         {
-            this.repoService = repoService;
+            this.repository = repository;
             this.taskManagerClient = taskManagerClient;
         }
 
@@ -53,7 +53,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         private async Task<BoardsBlock> BuildBoardsBlock()
         {
-            var repoTask = repoService.SelectBranchesMergedToReleaseCandidateAsync();
+            var repoTask = repository.SelectBranchesMergedToReleaseCandidateAsync();
             var boardsTask = taskManagerClient.GetOpenBoardsAsync("konturbilling");
 
             return new BoardsBlock
