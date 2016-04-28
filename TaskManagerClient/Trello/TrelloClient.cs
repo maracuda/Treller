@@ -172,7 +172,7 @@ namespace SKBKontur.TaskManagerClient.Trello
                 parameters = parameters.Union(queryString).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            return httpClient.SendGetAsync<T>(string.Format(string.Format("https://trello.com/1/{0}", format), id), parameters);
+            return httpClient.SendGetAsync<T>(string.Format($"https://trello.com/1/{format}", id), parameters);
         }
 
         private T GetTrelloData<T>(string id, string format, Dictionary<string, string> queryString = null)
@@ -183,7 +183,7 @@ namespace SKBKontur.TaskManagerClient.Trello
                 parameters = parameters.Union(queryString).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            return httpClient.SendGet<T>(string.Format(string.Format("https://trello.com/1/{0}", format), id), parameters);
+            return httpClient.SendGet<T>(string.Format($"https://trello.com/1/{format}", id), parameters);
         }
 
         private static CardChecklist CreateChecklist(Checklist list)

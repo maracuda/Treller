@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -9,13 +8,13 @@ namespace SKBKontur.TestInfrastructure.UnitWrappers
 {
     public class DataContractConstraint<T> : Constraint
     {
-        private readonly string expectedString;
-        private static XmlWriterSettings xmlSettings;
-        private static XmlSerializerNamespaces xmlNamespace;
+        private readonly string expectedStr;
+        private static readonly XmlWriterSettings xmlSettings;
+        private static readonly XmlSerializerNamespaces xmlNamespace;
 
         public DataContractConstraint(T expected)
         {
-            expectedString = ToXmlString(expected, typeof(T));
+            expectedStr = ToXmlString(expected);
         }
 
         static DataContractConstraint()
@@ -30,30 +29,16 @@ namespace SKBKontur.TestInfrastructure.UnitWrappers
             xmlNamespace.Add("", "");
         }
 
-        public override bool Matches(object actualValue)
+        public override ConstraintResult ApplyTo<TActual>(TActual actual)
         {
-            actual = actualValue;
-            if (!(actualValue is T))
-                return false;
-            return expectedString == ToXmlString((T)actualValue, typeof(T));
+            var actualStr = ToXmlString(actual);
+            var isMatches = string.Equals(expectedStr, actualStr);
+            return new EqualConstraintResult(new EqualConstraint(expectedStr), actualStr, isMatches);
         }
 
-        public override void WriteDescriptionTo(MessageWriter writer)
+        private static string ToXmlString<T>(T value)
         {
-            writer.WriteExpectedValue(expectedString);
-        }
-
-        public override void WriteActualValueTo(MessageWriter writer)
-        {
-            if (!(actual is T))
-                base.WriteActualValueTo(writer);
-            else
-                writer.WriteActualValue(ToXmlString((T)actual, typeof(T)));
-        }
-
-        private static string ToXmlString(object value, Type type)
-        {
-            var serializer = new XmlSerializer(type);
+            var serializer = new XmlSerializer(typeof(T));
             byte[] result;
             using (var stream = new MemoryStream())
             {

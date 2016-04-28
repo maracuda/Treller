@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using SKBKontur.TestInfrastructure.MockWrappers;
 
-namespace SKBKontur.TestInfrastructure.TestBases
+namespace SKBKontur.TestInfrastructure.Tests.UnitTests
 {
     [TestFixture]
     public abstract class UnitTest

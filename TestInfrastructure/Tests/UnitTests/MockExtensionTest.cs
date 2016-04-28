@@ -1,8 +1,7 @@
 ﻿using SKBKontur.TestInfrastructure.MockWrappers;
-using SKBKontur.TestInfrastructure.TestBases;
 using SKBKontur.TestInfrastructure.UnitWrappers;
 
-namespace SKBKontur.TestInfrastructure.Tests
+namespace SKBKontur.TestInfrastructure.Tests.UnitTests
 {
     public class MockExtensionTest : UnitTest
     {

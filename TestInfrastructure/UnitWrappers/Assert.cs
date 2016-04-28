@@ -29,11 +29,6 @@ namespace SKBKontur.TestInfrastructure.UnitWrappers
             NUnit.Framework.Assert.Fail(message);
         }
 
-        public static void IsNullOrEmpty(string value)
-        {
-            NUnit.Framework.Assert.IsNullOrEmpty(value);
-        }
-
         public static void Throws(Type exceptionType, Action testAction, string message = null)
         {
             NUnit.Framework.Assert.Throws(exceptionType, () => testAction(), message);

@@ -2,7 +2,6 @@
 using RestSharp.Serializers;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using TrelloNet;
 
 namespace SKBKontur.Treller.TestTreller
@@ -18,10 +17,10 @@ namespace SKBKontur.Treller.TestTreller
             container = configurator.Configure();
             var trelloClient = container.Get<ITaskManagerClient>();
             jsonSerializer = new JsonSerializer();
-            var trelloClientCredentials = container.Get<ITrelloUserCredentialService>();
-            var trelloCredential = trelloClientCredentials.GetCredentials();
+            var credentialService = container.Get<CredentialService>();
+            var trelloCredential = credentialService.GetCredentials();
             var trello = new Trello(trelloCredential.UserKey);
-            
+
             trello.Authorize(trelloCredential.UserToken);
 
             Do("get authorization uri", CheckAuthorizationUrl, trello);

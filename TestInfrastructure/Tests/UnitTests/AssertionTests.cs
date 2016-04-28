@@ -1,8 +1,7 @@
 ﻿using System;
-using SKBKontur.TestInfrastructure.TestBases;
 using SKBKontur.TestInfrastructure.UnitWrappers;
 
-namespace SKBKontur.TestInfrastructure.Tests
+namespace SKBKontur.TestInfrastructure.Tests.UnitTests
 {
     public class AssertionTests : UnitTest
     {
@@ -18,8 +17,6 @@ namespace SKBKontur.TestInfrastructure.Tests
             Assert.True(true);
             Assert.Throws(typeof(Exception), () => { throw new Exception("mess"); }, "mess");
             Assert.Throws<Exception>(() => { throw new Exception("mess"); }, "mess");
-            Assert.IsNullOrEmpty("");
-            Assert.IsNullOrEmpty(null);
         }
 
         public class SomeType
