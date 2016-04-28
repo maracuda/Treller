@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.TestInfrastructure.MockWrappers
+namespace SKBKontur.Treller.Tests.MockWrappers
 {
     public static class MockExtensions
     {

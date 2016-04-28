@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 
-namespace SKBKontur.TestInfrastructure.Tests.IntegrationTests
+namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
 {
     [TestFixture]
     public abstract class IntegrationTest

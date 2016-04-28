@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.TestInfrastructure.UnitWrappers;
-using Assert = SKBKontur.TestInfrastructure.UnitWrappers.Assert;
+using SKBKontur.Treller.Tests.UnitWrappers;
+using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
-namespace SKBKontur.TestInfrastructure.Tests.IntegrationTests.ClientTests
+namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
 {
     public class TrelloClientTest : IntegrationTest
     {

@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using NUnit.Framework.Constraints;
 
-namespace SKBKontur.TestInfrastructure.UnitWrappers
+namespace SKBKontur.Treller.Tests.UnitWrappers
 {
     public class DataContractConstraint<T> : Constraint
     {

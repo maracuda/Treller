@@ -1,7 +1,7 @@
 ﻿using SKBKontur.TaskManagerClient.Repository.Clients;
-using SKBKontur.TestInfrastructure.UnitWrappers;
+using SKBKontur.Treller.Tests.UnitWrappers;
 
-namespace SKBKontur.TestInfrastructure.Tests.IntegrationTests.ClientTests
+namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
 {
     public class GitlabClientTests : IntegrationTest
     {

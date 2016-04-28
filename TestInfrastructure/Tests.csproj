@@ -7,8 +7,8 @@
     <ProjectGuid>{2320772E-1FD3-46C8-8718-0DC9A104C8B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SKBKontur.TestInfrastructure</RootNamespace>
-    <AssemblyName>SKBKontur.TestInfrastructure</AssemblyName>
+    <RootNamespace>SKBKontur.Treller.Tests</RootNamespace>
+    <AssemblyName>SKBKontur.Treller.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

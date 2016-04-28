@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SKBKontur.TestInfrastructure.UnitWrappers
+namespace SKBKontur.Treller.Tests.UnitWrappers
 {
     public class SkipTestAttribute : IgnoreAttribute
     {

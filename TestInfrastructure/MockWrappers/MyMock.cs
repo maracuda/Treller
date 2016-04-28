@@ -1,7 +1,7 @@
 using System;
 using Rhino.Mocks;
 
-namespace SKBKontur.TestInfrastructure.MockWrappers
+namespace SKBKontur.Treller.Tests.MockWrappers
 {
     public class MyMock : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using System;
-using SKBKontur.TestInfrastructure.UnitWrappers;
+using SKBKontur.Treller.Tests.UnitWrappers;
 
-namespace SKBKontur.TestInfrastructure.Tests.UnitTests
+namespace SKBKontur.Treller.Tests.Tests.UnitTests
 {
     public class AssertionTests : UnitTest
     {

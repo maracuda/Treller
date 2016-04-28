@@ -5,7 +5,7 @@ using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
 
-namespace SKBKontur.TestInfrastructure.Tests.IntegrationTests.Configuration
+namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Configuration
 {
     public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService
     {
