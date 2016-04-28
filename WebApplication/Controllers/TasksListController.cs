@@ -23,11 +23,11 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             this.taskManagerClient = taskManagerClient;
         }
 
-        public ActionResult Index(ShowMode showMode = ShowMode.All)
+        public async Task<ActionResult> Index(ShowMode showMode = ShowMode.All)
         {
             var taskListViewModel = new TaskListViewModel
             {
-                BoardsBlock = BuildBoardsBlock().Result
+                BoardsBlock = await BuildBoardsBlock()
             };
 
             if (Request.IsAjaxRequest())
