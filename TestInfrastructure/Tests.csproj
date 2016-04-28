@@ -45,9 +45,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
-    <Reference Include="TrelloNet">
-      <HintPath>..\packages\TrelloNet.Temp.Fork.0.6.2\lib\net40-Client\TrelloNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MockWrappers\MockExtensions.cs" />
