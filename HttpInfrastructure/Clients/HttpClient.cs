@@ -13,15 +13,11 @@ namespace SKBKontur.HttpInfrastructure.Clients
     {
         public T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
-            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
-            {
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                using (var response = client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead).Result)
-                {
-                    ValidateResponse(response);
-                    return response.Content.ReadAsAsync<T>().Result;
-                }
-            }
+            return SendGetAsync<T>(url, queryParameters, cookies).Result;
+        }
+        public string SendGetAsString(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
+        {
+            return SendGetStringAsync(url, queryParameters, cookies).Result;
         }
 
         public async Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
@@ -32,19 +28,20 @@ namespace SKBKontur.HttpInfrastructure.Clients
                 using (var response = await client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead))
                 {
                     ValidateResponse(response);
-                    return await response.Content.ReadAsAsync<T>();
+                    return await response.Content.ReadAsAsync<T>().ConfigureAwait(false);
                 }
             }
         }
 
-        public string SendGetAsString(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
+        public async Task<string> SendGetStringAsync(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
             using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
             {
-                using (var response = client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead).Result)
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (var response = await client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead))
                 {
                     ValidateResponse(response);
-                    return response.Content.ReadAsStringAsync().Result;
+                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
             }
         }
@@ -169,7 +166,7 @@ namespace SKBKontur.HttpInfrastructure.Clients
             foreach (var parameter in queryParameters)
             {
                 stringBuilder.Append("&");
-                stringBuilder.Append(string.Format("{0}={1}", parameter.Key, HttpUtility.UrlEncode(parameter.Value)));
+                stringBuilder.Append($"{parameter.Key}={HttpUtility.UrlEncode(parameter.Value)}");
             }
 
             stringBuilder.Remove(url.Length + 1, 1);

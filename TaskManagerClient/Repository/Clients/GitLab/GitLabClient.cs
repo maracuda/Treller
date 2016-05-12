@@ -33,7 +33,7 @@ namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
                                      {"page", pageNumber.ToString(CultureInfo.InvariantCulture)},
                                      {"per_page", pageSize.ToString(CultureInfo.InvariantCulture)},
                                  };
-            return httpClient.SendGetAsync<Commit[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/commits", parameters).Result;
+            return httpClient.SendGet<Commit[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/commits", parameters);
         }
 
         public Branch[] SelectAllBranches()
