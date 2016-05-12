@@ -7,9 +7,11 @@ namespace SKBKontur.TaskManagerClient.Repository
 {
     public interface IRepository
     {
+        int BranchesNumber { get; }
+
         ReleasedBranch[] SelectBranchesMergedToReleaseCandidate();
         Task<ReleasedBranch[]> SelectBranchesMergedToReleaseCandidateAsync();
-        Branch[] SearchForOldBranches(TimeSpan olderThan);
+        Branch[] SearchForOldBranches(TimeSpan olderThan, TimeSpan? notOlderThan = null);
         Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches);
     }
 }

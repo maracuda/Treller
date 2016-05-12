@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.TaskManagerClient.Repository.Clients;
@@ -12,15 +13,20 @@ namespace SKBKontur.TaskManagerClient.Repository
     {
         private readonly IRepositoryClient repositoryClient;
         private readonly IRepositorySettings repositorySettings;
+        private readonly IDateTimeFactory dateTimeFactory;
 
         public Repository(
             IRepositorySettings repositorySettings,
-            IRepositoryClientFactory repositoryClientFactory
+            IRepositoryClientFactory repositoryClientFactory,
+            IDateTimeFactory dateTimeFactory
             )
         {
             this.repositorySettings = repositorySettings;
+            this.dateTimeFactory = dateTimeFactory;
             repositoryClient = repositoryClientFactory.CreateGitLabClient(repositorySettings.RepositoryId);
         }
+
+        public int BranchesNumber => repositoryClient.SelectAllBranches().Length;
 
         public ReleasedBranch[] SelectBranchesMergedToReleaseCandidate()
         {
@@ -64,11 +70,16 @@ namespace SKBKontur.TaskManagerClient.Repository
             return Task.FromResult(SelectBranchesMergedToReleaseCandidate());
         }
 
-        public Branch[] SearchForOldBranches(TimeSpan olderThan)
+        public Branch[] SearchForOldBranches(TimeSpan olderThan, TimeSpan? notOlderThan = null)
         {
-            var minLastActivityDate = DateTime.Now.Subtract(olderThan);
+            if (notOlderThan.HasValue && notOlderThan.Value < olderThan)
+                throw new ArgumentException($"Parameter notOlderThan ({notOlderThan.Value}) can't be lesser than olderThan parameter ({olderThan})");
+
+            var now = dateTimeFactory.Now;
+            var minLastActivityDate = now.Subtract(olderThan);
+            var maxLastActivityDate = notOlderThan.HasValue ? now.Subtract(notOlderThan.Value) : DateTime.MinValue;
             return repositoryClient.SelectAllBranches()
-                                   .Where(x => x.Commit.Committed_date < minLastActivityDate)
+                                   .Where(x => maxLastActivityDate < x.Commit.Committed_date && x.Commit.Committed_date < minLastActivityDate)
                                    .ToArray();
         }
 

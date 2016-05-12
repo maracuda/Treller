@@ -20,7 +20,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests
             var outstring2 = "outString2";
             var expected = "outString3";
             
-            using(mock.Expect())
+            using(mock.Record())
             {
                 assistent1.Expect(x => x.EditText(enterstring), outstring1);
                 assistent2.Expect(x => x.EditText(outstring1), outstring2);

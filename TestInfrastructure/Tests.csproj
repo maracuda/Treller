@@ -50,6 +50,7 @@
     <Compile Include="MockWrappers\MockExtensions.cs" />
     <Compile Include="MockWrappers\MyMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\DataGenerator.cs" />
     <Compile Include="Tests\IntegrationTests\ClientTests\TrelloClientTest.cs" />
     <Compile Include="Tests\IntegrationTests\Configuration\ClientsIntegrationCredentials.cs" />
     <Compile Include="Tests\IntegrationTests\Configuration\CredentialService.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Tests\IntegrationTests\Repository\RepositoryTest.cs" />
     <Compile Include="Tests\UnitTests\AssertionTests.cs" />
     <Compile Include="Tests\UnitTests\MockExtensionTest.cs" />
+    <Compile Include="Tests\UnitTests\Repository\RepositoryTest.cs" />
     <Compile Include="Tests\UnitTests\UnitTest.cs" />
     <Compile Include="UnitWrappers\Assert.cs" />
     <Compile Include="UnitWrappers\DataContractConstraint.cs" />

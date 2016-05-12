@@ -22,12 +22,12 @@ namespace SKBKontur.Treller.Tests.MockWrappers
             return _mockRepository.StrictMock<T>();
         }
 
-        public IDisposable Expect()
+        public IDisposable Record()
         {
             return _mockRepository.Record();
         }
 
-        public IDisposable ExpectOrdered()
+        public IDisposable RecordOrdered()
         {
             return _mockRepository.Ordered();
         }

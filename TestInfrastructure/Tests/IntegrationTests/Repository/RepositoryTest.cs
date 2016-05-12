@@ -19,7 +19,6 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
         public void TestSelectOldBranches()
         {
             var actual = repository.SearchForOldBranches(TimeSpan.FromDays(1));
-            var veryOldBranches = repository.SearchForOldBranches(TimeSpan.FromDays(90));
             Assert.True(actual.Length > 10);
         }
     }
