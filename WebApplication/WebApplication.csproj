@@ -469,6 +469,7 @@
     <None Include="Views\Activities\Index.cshtml" />
     <None Include="Views\Help\Index.cshtml" />
     <Content Include="Views\RoundDance\Duty.cshtml" />
+    <Content Include="Views\Repository\Index.cshtml" />
     <None Include="Views\VirtualMachines\Index.cshtml" />
     <None Include="Views\Statistics\Index.cshtml" />
     <None Include="Views\VirtualMachines\ShowLogs.cshtml" />
