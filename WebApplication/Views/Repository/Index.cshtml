@@ -1,4 +1,5 @@
-﻿@model SKBKontur.Treller.WebApplication.Implementation.Repository.OldBranchesModel
+﻿@using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions
+@model SKBKontur.Treller.WebApplication.Implementation.Repository.OldBranchesModel
 
 @{
     ViewBag.Title = "Репозиторий Контур.Биллинг";
@@ -7,6 +8,33 @@
 
 <h2>Репозиторий Контур.Биллинг</h2>
 <h3>Всего веток в репозитори @Model.TotalNumber</h3>
+
+@if (Model.OldBracnhes.Length == 0)
+{
+    <h4>У нас только свежиек ветки в репозитории!</h4>
+}
+else
+{
+    <h4>Старенькие ветки (последний коммит 30-60 дней назад)</h4>
+
+    <table style="font-size: 18px; padding-right: 10px;">
+        <tr>
+            <th>Имя ветки</th>
+            <th>Дата последнего коммита</th>
+            <th>Последний коммитер</th>
+        </tr>
+        @foreach (var oldBranch in Model.OldBracnhes)
+        {
+            <tr>
+                <td>@oldBranch.Name</td>
+                <td>@oldBranch.Commit.Committed_date.DateTimeFormat()</td>
+                <td>@oldBranch.Commit.Committer_email</td>
+            </tr>
+        }
+    </table>
+}
+
+<h4>Очень старенькие ветки (последний коммит более 60 дней назад)</h4>
 
 @*<style type="text/css">
     td, th {

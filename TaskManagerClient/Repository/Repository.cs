@@ -28,6 +28,12 @@ namespace SKBKontur.TaskManagerClient.Repository
 
         public int BranchesNumber => repositoryClient.SelectAllBranches().Length;
 
+        public async Task<int> GetBranchesNumberAsync()
+        {
+            var braches = await repositoryClient.SelectAllBranchesAsync().ConfigureAwait(false);
+            return braches.Length;
+        }
+
         public ReleasedBranch[] SelectBranchesMergedToReleaseCandidate()
         {
             var pageNumber = 0;
