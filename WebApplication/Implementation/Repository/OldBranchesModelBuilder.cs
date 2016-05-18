@@ -27,7 +27,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
         {
             return new OldBranchesModel
             {
-                TotalNumber = await repository.GetBranchesNumberAsync().ConfigureAwait(false),
+                TotalNumber = repository.BranchesNumber,
                 OldBracnhes = await repository.SearchForOldBranchesAsync(oldBranchMinTimeSpan, veryOldBracnhesTimeSpan).ConfigureAwait(false),
                 VeryOldBracnhes = await repository.SearchForOldBranchesAsync(veryOldBracnhesTimeSpan).ConfigureAwait(false)
             };

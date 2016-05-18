@@ -40,6 +40,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\AsyncHelpers.cs" />
     <Compile Include="Clients\HttpClient.cs" />
     <Compile Include="Clients\HttpClientException.cs" />
     <Compile Include="Clients\IHttpClient.cs" />

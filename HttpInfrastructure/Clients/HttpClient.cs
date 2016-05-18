@@ -13,7 +13,7 @@ namespace SKBKontur.HttpInfrastructure.Clients
     {
         public T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
-            return SendGetAsync<T>(url, queryParameters, cookies).Result;
+            return AsyncHelpers.RunSync(() => SendGetAsync<T>(url, queryParameters, cookies));
         }
         public string SendGetAsString(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
