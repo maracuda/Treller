@@ -17,8 +17,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
             return new OldBranchesModel
             {
                 TotalNumber = repository.BranchesNumber,
-                OldBracnhes = repository.SearchForOldBranches(oldBranchMinTimeSpan, veryOldBracnhesTimeSpan),
-                VeryOldBracnhes = repository.SearchForOldBranches(veryOldBracnhesTimeSpan)
+                //OldBracnhes = repository.SearchForOldBranches(oldBranchMinTimeSpan, veryOldBracnhesTimeSpan),
+                //VeryOldBracnhes = repository.SearchForOldBranches(veryOldBracnhesTimeSpan)
             };
         }
     }
