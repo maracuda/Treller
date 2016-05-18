@@ -99,7 +99,8 @@ namespace SKBKontur.TaskManagerClient.Repository
             var maxLastActivityDate = notOlderThan.HasValue ? now.Subtract(notOlderThan.Value) : DateTime.MinValue;
             var branches = await repositoryClient.SelectAllBranchesAsync().ConfigureAwait(false);
             return branches.Where(x => maxLastActivityDate < x.Commit.Committed_date && x.Commit.Committed_date < minLastActivityDate)
-                      .ToArray();
+                           .OrderBy(x => x.Commit.Committed_date)
+                           .ToArray();
         }
 
         public Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches)
