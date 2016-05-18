@@ -17,7 +17,7 @@ namespace SKBKontur.HttpInfrastructure.Clients
         }
         public string SendGetAsString(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
-            return SendGetStringAsync(url, queryParameters, cookies).Result;
+            return AsyncHelpers.RunSync(() => SendGetStringAsync(url, queryParameters, cookies));
         }
 
         public async Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)

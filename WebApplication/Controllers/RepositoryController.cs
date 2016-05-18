@@ -14,9 +14,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             this.oldBranchesModelBuilder = oldBranchesModelBuilder;
         }
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var oldBranchesModel = await oldBranchesModelBuilder.BuildAsync(TimeSpan.FromDays(30), TimeSpan.FromDays(60)).ConfigureAwait(false);
+            var oldBranchesModel = oldBranchesModelBuilder.Build(TimeSpan.FromDays(30), TimeSpan.FromDays(60));
             return View("Index", oldBranchesModel);
         }
     }
