@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 using SKBKontur.HttpInfrastructure.Clients;
 using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 
@@ -43,6 +44,15 @@ namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
                                      {"per_page", "1000"},
                                  };
             return httpClient.SendGet<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
+        }
+
+        public Task<Branch[]> SelectAllBranchesAsync()
+        {
+            var parameters = new Dictionary<string, string>(credentialParameters)
+                                 {
+                                     {"per_page", "1000"},
+                                 };
+            return httpClient.SendGetAsync<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
         }
     }
 }

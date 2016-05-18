@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using SKBKontur.TaskManagerClient.Repository;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Repository
@@ -19,6 +20,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
                 TotalNumber = repository.BranchesNumber,
                 //OldBracnhes = repository.SearchForOldBranches(oldBranchMinTimeSpan, veryOldBracnhesTimeSpan),
                 //VeryOldBracnhes = repository.SearchForOldBranches(veryOldBracnhesTimeSpan)
+            };
+        }
+
+        public async Task<OldBranchesModel> BuildAsync(TimeSpan oldBranchMinTimeSpan, TimeSpan veryOldBracnhesTimeSpan)
+        {
+            return new OldBranchesModel
+            {
+                TotalNumber = 100,//repository.BranchesNumber,
+                OldBracnhes = await repository.SearchForOldBranchesAsync(oldBranchMinTimeSpan, veryOldBracnhesTimeSpan).ConfigureAwait(false),//repository.SearchForOldBranches(oldBranchMinTimeSpan, veryOldBracnhesTimeSpan),
+                VeryOldBracnhes = await repository.SearchForOldBranchesAsync(veryOldBracnhesTimeSpan).ConfigureAwait(false)
             };
         }
     }
