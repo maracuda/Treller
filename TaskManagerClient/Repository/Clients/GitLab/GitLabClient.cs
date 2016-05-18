@@ -42,8 +42,7 @@ namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
                                  {
                                      {"per_page", "1000"},
                                  };
-
-            return httpClient.SendGetAsync<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters).Result;
+            return httpClient.SendGet<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
         }
     }
 }
