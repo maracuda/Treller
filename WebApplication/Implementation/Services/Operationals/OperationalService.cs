@@ -4,8 +4,8 @@ using SKBKontur.BlocksMapping.Blocks;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Digest;
+using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Notifications;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.Blocks;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
@@ -18,8 +18,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
         private readonly INewsService newsService;
         private readonly ICachedFileStorage cachedFileStorage;
         private readonly IBlocksBuilder blocksBuilder;
-        private readonly INotificationService notificationService;
         private readonly IDigestService digestService;
+        private readonly IErrorService errorService;
         private static bool _isTimerInProgress;
         private readonly Timer timer;
         private DateTime lastUpdateUtc;
@@ -31,13 +31,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                                   INewsService newsService,
                                   ICachedFileStorage cachedFileStorage,
                                   IBlocksBuilder blocksBuilder,
-                                  INotificationService notificationService,
-                                  IDigestService digestService)
+                                  IDigestService digestService,
+                                  IErrorService errorService)
         {
             this.taskCacher = taskCacher;
             this.blocksBuilder = blocksBuilder;
-            this.notificationService = notificationService;
             this.digestService = digestService;
+            this.errorService = errorService;
             this.newsService = newsService;
             this.cachedFileStorage = cachedFileStorage;
 
@@ -68,7 +68,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                 }
                 catch (Exception ex)
                 {
-                    notificationService.SendErrorReport("Актуализатор кэша не смог отработать!", ex);
+                    errorService.SendError("Актуализатор кэша не смог отработать!", ex);
                     return;
                 }
 
@@ -88,7 +88,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                 }
                 catch (Exception ex)
                 {
-                    notificationService.SendErrorReport("Проблема в обновлении данных для новостей", ex);
+                    errorService.SendError("Проблема в обновлении данных для новостей", ex);
                     return;
                 }
                 
@@ -105,7 +105,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                     {
                         if ((DateTime.Now - lastNewsError).TotalDays > 1)
                         {
-                            notificationService.SendErrorReport("Не смог отправить новости!", ex);
+                            errorService.SendError("Не смог отправить новости!", ex);
                         }
                         lastNewsError = DateTime.Now;
                     }
@@ -120,7 +120,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                 {
                     if ((DateTime.Now - lastError).TotalDays > 1)
                     {
-                        notificationService.SendErrorReport("Не смог отправить в дайджест!", ex);
+                        errorService.SendError("Не смог отправить в дайджест!", ex);
                     }
                     lastError = DateTime.Now;
                 }

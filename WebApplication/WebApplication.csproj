@@ -251,6 +251,8 @@
     <Compile Include="Implementation\Services\Digest\IDigestService.cs" />
     <Compile Include="Implementation\Services\Digest\ISocialNetworkClient.cs" />
     <Compile Include="Implementation\Services\Digest\StaffClient.cs" />
+    <Compile Include="Implementation\Services\ErrorService\ErrorService.cs" />
+    <Compile Include="Implementation\Services\ErrorService\IErrorService.cs" />
     <Compile Include="Implementation\Services\News\CardNewsModel.cs" />
     <Compile Include="Implementation\Services\News\INewsService.cs" />
     <Compile Include="Implementation\Services\News\NewsEmail.cs" />

@@ -20,6 +20,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
     {
         private const string CardNewsName = "CardNews";
         private const string NewsEmailsStoreName = "NewsEmailsToSend";
+        private const string DefaultNotificationEmail = "hvorost@skbkontur.ru";
 
         #region init
 
@@ -106,12 +107,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             };
         }
 
-        private NewsEmail CreateDefaultEmail()
+        private static NewsEmail CreateDefaultEmail()
         {
             return new NewsEmail
             {
-                TechnicalEmail = notificationService.GetNotificationRecipient(),
-                ReleaseEmail = notificationService.GetNotificationRecipient()
+                TechnicalEmail = DefaultNotificationEmail,
+                ReleaseEmail = DefaultNotificationEmail
             };
         }
 
@@ -218,7 +219,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             }
 
             var body = string.Format("{1}{0}{0}Вы можете ответить на это письмо, если у вас возникли вопросы или комментарии касающиеся релизов{0}{0}--{0}С уважением, команда Контур.Биллинг", inHtmlStyle ? "<br/>" : Environment.NewLine, newsModel.NewsText);
-            notificationService.SendMessage(emails.GetEmail(technical), newsModel.NewsHeader, body, inHtmlStyle);
+            notificationService.SendMessage(emails.GetEmail(technical), newsModel.NewsHeader, body, inHtmlStyle, "ask.billing@skbkontur.ru");
 
             foreach (var card in newsModel.Cards)
             {

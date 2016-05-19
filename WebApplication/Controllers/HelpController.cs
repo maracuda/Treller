@@ -1,28 +1,28 @@
 ﻿using System.Web.Mvc;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Implementation.Help;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Notifications;
+using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public class HelpController : Controller
     {
         private readonly IBugTrackerClient bugTrackerClient;
-        private readonly INotificationService notificationService;
+        private readonly IErrorService errorService;
 
-        public HelpController(IBugTrackerClient bugTrackerClient, INotificationService notificationService)
+        public HelpController(
+            IBugTrackerClient bugTrackerClient,
+            IErrorService errorService)
         {
             this.bugTrackerClient = bugTrackerClient;
-            this.notificationService = notificationService;
+            this.errorService = errorService;
         }
 
         public ActionResult Index()
         {
-            var notificationRecipient = notificationService.GetNotificationRecipient();
-
             return View("Index", new HelpViewModel
             {
-                NotificationRecipientEmail = notificationRecipient
+                NotificationRecipientEmail = errorService.ErrorRecipientEmail
             });
         }
 
@@ -47,15 +47,13 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public ActionResult UpdateNotificationEmail(string email)
         {
-            notificationService.ChangeNotificationRecipient(email);
-
+            errorService.ChangeErrorRecipientEmail(email);
             return RedirectToAction("Index");
         }
 
         public ActionResult SendNotification(string text)
         {
-            notificationService.SendErrorReport(text, null);
-
+            errorService.SendError(text, null);
             return RedirectToAction("Index");
         }
     }
