@@ -38,14 +38,14 @@ namespace SKBKontur.Treller.WebApplication.Controllers
                 commiterIndex[veryOldBranch.Commit.Committer_email].Add(veryOldBranch.Name);
             }
 
-            foreach (var emailToBranchesIndex in commiterIndex)
+            foreach (var emailToBranchesPair in commiterIndex)
             {
                 var body = "Дорогой разработчик!\r\n\r\n" +
-                           $"Спешу сообщить тебе, что у нас в репозитории есть очень старые ветки: {string.Join(",", emailToBranchesIndex.Value)}.\r\n" +
+                           $"Спешу сообщить тебе, что у нас в репозитории есть очень старые ветки: {string.Join(",", emailToBranchesPair.Value)}.\r\n" +
                            "По воле случая ты был последним, кто коммитил в эту ветку/и.\r\n" +
                            "Пожалуйста, посмотри нельзя ли закрыть эти ветки (репозиторию очень тяжело от большого количества веток).\r\n\r\n" +
-                           "С любовью твой автоматический уведомлятор.";
-                notificationService.SendMessage("hvorost@skbkontur.ru", "Уведомление о старых ветках", body, false, "hvorost@skbkontur.ru");
+                           "С любовью твой автоматический уведомлятор.\r\n";
+                notificationService.SendMessage(emailToBranchesPair.Key, "Уведомление о старых ветках", body, false, "hvorost@skbkontur.ru");
             }
 
             return RedirectToAction("Index");
