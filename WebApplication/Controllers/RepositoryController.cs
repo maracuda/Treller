@@ -45,7 +45,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
                            "По воле случая ты был последним, кто коммитил в эту ветку/и.\r\n" +
                            "Пожалуйста, посмотри нельзя ли закрыть эти ветки (репозиторию очень тяжело от большого количества веток).\r\n\r\n" +
                            "С любовью твой автоматический уведомлятор.\r\n";
-                notificationService.SendMessage("hvorost@skbkontur.ru", "Уведомление о старых ветках", body, false, "hvorost@skbkontur.ru");
+                notificationService.SendMessage(emailToBranchesPair.Key, "Уведомление о старых ветках", body, false, "hvorost@skbkontur.ru");
             }
 
             return RedirectToAction("Index");
