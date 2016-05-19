@@ -29,7 +29,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Notifications
                 };
                 if (!string.IsNullOrEmpty(replyTo))
                 {
-                    message.ReplyToList.Add(replyTo);
+                    message.ReplyToList.Add(new MailAddress(replyTo));
                 }
                 smtpClient.Send(message);
             }
