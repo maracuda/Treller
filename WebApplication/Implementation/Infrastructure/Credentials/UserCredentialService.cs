@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
@@ -10,16 +11,25 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
 {
     public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService, IAdService, IStaffAdCredentialService
     {
+        private readonly IFileSystemHandler fileSystemHandler;
         private readonly Lazy<ClientsIntegrationCredentials> credentials;
 
         public UserCredentialService(IFileSystemHandler fileSystemHandler)
         {
-            credentials = new Lazy<ClientsIntegrationCredentials>(() => fileSystemHandler.FindSafeInJsonUtf8File<ClientsIntegrationCredentials>("LogIn.json"));
+            this.fileSystemHandler = fileSystemHandler;
+            credentials = new Lazy<ClientsIntegrationCredentials>(LoadCredendials);
+        }
+
+        private ClientsIntegrationCredentials LoadCredendials()
+        {
+            var result = fileSystemHandler.FindSafeInJsonUtf8File<ClientsIntegrationCredentials>("LogIn.json");
+            if (result == null)
+                throw new Exception($"Fail to load credentials from file LogIn.json at directory {Directory.GetCurrentDirectory()}");
+            return result;
         }
 
         public TrelloCredential GetCredentials()
         {
-            
             return credentials.Value.TrelloClientCredentials;
         }
 

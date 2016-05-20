@@ -1,6 +1,8 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
+﻿using System;
+
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
 {
-    public interface IOperationalService
+    public interface IOperationalService : IDisposable
     {
         void Start();
     }

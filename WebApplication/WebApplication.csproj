@@ -262,6 +262,7 @@
     <Compile Include="Implementation\Services\Notifications\INotificationService.cs" />
     <Compile Include="Implementation\Services\Notifications\NotificationService.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />
+    <Compile Include="Implementation\Services\Operationals\IOperationalService2.cs" />
     <Compile Include="Implementation\Services\Operationals\OperationalService.cs" />
     <Compile Include="Implementation\Services\Settings\BoardSettings.cs" />
     <Compile Include="Implementation\Services\Settings\ISettingService.cs" />
