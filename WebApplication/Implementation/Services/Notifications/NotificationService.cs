@@ -35,6 +35,29 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Notifications
             }
         }
 
+        public void Send(Notification notification)
+        {
+            if (string.IsNullOrEmpty(notification.Recipient))
+                return;
+
+            using (var smtpClient = CreateClient())
+            {
+                var message = new MailMessage(senderEmail, notification.Recipient, notification.Title, notification.Body)
+                {
+                    IsBodyHtml = notification.IsHtml,
+                };
+                if (!string.IsNullOrEmpty(notification.ReplyTo))
+                {
+                    message.ReplyToList.Add(new MailAddress(notification.ReplyTo));
+                }
+                if (!string.IsNullOrEmpty(notification.CopyTo))
+                {
+                    message.CC.Add(new MailAddress(notification.CopyTo));
+                }
+                smtpClient.Send(message);
+            }
+        }
+
         private SmtpClient CreateClient()
         {
             var credentials = adService.GetDeliveryCredentials();

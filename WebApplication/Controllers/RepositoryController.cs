@@ -10,26 +10,29 @@ namespace SKBKontur.Treller.WebApplication.Controllers
     {
         private readonly IOldBranchesModelBuilder oldBranchesModelBuilder;
         private readonly INotificationService notificationService;
+        private readonly INotificationBuilder notificationBuilder;
 
         public RepositoryController(
             IOldBranchesModelBuilder oldBranchesModelBuilder,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            INotificationBuilder notificationBuilder)
         {
             this.oldBranchesModelBuilder = oldBranchesModelBuilder;
             this.notificationService = notificationService;
+            this.notificationBuilder = notificationBuilder;
         }
 
         public ActionResult Index()
         {
-            var oldBranchesModel = oldBranchesModelBuilder.Build(TimeSpan.FromDays(30), TimeSpan.FromDays(60));
+            var oldBranchesModel = oldBranchesModelBuilder.Build(TimeSpan.FromDays(15));
             return View("Index", oldBranchesModel);
         }
 
         public ActionResult NotifyCommitersAboutOldBranches()
         {
             var commiterIndex = new Dictionary<string, List<string>>();
-            var oldBranchesModel = oldBranchesModelBuilder.Build(TimeSpan.FromDays(30), TimeSpan.FromDays(60));
-            foreach (var veryOldBranch in oldBranchesModel.VeryOldBracnhes)
+            var oldBranchesModel = oldBranchesModelBuilder.Build(TimeSpan.FromDays(15));
+            foreach (var veryOldBranch in oldBranchesModel.OldBracnhes)
             {
                 if (!commiterIndex.ContainsKey(veryOldBranch.Commit.Committer_email))
                 {
@@ -40,12 +43,8 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
             foreach (var emailToBranchesPair in commiterIndex)
             {
-                var body = "Дорогой разработчик!\r\n\r\n" +
-                           $"Спешу сообщить тебе, что у нас в репозитории есть очень старые ветки: {string.Join(",", emailToBranchesPair.Value)}.\r\n" +
-                           "По воле случая ты был последним, кто коммитил в эту ветку/и.\r\n" +
-                           "Пожалуйста, посмотри нельзя ли закрыть эти ветки (репозиторию очень тяжело от большого количества веток).\r\n\r\n" +
-                           "С любовью твой автоматический уведомлятор.\r\n";
-                notificationService.SendMessage(emailToBranchesPair.Key, "Уведомление о старых ветках", body, false, "hvorost@skbkontur.ru");
+                var notification = notificationBuilder.BuildForOldBranchNotification(emailToBranchesPair.Key, emailToBranchesPair.Value);
+                notificationService.Send(notification);
             }
 
             return RedirectToAction("Index");

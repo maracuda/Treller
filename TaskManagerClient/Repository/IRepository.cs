@@ -12,7 +12,6 @@ namespace SKBKontur.TaskManagerClient.Repository
         ReleasedBranch[] SelectBranchesMergedToReleaseCandidate();
         Task<ReleasedBranch[]> SelectBranchesMergedToReleaseCandidateAsync();
         Branch[] SearchForOldBranches(TimeSpan olderThan, TimeSpan? notOlderThan = null);
-        Task<Branch[]> SearchForOldBranchesAsync(TimeSpan olderThan, TimeSpan? notOlderThan = null);
         Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches);
     }
 }

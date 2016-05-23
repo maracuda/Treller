@@ -89,20 +89,6 @@ namespace SKBKontur.TaskManagerClient.Repository
                                    .ToArray();
         }
 
-        public async Task<Branch[]> SearchForOldBranchesAsync(TimeSpan olderThan, TimeSpan? notOlderThan = null)
-        {
-            if (notOlderThan.HasValue && notOlderThan.Value < olderThan)
-                throw new ArgumentException($"Parameter notOlderThan ({notOlderThan.Value}) can't be lesser than olderThan parameter ({olderThan})");
-
-            var now = dateTimeFactory.Now;
-            var minLastActivityDate = now.Subtract(olderThan);
-            var maxLastActivityDate = notOlderThan.HasValue ? now.Subtract(notOlderThan.Value) : DateTime.MinValue;
-            var branches = await repositoryClient.SelectAllBranchesAsync().ConfigureAwait(false);
-            return branches.Where(x => maxLastActivityDate < x.Commit.Committed_date && x.Commit.Committed_date < minLastActivityDate)
-                           .OrderBy(x => x.Commit.Committed_date)
-                           .ToArray();
-        }
-
         public Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches)
         {
             var result = rcBranches.DistinctBy(x => x.Name).ToDictionary(x => x.Name, x => false);

@@ -6,6 +6,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
     {
         public int TotalNumber { get; set; }
         public Branch[] OldBracnhes { get; set; }
-        public Branch[] VeryOldBracnhes { get; set; }
+        public Branch[] MergedBranches { get; set; }
     }
 }

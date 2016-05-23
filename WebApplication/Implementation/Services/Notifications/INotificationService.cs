@@ -3,5 +3,6 @@
     public interface INotificationService
     {
         void SendMessage(string recipientEmail, string messageTitle, string messageBody, bool inHtmlStyle, string replyTo = null);
+        void Send(Notification notification);
     }
 }

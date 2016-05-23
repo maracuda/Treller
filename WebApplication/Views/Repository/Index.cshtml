@@ -15,7 +15,7 @@
 }
 else
 {
-    <h4>Старенькие ветки (последний коммит 30-60 дней назад)</h4>
+    <h4>Старенькие ветки</h4>
 
     <table style="font-size: 18px; padding-right: 10px;">
         <tr>
@@ -32,25 +32,25 @@ else
             </tr>
         }
     </table>
+}
 
-    if (Model.VeryOldBracnhes.Length > 0)
-    {
-        <h4>Очень старенькие ветки (последний коммит более 60 дней назад)</h4>
+@if (Model.MergedBranches.Length > 0)
+{
+    <h4>Ветки влитые в релиз, но не удаленные</h4>
 
-        <table style="font-size: 18px; padding-right: 10px;">
+    <table style="font-size: 18px; padding-right: 10px;">
+        <tr>
+            <th>Имя ветки</th>
+            <th style="padding-left: 10px;">Дата последнего коммита</th>
+            <th style="padding-left: 10px;">Последний коммитер</th>
+        </tr>
+        @foreach (var mergedBranch in Model.MergedBranches)
+        {
             <tr>
-                <th>Имя ветки</th>
-                <th style="padding-left: 10px;">Дата последнего коммита</th>
-                <th style="padding-left: 10px;">Последний коммитер</th>
+                <td>@mergedBranch.Name</td>
+                <td style="padding-left: 10px;">@mergedBranch.Commit.Committed_date.DateTimeFormat()</td>
+                <td style="padding-left: 10px;">@mergedBranch.Commit.Committer_email</td>
             </tr>
-            @foreach (var veryOldBranch in Model.VeryOldBracnhes)
-            {
-                <tr>
-                    <td>@veryOldBranch.Name</td>
-                    <td style="padding-left: 10px;">@veryOldBranch.Commit.Committed_date.DateTimeFormat()</td>
-                    <td style="padding-left: 10px;">@veryOldBranch.Commit.Committer_email</td>
-                </tr>
-            }
-        </table>
-    }
+        }
+    </table>
 }
