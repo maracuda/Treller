@@ -54,3 +54,10 @@ else
         }
     </table>
 }
+
+@if (Model.MergedToRC.Length > 0)
+{
+    <h4>Ветки влитые в RC</h4>
+
+    <div>@string.Join(",", Model.MergedToRC.Select(x => x.Name))</div>
+}

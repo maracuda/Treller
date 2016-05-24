@@ -18,7 +18,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
             {
                 TotalNumber = repository.BranchesNumber,
                 OldBracnhes = repository.SearchForOldBranches(oldBranchMinTimeSpan),
-                ReleasedBranches = repository.SearchForMergedToReleaseBranches(oldBranchMinTimeSpan)
+                ReleasedBranches = repository.SearchForMergedToReleaseBranches(oldBranchMinTimeSpan),
+                MergedToRC = repository.SelectBranchesMergedToReleaseCandidate()
             };
         }
     }
