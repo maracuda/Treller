@@ -78,15 +78,15 @@ namespace SKBKontur.TaskManagerClient.Repository
             var now = dateTimeFactory.Now;
             var minLastActivityDate = now.Subtract(olderThan);
             var maxLastActivityDate = notOlderThan.HasValue ? now.Subtract(notOlderThan.Value) : DateTime.MinValue;
-            return repositoryClient.SelectAllBranches()
-                                   .Where(x => maxLastActivityDate < x.Commit.Committed_date && x.Commit.Committed_date < minLastActivityDate)
-                                   .ToArray();
+            return SelectAllBranchesExceptNotTracked()
+                    .Where(x => maxLastActivityDate < x.Commit.Committed_date && x.Commit.Committed_date < minLastActivityDate)
+                    .ToArray();
         }
 
         public ReleasedBranch[] SearchForMergedToReleaseBranches(TimeSpan notOlderThan)
         {
             var lastCommitDate = dateTimeFactory.Now.Subtract(notOlderThan);
-            var branchNames = repositoryClient.SelectAllBranches().Select(x => x.Name).ToArray();
+            var branchNames = SelectAllBranchesExceptNotTracked().Select(x => x.Name).ToArray();
 
             var pageNumber = 0;
             var result = new List<ReleasedBranch>();
@@ -127,6 +127,12 @@ namespace SKBKontur.TaskManagerClient.Repository
                     return result.ToArray();
                 }
             }
+        }
+
+        private IEnumerable<Branch> SelectAllBranchesExceptNotTracked()
+        {
+            return repositoryClient.SelectAllBranches()
+                                   .Where(x => !repositorySettings.NotTrackedBrancheNames.Contains(x.Name));
         }
 
         public Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches)
