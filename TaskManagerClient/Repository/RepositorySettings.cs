@@ -8,7 +8,7 @@ namespace SKBKontur.TaskManagerClient.Repository
         {
             NotTrackedBrancheNames = new HashSet<string>(new[]
             {
-                ReleaseCandidateBranchName, ReleaseBranchName, "hotfixes", "Autotests"
+                ReleaseCandidateBranchName, ReleaseBranchName, "hotfixes", "Autotests", "autotests/trunk"
             });
         }
 
