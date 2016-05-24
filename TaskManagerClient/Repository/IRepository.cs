@@ -8,10 +8,10 @@ namespace SKBKontur.TaskManagerClient.Repository
     public interface IRepository
     {
         int BranchesNumber { get; }
-        Task<int> GetBranchesNumberAsync();
         ReleasedBranch[] SelectBranchesMergedToReleaseCandidate();
         Task<ReleasedBranch[]> SelectBranchesMergedToReleaseCandidateAsync();
         Branch[] SearchForOldBranches(TimeSpan olderThan, TimeSpan? notOlderThan = null);
+        ReleasedBranch[] SearchForMergedToReleaseBranches(TimeSpan notOlderThan);
         Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches);
     }
 }

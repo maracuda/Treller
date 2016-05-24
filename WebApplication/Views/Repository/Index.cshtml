@@ -34,7 +34,7 @@ else
     </table>
 }
 
-@if (Model.MergedBranches.Length > 0)
+@if (Model.ReleasedBranches.Length > 0)
 {
     <h4>Ветки влитые в релиз, но не удаленные</h4>
 
@@ -44,12 +44,12 @@ else
             <th style="padding-left: 10px;">Дата последнего коммита</th>
             <th style="padding-left: 10px;">Последний коммитер</th>
         </tr>
-        @foreach (var mergedBranch in Model.MergedBranches)
+        @foreach (var releasedBranch in Model.ReleasedBranches)
         {
             <tr>
-                <td>@mergedBranch.Name</td>
-                <td style="padding-left: 10px;">@mergedBranch.Commit.Committed_date.DateTimeFormat()</td>
-                <td style="padding-left: 10px;">@mergedBranch.Commit.Committer_email</td>
+                <td>@releasedBranch.Name</td>
+                <td style="padding-left: 10px;">@releasedBranch.LastCommit.Created_at.DateTimeFormat()</td>
+                <td style="padding-left: 10px;">@releasedBranch.LastCommit.Author_email</td>
             </tr>
         }
     </table>

@@ -56,7 +56,7 @@
     <Compile Include="Tests\IntegrationTests\Configuration\CredentialService.cs" />
     <Compile Include="Tests\IntegrationTests\InrtegrationTest.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\GitlabClientTests.cs" />
-    <Compile Include="Tests\IntegrationTests\Repository\RepoCommitTest.cs" />
+    <Compile Include="Tests\IntegrationTests\Repository\CommitTest.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\RepositoryTest.cs" />
     <Compile Include="Tests\UnitTests\AssertionTests.cs" />
     <Compile Include="Tests\UnitTests\MockExtensionTest.cs" />

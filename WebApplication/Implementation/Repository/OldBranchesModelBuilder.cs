@@ -1,6 +1,5 @@
 using System;
 using SKBKontur.TaskManagerClient.Repository;
-using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Repository
 {
@@ -19,7 +18,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
             {
                 TotalNumber = repository.BranchesNumber,
                 OldBracnhes = repository.SearchForOldBranches(oldBranchMinTimeSpan),
-                MergedBranches = new Branch[0]
+                ReleasedBranches = repository.SearchForMergedToReleaseBranches(TimeSpan.FromDays(10))
             };
         }
     }

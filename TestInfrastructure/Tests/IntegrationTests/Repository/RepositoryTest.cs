@@ -16,10 +16,17 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
         }
 
         [Test]
-        public void TestSelectOldBranches()
+        public void TestSearchForOldBranches()
         {
             var actual = repository.SearchForOldBranches(TimeSpan.FromDays(1));
             Assert.True(actual.Length > 10);
+        }
+
+        [Test]
+        public void TestSearchForMergedBranches()
+        {
+            var actual = repository.SearchForMergedToReleaseBranches(TimeSpan.FromDays(10));
+            Assert.True(actual.Length > 0);
         }
     }
 }

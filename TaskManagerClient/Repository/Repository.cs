@@ -28,12 +28,6 @@ namespace SKBKontur.TaskManagerClient.Repository
 
         public int BranchesNumber => repositoryClient.SelectAllBranches().Length;
 
-        public async Task<int> GetBranchesNumberAsync()
-        {
-            var braches = await repositoryClient.SelectAllBranchesAsync().ConfigureAwait(false);
-            return braches.Length;
-        }
-
         public ReleasedBranch[] SelectBranchesMergedToReleaseCandidate()
         {
             var pageNumber = 0;
@@ -87,6 +81,52 @@ namespace SKBKontur.TaskManagerClient.Repository
             return repositoryClient.SelectAllBranches()
                                    .Where(x => maxLastActivityDate < x.Commit.Committed_date && x.Commit.Committed_date < minLastActivityDate)
                                    .ToArray();
+        }
+
+        public ReleasedBranch[] SearchForMergedToReleaseBranches(TimeSpan notOlderThan)
+        {
+            var lastCommitDate = dateTimeFactory.Now.Subtract(notOlderThan);
+            var branchNames = repositoryClient.SelectAllBranches().Select(x => x.Name).ToArray();
+
+            var pageNumber = 0;
+            var result = new List<ReleasedBranch>();
+
+            while (true)
+            {
+                var commits = repositoryClient.SelectLastBranchCommits(repositorySettings.ReleaseBranchName, pageNumber++, 100)
+                              .Where(c => c.Created_at > lastCommitDate)
+                              .ToArray();
+                foreach (var commit in commits)
+                {
+                    if (!commit.IsMerge())
+                        continue;
+
+                    if (commit.IsMerge(repositorySettings.ReleaseBranchName))
+                    {
+                        var branchName = commit.ParseFromBranchName();
+                        if (branchName.HasNoValue)
+                        {
+                            //TODO: hande this case
+                            continue;
+                        }
+
+                        if (branchNames.Contains(branchName.Value, StringComparer.OrdinalIgnoreCase))
+                        {
+                            result.Add(new ReleasedBranch
+                            {
+                                Name = branchName.Value,
+                                LastCommit = commit,
+                                IsReleased = true
+                            });
+                        }
+                    }
+                }
+
+                if (commits.Length < 100)
+                {
+                    return result.ToArray();
+                }
+            }
         }
 
         public Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches)
