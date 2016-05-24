@@ -11,11 +11,11 @@
 
 @if (Model.OldBracnhes.Length == 0)
 {
-    <h4>У нас только свежиек ветки в репозитории!</h4>
+    <h3>У нас только свежиек ветки в репозитории!</h3>
 }
 else
 {
-    <h4>Старенькие ветки</h4>
+    <h3>Старенькие ветки</h3>
 
     <table style="font-size: 18px; padding-right: 10px;">
         <tr>
@@ -36,7 +36,7 @@ else
 
 @if (Model.ReleasedBranches.Length > 0)
 {
-    <h4>Ветки влитые в релиз, но не удаленные</h4>
+    <h3>Ветки влитые в релиз, но не удаленные</h3>
 
     <table style="font-size: 18px; padding-right: 10px;">
         <tr>
@@ -57,7 +57,7 @@ else
 
 @if (Model.MergedToRC.Length > 0)
 {
-    <h4>Ветки влитые в RC</h4>
+    <h3>Ветки влитые в RC</h3>
 
     <div>@string.Join(",", Model.MergedToRC.Select(x => x.Name))</div>
 }
