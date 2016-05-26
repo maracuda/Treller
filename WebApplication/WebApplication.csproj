@@ -213,10 +213,8 @@
     <Compile Include="Implementation\Infrastructure\Abstractions\ContextKeys.cs" />
     <Compile Include="Implementation\Infrastructure\Abstractions\DomainService.cs" />
     <Compile Include="Implementation\Infrastructure\Abstractions\IocContainer.cs" />
-    <Compile Include="Implementation\Infrastructure\Credentials\AdCredentials.cs" />
     <Compile Include="Implementation\Infrastructure\Credentials\ClientsIntegrationCredentials.cs" />
     <Compile Include="Implementation\Infrastructure\Credentials\IStaffAdCredentialService.cs" />
-    <Compile Include="Implementation\Infrastructure\Credentials\IAdService.cs" />
     <Compile Include="Implementation\Infrastructure\Credentials\UserCredentialService.cs" />
     <Compile Include="Implementation\Infrastructure\Extensions\EntityExtenssions.cs" />
     <Compile Include="Implementation\Infrastructure\Extensions\EnumerableExtensions.cs" />
@@ -263,9 +261,6 @@
     <Compile Include="Implementation\Services\News\NewsModel.cs" />
     <Compile Include="Implementation\Services\News\NewsService.cs" />
     <Compile Include="Implementation\Services\News\NewsViewModel.cs" />
-    <Compile Include="Implementation\Services\Notifications\INotificationService.cs" />
-    <Compile Include="Implementation\Services\Notifications\Notification.cs" />
-    <Compile Include="Implementation\Services\Notifications\NotificationService.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService2.cs" />
     <Compile Include="Implementation\Services\Operationals\OperationalService.cs" />

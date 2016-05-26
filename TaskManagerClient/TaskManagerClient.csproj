@@ -37,6 +37,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CredentialServiceAbstractions\DomainCredentials.cs" />
     <Compile Include="CredentialServiceAbstractions\ITrelloUserCredentialService.cs" />
     <Compile Include="CredentialServiceAbstractions\IWikiCredentialService.cs" />
     <Compile Include="CredentialServiceAbstractions\IYouTrackCredentialService.cs" />
@@ -58,6 +59,10 @@
     <Compile Include="IContinuousIntegrationClient.cs" />
     <Compile Include="ITaskManagerClient.cs" />
     <Compile Include="IWikiClient.cs" />
+    <Compile Include="Notifications\INotificationCredentialsService.cs" />
+    <Compile Include="Notifications\INotificationService.cs" />
+    <Compile Include="Notifications\Notification.cs" />
+    <Compile Include="Notifications\NotificationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BusinessObjects\Branch.cs" />
     <Compile Include="Repository\BusinessObjects\BranchLastCommit.cs" />

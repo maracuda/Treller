@@ -1,6 +1,6 @@
 ﻿using System;
+using SKBKontur.TaskManagerClient.Notifications;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Notifications;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService
 {
@@ -24,8 +24,14 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService
         public string ErrorRecipientEmail { get; private set; }
         public void SendError(string title, Exception ex)
         {
-            var body = $"{title}{Environment.NewLine}{ex}";
-            notificationService.SendMessage(ErrorRecipientEmail, title, body, false);
+            var notification = new Notification
+            {
+                Title = title,
+                Body = $"{title}{Environment.NewLine}{ex}",
+                IsHtml = false,
+                Recipient = ErrorRecipientEmail,
+            };
+            notificationService.Send(notification);
         }
 
         public void ChangeErrorRecipientEmail(string email)

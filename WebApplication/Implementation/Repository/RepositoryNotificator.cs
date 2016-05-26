@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using SKBKontur.TaskManagerClient.Notifications;
 using SKBKontur.TaskManagerClient.Repository;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Notifications;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Repository
 {

@@ -7,8 +7,8 @@ using Microsoft.Ajax.Utilities;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
+using SKBKontur.TaskManagerClient.Notifications;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Notifications;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
@@ -219,7 +219,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             }
 
             var body = string.Format("{1}{0}{0}Вы можете ответить на это письмо, если у вас возникли вопросы или комментарии касающиеся релизов{0}{0}--{0}С уважением, команда Контур.Биллинг", inHtmlStyle ? "<br/>" : Environment.NewLine, newsModel.NewsText);
-            notificationService.SendMessage(emails.GetEmail(technical), newsModel.NewsHeader, body, inHtmlStyle, "ask.billing@skbkontur.ru");
+            var notification = new Notification
+            {
+                Title = newsModel.NewsHeader,
+                Body = body,
+                IsHtml = inHtmlStyle,
+                Recipient = emails.GetEmail(technical),
+                ReplyTo = "ask.billing@skbkontur.ru"
+            };
+            notificationService.Send(notification);
 
             foreach (var card in newsModel.Cards)
             {

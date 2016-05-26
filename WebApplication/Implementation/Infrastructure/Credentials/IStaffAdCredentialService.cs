@@ -1,7 +1,9 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials
+﻿using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
+
+namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials
 {
     public interface IStaffAdCredentialService
     {
-        AdCredentials GetStaffCredentials();
+        DomainCredentials GetStaffCredentials();
     }
 }

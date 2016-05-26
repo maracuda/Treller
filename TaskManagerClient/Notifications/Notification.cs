@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Services.Notifications
+﻿namespace SKBKontur.TaskManagerClient.Notifications
 {
     public class Notification
     {
