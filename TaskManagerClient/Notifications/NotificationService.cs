@@ -11,7 +11,7 @@ namespace SKBKontur.TaskManagerClient.Notifications
         public NotificationService(INotificationCredentialsService notificationCredentialsService)
         {
             this.notificationCredentialsService = notificationCredentialsService;
-            senderEmail = $"{notificationCredentialsService.GetDeliveryCredentials().Login}@skbkontur.ru";
+            senderEmail = $"{notificationCredentialsService.GetNotificationCredentials().Login}@skbkontur.ru";
         }
 
         public void Send(Notification notification)
@@ -39,7 +39,7 @@ namespace SKBKontur.TaskManagerClient.Notifications
 
         private SmtpClient CreateClient()
         {
-            var credentials = notificationCredentialsService.GetDeliveryCredentials();
+            var credentials = notificationCredentialsService.GetNotificationCredentials();
             return new SmtpClient("dag3.kontur", 25)
             {
                 UseDefaultCredentials = false,

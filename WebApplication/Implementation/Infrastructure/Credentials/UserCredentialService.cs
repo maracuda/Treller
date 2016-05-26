@@ -49,7 +49,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
             return credentials.Value.WikiCredentials;
         }
 
-        public DomainCredentials GetDeliveryCredentials()
+        public DomainCredentials GetNotificationCredentials()
         {
             return credentials.Value.NotificationCredentials;
         }
