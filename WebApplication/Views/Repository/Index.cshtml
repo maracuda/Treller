@@ -31,6 +31,14 @@ else
                 <td style="padding-left: 10px;">@oldBranch.Commit.Committer_email</td>
             </tr>
         }
+        @using (Html.BeginForm("NotifyCommitersAboutOldBranches", "Repository", FormMethod.Post))
+        {
+            <tr>
+                <td> </td>
+                <td style="padding-left: 10px;"></td>
+                <td style="padding-left: 10px;"><input type="submit" value="Отправить уведомления" class="news__button news_actualize_button" /></td>
+            </tr>
+        }
     </table>
 }
 
@@ -50,6 +58,14 @@ else
                 <td>@releasedBranch.Name</td>
                 <td style="padding-left: 10px;">@releasedBranch.LastCommit.Created_at.DateTimeFormat()</td>
                 <td style="padding-left: 10px;">@releasedBranch.LastCommit.Author_email</td>
+            </tr>
+        }
+        @using (Html.BeginForm("NotifyCommitersAboutMergedBranches", "Repository", FormMethod.Post))
+        {
+            <tr>
+                <td> </td>
+                <td style="padding-left: 10px;"></td>
+                <td style="padding-left: 10px;"><input type="submit" value="Отправить уведомления" class="news__button news_actualize_button"/></td>
             </tr>
         }
     </table>

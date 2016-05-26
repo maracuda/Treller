@@ -6,7 +6,6 @@ using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.TaskManagerClient.Repository;
 using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
@@ -16,7 +15,6 @@ using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
-using WebGrease.Css.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
 {
@@ -27,7 +25,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
         private readonly IUserAvatarViewModelBuilder userAvatarViewModelBuilder;
         private readonly ICardStageInfoBuilder cardStageInfoBuilder;
         private readonly ITaskCacher taskCacher;
-        private readonly IRepository repository;
         private readonly IBugTrackerClient bugTrackerClient;
         private readonly IWikiClient wikiClient;
         private readonly IBugsBuilder bugsBuilder;
@@ -37,7 +34,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
                                IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
                                ICardStageInfoBuilder cardStageInfoBuilder,
                                ITaskCacher taskCacher,
-                               IRepository repository,
                                IBugTrackerClient bugTrackerClient,
                                IWikiClient wikiClient,
                                IBugsBuilder bugsBuilder)
@@ -47,7 +43,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
             this.userAvatarViewModelBuilder = userAvatarViewModelBuilder;
             this.cardStageInfoBuilder = cardStageInfoBuilder;
             this.taskCacher = taskCacher;
-            this.repository = repository;
             this.bugTrackerClient = bugTrackerClient;
             this.wikiClient = wikiClient;
             this.bugsBuilder = bugsBuilder;
@@ -71,20 +66,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
             return settings.Select(x => x.Key).ToArray();
         }
 
-        [BlockModel(ContextKeys.TasksKey)]
-        [BlockModelParameter("rcBranchesModel")]
-        public ReleasedBranch[] BuildReleaseCandidateBranches()
-        {
-            return repository.SelectBranchesMergedToReleaseCandidate();
-        }
-
-        [BlockModel(ContextKeys.TasksKey)]
-        public ReleasedBranch[] BuildReleaseCandidateReleasedBranches([BlockModelParameter("rcBranchesModel")] ReleasedBranch[] rcBranches)
-        {
-            var isReleased = repository.CheckForReleased(rcBranches);
-            rcBranches.ForEach(x => x.IsReleased = isReleased[x.Name]);
-            return rcBranches.Where(x => !x.IsReleased).ToArray();
-        }
 
         [BlockModel(ContextKeys.TasksKey)]
         private BoardCard[] BuildCards([BlockModelParameter("boardIds")] string[] boardIds)

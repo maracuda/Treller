@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 
 namespace SKBKontur.TaskManagerClient.Repository
@@ -9,9 +7,7 @@ namespace SKBKontur.TaskManagerClient.Repository
     {
         int BranchesNumber { get; }
         ReleasedBranch[] SelectBranchesMergedToReleaseCandidate();
-        Task<ReleasedBranch[]> SelectBranchesMergedToReleaseCandidateAsync();
         Branch[] SearchForOldBranches(TimeSpan olderThan, TimeSpan? notOlderThan = null);
         ReleasedBranch[] SearchForMergedToReleaseBranches(TimeSpan notOlderThan);
-        Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches);
     }
 }

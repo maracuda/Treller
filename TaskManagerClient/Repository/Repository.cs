@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using SKBKontur.Infrastructure.Common;
-using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.TaskManagerClient.Repository.Clients;
 
@@ -63,11 +61,6 @@ namespace SKBKontur.TaskManagerClient.Repository
                 }
             }
             return result.Select(x => x.Value).Where(x => !repositorySettings.NotTrackedBrancheNames.Contains(x.Name)).ToArray();
-        }
-
-        public Task<ReleasedBranch[]> SelectBranchesMergedToReleaseCandidateAsync()
-        {
-            return Task.FromResult(SelectBranchesMergedToReleaseCandidate());
         }
 
         public Branch[] SearchForOldBranches(TimeSpan olderThan, TimeSpan? notOlderThan = null)
@@ -133,20 +126,6 @@ namespace SKBKontur.TaskManagerClient.Repository
         {
             return repositoryClient.SelectAllBranches()
                                    .Where(x => !repositorySettings.NotTrackedBrancheNames.Contains(x.Name));
-        }
-
-        public Dictionary<string, bool> CheckForReleased(ReleasedBranch[] rcBranches)
-        {
-            var result = rcBranches.DistinctBy(x => x.Name).ToDictionary(x => x.Name, x => false);
-            foreach (var branch in rcBranches)
-            {
-                var repoCommits = repositoryClient.SelectLastBranchCommits(branch.Name, 0, 10);
-                if (repoCommits.Where(repoCommit => repoCommit.IsMerge()).Any(repoCommit => repoCommit.IsMerge(branch.Name, repositorySettings.ReleaseBranchName)))
-                {
-                    result[branch.Name] = true;
-                }
-            }
-            return result;
         }
     }
 }
