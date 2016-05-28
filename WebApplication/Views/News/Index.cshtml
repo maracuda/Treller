@@ -17,13 +17,13 @@
             Актуализировать
         </a>
     </span>
-    
+
     <span class="news-block header">
         <a class="news__button news_actualize_button" href="@Url.Action("ResetBattleEmails", "News")">
             Заполнить боевые адреса для отправки почты
         </a>
     </span>
-    
+
     @using (Html.BeginForm("UpdateTechnicalEmail", "News", FormMethod.Post))
     {
         @Html.TextBox("technicalEmail", Model.TechnicalEmail, new { placeholder = "Адрес для технической рассылки", title = "Адрес для технической рассылки", @class = "news_actualize_text_area" });
@@ -31,11 +31,16 @@
         <input type="submit" value="Сохранить адреса" class="news__button news_actualize_button" />
     }
 
+    <h3>Технические новости</h3>
 
-    @if (Model.TechnicalNewsToPublish != null)
+    @if (Model.TechnicalNewsToPublish == null)
     {
-        <h3>Технические новости</h3>
-
+        <div class="news-block">
+            Нет технических новостей для отправки
+        </div>
+    }
+    else
+    {
         <div class="news-block">
             <div class="news-block__header clearfix">
                 <span class="news-block__column title">Заголовок</span>
@@ -56,10 +61,16 @@
         </div>
     }
 
-    @if (Model.NewsToPublish != null)
-    {
-        <h3>Бизнес новости</h3>
+    <h3>Публичные новости</h3>
 
+    @if (Model.NewsToPublish == null)
+    {
+        <div class="news-block">
+            Нет публичных новостей для отправки
+        </div>
+    }
+    else
+    {
         <div class="news-block">
             <div class="news-block__header clearfix">
                 <span class="news-block__column title">Заголовок</span>
@@ -79,7 +90,7 @@
         </div>
     }
     @if (Model.ActualCards.Length > 0)
-    {
+            {
         <h3>Карточки для новостей</h3>
 
         <div class="news-block">
@@ -93,14 +104,14 @@
             @foreach (var card in Model.ActualCards)
             {
                 <div class="news-block__row clearfix fitrow" title="@(card.NewsText ?? card.TechnicalNewsText)">
-                <span class="news-block__column title" title="@card.CardDescription">@card.CardName</span>
-                <span class="news-block__column date">@card.CardReleaseDate.ToString("dd.MM.yyyy")</span>
-                <span class="news-block__column action">
-                    <a class="news__button fitrow" href="@Url.Action("DeleteCardFromNews", "News", new { cardId = card.CardId })">
-                        Убрать из новостей
-                    </a>
-                </span>
-            </div>
+                    <span class="news-block__column title" title="@card.CardDescription">@card.CardName</span>
+                    <span class="news-block__column date">@card.CardReleaseDate.ToString("dd.MM.yyyy")</span>
+                    <span class="news-block__column action">
+                        <a class="news__button fitrow" href="@Url.Action("DeleteCardFromNews", "News", new { cardId = card.CardId })">
+                            Убрать из новостей
+                        </a>
+                    </span>
+                </div>
             }
         </div>
     }
