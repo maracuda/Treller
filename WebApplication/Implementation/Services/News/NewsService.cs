@@ -20,7 +20,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
     {
         private const string CardNewsName = "CardNews";
         private const string NewsEmailsStoreName = "NewsEmailsToSend";
-        private const string DefaultNotificationEmail = "hvorost@skbkontur.ru";
+        private const string DefaultMailingList = "hvorost@skbkontur.ru";
 
         #region init
 
@@ -93,26 +93,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         public NewsViewModel GetNews()
         {
             var cardsForNews = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
-            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? CreateDefaultEmail();
-
             return new NewsViewModel
             {
-                ReleaseEmail = emails.ReleaseEmail,
-                TechnicalEmail = emails.TechnicalEmail,
                 NewsToPublish = BuildNewsModel(cardsForNews, false),
                 TechnicalNewsToPublish = BuildNewsModel(cardsForNews, true),
                 NotActualCards = cardsForNews.Where(x => x.IsPublished() || x.IsDeleted).ToArray(),
                 CardsWihoutNews = cardsForNews.Where(x => !x.IsPublished() && !x.IsDeleted && !x.IsNewsExists()).ToArray(),
                 ActualCards = cardsForNews.Where(x => !x.IsPublished() && !x.IsDeleted && x.IsNewsExists()).ToArray()
-            };
-        }
-
-        private static NewsEmail CreateDefaultEmail()
-        {
-            return new NewsEmail
-            {
-                TechnicalEmail = DefaultNotificationEmail,
-                ReleaseEmail = DefaultNotificationEmail
             };
         }
 
@@ -209,7 +196,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         private void SendNews(bool technical)
         {
-            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? CreateDefaultEmail();
             var cards = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
             var inHtmlStyle = true;
             var newsModel = BuildNewsModel(cards, technical, inHtmlStyle);
@@ -224,7 +210,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                 Title = newsModel.NewsHeader,
                 Body = body,
                 IsHtml = inHtmlStyle,
-                Recipient = emails.GetEmail(technical),
+                Recipient = technical ? NewsSettings.TechMailingList : NewsSettings.PublicMailingList,
                 ReplyTo = "ask.billing@skbkontur.ru"
             };
             notificationService.Send(notification);
@@ -239,10 +225,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public void UpdateEmail(string technicalEmail, string releaseEmail)
         {
-            var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName) ?? CreateDefaultEmail();
-
-            emails.ReleaseEmail = releaseEmail;
-            emails.TechnicalEmail = technicalEmail;
+            var emails = new NewsEmail
+            {
+                TechnicalEmail = !string.IsNullOrEmpty(technicalEmail) ? technicalEmail : NewsSettings.TechMailingList,
+                ReleaseEmail = !string.IsNullOrEmpty(releaseEmail) ? releaseEmail : NewsSettings.PublicMailingList
+            };
             cachedFileStorage.Write(NewsEmailsStoreName, emails);
         }
 
@@ -254,6 +241,27 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         public bool IsAnyNewsExists()
         {
             return (cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0]).Any(x => x.IsNewsExists() && !x.IsPublished() && !x.IsDeleted);
+        }
+
+        public NewsSettings NewsSettings
+        {
+            get
+            {
+                var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName);
+                if (emails == null)
+                {
+                    return new NewsSettings
+                    {
+                        TechMailingList = DefaultMailingList,
+                        PublicMailingList = DefaultMailingList
+                    };
+                }
+                return new NewsSettings
+                {
+                    TechMailingList = emails.TechnicalEmail,
+                    PublicMailingList = emails.ReleaseEmail
+                };
+            }
         }
     }
 }

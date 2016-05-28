@@ -6,16 +6,20 @@ namespace SKBKontur.Treller.WebApplication.Controllers
     public class NewsController : Controller
     {
         private readonly INewsService newsService;
+        private readonly INewsModelBuilder newsModelBuilder;
 
-        public NewsController(INewsService newsService)
+        public NewsController(
+            INewsService newsService,
+            INewsModelBuilder newsModelBuilder)
         {
             this.newsService = newsService;
+            this.newsModelBuilder = newsModelBuilder;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var news = newsService.GetNews();
+            var news = newsModelBuilder.Build();
             return View("Index", news);
         }
 

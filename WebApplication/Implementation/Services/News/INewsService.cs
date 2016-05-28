@@ -2,6 +2,10 @@
 {
     public interface INewsService
     {
+        //TODO list:
+        //Integrate NewsType: tech or public notification
+        //Introduce proper domain model without information about any cards etc
+        //Decompose service layer from ui interpretation
         void Refresh();
         NewsViewModel GetNews();
         void DeleteCard(string cardId);
@@ -11,5 +15,6 @@
         void UpdateEmail(string technicalEmail, string releaseEmail);
         void UpdateEmailToBattleValues();
         bool IsAnyNewsExists();
+        NewsSettings NewsSettings { get; }
     }
 }

@@ -2,8 +2,7 @@
 {
     public class NewsViewModel
     {
-        public string ReleaseEmail { get; set; }
-        public string TechnicalEmail { get; set; }
+        public NewsSettings Settings { get; set; }
 
         public NewsModel TechnicalNewsToPublish { get; set; }
         public NewsModel NewsToPublish { get; set; }
