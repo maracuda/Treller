@@ -19,11 +19,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
     public class NewsService : INewsService
     {
         private const string CardNewsName = "CardNews";
-        private const string NewsEmailsStoreName = "NewsEmailsToSend";
-        private const string DefaultMailingList = "hvorost@skbkontur.ru";
 
         #region init
-
 
         private readonly ICachedFileStorage cachedFileStorage;
         private readonly ISettingService settingService;
@@ -31,13 +28,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
         private readonly INotificationService notificationService;
+        private readonly INewsSettingsService newsSettingsService;
 
         public NewsService(ICachedFileStorage cachedFileStorage,
                            ISettingService settingService,
                            ITaskCacher taskCacher,
                            ITaskManagerClient taskManagerClient,
                            ICardStateInfoBuilder cardStateInfoBuilder,
-                           INotificationService notificationService)
+                           INotificationService notificationService,
+                           INewsSettingsService newsSettingsService)
         {
             this.cachedFileStorage = cachedFileStorage;
             this.settingService = settingService;
@@ -45,6 +44,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
             this.notificationService = notificationService;
+            this.newsSettingsService = newsSettingsService;
         }
         #endregion
 
@@ -210,7 +210,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                 Title = newsModel.NewsHeader,
                 Body = body,
                 IsHtml = inHtmlStyle,
-                Recipient = technical ? NewsSettings.TechMailingList : NewsSettings.PublicMailingList,
+                Recipient = technical ? newsSettingsService.GetOrRead().TechMailingList : newsSettingsService.GetOrRead().PublicMailingList,
                 ReplyTo = "ask.billing@skbkontur.ru"
             };
             notificationService.Send(notification);
@@ -223,45 +223,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             cachedFileStorage.Write(CardNewsName, cards);
         }
 
-        public void UpdateEmail(string technicalEmail, string releaseEmail)
-        {
-            var emails = new NewsEmail
-            {
-                TechnicalEmail = !string.IsNullOrEmpty(technicalEmail) ? technicalEmail : NewsSettings.TechMailingList,
-                ReleaseEmail = !string.IsNullOrEmpty(releaseEmail) ? releaseEmail : NewsSettings.PublicMailingList
-            };
-            cachedFileStorage.Write(NewsEmailsStoreName, emails);
-        }
-
-        public void UpdateEmailToBattleValues()
-        {
-            UpdateEmail("tech.news.billing@skbkontur.ru", "news.billing@skbkontur.ru");
-        }
-
         public bool IsAnyNewsExists()
         {
             return (cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0]).Any(x => x.IsNewsExists() && !x.IsPublished() && !x.IsDeleted);
-        }
-
-        public NewsSettings NewsSettings
-        {
-            get
-            {
-                var emails = cachedFileStorage.Find<NewsEmail>(NewsEmailsStoreName);
-                if (emails == null)
-                {
-                    return new NewsSettings
-                    {
-                        TechMailingList = DefaultMailingList,
-                        PublicMailingList = DefaultMailingList
-                    };
-                }
-                return new NewsSettings
-                {
-                    TechMailingList = emails.TechnicalEmail,
-                    PublicMailingList = emails.ReleaseEmail
-                };
-            }
         }
     }
 }

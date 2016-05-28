@@ -19,12 +19,12 @@
     </span>
 
     <span class="news-block header">
-        <a class="news__button news_actualize_button" href="@Url.Action("ResetBattleEmails", "News")">
+        <a class="news__button news_actualize_button" href="@Url.Action("ResetSettings", "News")">
             Заполнить боевые адреса для отправки почты
         </a>
     </span>
 
-    @using (Html.BeginForm("UpdateTechnicalEmail", "News", FormMethod.Post))
+    @using (Html.BeginForm("UpdateSettings", "News", FormMethod.Post))
     {
         @Html.TextBox("technicalEmail", Model.Settings.TechMailingList, new { placeholder = "Адрес технической рассылки", title = "Адрес технической рассылки", @class = "news_actualize_text_area" });
         @Html.TextBox("releaseEmail", Model.Settings.PublicMailingList, new { placeholder = "Адрес публичной рассылки", title = "Адрес публичной рассылки", @class = "news_actualize_text_area" });

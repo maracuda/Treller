@@ -258,11 +258,13 @@
     <Compile Include="Implementation\Services\News\CardNewsModel.cs" />
     <Compile Include="Implementation\Services\News\INewModelBuilder.cs" />
     <Compile Include="Implementation\Services\News\INewsService.cs" />
+    <Compile Include="Implementation\Services\News\INewsSettingsService.cs" />
     <Compile Include="Implementation\Services\News\NewsEmail.cs" />
     <Compile Include="Implementation\Services\News\NewsModel.cs" />
     <Compile Include="Implementation\Services\News\NewsModelBuilder.cs" />
     <Compile Include="Implementation\Services\News\NewsService.cs" />
     <Compile Include="Implementation\Services\News\NewsSettings.cs" />
+    <Compile Include="Implementation\Services\News\NewsSettingsService.cs" />
     <Compile Include="Implementation\Services\News\NewsViewModel.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService2.cs" />
