@@ -44,7 +44,8 @@ namespace SKBKontur.Treller.WebApplication
 
             operationalService2 = container.Get<IOperationalService2>();
             operationalService2.RegisterRegularProccess("NewsRefresher", () => container.Get<INewsService>().Refresh(), TimeSpan.FromMinutes(5));
-            operationalService2.RegisterRegularProccess("DigestSender", () => container.Get<IDigestService>().SendAllToDigest(), TimeSpan.FromMinutes(5));
+            //NOTE: turn off this process since it always fails (staff need personal domain account to send messages)
+            //operationalService2.RegisterRegularProccess("DigestSender", () => container.Get<IDigestService>().SendAllToDigest(), TimeSpan.FromMinutes(5));
         }
 
         protected void Application_End()
