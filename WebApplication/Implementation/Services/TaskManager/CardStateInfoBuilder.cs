@@ -16,7 +16,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
             this.cardStateBuilder = cardStateBuilder;
         }
 
-        public CardStateInfo Build(CardAction[] actions, Dictionary<string, BoardSettings> boardSettings, Dictionary<string, BoardList[]> boardLists)
+        public CardStateInfo Build(CardAction[] actions, Dictionary<string, KanbanBoardMetaInfo> boardSettings, Dictionary<string, BoardList[]> boardLists)
         {
             var currentState = CardState.Unknown;
             var firstAction = actions.OrderBy(x => x.Date).FirstOrDefault() ?? new CardAction { Date = new DateTime(2014, 1, 1) };
@@ -24,8 +24,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
 
             foreach (var action in actions.OrderBy(x => x.Date))
             {
-                BoardSettings setting;
-                if (!boardSettings.TryGetValue(action.BoardId, out setting))
+                KanbanBoardMetaInfo metaInfo;
+                if (!boardSettings.TryGetValue(action.BoardId, out metaInfo))
                 {
                     if (currentState >= CardState.Develop && currentState <= CardState.Testing)
                     {
@@ -38,7 +38,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
 
                 if (action.ToListId != null || action.ListId != null)
                 {
-                    var newState = boardLists.ContainsKey(action.BoardId) ? cardStateBuilder.GetState(action.ToListId ?? action.ListId, setting, boardLists[action.BoardId]) : CardState.BeforeDevelop;
+                    var newState = boardLists.ContainsKey(action.BoardId) ? cardStateBuilder.GetState(action.ToListId ?? action.ListId, metaInfo, boardLists[action.BoardId]) : CardState.BeforeDevelop;
                     if (newState != currentState)
                     {
                         if (states.ContainsKey(currentState))

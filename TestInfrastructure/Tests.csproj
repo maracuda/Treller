@@ -55,6 +55,7 @@
     <Compile Include="Tests\IntegrationTests\Configuration\ClientsIntegrationCredentials.cs" />
     <Compile Include="Tests\IntegrationTests\Configuration\CredentialService.cs" />
     <Compile Include="Tests\IntegrationTests\InrtegrationTest.cs" />
+    <Compile Include="Tests\IntegrationTests\Kanban\KanbanMetaInfoBuilderTest.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\GitlabClientTests.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\CommitTest.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\RepositoryTest.cs" />
@@ -82,6 +83,10 @@
     <ProjectReference Include="..\TaskManagerClient\TaskManagerClient.csproj">
       <Project>{4a46c69f-d586-40d6-9e41-8eae7e0d0935}</Project>
       <Name>TaskManagerClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebApplication\WebApplication.csproj">
+      <Project>{964c7d15-d146-4482-8b80-28f9971bacd7}</Project>
+      <Name>WebApplication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

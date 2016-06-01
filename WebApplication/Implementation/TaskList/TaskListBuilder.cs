@@ -21,7 +21,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
     public class TaskListBuilder
     {
         private readonly ITaskManagerClient taskManagerClient;
-        private readonly ISettingService settingService;
+        private readonly IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder;
         private readonly IUserAvatarViewModelBuilder userAvatarViewModelBuilder;
         private readonly ICardStageInfoBuilder cardStageInfoBuilder;
         private readonly ITaskCacher taskCacher;
@@ -30,7 +30,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
         private readonly IBugsBuilder bugsBuilder;
 
         public TaskListBuilder(ITaskManagerClient taskManagerClient,
-                               ISettingService settingService,
+                               IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder,
                                IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
                                ICardStageInfoBuilder cardStageInfoBuilder,
                                ITaskCacher taskCacher,
@@ -39,7 +39,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
                                IBugsBuilder bugsBuilder)
         {
             this.taskManagerClient = taskManagerClient;
-            this.settingService = settingService;
+            this.kanbanBoardMetaInfoBuilder = kanbanBoardMetaInfoBuilder;
             this.userAvatarViewModelBuilder = userAvatarViewModelBuilder;
             this.cardStageInfoBuilder = cardStageInfoBuilder;
             this.taskCacher = taskCacher;
@@ -49,19 +49,19 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
         }
 
         [BlockModel(ContextKeys.TasksKey)]
-        public Dictionary<string, BoardSettings> BuildSettings(CardListEnterModel enterModel)
+        public Dictionary<string, KanbanBoardMetaInfo> BuildSettings(CardListEnterModel enterModel)
         {
             if (enterModel == null || enterModel.BoardIds == null || enterModel.BoardIds.Length == 0)
             {
-                return settingService.GetDevelopingBoards().ToDictionary(x => x.Id);
+                return kanbanBoardMetaInfoBuilder.BuildForAllOpenBoards().ToDictionary(x => x.Id);
             }
 
-            return settingService.GetDevelopingBoards().Where(x => enterModel.BoardIds.Contains(x.Id)).ToDictionary(x => x.Id);
+            return kanbanBoardMetaInfoBuilder.BuildForAllOpenBoards().Where(x => enterModel.BoardIds.Contains(x.Id)).ToDictionary(x => x.Id);
         }
 
         [BlockModel(ContextKeys.TasksKey)]
         [BlockModelParameter("boardIds")]
-        private string[] BuildSettings(Dictionary<string, BoardSettings> settings)
+        private string[] BuildSettings(Dictionary<string, KanbanBoardMetaInfo> settings)
         {
             return settings.Select(x => x.Key).ToArray();
         }
@@ -105,7 +105,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
 
         [BlockModel(ContextKeys.TasksKey)]
         private CardStateOverallViewModel[] BuildCards(BoardCard[] cards, Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
-                                                   Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
+                                                   Dictionary<string, KanbanBoardMetaInfo> boardSettings, ILookup<string, CardAction> cardActions,
                                                    ILookup<string, CardChecklist> cardChecklists, ReleasedBranch[] branches,
                                                    Dictionary<string, BugsInfoViewModel> bugs, CardListEnterModel cardListEnterModel)
         {
@@ -190,7 +190,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskList
         }
 
         private CardListItemViewModel BuildCard(Dictionary<string, User> users, ILookup<string, BoardList> boardLists, 
-                                                Dictionary<string, BoardSettings> boardSettings, ILookup<string, CardAction> cardActions,
+                                                Dictionary<string, KanbanBoardMetaInfo> boardSettings, ILookup<string, CardAction> cardActions,
                                                 ILookup<string, CardChecklist> cardChecklists, BoardCard card, HashSet<string> rcBranches,
                                                 BugsInfoViewModel bugs)
         {

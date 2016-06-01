@@ -16,15 +16,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
     {
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
-        private readonly ISettingService settingService;
+        private readonly IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder;
         private readonly ICachedFileStorage cachedFileStorage;
         private const string StatisticsFileStoreName = "billingTeamStatisticsInfo";
 
-        public StatisticsService(ITaskManagerClient taskManagerClient, ICardStateInfoBuilder cardStateInfoBuilder, ISettingService settingService, ICachedFileStorage cachedFileStorage)
+        public StatisticsService(ITaskManagerClient taskManagerClient, ICardStateInfoBuilder cardStateInfoBuilder, IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder, ICachedFileStorage cachedFileStorage)
         {
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
-            this.settingService = settingService;
+            this.kanbanBoardMetaInfoBuilder = kanbanBoardMetaInfoBuilder;
             this.cachedFileStorage = cachedFileStorage;
         }
 
@@ -36,7 +36,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
                 return result;
             }
 
-            var boards = settingService.GetDevelopingBoardsWithClosed();
+            var boards = kanbanBoardMetaInfoBuilder.GetDevelopingBoardsWithClosed();
             var lists = taskManagerClient.GetBoardLists(boards.Select(x => x.Id).ToArray()).GroupBy(x => x.BoardId).ToDictionary(x => x.Key, x => x.ToArray());
             var boardSettings = boards.ToDictionary(x => x.Id);
 
@@ -63,7 +63,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
             return result;
         }
 
-        private TeamCardStatisticsModel BuildBoardsStatistics(CardAction[] allActions, Dictionary<string, BoardSettings> boardSettings, Dictionary<string, BoardList[]> boardLists)
+        private TeamCardStatisticsModel BuildBoardsStatistics(CardAction[] allActions, Dictionary<string, KanbanBoardMetaInfo> boardSettings, Dictionary<string, BoardList[]> boardLists)
         {
             
             var result = new TeamCardStatisticsModel{MinReleaseTime = new TimeSpan(10, 0, 0, 0)};

@@ -7,6 +7,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
 {
     public interface ICardStateInfoBuilder
     {
-        CardStateInfo Build(CardAction[] actions, Dictionary<string, BoardSettings> boardSettings, Dictionary<string, BoardList[]> boardLists);
+        CardStateInfo Build(CardAction[] actions, Dictionary<string, KanbanBoardMetaInfo> boardSettings, Dictionary<string, BoardList[]> boardLists);
     }
 }

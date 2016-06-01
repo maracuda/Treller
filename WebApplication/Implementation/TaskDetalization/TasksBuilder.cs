@@ -20,7 +20,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskDetalization
     public class TasksBuilder
     {
         private readonly ITaskManagerClient taskManagerClient;
-        private readonly ISettingService settingService;
+        private readonly IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
         private readonly IUserAvatarViewModelBuilder userAvatarViewModelBuilder;
         private readonly ICardStateBuilder cardStateBuilder;
@@ -29,7 +29,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskDetalization
         private readonly IBugsBuilder bugsBuilder;
 
         public TasksBuilder(ITaskManagerClient taskManagerClient, 
-                            ISettingService settingService,
+                            IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder,
                             ICardStateInfoBuilder cardStateInfoBuilder,
                             IUserAvatarViewModelBuilder userAvatarViewModelBuilder,
                             ICardStateBuilder cardStateBuilder,
@@ -38,7 +38,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskDetalization
                             IBugsBuilder bugsBuilder)
         {
             this.taskManagerClient = taskManagerClient;
-            this.settingService = settingService;
+            this.kanbanBoardMetaInfoBuilder = kanbanBoardMetaInfoBuilder;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
             this.userAvatarViewModelBuilder = userAvatarViewModelBuilder;
             this.cardStateBuilder = cardStateBuilder;
@@ -48,9 +48,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskDetalization
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private Dictionary<string, BoardSettings> BuildBoardSettings()
+        private Dictionary<string, KanbanBoardMetaInfo> BuildBoardSettings()
         {
-            return settingService.GetDevelopingBoards().ToDictionary(x => x.Id);
+            return kanbanBoardMetaInfoBuilder.BuildForAllOpenBoards().ToDictionary(x => x.Id);
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
@@ -130,13 +130,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.TaskDetalization
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardStateInfo BuildCardStateInfo(CardAction[] actions, Dictionary<string, BoardSettings> boardSettings, Dictionary<string, BoardList[]> boardLists)
+        private CardStateInfo BuildCardStateInfo(CardAction[] actions, Dictionary<string, KanbanBoardMetaInfo> boardSettings, Dictionary<string, BoardList[]> boardLists)
         {
             return cardStateInfoBuilder.Build(actions, boardSettings, boardLists);
         }
 
         [BlockModel(ContextKeys.TaskDetalizationKey)]
-        private CardState BuildCardState(BoardCard card, Dictionary<string, BoardSettings> boardSettings, Dictionary<string, BoardList[]> boardLists)
+        private CardState BuildCardState(BoardCard card, Dictionary<string, KanbanBoardMetaInfo> boardSettings, Dictionary<string, BoardList[]> boardLists)
         {
             if (!boardSettings.ContainsKey(card.BoardId) || !boardLists.ContainsKey(card.BoardId))
             {

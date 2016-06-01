@@ -6,6 +6,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
 {
     public interface ICardStageInfoBuilder
     {
-        CardStageInfoViewModel Build(BoardCard card, CardAction[] actions, CardChecklist[] checklists, BoardSettings boardSetting, BoardList[] boardLists);
+        CardStageInfoViewModel Build(BoardCard card, CardAction[] actions, CardChecklist[] checklists, KanbanBoardMetaInfo kanbanBoardMetaInfo, BoardList[] boardLists);
     }
 }

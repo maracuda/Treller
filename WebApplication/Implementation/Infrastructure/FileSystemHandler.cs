@@ -10,11 +10,22 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
 {
     public class FileSystemHandler : IFileSystemHandler
     {
-        private readonly string appPathRoot;
+        private readonly string rootPath;
 
         public FileSystemHandler()
         {
-            appPathRoot = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(HttpRuntime.AppDomainAppPath)),"TrellerData");
+            string basePath;
+            try
+            {
+                basePath = HttpRuntime.AppDomainAppPath;
+                rootPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(basePath)), "TrellerData");
+            }
+            catch (Exception)
+            {
+                basePath = AppDomain.CurrentDomain.BaseDirectory;
+                rootPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(basePath))), "TrellerData");
+            }
+            var x = 1;
         }
 
         public TEntity FindSafeInJsonUtf8File<TEntity>(string fileName)
@@ -85,7 +96,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
 
         private string GetFullPath(string fileName)
         {
-            return Path.Combine(appPathRoot, fileName);
+            return Path.Combine(rootPath, fileName);
         }
     }
 }

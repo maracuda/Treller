@@ -19,9 +19,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
             this.checklistParrotsBuilder = checklistParrotsBuilder;
         }
 
-        public CardStageInfoViewModel Build(BoardCard card, CardAction[] actions, CardChecklist[] checklists, BoardSettings boardSetting, BoardList[] boardLists)
+        public CardStageInfoViewModel Build(BoardCard card, CardAction[] actions, CardChecklist[] checklists, KanbanBoardMetaInfo kanbanBoardMetaInfo, BoardList[] boardLists)
         {
-            var state = cardStateBuilder.GetState(card.BoardListId, boardSetting, boardLists);
+            var state = cardStateBuilder.GetState(card.BoardListId, kanbanBoardMetaInfo, boardLists);
 
             DateTime? beginDate = null;
             DateTime? endDate = null;

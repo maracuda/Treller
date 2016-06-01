@@ -23,7 +23,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         #region init
 
         private readonly ICachedFileStorage cachedFileStorage;
-        private readonly ISettingService settingService;
+        private readonly IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder;
         private readonly ITaskCacher taskCacher;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
@@ -31,7 +31,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         private readonly INewsSettingsService newsSettingsService;
 
         public NewsService(ICachedFileStorage cachedFileStorage,
-                           ISettingService settingService,
+                           IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder,
                            ITaskCacher taskCacher,
                            ITaskManagerClient taskManagerClient,
                            ICardStateInfoBuilder cardStateInfoBuilder,
@@ -39,7 +39,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                            INewsSettingsService newsSettingsService)
         {
             this.cachedFileStorage = cachedFileStorage;
-            this.settingService = settingService;
+            this.kanbanBoardMetaInfoBuilder = kanbanBoardMetaInfoBuilder;
             this.taskCacher = taskCacher;
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
@@ -50,7 +50,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public void Refresh()
         {
-            var boardSettings = settingService.GetDevelopingBoards().ToDictionary(x => x.Id);
+            var boardSettings = kanbanBoardMetaInfoBuilder.BuildForAllOpenBoards().ToDictionary(x => x.Id);
             var boardIds = boardSettings.Select(x => x.Key).ToArray();
             var cards = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardCards);
             var boardLists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);

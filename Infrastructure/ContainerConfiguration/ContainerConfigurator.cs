@@ -5,13 +5,6 @@ namespace SKBKontur.Infrastructure.ContainerConfiguration
 {
     public class ContainerConfigurator
     {
-        private readonly IContainerCustomizer[] containerCustomizers;
-
-        public ContainerConfigurator(params IContainerCustomizer[] containerCustomizers)
-        {
-            this.containerCustomizers = containerCustomizers ?? new IContainerCustomizer[0];
-        }
-
         public IContainer Configure()
         {
             var serviceContainer = new ServiceContainer();
@@ -25,11 +18,6 @@ namespace SKBKontur.Infrastructure.ContainerConfiguration
             serviceContainer.Register<IAssemblyService>(factory => assemblyService, new PerContainerLifetime());;
             var result = new Container(serviceContainer);
             serviceContainer.Register<IContainer>(factory => result, new PerContainerLifetime());
-
-            foreach (var containerCustomizer in containerCustomizers)
-            {
-                containerCustomizer.Customize(result);
-            }
 
             return result;
         }

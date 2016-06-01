@@ -29,7 +29,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storage
 
         private static string GetFileName(string uniqueName)
         {
-            return string.Format("Store_{0}.json", uniqueName);
+            return $"Store_{uniqueName}.json";
         }
     }
 }

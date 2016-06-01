@@ -11,13 +11,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
     public class RoundDanceViewModelBuilder : IRoundDanceViewModelBuilder
     {
         private readonly IRoundDancePeopleStorage roundDancePeopleStorage;
-        private readonly ISettingService settingService;
+        private readonly IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder;
         private readonly static HashSet<string> NotFeatureTeamDirections = new HashSet<string>(new[] { "Инфраструктура", "Дежурство", "Отпуск", "Болезнь", "Шустрые задачи" });
 
-        public RoundDanceViewModelBuilder(IRoundDancePeopleStorage roundDancePeopleStorage, ISettingService settingService)
+        public RoundDanceViewModelBuilder(IRoundDancePeopleStorage roundDancePeopleStorage, IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder)
         {
             this.roundDancePeopleStorage = roundDancePeopleStorage;
-            this.settingService = settingService;
+            this.kanbanBoardMetaInfoBuilder = kanbanBoardMetaInfoBuilder;
         }
 
         public RoundDanceViewModel Build()
@@ -28,8 +28,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                                 .GroupBy(x => x.GetCurrentDirection)
                                 .ToDictionary(x => x.Key, x => x.Select(BuildPeopleWeights).ToArray());
 
-            var actualDirections = settingService
-                .GetDevelopingBoards()
+            var actualDirections = kanbanBoardMetaInfoBuilder
+                .BuildForAllOpenBoards()
                 .Select(x => x.Name)
                 .Union(NotFeatureTeamDirections)
                 .Distinct()

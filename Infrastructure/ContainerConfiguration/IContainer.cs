@@ -9,6 +9,6 @@ namespace SKBKontur.Infrastructure.ContainerConfiguration
         T[] GetAll<T>();
         object Get(Type type);
         IEnumerable<object> GetAll(Type type);
-        void RegisterType<T>();
+        void RegisterInstance<T>(object instance);
     }
 }

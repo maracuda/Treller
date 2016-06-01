@@ -52,8 +52,6 @@
     <Compile Include="ContainerConfiguration\Container.cs" />
     <Compile Include="ContainerConfiguration\ContainerGetException.cs" />
     <Compile Include="ContainerConfiguration\IContainer.cs" />
-    <Compile Include="ContainerConfiguration\IContainerCustomizer.cs" />
-    <Compile Include="ContainerConfiguration\ConainerImplementedScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sugar\Maybe.cs" />
   </ItemGroup>

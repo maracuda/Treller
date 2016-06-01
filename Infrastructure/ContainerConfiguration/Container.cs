@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http.Dependencies;
 using LightInject;
 
 namespace SKBKontur.Infrastructure.ContainerConfiguration
@@ -51,13 +50,9 @@ namespace SKBKontur.Infrastructure.ContainerConfiguration
             return _serviceContainer.GetAllInstances(type);
         }
 
-        public void RegisterType<T>()
+        public void RegisterInstance<T>(object instance)
         {
-        }
-
-        public IDependencyScope GetScope()
-        {
-            return new ConainerImplementedScope(_serviceContainer.BeginScope(), this);
+            _serviceContainer.RegisterInstance(typeof(T), instance);
         }
     }
 }

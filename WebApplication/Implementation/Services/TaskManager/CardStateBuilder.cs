@@ -8,9 +8,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
 {
     public class CardStateBuilder : ICardStateBuilder
     {
-        public CardState GetState(string boardListId, BoardSettings setting, BoardList[] boardLists)
+        public CardState GetState(string boardListId, KanbanBoardMetaInfo metaInfo, BoardList[] boardLists)
         {
-            var developList = boardLists.FirstOrDefault(list => IsInState(list.Name, setting.DevelopListName));
+            var developList = boardLists.FirstOrDefault(list => IsInState(list.Name, metaInfo.DevelopListName));
             if (developList == null)
             {
                 return CardState.BeforeDevelop;
@@ -27,29 +27,29 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
                 return CardState.Archived;
             }
 
-            if (IsInState(boardList.Name, setting.DevelopPresentationListName))
+            if (IsInState(boardList.Name, metaInfo.DevelopPresentationListName))
             {
                 return boardList.Position > developList.Position 
                             ? CardState.Presentation
                             : CardState.AnalitycPresentation;
             }
 
-            if (IsInState(boardList.Name, setting.ReviewListName))
+            if (IsInState(boardList.Name, metaInfo.ReviewListName))
             {
                 return CardState.Review;
             }
 
-            if (IsInState(boardList.Name, setting.TestingListName))
+            if (IsInState(boardList.Name, metaInfo.TestingListName))
             {
                 return CardState.Testing;
             }
 
-            if (IsInState(boardList.Name, setting.WaitForReleaseListName))
+            if (IsInState(boardList.Name, metaInfo.WaitForReleaseListName))
             {
                 return CardState.ReleaseWaiting;
             }
 
-            if (IsInState(boardList.Name, setting.AnalyticListName))
+            if (IsInState(boardList.Name, metaInfo.AnalyticListName))
             {
                 return CardState.Analityc;
             }

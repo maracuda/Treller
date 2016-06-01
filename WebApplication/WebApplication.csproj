@@ -269,9 +269,9 @@
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService2.cs" />
     <Compile Include="Implementation\Services\Operationals\OperationalService.cs" />
-    <Compile Include="Implementation\Services\Settings\BoardSettings.cs" />
-    <Compile Include="Implementation\Services\Settings\ISettingService.cs" />
-    <Compile Include="Implementation\Services\Settings\SettingService.cs" />
+    <Compile Include="Implementation\Services\Settings\KanbanBoardMetaInfo.cs" />
+    <Compile Include="Implementation\Services\Settings\IKanbanBoardMetaInfoBuilder.cs" />
+    <Compile Include="Implementation\Services\Settings\KanbanBoardMetaInfoBuilder.cs" />
     <Compile Include="Implementation\Services\TaskCacher\ITaskCacher.cs" />
     <Compile Include="Implementation\Services\TaskCacher\TaskCacher.cs" />
     <Compile Include="Implementation\Services\TaskCacher\TaskCacherStoredTypes.cs" />
