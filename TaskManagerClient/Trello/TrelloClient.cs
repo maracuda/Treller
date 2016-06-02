@@ -36,34 +36,25 @@ namespace SKBKontur.TaskManagerClient.Trello
         public Task<Board[]> GetOpenBoardsAsync(string organizationIdOrName)
         {
             return GetTrelloDataAsync<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string>{{"filter", "open"}})
-                    .Await(x => x.Select(b => new Board { Id = b.Id, Name = b.Name, Url = b.Url, OrganizationId = b.IdOrganization }).ToArray());
+                    .Await(x => x.Select(Board.ConvertFrom).ToArray());
         }
 
         public Board[] GetOpenBoards(string organizationIdOrName)
         {
-            return GetTrelloData<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string> {{"filter", "open"}})
-                    .Select(board => new Board
-                    {
-                        Id = board.Id,
-                        Name = board.Name,
-                        Url = board.Url,
-                        OrganizationId = board.IdOrganization
-                    })
-                    .ToArray();
+            return AsyncHelpers.RunSync(() => GetOpenBoardsAsync(organizationIdOrName));
         }
 
         public Board[] GetAllBoards(string organizationIdOrName)
         {
-            return GetTrelloData<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards",
-                new Dictionary<string, string> {{"filter", "all"}})
-                .Select(b => new Board {Id = b.Id, Name = b.Name, Url = b.Url, OrganizationId = b.IdOrganization})
-                .ToArray();
+            return GetTrelloData<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string> {{"filter", "all"}})
+                    .Select(Board.ConvertFrom)
+                    .ToArray();
         }
 
         public Task<Board[]> GetBoardsAsync(string[] boardIds)
         {
             return boardIds.Select(id => GetTrelloDataAsync<BusinessObjects.Boards.Board>(id, "boards/{0}"))
-                           .Await(x => new Board { Id = x.Id, OrganizationId = x.IdOrganization, Name = x.Name, Url = x.Url });
+                           .Await(Board.ConvertFrom);
         }
 
         public Task<BoardList[]> GetBoardListsAsync(params string[] boardIds)

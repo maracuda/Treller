@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.Treller.Tests.UnitWrappers;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
@@ -17,7 +16,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
             trelloClient = container.Get<ITaskManagerClient>();
         }
 
-        [MyTest]
+        [Test]
         public void TestGetBoards()
         {
             var actualBoards = trelloClient.GetAllBoards("konturbilling");
@@ -25,6 +24,13 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
             var actualOpenBoards = trelloClient.GetOpenBoards("konturbilling");
             Assert.True(actualOpenBoards.Length > 2);
             CollectionAssert.IsSubsetOf(actualOpenBoards.Select(x => x.Name), actualBoards.Select(x => x.Name));
+        }
+
+        [Test]
+        public void TestGetClosedBoard()
+        {
+            var cloasedBoard = trelloClient.GetBoardsAsync(new[] {"56c29cc406dae946e255e03d"}).Result.First();
+            Assert.True(cloasedBoard.IsClosed);
         }
     }
 }

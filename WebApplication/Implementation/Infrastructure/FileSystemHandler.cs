@@ -25,7 +25,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
                 basePath = AppDomain.CurrentDomain.BaseDirectory;
                 rootPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(basePath))), "TrellerData");
             }
-            var x = 1;
         }
 
         public TEntity FindSafeInJsonUtf8File<TEntity>(string fileName)

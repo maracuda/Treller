@@ -246,6 +246,11 @@
     <Compile Include="Implementation\RoundDance\IRoundDanceViewModelBuilder.cs" />
     <Compile Include="Implementation\RoundDance\RoundDancePeopleStorage.cs" />
     <Compile Include="Implementation\RoundDance\RoundDanceViewModelBuilder.cs" />
+    <Compile Include="Implementation\Services\BoardsService\BoardClassifier.cs" />
+    <Compile Include="Implementation\Services\BoardsService\BoardsService.cs" />
+    <Compile Include="Implementation\Services\BoardsService\BoardType.cs" />
+    <Compile Include="Implementation\Services\BoardsService\IBoardClassifier.cs" />
+    <Compile Include="Implementation\Services\BoardsService\IBoardsService.cs" />
     <Compile Include="Implementation\Services\BugTracker\BugsBuilder.cs" />
     <Compile Include="Implementation\Services\BugTracker\IBugsBuilder.cs" />
     <Compile Include="Implementation\Services\BugTracker\TaskItemBug.cs" />

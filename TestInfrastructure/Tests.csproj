@@ -55,7 +55,9 @@
     <Compile Include="Tests\IntegrationTests\Configuration\ClientsIntegrationCredentials.cs" />
     <Compile Include="Tests\IntegrationTests\Configuration\CredentialService.cs" />
     <Compile Include="Tests\IntegrationTests\InrtegrationTest.cs" />
+    <Compile Include="Tests\IntegrationTests\Kanban\BoardServiceTest.cs" />
     <Compile Include="Tests\IntegrationTests\Kanban\KanbanMetaInfoBuilderTest.cs" />
+    <Compile Include="Tests\IntegrationTests\News\NewsServiceTest.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\GitlabClientTests.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\CommitTest.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\RepositoryTest.cs" />

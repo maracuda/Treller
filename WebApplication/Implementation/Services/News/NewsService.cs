@@ -50,8 +50,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public void Refresh()
         {
-            var boardSettings = kanbanBoardMetaInfoBuilder.BuildForAllOpenBoards().ToDictionary(x => x.Id);
-            var boardIds = boardSettings.Select(x => x.Key).ToArray();
+            var kanbanBoardsMetaInfos = kanbanBoardMetaInfoBuilder.BuildForAllOpenBoards();
+            var boardIds = kanbanBoardsMetaInfos.Select(x => x.Id).ToArray();
             var cards = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardCards);
             var boardLists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);
             var cardActions = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetActionsForBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
@@ -60,7 +60,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                 .Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase) && x.LastActivity.Date > DateTime.Now.Date.AddDays(-30))
                 .Select(card =>
                 {
-                    var cardStateInfo = cardStateInfoBuilder.Build(cardActions[card.Id].ToArray(), boardSettings, boardLists.ToDictionary(x => x.Key, x => x.ToArray()));
+                    var cardStateInfo = cardStateInfoBuilder.Build(cardActions[card.Id].ToArray(), kanbanBoardsMetaInfos.ToDictionary(x => x.Id), boardLists.ToDictionary(x => x.Key, x => x.ToArray()));
                     var cardReleaseDate = (card.DueDate ?? cardStateInfo.States.SafeGet(CardState.Released).IfNotNull(x => (DateTime?)x.BeginDate) ?? DateTime.Now).Date;
                     return new CardNewsModel
                     {

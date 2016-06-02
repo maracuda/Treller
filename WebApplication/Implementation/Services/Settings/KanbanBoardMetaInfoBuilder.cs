@@ -58,40 +58,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Settings
         private static Maybe<KanbanBoardMetaInfo> TryParseBoardMetaInfo(ITaskManagerClient taskManagerClient, Board board)
         {
             var boardLists = taskManagerClient.GetBoardLists(board.Id);
-            if (boardLists.Length < 7)
-                return null;
+            return KanbanBoardMetaInfo.TryParse(board, boardLists);
 
-            if (ContainsList(boardLists, "Incoming") &&
-                ContainsList(boardLists, "Analytics & Design") &&
-                ContainsList(boardLists, "Dev") &&
-                ContainsList(boardLists, "Review") &&
-                ContainsList(boardLists, "Testing") &&
-                ContainsList(boardLists, "Wait for release") &&
-                ContainsList(boardLists, "Released"))
-            {
-                var result = new KanbanBoardMetaInfo
-                {
-                    Id = board.Id,
-                    Name = board.Name,
-                    WaitForReleaseListName = "Wait for release",
-                    AnalyticListName = "Analytics & Design",
-                    DevelopListName = "Dev",
-                    DevelopPresentationListName = string.Empty,
-                    ReviewListName = "Review",
-                    TestingListName = "Testing"
-                };
-                if (board.Name.Equals("Service Team"))
-                {
-                    result.IsServiceTeamBoard = true;
-                }
-                return result;
-            }
-            return null;
-        }
-
-        private static bool ContainsList(BoardList[] lists, string pattern)
-        {
-            return lists.Any(x => x.Name.Trim().StartsWith(pattern, StringComparison.OrdinalIgnoreCase));
         }
 
         public KanbanBoardMetaInfo[] BuildForAllOpenBoards()

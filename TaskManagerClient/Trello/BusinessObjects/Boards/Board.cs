@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-
 namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Boards
 {
     public class Board
@@ -11,6 +8,5 @@ namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Boards
         public bool Closed { get; set; }
         public string IdOrganization { get; set; }
         public string Url { get; set; }
-        public Dictionary<CardLabelColor, string> LabelNames { get; set; }
     }
 }
