@@ -4,14 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using SKBKontur.HttpInfrastructure.Clients;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using SKBKontur.TaskManagerClient.Caching;
 using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Boards;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Cards;
 using Action = SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions.Action;
 using Board = SKBKontur.TaskManagerClient.BusinessObjects.TaskManager.Board;
 using BoardList = SKBKontur.TaskManagerClient.BusinessObjects.TaskManager.BoardList;
-using CardLabel = SKBKontur.TaskManagerClient.BusinessObjects.TaskManager.CardLabel;
 using SKBKontur.TaskManagerClient.Extensions;
 
 namespace SKBKontur.TaskManagerClient.Trello
@@ -19,23 +18,28 @@ namespace SKBKontur.TaskManagerClient.Trello
     public class TrelloClient : ITaskManagerClient
     {
         private readonly IHttpClient httpClient;
-        private readonly Dictionary<string, string> trelloParameters;
+        private readonly IMemoryCache responseCache;
+        private readonly Dictionary<string, string> credentials;
         private const int MaxActionsLimitCount = 1000;
 
-        public TrelloClient(IHttpClient httpClient, ITrelloUserCredentialService trelloUserCredentialService)
+        public TrelloClient(
+            IHttpClient httpClient, 
+            ITrelloUserCredentialService trelloUserCredentialService,
+            ICacheFactory cacheFactory)
         {
             this.httpClient = httpClient;
-            var trelloCredential = trelloUserCredentialService.GetCredentials();
-            trelloParameters = new Dictionary<string, string>
+            responseCache = cacheFactory.CreateMemoryCache(GetType().Name, TimeSpan.FromMinutes(30));
+            var trelloCredentials = trelloUserCredentialService.GetCredentials();
+            credentials = new Dictionary<string, string>
                                    {
-                                       {"key", trelloCredential.UserKey},
-                                       {"token", trelloCredential.UserToken}
+                                       {"key", trelloCredentials.UserKey},
+                                       {"token", trelloCredentials.UserToken}
                                    };
         }
 
         public Task<Board[]> GetOpenBoardsAsync(string organizationIdOrName)
         {
-            return GetTrelloDataAsync<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string>{{"filter", "open"}})
+            return ReadAsync<BusinessObjects.Boards.Board[]>($"organizations/{organizationIdOrName}/boards", new Dictionary<string, string>{{"filter", "open"}})
                     .Await(x => x.Select(Board.ConvertFrom).ToArray());
         }
 
@@ -46,20 +50,20 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         public Board[] GetAllBoards(string organizationIdOrName)
         {
-            return GetTrelloData<BusinessObjects.Boards.Board[]>(organizationIdOrName, "organizations/{0}/boards", new Dictionary<string, string> {{"filter", "all"}})
+            return Read<BusinessObjects.Boards.Board[]>($"organizations/{organizationIdOrName}/boards", new Dictionary<string, string> {{"filter", "all"}})
                     .Select(Board.ConvertFrom)
                     .ToArray();
         }
 
         public Task<Board[]> GetBoardsAsync(string[] boardIds)
         {
-            return boardIds.Select(id => GetTrelloDataAsync<BusinessObjects.Boards.Board>(id, "boards/{0}"))
+            return boardIds.Select(id => ReadAsync<BusinessObjects.Boards.Board>($"boards/{id}"))
                            .Await(Board.ConvertFrom);
         }
 
         public Task<BoardList[]> GetBoardListsAsync(params string[] boardIds)
         {
-            return boardIds.Select(id => GetTrelloDataAsync<BusinessObjects.Boards.BoardList[]>(id, "boards/{0}/lists"))
+            return boardIds.Select(id => ReadAsync<BusinessObjects.Boards.BoardList[]>($"boards/{id}/lists"))
                            .Await(x => new BoardList { Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos });
 
         }
@@ -67,28 +71,28 @@ namespace SKBKontur.TaskManagerClient.Trello
         public BoardList[] GetBoardLists(params string[] boardIds)
         {
             return boardIds
-                .SelectMany(boardId => GetTrelloData<BusinessObjects.Boards.BoardList[]>(boardId, "boards/{0}/lists"))
+                .SelectMany(boardId => Read<BusinessObjects.Boards.BoardList[]>($"boards/{boardId}/lists"))
                 .Select(x => new BoardList {Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos})
                 .ToArray();
         }
 
         public Task<BoardCard[]> GetBoardCardsAsync(string[] boardIds)
         {
-            return boardIds.Select(id => GetTrelloDataAsync<Card[]>(id, "boards/{0}/cards"))
-                           .Await(CreateBoardCard);
+            return boardIds.Select(id => ReadAsync<Card[]>($"boards/{id}/cards"))
+                           .Await(BoardCard.ConvertFrom);
         }
 
         public Task<User[]> GetBoardUsersAsync(string[] boardIds)
         {
             var queryString = new Dictionary<string, string> { { "fields", "all" } };
-            return boardIds.Select(id => GetTrelloDataAsync<BoardMember[]>(id, "boards/{0}/members", queryString))
-                           .Await(CreateUser, result => result.GroupBy(x => x.Id, StringComparer.OrdinalIgnoreCase).Select(x => x.First()));
+            return boardIds.Select(id => ReadAsync<BoardMember[]>($"boards/{id}/members", queryString))
+                           .Await(User.ConvertFrom, result => result.GroupBy(x => x.Id, StringComparer.OrdinalIgnoreCase).Select(x => x.First()));
         }
 
         public Task<CardChecklist[]> GetBoardChecklistsAsync(string[] boardIds)
         {
-            return boardIds.Select(id => GetTrelloDataAsync<Checklist[]>(id, "boards/{0}/checklists"))
-                           .Await(CreateChecklist);
+            return boardIds.Select(id => ReadAsync<Checklist[]>($"boards/{id}/checklists"))
+                           .Await(CardChecklist.ConvertFrom);
         }
 
         public CardAction[] GetActionsForBoardCards(string[] boardIds, DateTime fromUtc, DateTime toUtc)
@@ -102,10 +106,10 @@ namespace SKBKontur.TaskManagerClient.Trello
                 
                 while (true)
                 {
-                    var boardResult = GetTrelloData<Action[]>(boardId, "boards/{0}/actions", queryString);
+                    var boardResult = Read<Action[]>($"boards/{boardId}/actions", queryString);
                     foreach (var action in boardResult.Where(x => x.Date < toUtc))
                     {
-                        result.AddLast(CreateCardAction(action));
+                        result.AddLast(CardAction.ConvertFrom(action));
                     }
 
                     if (boardResult.Length < MaxActionsLimitCount || boardResult.Any(x => x.Date > toUtc))
@@ -122,10 +126,8 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         public Task<CardAction[]> GetCardActionsAsync(string cardId)
         {
-            var queryString = new Dictionary<string, string> {{"filter", "all"}, {"limit", "1000"}};
-
-            return GetTrelloDataAsync<Action[]>(cardId, "cards/{0}/actions", queryString)
-                    .Await(CreateCardAction, result => result.Where(x => x != null));
+            return ReadAsync<Action[]>($"cards/{cardId}/actions", new Dictionary<string, string> {{"filter", "all"}, {"limit", "1000"}})
+                    .Await(CardAction.ConvertFrom, result => result.Where(x => x != null));
         }
 
         public Task<CardAction[]> GetActionsForBoardCardsAsync(string[] boardIds, DateTime? fromUtc, int limit)
@@ -136,124 +138,40 @@ namespace SKBKontur.TaskManagerClient.Trello
                 queryString.Add("since", fromUtc.Value.ToString("O"));
             }
 
-            return boardIds.Select(id => GetTrelloDataAsync<Action[]>(id, "boards/{0}/actions", queryString))
-                           .Await(CreateCardAction, result => result.Where(x => x != null));
+            return boardIds.Select(id => ReadAsync<Action[]>($"boards/{id}/actions", queryString))
+                           .Await(CardAction.ConvertFrom, result => result.Where(x => x != null));
         }
 
         public Task<BoardCard> GetCardAsync(string cardId)
         {
-            return GetTrelloDataAsync<Card>(cardId, "cards/{0}").Await(CreateBoardCard);
+            return ReadAsync<Card>($"cards/{cardId}").Await(BoardCard.ConvertFrom);
         }
 
         public Task<User[]> GetCardUsersAsync(string cardId)
         {
-            return GetTrelloDataAsync<BoardMember[]>(cardId, "cards/{0}/members").Await(CreateUser);
+            return ReadAsync<BoardMember[]>($"cards/{cardId}/members").Await(User.ConvertFrom);
         }
 
         public Task<CardChecklist[]> GetCardChecklistsAsync(string cardId)
         {
-            return GetTrelloDataAsync<Checklist[]>(cardId, "cards/{0}/checklists").Await(CreateChecklist);
+            return ReadAsync<Checklist[]>($"cards/{cardId}/checklists").Await(CardChecklist.ConvertFrom);
         }
 
-        private Task<T> GetTrelloDataAsync<T>(string id, string format, Dictionary<string, string> queryString = null)
+        private T ReadOrGetCached<T>(string path)
         {
-            var parameters = trelloParameters;
-            if (queryString != null)
-            {
-                parameters = parameters.Union(queryString).ToDictionary(x => x.Key, x => x.Value);
-            }
-
-            return httpClient.SendGetAsync<T>(string.Format($"https://trello.com/1/{format}", id), parameters);
+            return responseCache.GetOrLoad(path, () => AsyncHelpers.RunSync(() => httpClient.SendGetAsync<T>($"https://trello.com/1/{path}", credentials)));
         }
 
-        private T GetTrelloData<T>(string id, string format, Dictionary<string, string> queryString = null)
-        {
-            var parameters = trelloParameters;
-            if (queryString != null)
-            {
-                parameters = parameters.Union(queryString).ToDictionary(x => x.Key, x => x.Value);
-            }
 
-            return httpClient.SendGet<T>(string.Format($"https://trello.com/1/{format}", id), parameters);
+        private Task<T> ReadAsync<T>(string path, Dictionary<string, string> queryString = null)
+        {
+            var parameters = queryString == null ? credentials : credentials.Union(queryString).ToDictionary(x => x.Key, x => x.Value);
+            return httpClient.SendGetAsync<T>($"https://trello.com/1/{path}", parameters);
         }
 
-        private static CardChecklist CreateChecklist(Checklist list)
+        private T Read<T>(string path, Dictionary<string, string> queryString = null)
         {
-            return new CardChecklist
-                       {
-                           Id = list.Id,
-                           Name = list.Name,
-                           CardId = list.IdCard,
-                           Position = list.Pos,
-                           Items = list.CheckItems.Select(i => new ChecklistItem
-                                                                   {
-                                                                       Id = i.Id,
-                                                                       Description = i.Name,
-                                                                       Position = i.Pos,
-                                                                       IsChecked = i.IsChecked,
-                                                                   }).ToArray()
-                       };
-        }
-
-        private static BoardCard CreateBoardCard(Card card)
-        {
-            CardLabelColor result;
-            return new BoardCard
-                       {
-                           Id = card.Id,
-                           Url = card.Url,
-                           DueDate = card.Due,
-                           BoardId = card.IdBoard,
-                           Name = card.Name,
-                           Position = card.Pos,
-                           BoardListId = card.IdList,
-                           Description = card.Desc,
-                           Labels = card.Labels.Select(cardLabel => 
-                                                       new CardLabel
-                                                           {
-                                                               Name = cardLabel.Name,
-                                                               Color = Enum.TryParse(cardLabel.Color, true, out result) ? result : CardLabelColor.Undefined
-                                                           }).ToArray(),
-                           LastActivity = card.DateLastActivity,
-                           UserIds = card.IdMembers.ToArray(),
-                           CheckListIds = card.IdCheckLists
-                       };
-        }
-
-        private static CardAction CreateCardAction(Action action)
-        {
-            return (action.Data.Card == null || action.ActionType == ActionType.Unknown || action.Data.Board == null || action.ActionType > ActionType.RemoveMemberFromBoard)
-                    && action.ActionType != ActionType.AddMemberToBoard && action.ActionType != ActionType.RemoveMemberFromBoard ? null
-                       : new CardAction
-                             {
-                                 Id = action.Id,
-                                 Date = action.Date,
-                                 Initiator = CreateUser(action.MemberCreator),
-                                 Type = action.ActionType,
-                                 BoardId = action.Data.Board == null ? string.Empty : action.Data.Board.Id,
-                                 CardId = action.Data.Card == null ? string.Empty : action.Data.Card.Id,
-                                 Comment = action.Data.Text,
-                                 AddedUser = action.Member != null ? CreateUser(action.Member) : null,
-                                 ListId = action.Data.List != null ? action.Data.List.Id : null,
-                                 FromListId = action.Data.ListBefore != null ? action.Data.ListBefore.Id : null,
-                                 ToListId = action.Data.ListAfter != null ? action.Data.ListAfter.Id : null,
-                                 CreatedCheckListId = action.Data.Checklist != null ? action.Data.Checklist.Id : null
-                             };
-        }
-
-        private static User CreateUser(ActionMember actionMember)
-        {
-            var boardMember = actionMember as BoardMember;
-
-            return new User
-                       {
-                           Id = actionMember.Id,
-                           AvatarHash = actionMember.AvatarHash,
-                           FullName = actionMember.FullName,
-                           Name = actionMember.Username,
-                           Initials = actionMember.Initials,
-                           UserUrl = boardMember != null ? boardMember.Url : null
-                       };
+            return AsyncHelpers.RunSync(() => ReadAsync<T>(path, queryString));
         }
     }
 }

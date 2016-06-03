@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Cards;
 
 namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
 {
@@ -16,5 +18,30 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
         public string[] UserIds { get; set; }
         public string Url { get; set; }
         public DateTime? DueDate { get; set; }
+
+        public static BoardCard ConvertFrom(Card card)
+        {
+            CardLabelColor result;
+            return new BoardCard
+            {
+                Id = card.Id,
+                Url = card.Url,
+                DueDate = card.Due,
+                BoardId = card.IdBoard,
+                Name = card.Name,
+                Position = card.Pos,
+                BoardListId = card.IdList,
+                Description = card.Desc,
+                Labels = card.Labels.Select(cardLabel =>
+                    new CardLabel
+                    {
+                        Name = cardLabel.Name,
+                        Color = Enum.TryParse(cardLabel.Color, true, out result) ? result : CardLabelColor.Undefined
+                    }).ToArray(),
+                LastActivity = card.DateLastActivity,
+                UserIds = card.IdMembers.ToArray(),
+                CheckListIds = card.IdCheckLists
+            };
+        }
     }
 }

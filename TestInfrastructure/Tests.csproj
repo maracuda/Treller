@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CacheManager.Core, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CacheManager.Core.0.8.0\lib\net45\CacheManager.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CacheManager.Memcached, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CacheManager.Memcached.0.8.0\lib\net45\CacheManager.Memcached.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Enyim.Caching, Version=2.13.0.0, Culture=neutral, PublicKeyToken=cec98615db04012e, processorArchitecture=MSIL">
+      <HintPath>..\packages\EnyimMemcached.2.13\lib\net35\Enyim.Caching.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -43,6 +55,7 @@
       <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -71,6 +84,7 @@
     <Compile Include="UnitWrappers\SkipTestAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
