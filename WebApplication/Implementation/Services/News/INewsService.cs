@@ -7,7 +7,7 @@
         //Introduce proper domain model without information about any cards etc
         //Decompose service layer from ui interpretation
         void Refresh();
-        NewsViewModel GetNews();
+        CardNewsModel[] GetAllNews();
         void DeleteCard(string cardId);
         void RestoreCard(string cardId);
         void SendTechnicalNews();

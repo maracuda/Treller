@@ -24,7 +24,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var news = newsModelBuilder.Build();
+            var news = newsModelBuilder.BuildViewModel();
             return View("Index", news);
         }
 

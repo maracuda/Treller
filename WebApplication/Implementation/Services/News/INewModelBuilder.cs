@@ -2,6 +2,7 @@
 {
     public interface INewsModelBuilder
     {
-        NewsViewModel Build();
+        NewsViewModel BuildViewModel();
+        CardNewsModel[] BuildNewsModel();
     }
 }
