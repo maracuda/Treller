@@ -7,7 +7,7 @@ using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
+using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
@@ -21,39 +21,38 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
         #region init
 
         private readonly ISocialNetworkClient socialNetworkClient;
-        private readonly IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder;
         private readonly ITaskCacher taskCacher;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
         private readonly ICachedFileStorage cachedFileStorage;
         private readonly IWikiClient wikiClient;
         private readonly IBugTrackerClient bugTrackerClient;
+        private readonly IBoardsService boardsService;
 
         public DigestService(
             ISocialNetworkClient socialNetworkClient,
-            IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder,
             ITaskCacher taskCacher,
             ITaskManagerClient taskManagerClient,
             ICardStateInfoBuilder cardStateInfoBuilder,
             ICachedFileStorage cachedFileStorage,
             IWikiClient wikiClient,
-            IBugTrackerClient bugTrackerClient)
+            IBugTrackerClient bugTrackerClient,
+            IBoardsService boardsService)
         {
             this.socialNetworkClient = socialNetworkClient;
-            this.kanbanBoardMetaInfoBuilder = kanbanBoardMetaInfoBuilder;
             this.taskCacher = taskCacher;
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
             this.cachedFileStorage = cachedFileStorage;
             this.wikiClient = wikiClient;
             this.bugTrackerClient = bugTrackerClient;
+            this.boardsService = boardsService;
         }
         #endregion
 
         public void SendAllToDigest()
         {
-            var boardSettings = kanbanBoardMetaInfoBuilder.BuildForAllOpenBoards().ToDictionary(x => x.Id);
-            var boardIds = boardSettings.Select(x => x.Key).ToArray();
+            var boardIds = boardsService.SelectKanbanBoards(false).Select(x => x.Id).ToArray();
             var cards = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardCards);
             var boardLists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);
             var cardActions = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetActionsForBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
@@ -63,7 +62,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
                 .Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase) && x.LastActivity.Date > DateTime.Now.Date.AddDays(-3))
                 .Select(card =>
                 {
-                    var cardStateInfo = cardStateInfoBuilder.Build(cardActions[card.Id].ToArray(), boardSettings, boardLists.ToDictionary(x => x.Key, x => x.ToArray()));
+                    var cardStateInfo = cardStateInfoBuilder.Build(cardActions[card.Id].ToArray(), boardLists.ToDictionary(x => x.Key, x => x.ToArray()));
                     var analyticDate = cardStateInfo.States.OrderBy(x => x.Key).Select(x => x.Value).LastOrDefault(x => x.State < CardState.Develop);
                     var cardUsers = card.UserIds.Select(x => users.SafeGet(x)).Where(x => x != null).Select(x => x.FullName).ToArray();
 
@@ -75,7 +74,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
                         State = cardStateInfo.CurrentState,
                         AnalyticLink = card.GetAnalyticLink(wikiClient.GetBaseUrl(), bugTrackerClient.GetBaseUrl()),
                         BranchName = card.GetCardBranchName(),
-                        DevelopPeriod = string.Format("{0:dd.MM.yyyy} - {1:dd.MM.yyyy}", analyticDate != null ? analyticDate.BeginDate : DateTime.Today, DateTime.Today),
+                        DevelopPeriod = $"{analyticDate?.BeginDate ?? DateTime.Today:dd.MM.yyyy} - {DateTime.Today:dd.MM.yyyy}",
                         Users = cardUsers,
                         card.Url
                     };

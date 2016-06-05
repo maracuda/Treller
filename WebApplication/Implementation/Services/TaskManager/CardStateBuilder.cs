@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
+using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
 {
     public class CardStateBuilder : ICardStateBuilder
     {
-        public CardState GetState(string boardListId, KanbanBoardMetaInfo metaInfo, BoardList[] boardLists)
+        public CardState GetState(string boardListId, BoardList[] boardLists)
         {
-            var developList = boardLists.FirstOrDefault(list => IsInState(list.Name, metaInfo.DevelopListName));
+            var developList = boardLists.FirstOrDefault(list => IsInState(list.Name, KanbanBoardTemplate.DevListName));
             if (developList == null)
             {
                 return CardState.BeforeDevelop;
@@ -27,29 +27,29 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
                 return CardState.Archived;
             }
 
-            if (IsInState(boardList.Name, metaInfo.DevelopPresentationListName))
+            if (IsInState(boardList.Name, KanbanBoardTemplate.DevListName))
             {
                 return boardList.Position > developList.Position 
                             ? CardState.Presentation
                             : CardState.AnalitycPresentation;
             }
 
-            if (IsInState(boardList.Name, metaInfo.ReviewListName))
+            if (IsInState(boardList.Name, KanbanBoardTemplate.ReleasedListName))
             {
                 return CardState.Review;
             }
 
-            if (IsInState(boardList.Name, metaInfo.TestingListName))
+            if (IsInState(boardList.Name, KanbanBoardTemplate.TestingListName))
             {
                 return CardState.Testing;
             }
 
-            if (IsInState(boardList.Name, metaInfo.WaitForReleaseListName))
+            if (IsInState(boardList.Name, KanbanBoardTemplate.WaitForReleaseListName))
             {
                 return CardState.ReleaseWaiting;
             }
 
-            if (IsInState(boardList.Name, metaInfo.AnalyticListName))
+            if (IsInState(boardList.Name, KanbanBoardTemplate.AnalyticListName))
             {
                 return CardState.Analityc;
             }

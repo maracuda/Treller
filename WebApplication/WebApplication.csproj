@@ -249,6 +249,7 @@
     <Compile Include="Implementation\Services\BoardsService\BoardType.cs" />
     <Compile Include="Implementation\Services\BoardsService\IBoardClassifier.cs" />
     <Compile Include="Implementation\Services\BoardsService\IBoardsService.cs" />
+    <Compile Include="Implementation\Services\BoardsService\KanbanBoardTemplate.cs" />
     <Compile Include="Implementation\Services\BugTracker\BugsBuilder.cs" />
     <Compile Include="Implementation\Services\BugTracker\IBugsBuilder.cs" />
     <Compile Include="Implementation\Services\BugTracker\TaskItemBug.cs" />
@@ -272,9 +273,6 @@
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService2.cs" />
     <Compile Include="Implementation\Services\Operationals\OperationalService.cs" />
-    <Compile Include="Implementation\Services\Settings\KanbanBoardMetaInfo.cs" />
-    <Compile Include="Implementation\Services\Settings\IKanbanBoardMetaInfoBuilder.cs" />
-    <Compile Include="Implementation\Services\Settings\KanbanBoardMetaInfoBuilder.cs" />
     <Compile Include="Implementation\Services\TaskCacher\ITaskCacher.cs" />
     <Compile Include="Implementation\Services\TaskCacher\TaskCacher.cs" />
     <Compile Include="Implementation\Services\TaskCacher\TaskCacherStoredTypes.cs" />
@@ -315,9 +313,6 @@
     <Compile Include="Implementation\TaskDetalization\BusinessObjects\ViewModels\TaskDetalizationViewModel.cs" />
     <Compile Include="Implementation\TaskDetalization\BusinessObjects\ViewModels\ToDoItemsListViewModel.cs" />
     <Compile Include="Implementation\TaskDetalization\BusinessObjects\ViewModels\UserAvatarViewModel.cs" />
-    <Compile Include="Implementation\TaskDetalization\TaskDetalizationKeyInitialNamer.cs" />
-    <Compile Include="Implementation\TaskDetalization\TaskDetalizationMapping.cs" />
-    <Compile Include="Implementation\TaskDetalization\TasksBuilder.cs" />
     <Compile Include="Implementation\TaskList\BusinessObjects\Blocks\BaseCardListBlock.cs" />
     <Compile Include="Implementation\TaskList\BusinessObjects\Blocks\BoardsBlock.cs" />
     <Compile Include="Implementation\TaskList\BusinessObjects\Blocks\BugsBlock.cs" />
@@ -457,7 +452,6 @@
     <Content Include="Views\TaskInfo\DisplayTemplates\CardStateBlock.cshtml" />
     <Content Include="Views\TaskInfo\DisplayTemplates\CardTestingPartBlock.cshtml" />
     <Content Include="Views\TaskInfo\TaskInfo.cshtml" />
-    <Content Include="Views\TasksList\TasksList.cshtml" />
     <Content Include="Views\Shared\Partial\BaseBlocks.cshtml" />
     <Content Include="Views\Shared\Partial\BaseBlock.cshtml" />
     <Content Include="Views\Shared\Partial\Parrots.cshtml" />

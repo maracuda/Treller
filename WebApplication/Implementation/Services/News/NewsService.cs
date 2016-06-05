@@ -9,7 +9,7 @@ using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.Notifications;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
+using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
@@ -20,38 +20,35 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
     {
         private const string CardNewsName = "CardNews";
 
-        #region init
 
         private readonly ICachedFileStorage cachedFileStorage;
-        private readonly IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder;
         private readonly ITaskCacher taskCacher;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
         private readonly INotificationService notificationService;
         private readonly INewsSettingsService newsSettingsService;
+        private readonly IBoardsService boardsService;
 
         public NewsService(ICachedFileStorage cachedFileStorage,
-                           IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder,
                            ITaskCacher taskCacher,
                            ITaskManagerClient taskManagerClient,
                            ICardStateInfoBuilder cardStateInfoBuilder,
                            INotificationService notificationService,
-                           INewsSettingsService newsSettingsService)
+                           INewsSettingsService newsSettingsService,
+                           IBoardsService boardsService)
         {
             this.cachedFileStorage = cachedFileStorage;
-            this.kanbanBoardMetaInfoBuilder = kanbanBoardMetaInfoBuilder;
             this.taskCacher = taskCacher;
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
             this.notificationService = notificationService;
             this.newsSettingsService = newsSettingsService;
+            this.boardsService = boardsService;
         }
-        #endregion
 
         public void Refresh()
         {
-            var kanbanBoardsMetaInfos = kanbanBoardMetaInfoBuilder.BuildForAllOpenBoards();
-            var boardIds = kanbanBoardsMetaInfos.Select(x => x.Id).ToArray();
+            var boardIds = boardsService.SelectKanbanBoards(false).Select(x => x.Id).ToArray();
             var cards = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardCards);
             var boardLists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);
             var cardActions = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetActionsForBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
@@ -60,7 +57,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                 .Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase) && x.LastActivity.Date > DateTime.Now.Date.AddDays(-30))
                 .Select(card =>
                 {
-                    var cardStateInfo = cardStateInfoBuilder.Build(cardActions[card.Id].ToArray(), kanbanBoardsMetaInfos.ToDictionary(x => x.Id), boardLists.ToDictionary(x => x.Key, x => x.ToArray()));
+                    var cardStateInfo = cardStateInfoBuilder.Build(cardActions[card.Id].ToArray(), boardLists.ToDictionary(x => x.Key, x => x.ToArray()));
                     var cardReleaseDate = (card.DueDate ?? cardStateInfo.States.SafeGet(CardState.Released).IfNotNull(x => (DateTime?)x.BeginDate) ?? DateTime.Now).Date;
                     return new CardNewsModel
                     {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
@@ -16,7 +15,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
             this.cardStateBuilder = cardStateBuilder;
         }
 
-        public CardStateInfo Build(CardAction[] actions, Dictionary<string, KanbanBoardMetaInfo> boardSettings, Dictionary<string, BoardList[]> boardLists)
+        public CardStateInfo Build(CardAction[] actions, Dictionary<string, BoardList[]> boardLists)
         {
             var currentState = CardState.Unknown;
             var firstAction = actions.OrderBy(x => x.Date).FirstOrDefault() ?? new CardAction { Date = new DateTime(2014, 1, 1) };
@@ -24,21 +23,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
 
             foreach (var action in actions.OrderBy(x => x.Date))
             {
-                KanbanBoardMetaInfo metaInfo;
-                if (!boardSettings.TryGetValue(action.BoardId, out metaInfo))
-                {
-                    if (currentState >= CardState.Develop && currentState <= CardState.Testing)
-                    {
-                        states[currentState].EndDate = action.Date;
-                        currentState = CardState.Unknown;
-                    }
-
-                    continue;
-                }
-
                 if (action.ToListId != null || action.ListId != null)
                 {
-                    var newState = boardLists.ContainsKey(action.BoardId) ? cardStateBuilder.GetState(action.ToListId ?? action.ListId, metaInfo, boardLists[action.BoardId]) : CardState.BeforeDevelop;
+                    var newState = boardLists.ContainsKey(action.BoardId) ? cardStateBuilder.GetState(action.ToListId ?? action.ListId, boardLists[action.BoardId]) : CardState.BeforeDevelop;
                     if (newState != currentState)
                     {
                         if (states.ContainsKey(currentState))

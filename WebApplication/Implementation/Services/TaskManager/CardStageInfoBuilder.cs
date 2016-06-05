@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 using SKBKontur.Treller.WebApplication.Implementation.TaskList.BusinessObjects.ViewModels;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
@@ -19,9 +18,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
             this.checklistParrotsBuilder = checklistParrotsBuilder;
         }
 
-        public CardStageInfoViewModel Build(BoardCard card, CardAction[] actions, CardChecklist[] checklists, KanbanBoardMetaInfo kanbanBoardMetaInfo, BoardList[] boardLists)
+        public CardStageInfoViewModel Build(BoardCard card, CardAction[] actions, CardChecklist[] checklists, BoardList[] boardLists)
         {
-            var state = cardStateBuilder.GetState(card.BoardListId, kanbanBoardMetaInfo, boardLists);
+            var state = cardStateBuilder.GetState(card.BoardListId, boardLists);
 
             DateTime? beginDate = null;
             DateTime? endDate = null;

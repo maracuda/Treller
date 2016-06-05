@@ -19,5 +19,10 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
                 IsClosed = trelloBoard.Closed
             };
         }
+
+        public bool IsServiceTeam()
+        {
+            return Name.Equals("Service Team");
+        }
     }
 }

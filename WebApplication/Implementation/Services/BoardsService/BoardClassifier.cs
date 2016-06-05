@@ -1,7 +1,6 @@
 ﻿using System;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService
 {
@@ -25,7 +24,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService
                 return BoardType.Strategy;
 
             var boardLists = taskManagerClient.GetBoardLists(board.Id);
-            if (KanbanBoardMetaInfo.TryParse(board, boardLists).HasValue)
+            if (KanbanBoardTemplate.Matches(board, boardLists))
                 return BoardType.Kanban;
 
             return BoardType.Undefined;

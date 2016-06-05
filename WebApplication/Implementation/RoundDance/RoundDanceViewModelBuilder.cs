@@ -4,20 +4,22 @@ using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
+using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 {
     public class RoundDanceViewModelBuilder : IRoundDanceViewModelBuilder
     {
         private readonly IRoundDancePeopleStorage roundDancePeopleStorage;
-        private readonly IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder;
-        private readonly static HashSet<string> NotFeatureTeamDirections = new HashSet<string>(new[] { "Инфраструктура", "Дежурство", "Отпуск", "Болезнь", "Шустрые задачи" });
+        private readonly IBoardsService boardsService;
+        private static readonly HashSet<string> NotFeatureTeamDirections = new HashSet<string>(new[] { "Инфраструктура", "Дежурство", "Отпуск", "Болезнь", "Шустрые задачи" });
 
-        public RoundDanceViewModelBuilder(IRoundDancePeopleStorage roundDancePeopleStorage, IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder)
+        public RoundDanceViewModelBuilder(
+            IRoundDancePeopleStorage roundDancePeopleStorage,
+            IBoardsService boardsService)
         {
             this.roundDancePeopleStorage = roundDancePeopleStorage;
-            this.kanbanBoardMetaInfoBuilder = kanbanBoardMetaInfoBuilder;
+            this.boardsService = boardsService;
         }
 
         public RoundDanceViewModel Build()
@@ -28,12 +30,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                                 .GroupBy(x => x.GetCurrentDirection)
                                 .ToDictionary(x => x.Key, x => x.Select(BuildPeopleWeights).ToArray());
 
-            var actualDirections = kanbanBoardMetaInfoBuilder
-                .BuildForAllOpenBoards()
-                .Select(x => x.Name)
-                .Union(NotFeatureTeamDirections)
-                .Distinct()
-                .ToArray();
+            var actualDirections = boardsService.SelectKanbanBoards(false)
+                                                .Select(x => x.Name)
+                                                .Union(NotFeatureTeamDirections)
+                                                .Distinct()
+                                                .ToArray();
 
 
             var oldRounds = peoples.Select(TryBuildOldRoundDance).Where(x => x != null).ToArray();

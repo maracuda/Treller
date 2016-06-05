@@ -6,7 +6,7 @@ using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Settings;
+using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
 
@@ -16,16 +16,20 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
     {
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
-        private readonly IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder;
         private readonly ICachedFileStorage cachedFileStorage;
+        private readonly IBoardsService boardsService;
         private const string StatisticsFileStoreName = "billingTeamStatisticsInfo";
 
-        public StatisticsService(ITaskManagerClient taskManagerClient, ICardStateInfoBuilder cardStateInfoBuilder, IKanbanBoardMetaInfoBuilder kanbanBoardMetaInfoBuilder, ICachedFileStorage cachedFileStorage)
+        public StatisticsService(
+            ITaskManagerClient taskManagerClient, 
+            ICardStateInfoBuilder cardStateInfoBuilder, 
+            ICachedFileStorage cachedFileStorage,
+            IBoardsService boardsService)
         {
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
-            this.kanbanBoardMetaInfoBuilder = kanbanBoardMetaInfoBuilder;
             this.cachedFileStorage = cachedFileStorage;
+            this.boardsService = boardsService;
         }
 
         public StatisticsViewModel GetStatistics(DateTime statisticsStartTime, DateTime statisticsFinishTime, bool reCalculate)
@@ -36,19 +40,17 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
                 return result;
             }
 
-            var boards = kanbanBoardMetaInfoBuilder.GetDevelopingBoardsWithClosed();
+            var boards = boardsService.SelectKanbanBoards(true);
             var lists = taskManagerClient.GetBoardLists(boards.Select(x => x.Id).ToArray()).GroupBy(x => x.BoardId).ToDictionary(x => x.Key, x => x.ToArray());
-            var boardSettings = boards.ToDictionary(x => x.Id);
 
+            var featureActions = taskManagerClient.GetActionsForBoardCards(boards.Where(x => !x.IsServiceTeam()).Select(x => x.Id).ToArray(), statisticsStartTime, statisticsFinishTime);
+            var feature = BuildBoardsStatistics(featureActions, lists);
 
-            var featureActions = taskManagerClient.GetActionsForBoardCards(boards.Where(x => !x.IsServiceTeamBoard).Select(x => x.Id).ToArray(), statisticsStartTime, statisticsFinishTime);
-            var feature = BuildBoardsStatistics(featureActions, boardSettings, lists);
-
-            var serviceActions = taskManagerClient.GetActionsForBoardCards(boards.Where(x => x.IsServiceTeamBoard).Select(x => x.Id).ToArray(), statisticsStartTime, statisticsFinishTime);
-            var service = BuildBoardsStatistics(serviceActions, boardSettings, lists);
+            var serviceActions = taskManagerClient.GetActionsForBoardCards(boards.Where(x => x.IsServiceTeam()).Select(x => x.Id).ToArray(), statisticsStartTime, statisticsFinishTime);
+            var service = BuildBoardsStatistics(serviceActions, lists);
 
             var actions = featureActions.Concat(serviceActions).OrderBy(x => x.Date).ToArray();
-            var overall = BuildBoardsStatistics(actions, boardSettings, lists);
+            var overall = BuildBoardsStatistics(actions, lists);
 
             result = new StatisticsViewModel
             {
@@ -63,16 +65,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
             return result;
         }
 
-        private TeamCardStatisticsModel BuildBoardsStatistics(CardAction[] allActions, Dictionary<string, KanbanBoardMetaInfo> boardSettings, Dictionary<string, BoardList[]> boardLists)
+        private TeamCardStatisticsModel BuildBoardsStatistics(CardAction[] allActions, Dictionary<string, BoardList[]> boardLists)
         {
-            
             var result = new TeamCardStatisticsModel{MinReleaseTime = new TimeSpan(10, 0, 0, 0)};
 
             var allResults = new LinkedList<TimeSpan>();
             var states = new Dictionary<CardState, int>();
             foreach (var actionsByCardId in allActions.GroupBy(x => x.CardId))
             {
-                var cardStateInfo = cardStateInfoBuilder.Build(actionsByCardId.ToArray(), boardSettings, boardLists);
+                var cardStateInfo = cardStateInfoBuilder.Build(actionsByCardId.ToArray(), boardLists);
                 var cardStates = cardStateInfo.States;
 
                 if (!states.ContainsKey(cardStateInfo.CurrentState))
