@@ -8,6 +8,7 @@ namespace SKBKontur.Infrastructure.Common
         DateTime UtcNow { get; }
         long Ticks { get; }
         long UtcTicks { get; }
+        DateTime Today { get; }
 
         DateTime Create(long ticks);
     }

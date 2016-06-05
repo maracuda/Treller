@@ -75,6 +75,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         {
             return !string.IsNullOrWhiteSpace(NewsText) || !string.IsNullOrWhiteSpace(TechnicalNewsText);
         }
+
         public bool IsPublished()
         {
             if (!string.IsNullOrWhiteSpace(NewsText) && !IsNewsPublished)
@@ -89,14 +90,31 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
             return true;
         }
+
         public bool IsPublished(bool technicalNews)
         {
             return technicalNews ? IsTechnicalNewsPublished : IsNewsPublished;
         }
-        public void Publish(bool technicalNews)
+
+        public void MarkPublished(bool technicalNews)
         {
-            if (technicalNews) IsTechnicalNewsPublished = true;
-            else               IsNewsPublished = true;
+            if (technicalNews)
+                IsTechnicalNewsPublished = true;
+            else
+                IsNewsPublished = true;
+        }
+
+        public void MarkDeleted()
+        {
+            IsDeleted = true;
+        }
+
+        public void ResetState(DateTime publishDate)
+        {
+            IsTechnicalNewsPublished = false;
+            IsNewsPublished = false;
+            IsDeleted = false;
+            PublishDate = publishDate;
         }
     }
 }

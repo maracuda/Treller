@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using Microsoft.Ajax.Utilities;
 using SKBKontur.BlocksMapping.BlockExtenssions;
+using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.Notifications;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
+using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
@@ -18,32 +18,35 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 {
     public class NewsService : INewsService
     {
-        private const string CardNewsName = "CardNews";
-
-
-        private readonly ICachedFileStorage cachedFileStorage;
         private readonly ITaskCacher taskCacher;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
-        private readonly INotificationService notificationService;
         private readonly INewsSettingsService newsSettingsService;
         private readonly IBoardsService boardsService;
+        private readonly INewsStorage newsStorage;
+        private readonly INewsNotificator newsNotificator;
+        private readonly IErrorService errorService;
+        private readonly IDateTimeFactory dateTimeFactory;
 
-        public NewsService(ICachedFileStorage cachedFileStorage,
-                           ITaskCacher taskCacher,
+        public NewsService(ITaskCacher taskCacher,
                            ITaskManagerClient taskManagerClient,
                            ICardStateInfoBuilder cardStateInfoBuilder,
-                           INotificationService notificationService,
                            INewsSettingsService newsSettingsService,
-                           IBoardsService boardsService)
+                           IBoardsService boardsService,
+                           INewsStorage newsStorage,
+                           INewsNotificator newsNotificator,
+                           IErrorService errorService,
+                           IDateTimeFactory dateTimeFactory)
         {
-            this.cachedFileStorage = cachedFileStorage;
             this.taskCacher = taskCacher;
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
-            this.notificationService = notificationService;
             this.newsSettingsService = newsSettingsService;
             this.boardsService = boardsService;
+            this.newsStorage = newsStorage;
+            this.newsNotificator = newsNotificator;
+            this.errorService = errorService;
+            this.dateTimeFactory = dateTimeFactory;
         }
 
         public void Refresh()
@@ -75,34 +78,34 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                 .Where(x => x.CardReleaseDate >= DateTime.Now.Date.AddDays(-14))
                 .ToArray();
 
-            var currentModels = (cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0]).ToDictionary(x => x.CardId);
-            foreach (var card in actualCards.Where(card => currentModels.ContainsKey(card.CardId)))
+            //TODO: move it to storage layer
+            var idToNewMap = newsStorage.ReadAll().ToDictionary(x => x.CardId);
+            foreach (var card in actualCards.Where(card => idToNewMap.ContainsKey(card.CardId)))
             {
-                var oldCard = currentModels[card.CardId];
+                var oldCard = idToNewMap[card.CardId];
                 card.PublishDate = oldCard.PublishDate;
                 card.IsDeleted = oldCard.IsDeleted;
                 card.IsTechnicalNewsPublished = oldCard.IsTechnicalNewsPublished;
                 card.IsNewsPublished = oldCard.IsNewsPublished;
             }
-            cachedFileStorage.Write(CardNewsName, actualCards);
+            newsStorage.UpdateAll(actualCards);
         }
 
         public NewsViewModel GetNews()
         {
-            var cardsForNews = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
+            var news = newsStorage.ReadAll();
             return new NewsViewModel
             {
-                NewsToPublish = BuildNewsModel(cardsForNews, false),
-                TechnicalNewsToPublish = BuildNewsModel(cardsForNews, true),
-                NotActualCards = cardsForNews.Where(x => x.IsPublished() || x.IsDeleted).ToArray(),
-                CardsWihoutNews = cardsForNews.Where(x => !x.IsPublished() && !x.IsDeleted && !x.IsNewsExists()).ToArray(),
-                ActualCards = cardsForNews.Where(x => !x.IsPublished() && !x.IsDeleted && x.IsNewsExists()).ToArray()
+                NewsToPublish = BuildNewsModel(news, false),
+                TechnicalNewsToPublish = BuildNewsModel(news, true),
+                NotActualCards = news.Where(x => x.IsPublished() || x.IsDeleted).ToArray(),
+                CardsWihoutNews = news.Where(x => !x.IsPublished() && !x.IsDeleted && !x.IsNewsExists()).ToArray(),
+                ActualCards = news.Where(x => !x.IsPublished() && !x.IsDeleted && x.IsNewsExists()).ToArray()
             };
         }
 
-        private static NewsModel BuildNewsModel(CardNewsModel[] cards, bool isTechnicalNews, bool inHtmlStyle = false)
+        private static NewsModel BuildNewsModel(CardNewsModel[] cards, bool isTechnicalNews)
         {
-            var newLine = inHtmlStyle ? "<br/>" : Environment.NewLine;
             var news = new StringBuilder();
             DateTime releaseDate = new DateTime();
             var cardsForSend = new List<CardNewsModel>();
@@ -114,7 +117,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             foreach (var card in cards)
             {
                 var newsText = isTechnicalNews ? card.TechnicalNewsText : card.NewsText;
-
                 if (string.IsNullOrWhiteSpace(newsText))
                 {
                     continue;
@@ -122,19 +124,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
                 if (card.CardReleaseDate != releaseDate)
                 {
-                    news.AppendFormat("Вечером {1} {0}:", card.CardReleaseDate >= DateTime.Today ? "будем релизить" : "состоялся релиз", card.CardReleaseDate.ToString("D", new CultureInfo("ru-RU", false)));
-                    news.Append(newLine);
-                    news.Append(newLine);
+                    news.Append(card.CardReleaseDate >= DateTime.Today
+                        ? $"Вечером {card.CardReleaseDate.ToString("D", new CultureInfo("ru-RU", false))} будем релизить<br/><br/>"
+                        : $"Вечером {card.CardReleaseDate.ToString("D", new CultureInfo("ru-RU", false))} состоялся релиз<br/><br/>");
                 }
                 releaseDate = card.CardReleaseDate;
-
-                news.Append(inHtmlStyle ? "<b>" : "Задача: ");
-                news.Append(card.CardName);
-                news.Append(inHtmlStyle ? "</b>" : "");
-                news.Append(newLine);
-                news.Append(newsText);
-                news.Append(newLine);
-                news.Append(newLine);
+                news.Append($"<b>{card.CardName}</b>{"<br/>"}{newsText}<br/><br/>");
                 cardsForSend.Add(card);
             }
 
@@ -153,32 +148,25 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public void DeleteCard(string cardId)
         {
-            UpdateCard(cardId, card => card.IsDeleted = true);
+            UpdateNew(cardId, n => n.MarkDeleted());
         }
 
         public void RestoreCard(string cardId)
         {
-            UpdateCard(cardId, card =>
-            {
-                card.IsTechnicalNewsPublished = false;
-                card.IsNewsPublished = false;
-                card.IsDeleted = false;
-                card.PublishDate = DateTime.Today;
-            });
+            UpdateNew(cardId, n => n.ResetState(dateTimeFactory.Today));
         }
 
-        private void UpdateCard(string cardId, Action<CardNewsModel> updateCardAction)
+        private void UpdateNew(string cardId, Action<CardNewsModel> updateAction)
         {
-            var newsCards = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
-            var cardToDelete = newsCards.FirstOrDefault(x => x.CardId == cardId);
-
-            if (cardToDelete == null)
+            var newsModel = newsStorage.FindNew(cardId);
+            if (newsModel.HasNoValue)
             {
+                errorService.SendError($"Fail to find newsModel with cardId {cardId}.", new Exception());
                 return;
             }
 
-            updateCardAction(cardToDelete);
-            cachedFileStorage.Write(CardNewsName, newsCards);
+            updateAction(newsModel.Value);
+            newsStorage.Update(newsModel.Value);
         }
 
         public void SendTechnicalNews()
@@ -193,36 +181,24 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         private void SendNews(bool technical)
         {
-            var cards = cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0];
-            var inHtmlStyle = true;
-            var newsModel = BuildNewsModel(cards, technical, inHtmlStyle);
+            var cards = newsStorage.ReadAll();
+            var newsModel = BuildNewsModel(cards, technical);
             if (newsModel == null || newsModel.Cards.Length == 0)
             {
                 return;
             }
 
-            var body = string.Format("{1}{0}{0}Вы можете ответить на это письмо, если у вас возникли вопросы или комментарии касающиеся релизов{0}{0}--{0}С уважением, команда Контур.Биллинг", inHtmlStyle ? "<br/>" : Environment.NewLine, newsModel.NewsText);
-            var notification = new Notification
-            {
-                Title = newsModel.NewsHeader,
-                Body = body,
-                IsHtml = inHtmlStyle,
-                Recipient = technical ? newsSettingsService.GetOrRead().TechMailingList : newsSettingsService.GetOrRead().PublicMailingList,
-                ReplyTo = "ask.billing@skbkontur.ru"
-            };
-            notificationService.Send(notification);
-
+            newsNotificator.NotifyAboutReleases(technical ? newsSettingsService.GetOrRead().TechMailingList : newsSettingsService.GetOrRead().PublicMailingList, newsModel);
             foreach (var card in newsModel.Cards)
             {
-                card.Publish(technical);
+                card.MarkPublished(technical);
             }
-            
-            cachedFileStorage.Write(CardNewsName, cards);
+            newsStorage.UpdateAll(cards);
         }
 
         public bool IsAnyNewsExists()
         {
-            return (cachedFileStorage.Find<CardNewsModel[]>(CardNewsName) ?? new CardNewsModel[0]).Any(x => x.IsNewsExists() && !x.IsPublished() && !x.IsDeleted);
+            return newsStorage.ReadAll().Any(x => x.IsNewsExists() && !x.IsPublished() && !x.IsDeleted);
         }
     }
 }

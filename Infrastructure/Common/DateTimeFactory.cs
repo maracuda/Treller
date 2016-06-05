@@ -35,6 +35,7 @@ namespace SKBKontur.Infrastructure.Common
         }
 
         public long UtcTicks => UtcNow.Ticks;
+        public DateTime Today => DateTime.Today;
 
         public long Ticks => Now.Ticks;
 

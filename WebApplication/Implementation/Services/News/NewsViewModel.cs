@@ -3,7 +3,6 @@
     public class NewsViewModel
     {
         public NewsSettings Settings { get; set; }
-
         public NewsModel TechnicalNewsToPublish { get; set; }
         public NewsModel NewsToPublish { get; set; }
         public CardNewsModel[] NotActualCards { get; set; }
