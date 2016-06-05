@@ -17,7 +17,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
         }
 
         [Test]
-        public void TestGetBoards()
+        public void TestGetAllBoards()
         {
             var actualBoards = trelloClient.GetAllBoards("konturbilling");
             Assert.True(actualBoards.Length > 2);
@@ -27,10 +27,19 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
         }
 
         [Test]
+        public void TestGelAllBoardsFromCache()
+        {
+            var originalActuals = trelloClient.GetAllBoards("konturbilling");
+            var actuals = trelloClient.GetAllBoards("konturbilling");
+            Assert.AreEqual(originalActuals, actuals);
+            actuals = trelloClient.GetAllBoards("konturbilling");
+            Assert.AreEqual(originalActuals, actuals);
+        }
+
+        [Test]
         public void TestGetClosedBoard()
         {
-            var cloasedBoard = trelloClient.GetBoardsAsync(new[] {"56c29cc406dae946e255e03d"}).Result.First();
-            Assert.True(cloasedBoard.IsClosed);
+            Assert.True(trelloClient.GetAllBoards("konturbilling").Any(x => x.IsClosed));
         }
     }
 }

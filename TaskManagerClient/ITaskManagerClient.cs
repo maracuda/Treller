@@ -7,9 +7,7 @@ namespace SKBKontur.TaskManagerClient
     public interface ITaskManagerClient
     {
         Board[] GetAllBoards(string organizationIdOrName);
-        Task<Board[]> GetOpenBoardsAsync(string organizationIdOrName);
         Board[] GetOpenBoards(string organizationIdOrName);
-        Task<Board[]> GetBoardsAsync(string[] boardIds);
 
         BoardList[] GetBoardLists(params string[] boardIds);
         Task<BoardList[]> GetBoardListsAsync(params string[] boardIds);

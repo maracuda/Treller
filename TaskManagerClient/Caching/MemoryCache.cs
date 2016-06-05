@@ -17,9 +17,17 @@ namespace SKBKontur.TaskManagerClient.Caching
         public T GetOrLoad<T>(string key, Func<T> loader, TimeSpan? ttl = null)
         {
             var result = cacheImpl.Get<T>(key);
-            if (result != null)
+
+            if (result is ValueType)
             {
-                return result;
+                var obj = Activator.CreateInstance(result.GetType());
+                if (!obj.Equals(result))
+                    return result;
+            }
+            else
+            {
+                if (result != null)
+                    return result;
             }
 
             try

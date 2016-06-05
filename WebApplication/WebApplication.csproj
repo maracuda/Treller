@@ -202,8 +202,6 @@
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\RoundDanceController.cs" />
-    <Compile Include="Controllers\TaskInfoController.cs" />
-    <Compile Include="Controllers\TasksListController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -326,16 +324,10 @@
     <Compile Include="Implementation\TaskList\BusinessObjects\Blocks\CardListBlock.cs" />
     <Compile Include="Implementation\TaskList\BusinessObjects\ViewModels\BugsCountLinkInfoViewModel.cs" />
     <Compile Include="Implementation\TaskList\BusinessObjects\ViewModels\BugsInfoViewModel.cs" />
-    <Compile Include="Implementation\TaskList\BusinessObjects\ViewModels\CardListEnterModel.cs" />
     <Compile Include="Implementation\TaskList\BusinessObjects\ViewModels\CardListItemViewModel.cs" />
     <Compile Include="Implementation\TaskList\BusinessObjects\ViewModels\CardProgressInfoViewModel.cs" />
     <Compile Include="Implementation\TaskList\BusinessObjects\ViewModels\CardStageInfoViewModel.cs" />
     <Compile Include="Implementation\TaskList\BusinessObjects\ViewModels\CardStateOverallViewModel.cs" />
-    <Compile Include="Implementation\TaskList\BusinessObjects\ViewModels\ShowMode.cs" />
-    <Compile Include="Implementation\TaskList\BusinessObjects\ViewModels\TaskListViewModel.cs" />
-    <Compile Include="Implementation\TaskList\TaskListBuilder.cs" />
-    <Compile Include="Implementation\TaskList\TaskListMapping.cs" />
-    <Compile Include="Implementation\TaskList\TasksListInitialNamer.cs" />
     <Compile Include="Implementation\VirtualMachines\BusinessObjects\AsyncPowershell.cs" />
     <Compile Include="Implementation\VirtualMachines\BusinessObjects\CommandExecute.cs" />
     <Compile Include="Implementation\VirtualMachines\BusinessObjects\CommandExecuteResult.cs" />

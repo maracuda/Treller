@@ -28,7 +28,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService
             }
 
             return boards.Where(board => boardClassifier.IdentifyBoardType(board) == BoardType.Kanban)
-                .ToArray();
+                         .ToArray();
         }
     }
 }

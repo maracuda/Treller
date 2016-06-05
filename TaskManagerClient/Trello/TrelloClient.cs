@@ -18,7 +18,7 @@ namespace SKBKontur.TaskManagerClient.Trello
     public class TrelloClient : ITaskManagerClient
     {
         private readonly IHttpClient httpClient;
-        private readonly IMemoryCache responseCache;
+        private readonly IMemoryCache responsesCache;
         private readonly Dictionary<string, string> credentials;
         private const int MaxActionsLimitCount = 1000;
 
@@ -28,7 +28,7 @@ namespace SKBKontur.TaskManagerClient.Trello
             ICacheFactory cacheFactory)
         {
             this.httpClient = httpClient;
-            responseCache = cacheFactory.CreateMemoryCache(GetType().Name, TimeSpan.FromMinutes(30));
+            responsesCache = cacheFactory.CreateMemoryCache(GetType().Name, TimeSpan.FromMinutes(30));
             var trelloCredentials = trelloUserCredentialService.GetCredentials();
             credentials = new Dictionary<string, string>
                                    {
@@ -37,28 +37,15 @@ namespace SKBKontur.TaskManagerClient.Trello
                                    };
         }
 
-        public Task<Board[]> GetOpenBoardsAsync(string organizationIdOrName)
-        {
-            return ReadAsync<BusinessObjects.Boards.Board[]>($"organizations/{organizationIdOrName}/boards", new Dictionary<string, string>{{"filter", "open"}})
-                    .Await(x => x.Select(Board.ConvertFrom).ToArray());
-        }
-
         public Board[] GetOpenBoards(string organizationIdOrName)
         {
-            return AsyncHelpers.RunSync(() => GetOpenBoardsAsync(organizationIdOrName));
+            return GetAllBoards(organizationIdOrName)
+                    .Where(x => !x.IsClosed).ToArray();
         }
 
         public Board[] GetAllBoards(string organizationIdOrName)
         {
-            return Read<BusinessObjects.Boards.Board[]>($"organizations/{organizationIdOrName}/boards", new Dictionary<string, string> {{"filter", "all"}})
-                    .Select(Board.ConvertFrom)
-                    .ToArray();
-        }
-
-        public Task<Board[]> GetBoardsAsync(string[] boardIds)
-        {
-            return boardIds.Select(id => ReadAsync<BusinessObjects.Boards.Board>($"boards/{id}"))
-                           .Await(Board.ConvertFrom);
+            return ReadOrGetCached<BusinessObjects.Boards.Board[], Board[]>($"organizations/{organizationIdOrName}/boards", o => o.Select(Board.ConvertFrom).ToArray());
         }
 
         public Task<BoardList[]> GetBoardListsAsync(params string[] boardIds)
@@ -159,9 +146,18 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         private T ReadOrGetCached<T>(string path)
         {
-            return responseCache.GetOrLoad(path, () => AsyncHelpers.RunSync(() => httpClient.SendGetAsync<T>($"https://trello.com/1/{path}", credentials)));
+            return responsesCache.GetOrLoad(path, () => AsyncHelpers.RunSync(() => httpClient.SendGetAsync<T>($"https://trello.com/1/{path}", credentials)));
         }
 
+        private TConverted ReadOrGetCached<TOriginal, TConverted>(string path, Func<TOriginal, TConverted> convertFunc)
+        {
+            var loader = new Func<TConverted>(() =>
+            {
+                var originalResponse = AsyncHelpers.RunSync(() => httpClient.SendGetAsync<TOriginal>($"https://trello.com/1/{path}", credentials));
+                return convertFunc.Invoke(originalResponse);
+            });
+            return responsesCache.GetOrLoad(path, loader);
+        }
 
         private Task<T> ReadAsync<T>(string path, Dictionary<string, string> queryString = null)
         {

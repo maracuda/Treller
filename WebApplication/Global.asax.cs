@@ -7,7 +7,6 @@ using LightInject;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Digest;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces;
