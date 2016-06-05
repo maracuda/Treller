@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Web.Mvc;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
+using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
-    public class RepositoryController : Controller
+    public class RepositoryController : ExceptionHandledController
     {
         private readonly IOldBranchesModelBuilder oldBranchesModelBuilder;
         private readonly IRepositoryNotificator repositoryNotificator;
 
         public RepositoryController(
             IOldBranchesModelBuilder oldBranchesModelBuilder,
-            IRepositoryNotificator repositoryNotificator)
+            IRepositoryNotificator repositoryNotificator,
+            IErrorService errorService) : base(errorService)
         {
             this.oldBranchesModelBuilder = oldBranchesModelBuilder;
             this.repositoryNotificator = repositoryNotificator;

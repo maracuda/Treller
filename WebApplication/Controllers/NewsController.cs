@@ -1,9 +1,10 @@
 ﻿using System.Web.Mvc;
+using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
-    public class NewsController : Controller
+    public class NewsController : ExceptionHandledController
     {
         private readonly INewsService newsService;
         private readonly INewsModelBuilder newsModelBuilder;
@@ -12,7 +13,8 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         public NewsController(
             INewsService newsService,
             INewsModelBuilder newsModelBuilder,
-            INewsSettingsService newsSettingsService)
+            INewsSettingsService newsSettingsService,
+            IErrorService errorService) : base(errorService)
         {
             this.newsService = newsService;
             this.newsModelBuilder = newsModelBuilder;

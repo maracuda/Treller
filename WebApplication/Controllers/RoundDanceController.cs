@@ -2,15 +2,19 @@
 using System.Globalization;
 using System.Web.Mvc;
 using SKBKontur.Treller.WebApplication.Implementation.RoundDance;
+using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
-    public class RoundDanceController : Controller
+    public class RoundDanceController : ExceptionHandledController
     {
         private readonly IRoundDanceViewModelBuilder roundDanceViewModelBuilder;
         private readonly IRoundDancePeopleStorage roundDancePeopleStorage;
 
-        public RoundDanceController(IRoundDanceViewModelBuilder roundDanceViewModelBuilder, IRoundDancePeopleStorage roundDancePeopleStorage)
+        public RoundDanceController(
+            IRoundDanceViewModelBuilder roundDanceViewModelBuilder,
+            IRoundDancePeopleStorage roundDancePeopleStorage,
+            IErrorService errorService) : base(errorService)
         {
             this.roundDanceViewModelBuilder = roundDanceViewModelBuilder;
             this.roundDancePeopleStorage = roundDancePeopleStorage;

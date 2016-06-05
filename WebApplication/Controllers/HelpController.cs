@@ -5,17 +5,15 @@ using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
-    public class HelpController : Controller
+    public class HelpController : ExceptionHandledController
     {
         private readonly IBugTrackerClient bugTrackerClient;
-        private readonly IErrorService errorService;
 
         public HelpController(
             IBugTrackerClient bugTrackerClient,
-            IErrorService errorService)
+            IErrorService errorService) : base(errorService)
         {
             this.bugTrackerClient = bugTrackerClient;
-            this.errorService = errorService;
         }
 
         public ActionResult Index()

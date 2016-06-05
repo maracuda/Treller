@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Globalization;
 using System.Web.Mvc;
+using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Statistics;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
-    public class StatisticsController : Controller
+    public class StatisticsController : ExceptionHandledController
     {
         private readonly IStatisticsService statisticsService;
 
-        public StatisticsController(IStatisticsService statisticsService)
+        public StatisticsController(
+            IStatisticsService statisticsService,
+            IErrorService errorService) : base(errorService)
         {
             this.statisticsService = statisticsService;
         }

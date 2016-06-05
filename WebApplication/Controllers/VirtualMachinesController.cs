@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Logging;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
-    public class VirtualMachinesController : Controller
+    public class VirtualMachinesController : ExceptionHandledController
     {
         private readonly IVirtualMachinesStorage virtualMachinesStorage;
         private readonly IVirtualMachinesService virtualMachinesService;
         private readonly IVirtualMachinesExecuteLog virtualMachinesExecuteLog;
 
-        public VirtualMachinesController(IVirtualMachinesStorage virtualMachinesStorage, IVirtualMachinesService virtualMachinesService,
-                                         IVirtualMachinesExecuteLog virtualMachinesExecuteLog)
+        public VirtualMachinesController(
+            IVirtualMachinesStorage virtualMachinesStorage, 
+            IVirtualMachinesService virtualMachinesService,
+            IVirtualMachinesExecuteLog virtualMachinesExecuteLog,
+            IErrorService errorService) : base(errorService)
         {
             this.virtualMachinesStorage = virtualMachinesStorage;
             this.virtualMachinesService = virtualMachinesService;
