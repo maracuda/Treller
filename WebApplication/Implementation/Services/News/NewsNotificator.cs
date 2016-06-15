@@ -1,4 +1,4 @@
-using SKBKontur.TaskManagerClient.Notifications;
+п»їusing SKBKontur.TaskManagerClient.Notifications;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 {
@@ -13,7 +13,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public void NotifyAboutReleases(string recipient, NewsModel newsModel)
         {
-            var body = $"{newsModel.NewsText}<br/><br/>Вы можете ответить на это письмо, если у вас возникли вопросы или комментарии касающиеся релизов<br/><br/>--< br />С уважением, команда Контур.Биллинг";
+            var body = $"{newsModel.NewsText}<br/><br/>Р’С‹ РјРѕР¶РµС‚Рµ РѕС‚РІРµС‚РёС‚СЊ РЅР° СЌС‚Рѕ РїРёСЃСЊРјРѕ, РµСЃР»Рё Сѓ РІР°СЃ РІРѕР·РЅРёРєР»Рё РІРѕРїСЂРѕСЃС‹ РёР»Рё РєРѕРјРјРµРЅС‚Р°СЂРёРё РєР°СЃР°СЋС‰РёРµСЃСЏ СЂРµР»РёР·РѕРІ<br/><br/>--<br/>РЎ СѓРІР°Р¶РµРЅРёРµРј, РєРѕРјР°РЅРґР° РљРѕРЅС‚СѓСЂ.Р‘РёР»Р»РёРЅРі";
             var notification = new Notification
             {
                 Title = newsModel.NewsHeader,
