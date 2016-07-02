@@ -15,11 +15,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         private readonly IDateTimeFactory dateTimeFactory;
 
         public NewsService(INewsSettingsService newsSettingsService,
-                           INewsStorage newsStorage,
-                           INewsNotificator newsNotificator,
-                           INewsModelBuilder newsModelBuilder,
-                           IErrorService errorService,
-                           IDateTimeFactory dateTimeFactory)
+            INewsStorage newsStorage,
+            INewsNotificator newsNotificator,
+            INewsModelBuilder newsModelBuilder,
+            IErrorService errorService,
+            IDateTimeFactory dateTimeFactory)
         {
             this.newsSettingsService = newsSettingsService;
             this.newsStorage = newsStorage;
@@ -73,26 +73,30 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             newsStorage.Update(newsModel.Value);
         }
 
-        public void SendTechnicalNews()
-        {
-            SendNews(true);
-        }
-
         public void SendNews()
         {
-            SendNews(false);
+            if (IsAnyNewsExists())
+            {
+                SendNews(false);
+                SendNews(true);
+            }
         }
 
         private void SendNews(bool technical)
         {
             var cards = newsStorage.ReadAll();
-            var newsModel = technical ? newsModelBuilder.BuildViewModel().TechnicalNewsToPublish : newsModelBuilder.BuildViewModel().NewsToPublish;
+            var newsModel = technical
+                ? newsModelBuilder.BuildViewModel().TechnicalNewsToPublish
+                : newsModelBuilder.BuildViewModel().NewsToPublish;
             if (newsModel == null || newsModel.Cards.Length == 0)
             {
                 return;
             }
 
-            newsNotificator.NotifyAboutReleases(technical ? newsSettingsService.GetOrRead().TechMailingList : newsSettingsService.GetOrRead().PublicMailingList, newsModel);
+            newsNotificator.NotifyAboutReleases(
+                technical
+                    ? newsSettingsService.GetOrRead().TechMailingList
+                    : newsSettingsService.GetOrRead().PublicMailingList, newsModel);
             foreach (var card in newsModel.Cards)
             {
                 card.MarkPublished(technical);
@@ -100,7 +104,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             newsStorage.UpdateAll(cards);
         }
 
-        public bool IsAnyNewsExists()
+        private bool IsAnyNewsExists()
         {
             return newsStorage.ReadAll().Any(x => x.IsNewsExists() && !x.IsPublished() && !x.IsDeleted);
         }

@@ -9,6 +9,7 @@ using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals;
+using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces;
 
 namespace SKBKontur.Treller.WebApplication
@@ -41,8 +42,11 @@ namespace SKBKontur.Treller.WebApplication
             operationalService = container.Get<IOperationalService>();
             operationalService.Start();
 
+            var operationsFactory = container.Get<IRegularOperationsFactory>();
             operationalService2 = container.Get<IOperationalService2>();
-            operationalService2.RegisterRegularProccess("NewsRefresher", () => container.Get<INewsService>().Refresh(), TimeSpan.FromMinutes(5));
+            operationalService2.Register(operationsFactory.Create("NewsRefresher", TimeSpan.FromMinutes(5), () => container.Get<INewsService>().Refresh()));
+            operationalService2.Register(operationsFactory.Create("EveningNewsPublisher", TimeSpan.FromMinutes(5), TimeSpan.Parse("18:20:00"), TimeSpan.Parse("10:00:00"), () => container.Get<INewsService>().SendNews()));
+            operationalService2.Register(operationsFactory.Create("AfterNoonNewsPublisher", TimeSpan.FromMinutes(5), TimeSpan.Parse("12:00:00"), TimeSpan.Parse("13:00:00"), () => container.Get<INewsService>().SendNews()));
             //NOTE: turn off this process since it always fails (staff need personal domain account to send messages)
             //operationalService2.RegisterRegularProccess("DigestSender", () => container.Get<IDigestService>().SendAllToDigest(), TimeSpan.FromMinutes(5));
         }
@@ -52,6 +56,7 @@ namespace SKBKontur.Treller.WebApplication
             try
             {
                 operationalService.Dispose();
+                operationalService2.Dispose();
                 runspacePool.Dispose();
             }
             catch { }

@@ -29,14 +29,6 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         }
 
         [HttpGet]
-        public ActionResult SendTechnicalNews()
-        {
-            newsService.SendTechnicalNews();
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
         public ActionResult SendNews()
         {
             newsService.SendNews();

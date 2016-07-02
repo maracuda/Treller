@@ -10,8 +10,6 @@
         CardNewsModel[] GetAllNews();
         void DeleteCard(string cardId);
         void RestoreCard(string cardId);
-        void SendTechnicalNews();
         void SendNews();
-        bool IsAnyNewsExists();
     }
 }

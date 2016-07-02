@@ -278,6 +278,12 @@
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService2.cs" />
     <Compile Include="Implementation\Services\Operationals\OperationalService.cs" />
+    <Compile Include="Implementation\Services\Operationals\OperationalService2.cs" />
+    <Compile Include="Implementation\Services\Operationals\Operations\IRegularOperationsFactory.cs" />
+    <Compile Include="Implementation\Services\Operationals\Operations\RegularOperation.cs" />
+    <Compile Include="Implementation\Services\Operationals\Operations\RegularOperationsFactory.cs" />
+    <Compile Include="Implementation\Services\Operationals\Operations\ScheduledRegularOperation.cs" />
+    <Compile Include="Implementation\Services\Operationals\Operations\SimpleOperation.cs" />
     <Compile Include="Implementation\Services\TaskCacher\ITaskCacher.cs" />
     <Compile Include="Implementation\Services\TaskCacher\TaskCacher.cs" />
     <Compile Include="Implementation\Services\TaskCacher\TaskCacherStoredTypes.cs" />
@@ -470,7 +476,9 @@
     <None Include="Views\Statistics\Index.cshtml" />
     <None Include="Views\VirtualMachines\ShowLogs.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Implementation\Services\Operationals\Operations" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
