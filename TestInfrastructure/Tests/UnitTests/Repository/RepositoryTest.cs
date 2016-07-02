@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SKBKontur.Infrastructure.Common;
@@ -46,15 +47,33 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
 
             using (mock.Record())
             {
+                repositorySettings.Stub(f => f.NotTrackedBrancheNames).Return(new HashSet<string>());
                 dateTimeFactory.Expect(f => f.Now).Return(now);
                 repositoryClient.Expect(f => f.SelectAllBranches()).Return(new[] {branch1, branch2, branch3});
             }
 
-            var expected = new[] {branch2};
             var actual = repository.SearchForOldBranches(olderThan);
-            CollectionAssert.AreEquivalent(expected, actual);
+            CollectionAssert.AreEquivalent(new[] {branch2}, actual);
         }
 
+        [Test]
+        public void TestSearchForOldBranchesWhenFilterNonTrackingBranch()
+        {
+            var olderThan = TimeSpan.FromDays(1);
+            var now = DateTime.Now;
+            var branch = GenerateBranch(now.Subtract(olderThan).Subtract(TimeSpan.FromTicks(1)));
+            var nontrackingBranch = GenerateBranch(now.Subtract(olderThan).Subtract(TimeSpan.FromTicks(1)));
+
+            using (mock.Record())
+            {
+                repositorySettings.Stub(f => f.NotTrackedBrancheNames).Return(new HashSet<string>() { nontrackingBranch.Name });
+                dateTimeFactory.Expect(f => f.Now).Return(now);
+                repositoryClient.Expect(f => f.SelectAllBranches()).Return(new[] { branch, nontrackingBranch});
+            }
+
+            var actual = repository.SearchForOldBranches(olderThan);
+            CollectionAssert.AreEquivalent(new[] {branch}, actual);
+        }
         [Test]
         public void TestSearchForOldBranchesInPeriod()
         {
@@ -65,13 +84,13 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
 
             using (mock.Record())
             {
+                repositorySettings.Stub(f => f.NotTrackedBrancheNames).Return(new HashSet<string>());
                 dateTimeFactory.Expect(f => f.Now).Return(now);
                 repositoryClient.Expect(f => f.SelectAllBranches()).Return(new[] { branch1, branch2, branch3 });
             }
 
-            var expected = new[] { branch2 };
             var actual = repository.SearchForOldBranches(TimeSpan.FromDays(1), TimeSpan.FromDays(2));
-            CollectionAssert.AreEquivalent(expected, actual);
+            CollectionAssert.AreEquivalent(new[] { branch2 }, actual);
         }
 
         [Test]

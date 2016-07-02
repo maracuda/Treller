@@ -24,3 +24,4 @@ _ReSharper*/
 /packages/
 !packages/repositories.config
 .vs/*
+.idea*/*
