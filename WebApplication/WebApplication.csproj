@@ -280,6 +280,7 @@
     <Compile Include="Implementation\Services\Operationals\OperationalService.cs" />
     <Compile Include="Implementation\Services\Operationals\OperationalService2.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\IRegularOperationsFactory.cs" />
+    <Compile Include="Implementation\Services\Operationals\Operations\OperationState.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\RegularOperation.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\RegularOperationsFactory.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\ScheduledRegularOperation.cs" />
