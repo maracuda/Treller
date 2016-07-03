@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SKBKontur.Infrastructure.Common;
@@ -35,6 +37,31 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
             var operationResult = operation.Run();
             Assert.IsTrue(operationResult.HasValue);
             Assert.AreEqual(exception, operationResult.Value);
+        }
+
+        [Test]
+        public void TestRunSimpleOperationTwiceAtOnTime()
+        {
+            var i = 0;
+            const int timeoutMs = 500;
+            var operation = new SimpleOperation("zzz", TimeSpan.FromMilliseconds(10), () => { i++; Thread.Sleep(timeoutMs); });
+
+            Task.Run(() =>
+            {
+                Assert.AreEqual(OperationState.Idle, operation.State);
+                var firstRunResult = operation.Run();
+                Assert.IsFalse(firstRunResult.HasValue);
+            });
+
+            Task.Run(() =>
+            {
+                Assert.AreEqual(OperationState.Running, operation.State);
+                var secondRunResult = operation.Run();
+                Assert.IsFalse(secondRunResult.HasValue);
+            });
+            Thread.Sleep(timeoutMs + 50);
+            Assert.AreEqual(OperationState.Idle, operation.State);
+            Assert.AreEqual(1, i);
         }
 
         [Test]
@@ -95,6 +122,37 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
             var operationResult = operation.Run();
             Assert.IsFalse(operationResult.HasValue);
             Assert.AreEqual(0, i);
+        }
+
+        [Test]
+        public void TestRunScheduledOperationTwiceAtOneTime()
+        {
+            using (mock.Record())
+            {
+                dateTimeFactory.Stub(f => f.Now).Return(DateTime.Now.Date.AddHours(11));
+            }
+
+            var i = 0;
+            const int timeoutMs = 500;
+            var operation = new ScheduledRegularOperation(dateTimeFactory, "zzz", TimeSpan.FromMilliseconds(10), TimeSpan.FromHours(10), TimeSpan.FromHours(12),
+                                        () => { i++; Thread.Sleep(timeoutMs); });
+
+            Task.Run(() =>
+            {
+                Assert.AreEqual(OperationState.Idle, operation.State);
+                var firstRunResult = operation.Run();
+                Assert.IsFalse(firstRunResult.HasValue);
+            });
+
+            Task.Run(() =>
+            {
+                Assert.AreEqual(OperationState.Running, operation.State);
+                var secondRunResult = operation.Run();
+                Assert.IsFalse(secondRunResult.HasValue);
+            });
+            Thread.Sleep(timeoutMs + 50);
+            Assert.AreEqual(OperationState.Idle, operation.State);
+            Assert.AreEqual(1, i);
         }
     }
 }

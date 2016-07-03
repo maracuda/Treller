@@ -5,6 +5,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
 {
     public class SimpleOperation : RegularOperation
     {
+        private static readonly object operationLock = new object();
+
         public SimpleOperation(string name, TimeSpan runPeriod, Action action) : base(name, runPeriod, action)
         {
         }
@@ -13,12 +15,26 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
         {
             try
             {
-                action.Invoke();
-                return null;
+                if (State != OperationState.Idle)
+                    return null;
+
+                lock (operationLock)
+                {
+                    if (State != OperationState.Idle)
+                        return null;
+
+                    State = OperationState.Running;
+                    action.Invoke();
+                    return null;
+                }
             }
             catch (Exception e)
             {
                 return e;
+            }
+            finally
+            {
+                State = OperationState.Idle;
             }
         }
     }

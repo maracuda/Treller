@@ -6,6 +6,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
 {
     public class ScheduledRegularOperation : RegularOperation
     {
+        private static readonly object operationLock = new object();
         private readonly IDateTimeFactory dateTimeFactory;
         private readonly TimeSpan minTimeToRun;
         private readonly TimeSpan maxTimeToRun;
@@ -22,17 +23,31 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
         {
             try
             {
-                var now = dateTimeFactory.Now;
-                var nowDate = now.Date;
-                if (now > nowDate.Add(minTimeToRun) && now < nowDate.Add(maxTimeToRun))
+                if (State != OperationState.Idle)
+                    return null;
+
+                lock (operationLock)
                 {
-                    action.Invoke();
+                    if (State != OperationState.Idle)
+                        return null;
+
+                    State = OperationState.Running;
+                    var now = dateTimeFactory.Now;
+                    var nowDate = now.Date;
+                    if (now > nowDate.Add(minTimeToRun) && now < nowDate.Add(maxTimeToRun))
+                    {
+                        action.Invoke();
+                    }
+                    return null;
                 }
-                return null;
             }
             catch (Exception e)
             {
                 return e;
+            }
+            finally
+            {
+                State = OperationState.Idle;
             }
         }
     }
