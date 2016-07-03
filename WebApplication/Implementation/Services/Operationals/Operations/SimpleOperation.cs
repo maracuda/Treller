@@ -3,15 +3,24 @@ using SKBKontur.Infrastructure.Sugar;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations
 {
-    public class SimpleOperation : RegularOperation
+    public class SimpleOperation : IRegularOperation
     {
         private static readonly object operationLock = new object();
 
-        public SimpleOperation(string name, TimeSpan runPeriod, Action action) : base(name, runPeriod, action)
+        private readonly Action action;
+        public string Name { get; }
+        public OperationState State { get; private set; }
+        public TimeSpan RunPeriod { get; }
+
+        public SimpleOperation(string name, TimeSpan runPeriod, Action action)
         {
+            this.action = action;
+            State = OperationState.Idle;
+            Name = name;
+            RunPeriod = runPeriod;
         }
 
-        public override Maybe<Exception> Run()
+        public Maybe<Exception> Run()
         {
             try
             {

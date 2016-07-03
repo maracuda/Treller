@@ -12,12 +12,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
             this.dateTimeFactory = dateTimeFactory;
         }
 
-        public RegularOperation Create(string name, TimeSpan runPeriod, Action action)
+        public IRegularOperation Create(string name, TimeSpan runPeriod, Action action)
         {
             return new SimpleOperation(name, runPeriod, action);
         }
 
-        public RegularOperation Create(string name, TimeSpan runPeriod, TimeSpan minTimeToRun, TimeSpan maxTimeToRun, Action action)
+        public IRegularOperation Create(string name, TimeSpan runPeriod, TimeSpan minTimeToRun, TimeSpan maxTimeToRun, Action action)
         {
             return new ScheduledRegularOperation(dateTimeFactory, name, runPeriod, minTimeToRun, maxTimeToRun, action);
         }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Timers;
-using SKBKontur.Infrastructure.Sugar;
 using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
 
@@ -11,7 +10,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
     public class OperationalService2 : IOperationalService2
     {
         private readonly IErrorService errorService;
-        private readonly ConcurrentDictionary<Timer, RegularOperation> operationsIndex = new ConcurrentDictionary<Timer, RegularOperation>();
+        private readonly ConcurrentDictionary<Timer, IRegularOperation> operationsIndex = new ConcurrentDictionary<Timer, IRegularOperation>();
 
 
         public OperationalService2(IErrorService errorService)
@@ -24,13 +23,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
             foreach (var timerNamePair in operationsIndex)
             {
                 var timer = timerNamePair.Key;
-                RegularOperation operation;
+                IRegularOperation operation;
                 operationsIndex.TryRemove(timer, out operation);
                 timer.Dispose();
             }
         }
 
-        public void Register(RegularOperation operation)
+        public void Register(IRegularOperation operation)
         {
             if (operationsIndex.Values.Any(x => x.Name.Equals(operation.Name)))
                 return;
@@ -44,30 +43,24 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
         {
             try
             {
-                var operation = FindOperation(sender as Timer);
-                if (operation.HasNoValue)
+                var timer = sender as Timer;
+                if (timer == null || !operationsIndex.ContainsKey(timer))
                 {
                     errorService.SendError("Fail to find action to run regular process", new Exception());
                     return;
                 }
 
-                var operationResult = operation.Value.Run();
+                var operation = operationsIndex[timer];
+                var operationResult = operation.Run();
                 if (operationResult.HasValue)
                 {
-                    errorService.SendError($"Oparation with name {operation.Value.Name} failed", operationResult.Value);
+                    errorService.SendError($"Oparation with name {operation.Name} failed", operationResult.Value);
                 }
             }
             catch (Exception e)
             {
                 errorService.SendError("Fail to run regular process", e);
             }
-        }
-
-        private Maybe<RegularOperation> FindOperation(Timer timer)
-        {
-            if (timer == null || !operationsIndex.ContainsKey(timer))
-                return null;
-            return operationsIndex[timer];
         }
     }
 }

@@ -4,22 +4,29 @@ using SKBKontur.Infrastructure.Sugar;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations
 {
-    public class ScheduledRegularOperation : RegularOperation
+    public class ScheduledRegularOperation : IRegularOperation
     {
         private static readonly object operationLock = new object();
         private readonly IDateTimeFactory dateTimeFactory;
+
+        public string Name { get; }
+        public OperationState State { get; private set; }
+        public TimeSpan RunPeriod { get; }
         private readonly TimeSpan minTimeToRun;
         private readonly TimeSpan maxTimeToRun;
+        private readonly Action action;
 
         public ScheduledRegularOperation(IDateTimeFactory dateTimeFactory, string name, TimeSpan runPeriod, TimeSpan minTimeToRun, TimeSpan maxTimeToRun, Action action)
-            : base(name, runPeriod, action)
         {
+            Name = name;
+            RunPeriod = runPeriod;
             this.dateTimeFactory = dateTimeFactory;
             this.minTimeToRun = minTimeToRun;
             this.maxTimeToRun = maxTimeToRun;
+            this.action = action;
         }
 
-        public override Maybe<Exception> Run()
+        public Maybe<Exception> Run()
         {
             try
             {

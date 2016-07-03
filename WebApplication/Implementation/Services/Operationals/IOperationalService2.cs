@@ -5,6 +5,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
 {
     public interface IOperationalService2 : IDisposable
     {
-        void Register(RegularOperation operation);
+        void Register(IRegularOperation operation);
     }
 }
