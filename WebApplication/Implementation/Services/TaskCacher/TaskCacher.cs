@@ -103,26 +103,21 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher
             return result.LastResult;
         }
 
-        public T[] GetBuilded<T>()
+        public DateTime Actualize(DateTime timestamp)
         {
-            return buildedEntities[typeof (T).MakeArrayType()].Select(x => (T)x.Value).ToArray();
-        }
-
-        public bool TryActualize(DateTime timestamp)
-        {
+            var resultTimestamp = DateTime.UtcNow;
             var keys = cache.Select(x => x.Key).ToArray();
             var boardIds = keys.SelectMany(x => x.GetBoardIds()).Distinct().ToArray();
             var actions = taskManagerClient.GetActionsForBoardCardsAsync(boardIds, timestamp).Result.ToArray();
 
-            var isSuccessUpdate = UpdateWhenExists(actions, action => action.Type < ActionType.CreateList, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardCards));
-            isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type < ActionType.CreateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardActions));
-            isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.AddMemberToBoard || action.Type == ActionType.RemoveMemberFromBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardUsers));
-            isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.CreateList
-                                                || action.Type == ActionType.UpdateList, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardLists));
-            isSuccessUpdate &= UpdateWhenExists(actions, action => action.Type == ActionType.UpdateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.Boards));
-            isSuccessUpdate &= UpdateWhenExists(actions, action => checklistActions.Contains(action.Type), keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardChecklists));
+            UpdateWhenExists(actions, action => action.Type < ActionType.CreateList, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardCards));
+            UpdateWhenExists(actions, action => action.Type < ActionType.CreateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardActions));
+            UpdateWhenExists(actions, action => action.Type == ActionType.AddMemberToBoard || action.Type == ActionType.RemoveMemberFromBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardUsers));
+            UpdateWhenExists(actions, action => action.Type == ActionType.CreateList || action.Type == ActionType.UpdateList, keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardLists));
+            UpdateWhenExists(actions, action => action.Type == ActionType.UpdateBoard, keys.Where(x => x.StoredType == TaskCacherStoredTypes.Boards));
+            UpdateWhenExists(actions, action => checklistActions.Contains(action.Type), keys.Where(x => x.StoredType == TaskCacherStoredTypes.BoardChecklists));
 
-            return isSuccessUpdate;
+            return resultTimestamp;
         }
 
         private T Load<T>(Func<string[], T> loadAction, CacheKey cacheKey)

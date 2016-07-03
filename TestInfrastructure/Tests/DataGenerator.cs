@@ -6,7 +6,7 @@ namespace SKBKontur.Treller.Tests.Tests
     {
         private const string RussianAlphabet = "ЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮёйцукенгшщзхъфывапролджэячсмитьбю-";
         private const string EnglishAlphabet = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
-        private static readonly Random Random = new Random();
+        private static readonly Random Random = new Random(37);
 
         public static string GenRussainString(int length)
         {
@@ -37,6 +37,11 @@ namespace SKBKontur.Treller.Tests.Tests
         public static int GenInt()
         {
             return Random.Next();
+        }
+
+        public static long GenLong()
+        {
+            return Convert.ToInt64(Random.NextDouble());
         }
 
         public static string GenEmail()

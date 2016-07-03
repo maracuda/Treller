@@ -276,9 +276,7 @@
     <Compile Include="Implementation\Services\News\NewsStorage.cs" />
     <Compile Include="Implementation\Services\News\NewsViewModel.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />
-    <Compile Include="Implementation\Services\Operationals\IOperationalService2.cs" />
     <Compile Include="Implementation\Services\Operationals\OperationalService.cs" />
-    <Compile Include="Implementation\Services\Operationals\OperationalService2.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\EnumerationOperation.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\IRegularOperationsFactory.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\OperationState.cs" />

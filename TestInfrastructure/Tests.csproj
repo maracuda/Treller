@@ -76,7 +76,9 @@
     <Compile Include="Tests\IntegrationTests\Repository\RepositoryTest.cs" />
     <Compile Include="Tests\UnitTests\AssertionTests.cs" />
     <Compile Include="Tests\UnitTests\MockExtensionTest.cs" />
-    <Compile Include="Tests\UnitTests\OperationalService\OperationsTest.cs" />
+    <Compile Include="Tests\UnitTests\OperationalService\EnumerationOperationTest.cs" />
+    <Compile Include="Tests\UnitTests\OperationalService\SchedulableOperationTest.cs" />
+    <Compile Include="Tests\UnitTests\OperationalService\SimpleOperationTest.cs" />
     <Compile Include="Tests\UnitTests\Repository\RepositoryTest.cs" />
     <Compile Include="Tests\UnitTests\UnitTest.cs" />
     <Compile Include="UnitWrappers\Assert.cs" />
