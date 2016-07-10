@@ -7,7 +7,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService
 {
     public class BoardsService : IBoardsService
     {
-        private const string OrganizationName = "konturbilling";
+        private const string organizationName = "konturbilling";
         private readonly ITaskManagerClient taskManagerClient;
         private readonly IBoardClassifier boardClassifier;
 
@@ -21,7 +21,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService
 
         public Board[] SelectKanbanBoards(bool includeClosed)
         {
-            IEnumerable<Board> boards = taskManagerClient.GetAllBoards(OrganizationName);
+            IEnumerable<Board> boards = taskManagerClient.GetAllBoards(organizationName);
             if (!includeClosed)
             {
                 boards = boards.Where(x => !x.IsClosed);

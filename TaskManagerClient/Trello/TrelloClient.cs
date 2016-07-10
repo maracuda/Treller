@@ -39,8 +39,7 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         public Board[] GetOpenBoards(string organizationIdOrName)
         {
-            return GetAllBoards(organizationIdOrName)
-                    .Where(x => !x.IsClosed).ToArray();
+            return GetAllBoards(organizationIdOrName).Where(x => !x.IsClosed).ToArray();
         }
 
         public Board[] GetAllBoards(string organizationIdOrName)
@@ -50,17 +49,14 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         public Task<BoardList[]> GetBoardListsAsync(params string[] boardIds)
         {
-            return boardIds.Select(id => ReadAsync<BusinessObjects.Boards.BoardList[]>($"boards/{id}/lists"))
-                           .Await(x => new BoardList { Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos });
-
+            var parameters = new Dictionary<string, string>() {{"cards", "open"}, {"card_fields", "name,desc,descData,due"}};
+            return boardIds.Select(id => ReadAsync<BusinessObjects.Boards.BoardList[]>($"boards/{id}/lists", parameters))
+                           .Await(BoardList.ConvertFrom);
         }
 
         public BoardList[] GetBoardLists(params string[] boardIds)
         {
-            return boardIds
-                .SelectMany(boardId => Read<BusinessObjects.Boards.BoardList[]>($"boards/{boardId}/lists"))
-                .Select(x => new BoardList {Id = x.Id, BoardId = x.IdBoard, Name = x.Name, Position = x.Pos})
-                .ToArray();
+            return AsyncHelpers.RunSync(() => GetBoardListsAsync(boardIds));
         }
 
         public Task<BoardCard[]> GetBoardCardsAsync(string[] boardIds)

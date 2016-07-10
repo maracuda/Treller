@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessObjects\TaskManager\BoardListCardInfo.cs" />
     <Compile Include="Caching\CacheFactory.cs" />
     <Compile Include="Caching\ICacheFactory.cs" />
     <Compile Include="Caching\IMemoryCache.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Trello\BusinessObjects\Actions\OldUpdatedValue.cs" />
     <Compile Include="Trello\BusinessObjects\Boards\Board.cs" />
     <Compile Include="Trello\BusinessObjects\Boards\BoardList.cs" />
+    <Compile Include="Trello\BusinessObjects\Boards\BoardListCardInfo.cs" />
     <Compile Include="Trello\BusinessObjects\Boards\BoardMember.cs" />
     <Compile Include="Trello\BusinessObjects\Cards\Card.cs" />
     <Compile Include="Trello\BusinessObjects\Cards\CardLabel.cs" />
