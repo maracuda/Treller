@@ -34,8 +34,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
         {
             lock (writeLock)
             {
-                var newLogItemsCollection = ReadAll().Concat(new[] {logItem});
-                cachedFileStorage.Write(dataFileName, newLogItemsCollection);
+                var newLogItems = ReadAll().Concat(new[] {logItem}).ToArray();
+                cachedFileStorage.Write(dataFileName, newLogItems);
             }
         }
 
