@@ -40,7 +40,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             }
 
             taskNewActionsLogStorage.RegisterCreate(taskNew.PrimaryKey);
-            cachedFileStorage.Write(dataFileName, taskNews.Concat(new[] {taskNew}));
+            cachedFileStorage.Write(dataFileName, taskNews.Concat(new[] {taskNew}).ToArray());
         }
 
         public void Update(TaskNew changedTaskNew, string diffInfo)

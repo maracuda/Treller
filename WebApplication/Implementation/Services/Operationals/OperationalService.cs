@@ -54,7 +54,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                 var operationResult = operation.Run();
                 if (operationResult.HasValue)
                 {
-                    errorService.SendError($"Oparation with name {operation.Name} failed", operationResult.Value);
+                    errorService.SendError($"Operation with name {operation.Name} failed", operationResult.Value);
                 }
             }
             catch (Exception e)
