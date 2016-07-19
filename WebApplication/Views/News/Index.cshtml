@@ -1,4 +1,4 @@
-﻿@using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions
+﻿@*@using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions*@
 @model SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsViewModel
 
 @{
@@ -37,7 +37,7 @@
             {
                 <div class="news-block__row clearfix fitrow" title="@taskNew.Text">
                     <span class="news-block__column title" title="@taskNew.Text">@taskNew.Title</span>
-                    <span class="news-block__column date">@taskNew.SafeDateFormat()</span>
+@*                    <span class="news-block__column date">@taskNew.SafeDateFormat()</span>*@
                     <span class="news-block__column action">@taskNew.DeliveryChannel</span>
                     <span class="news-block__column action">TODO</span>
                 </div>
