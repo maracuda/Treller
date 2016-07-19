@@ -1,4 +1,6 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
+﻿using SKBKontur.Treller.WebApplication.Implementation.Services.News.Search;
+
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 {
     public class NewsViewModel
     {
@@ -8,5 +10,7 @@
         public CardNewsModel[] NotActualCards { get; set; }
         public CardNewsModel[] CardsWihoutNews { get; set; }
         public CardNewsModel[] ActualCards { get; set; }
+
+        public TaskNewModel[] TaskNews { get; set; }
     }
 }

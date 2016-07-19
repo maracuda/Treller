@@ -1,4 +1,4 @@
-﻿@using System.Linq
+﻿@using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions
 @model SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsViewModel
 
 @{
@@ -12,22 +12,12 @@
 
 <div class="news-content">
     <span class="news-block header">
-        Новости о технических и бизнес-релизах Контур.Биллинг
-        <a class="news__button news_actualize_button" href="@Url.Action("ActualizeNews", "News")">
-            Актуализировать
-        </a>
+        Новости о релизах Контур.Биллинг
     </span>
 
-    @using (Html.BeginForm("UpdateSettings", "News", FormMethod.Post))
-    {
-        @Html.TextBox("technicalEmail", Model.Settings.TechMailingList, new { placeholder = "Адрес технической рассылки", title = "Адрес технической рассылки", @class = "news_actualize_text_area" });
-        @Html.TextBox("releaseEmail", Model.Settings.PublicMailingList, new { placeholder = "Адрес публичной рассылки", title = "Адрес публичной рассылки", @class = "news_actualize_text_area" });
-        <input type="submit" value="Сохранить адреса" class="news__button news_actualize_button" />
-    }
+    <h3>Новости</h3>
 
-    <h3>Технические новости</h3>
-
-    @if (Model.TechnicalNewsToPublish == null)
+    @if (Model.TaskNews == null || Model.TaskNews.Length == 0)
     {
         <div class="news-block">
             Нет технических новостей для отправки
@@ -38,122 +28,29 @@
         <div class="news-block">
             <div class="news-block__header clearfix">
                 <span class="news-block__column title">Заголовок</span>
-                <span class="news-block__column date">Дата</span>
+                <span class="news-block__column date">Не доставлять до</span>
+                <span class="news-block__column action">Канал доставки</span>
                 <span class="news-block__column action">Действия</span>
-                <span class="news-block__column action"></span>
             </div>
 
-            <div class="news-block__row clearfix" title="@Model.TechnicalNewsToPublish.NewsText">
-                <span class="news-block__column title">@Model.TechnicalNewsToPublish.NewsHeader</span>
-                <span class="news-block__column date">Сегодня</span>
-                <span class="news-block__column action">
-                    <a class="news__button" href="@Url.Action("SendNews", "News")">
-                        Опубликовать
-                    </a>
-                </span>
-            </div>
-        </div>
-    }
-
-    <h3>Публичные новости</h3>
-
-    @if (Model.NewsToPublish == null)
-    {
-        <div class="news-block">
-            Нет публичных новостей для отправки
-        </div>
-    }
-    else
-    {
-        <div class="news-block">
-            <div class="news-block__header clearfix">
-                <span class="news-block__column title">Заголовок</span>
-                <span class="news-block__column date">Дата</span>
-                <span class="news-block__column action">Действия</span>
-                <span class="news-block__column action"></span>
-            </div>
-            <div class="news-block__row clearfix" title="@Model.NewsToPublish.NewsText">
-                <span class="news-block__column title">@Model.NewsToPublish.NewsHeader</span>
-                <span class="news-block__column date">Сегодня</span>
-                <span class="news-block__column action">
-                    <a class="news__button" href="@Url.Action("SendNews", "News")">
-                        Опубликовать
-                    </a>
-                </span>
-            </div>
-        </div>
-    }
-    @if (Model.ActualCards.Length > 0)
+            @foreach (var taskNew in Model.TaskNews)
             {
-        <h3>Карточки для новостей</h3>
-
-        <div class="news-block">
-            <div class="news-block__header clearfix">
-                <span class="news-block__column title">Заголовок</span>
-                <span class="news-block__column date">Дата релиза</span>
-                <span class="news-block__column action">Действия</span>
-                <span class="news-block__column action"></span>
-            </div>
-
-            @foreach (var card in Model.ActualCards)
-            {
-                <div class="news-block__row clearfix fitrow" title="@(card.NewsText ?? card.TechnicalNewsText)">
-                    <span class="news-block__column title" title="@card.CardDescription">@card.CardName</span>
-                    <span class="news-block__column date">@card.CardReleaseDate.ToString("dd.MM.yyyy")</span>
-                    <span class="news-block__column action">
-                        <a class="news__button fitrow" href="@Url.Action("DeleteCardFromNews", "News", new { cardId = card.CardId })">
-                            Убрать из новостей
-                        </a>
-                    </span>
+                <div class="news-block__row clearfix fitrow" title="@taskNew.Text">
+                    <span class="news-block__column title" title="@taskNew.Text">@taskNew.Title</span>
+                    <span class="news-block__column date">@taskNew.SafeDateFormat()</span>
+                    <span class="news-block__column action">@taskNew.DeliveryChannel</span>
+                    <span class="news-block__column action">TODO</span>
                 </div>
             }
         </div>
     }
 
-    <h3>Карточки без новостей</h3>
+    <h3>Настрока сервиса рассылки</h3>
 
-    <div class="news-block">
-        <div class="news-block__header clearfix">
-            <span class="news-block__column titleLong">Заголовок</span>
-            <span class="news-block__column date">Дата релиза</span>
-        </div>
-
-        @foreach (var card in Model.NotActualCards.OrderByDescending(x => x.CardReleaseDate).Take(5))
-        {
-            <div class="news-block__row clearfix fitrow" title="@card.NewsText">
-                <span class="news-block__column titleLong" title="@card.CardDescription">@card.CardName</span>
-                <span class="news-block__column date">@card.CardReleaseDate.ToString("dd.MM.yyyy")</span>
-            </div>
-        }
-    </div>
-
-    <h3>Прошлые карточки (неактуальные)</h3>
-
-    <div class="news-block">
-        <div class="news-block__header clearfix">
-            <span class="news-block__column title">Заголовок</span>
-            <span class="news-block__column date">Дата релиза</span>
-            <span class="news-block__column isPublished">Опубликована</span>
-            <span class="news-block__column isPublished">Удалена</span>
-        </div>
-
-        @foreach (var card in Model.NotActualCards.OrderByDescending(x => x.CardReleaseDate).Take(7))
-        {
-            <div class="news-block__row clearfix fitrow" title="@card.NewsText">
-                <span class="news-block__column title" title="@card.CardDescription">@card.CardName</span>
-                <span class="news-block__column date">@card.CardReleaseDate.ToString("dd.MM.yyyy")</span>
-                <span class="news-block__column isPublished">@(card.IsTechnicalNewsPublished || card.IsNewsPublished ? "Да" : "Нет")</span>
-                <span class="news-block__column isPublished">@(card.IsDeleted ? "Да" : "Нет")</span>
-
-                @if (card.CardReleaseDate > DateTime.Now.AddDays(-4) && card.IsNewsExists())
-                {
-                    <span class="news-block__column action2">
-                        <a class="news__button fitrow" href="@Url.Action("RestoreCardForNews", "News", new { cardId = card.CardId})">
-                            Восстановить
-                        </a>
-                    </span>
-                }
-            </div>
-        }
-    </div>
+    @using (Html.BeginForm("UpdateSettings", "News", FormMethod.Post))
+    {
+        @Html.TextBox("technicalEmail", Model.Settings.TechMailingList, new { placeholder = "Адрес технической рассылки", title = "Адрес технической рассылки", @class = "news_actualize_text_area" });
+        @Html.TextBox("releaseEmail", Model.Settings.PublicMailingList, new { placeholder = "Адрес публичной рассылки", title = "Адрес публичной рассылки", @class = "news_actualize_text_area" });
+        <input type="submit" value="Сохранить адреса" class="news__button news_actualize_button" />
+    }
 </div>

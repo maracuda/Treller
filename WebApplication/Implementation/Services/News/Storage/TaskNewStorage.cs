@@ -67,7 +67,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             cachedFileStorage.Write(dataFileName, taskNews);
         }
 
-        private TaskNew[] ReadAll()
+        public TaskNew[] ReadAll()
         {
             return cachedFileStorage.Find<TaskNew[]>(dataFileName) ?? new TaskNew[0];
         }

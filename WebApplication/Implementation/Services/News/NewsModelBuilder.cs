@@ -7,6 +7,7 @@ using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Infrastructure.CommonExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Search;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
@@ -21,6 +22,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ITaskCacher taskCacher;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
+        private readonly ITaskNewIndex taskNewIndex;
 
         public NewsModelBuilder(
             INewsStorage newsStorage,
@@ -28,7 +30,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             IBoardsService boardsService,
             ITaskManagerClient taskManagerClient,
             ITaskCacher taskCacher,
-            ICardStateInfoBuilder cardStateInfoBuilder)
+            ICardStateInfoBuilder cardStateInfoBuilder,
+            ITaskNewIndex taskNewIndex)
         {
             this.newsStorage = newsStorage;
             this.newsSettingsService = newsSettingsService;
@@ -36,6 +39,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             this.taskManagerClient = taskManagerClient;
             this.taskCacher = taskCacher;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
+            this.taskNewIndex = taskNewIndex;
         }
 
         public NewsViewModel BuildViewModel()
@@ -43,6 +47,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             var news = newsStorage.ReadAll();
             return new NewsViewModel
             {
+                TaskNews = taskNewIndex.SelectCurrentNews(),
+
                 NewsToPublish = BuildNewsModel(news, false),
                 TechnicalNewsToPublish = BuildNewsModel(news, true),
                 NotActualCards = news.Where(x => x.IsPublished() || x.IsDeleted).ToArray(),
@@ -77,7 +83,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                         : $"Вечером {card.CardReleaseDate.ToString("D", new CultureInfo("ru-RU", false))} состоялся релиз<br/><br/>");
                 }
                 releaseDate = card.CardReleaseDate;
-                news.Append($"<b>{card.CardName}</b>{"<br/>"}{newsText}<br/><br/>");
+                news.Append($"<b>{card.CardName}</b><br/>{newsText}<br/><br/>");
                 cardsForSend.Add(card);
             }
 
