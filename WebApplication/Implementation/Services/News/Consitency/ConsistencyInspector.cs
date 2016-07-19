@@ -28,7 +28,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Consiten
         public void Run()
         {
             var taskNewsWithEmptyText = taskNewIndex.SelectCurrentNews()
-                .Where(x => string.IsNullOrEmpty(x.Text))
+                .Where(x => string.IsNullOrWhiteSpace(x.Text))
                 .ToArray();
 
             if (taskNewsWithEmptyText.Length > 0)
