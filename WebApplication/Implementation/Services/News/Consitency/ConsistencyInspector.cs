@@ -27,9 +27,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Consiten
 
         public void Run()
         {
+            errorService.SendError($"Consistency inspector runned.");
+
             var taskNewsWithEmptyText = taskNewIndex.SelectCurrentNews()
                 .Where(x => string.IsNullOrWhiteSpace(x.Text))
                 .ToArray();
+
+            errorService.SendError($"Consistency inspector found {taskNewsWithEmptyText.Length} news with empty text.");
 
             if (taskNewsWithEmptyText.Length > 0)
             {
