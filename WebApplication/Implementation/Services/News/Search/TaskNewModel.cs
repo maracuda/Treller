@@ -14,6 +14,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Search
         public DateTime? DoNotDeliverUntil { get; set; }
         public long TimeStamp { get; set; }
 
-        public string DoNotDeliverUntilStr => DoNotDeliverUntil.HasValue ? DoNotDeliverUntil.Value.DateTimeFormat() : " ";
+        public string DoNotDeliverUntilStr => DoNotDeliverUntil.HasValue ? DoNotDeliverUntil.Value.DateTimeFormat() : "не указано";
     }
 }
