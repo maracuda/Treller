@@ -261,6 +261,10 @@
     <Compile Include="Implementation\Services\ErrorService\ErrorService.cs" />
     <Compile Include="Implementation\Services\ErrorService\IErrorService.cs" />
     <Compile Include="Implementation\Services\News\CardNewsModel.cs" />
+    <Compile Include="Implementation\Services\News\Consitency\ConsistencyInspector.cs" />
+    <Compile Include="Implementation\Services\News\Consitency\IConsistencyIspector.cs" />
+    <Compile Include="Implementation\Services\News\Domain\ITaskNewConverter.cs" />
+    <Compile Include="Implementation\Services\News\Domain\TaskNewConverter.cs" />
     <Compile Include="Implementation\Services\News\Import\CustomerNewsTextParser.cs" />
     <Compile Include="Implementation\Services\News\Import\INewsImporter.cs" />
     <Compile Include="Implementation\Services\News\Import\ITaskNewConverter.cs" />
@@ -497,6 +501,8 @@
     <None Include="Views\VirtualMachines\ShowLogs.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Implementation\Services\News\Consitency" />
+    <Folder Include="Implementation\Services\News\Domain" />
     <Folder Include="Implementation\Services\News\Import" />
     <Folder Include="Implementation\Services\News\Search" />
     <Folder Include="Implementation\Services\News\Storage" />

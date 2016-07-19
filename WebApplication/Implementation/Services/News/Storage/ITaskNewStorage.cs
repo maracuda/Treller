@@ -8,5 +8,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
         TaskNew[] ReadAll();
         void Create(TaskNew taskNew);
         void Update(TaskNew changedTaskNew, string diffInfo);
+        void Delete(params TaskNew[] uselessTaskNews);
     }
 }

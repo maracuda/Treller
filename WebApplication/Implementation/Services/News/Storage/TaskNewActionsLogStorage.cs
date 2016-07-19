@@ -27,7 +27,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
 
         public void RegisterUpdate(string primaryKey, string diff)
         {
-            Register(TaskNewActionLogItem.Create(primaryKey, diff, dateTimeFactory.UtcNow));
+            Register(TaskNewActionLogItem.Update(primaryKey, diff, dateTimeFactory.UtcNow));
+        }
+
+        public void RegisterDelete(string primaryKey)
+        {
+            Register(TaskNewActionLogItem.Delete(primaryKey, dateTimeFactory.UtcNow));
         }
 
         private void Register(TaskNewActionLogItem logItem)

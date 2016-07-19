@@ -4,5 +4,6 @@
     {
         void RegisterCreate(string primaryKey);
         void RegisterUpdate(string primaryKey, string diff);
+        void RegisterDelete(string primaryKey);
     }
 }

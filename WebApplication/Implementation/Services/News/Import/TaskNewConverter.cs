@@ -23,7 +23,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
             foreach (var textNewParser in textNewParsers)
             {
                 var parseResult = textNewParser.TryParse(cardInfo.Desc);
-                if (parseResult.HasValue)
+                if (parseResult.HasValue && !string.IsNullOrWhiteSpace(parseResult.Value))
                 {
                     result.Add(new TaskNew
                     {

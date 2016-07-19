@@ -1,4 +1,5 @@
 using System.Linq;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Search
@@ -6,27 +7,21 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Search
     public class TaskNewIndex : ITaskNewIndex
     {
         private readonly ITaskNewStorage taskNewStorage;
+        private readonly ITaskNewConverter taskNewConverter;
 
-        public TaskNewIndex(ITaskNewStorage taskNewStorage)
+        public TaskNewIndex(
+            ITaskNewStorage taskNewStorage,
+            ITaskNewConverter taskNewConverter)
         {
             this.taskNewStorage = taskNewStorage;
+            this.taskNewConverter = taskNewConverter;
         }
 
         public TaskNewModel[] SelectCurrentNews()
         {
             return taskNewStorage.ReadAll()
-                .Select(x => new TaskNewModel
-                {
-                    BoardId = x.BoardId,
-                    DeliveryChannel = x.DeliveryChannel,
-                    DoNotDeliverUntil = x.DoNotDeliverUntil,
-                    State = TaskNewState.Imported,
-                    TaskId = x.TaskId,
-                    Text = x.Text,
-                    TimeStamp = x.TimeStamp,
-                    Title = x.Title
-                })
-                .ToArray();
+                                 .Select(x => taskNewConverter.Build(x))
+                                 .ToArray();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.Infrastructure.Sugar;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
@@ -10,6 +11,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
         private readonly ICachedFileStorage cachedFileStorage;
         private readonly ITaskNewActionsLogStorage taskNewActionsLogStorage;
         private const string dataFileName = "TaskNews";
+        private static readonly object writeLock = new object();
         
         public TaskNewStorage(
             ICachedFileStorage cachedFileStorage,
@@ -40,7 +42,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             }
 
             taskNewActionsLogStorage.RegisterCreate(taskNew.PrimaryKey);
-            cachedFileStorage.Write(dataFileName, taskNews.Concat(new[] {taskNew}).ToArray());
+            UpdateStorage(taskNews.Concat(new[] {taskNew}).ToArray());
         }
 
         public void Update(TaskNew changedTaskNew, string diffInfo)
@@ -55,21 +57,53 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             }
 
             var taskNews = ReadAll();
-            for (var index = 0; index < taskNews.Length; index++)
+            var index = IndexOf(taskNews, changedTaskNew);
+            if (index == -1)
+                throw new Exception($"Fail to find task new with {changedTaskNew.PrimaryKey} at storage.");
+
+            taskNews[index] = changedTaskNew;
+            taskNewActionsLogStorage.RegisterUpdate(changedTaskNew.PrimaryKey, diffInfo);
+            UpdateStorage(taskNews);
+        }
+
+        public void Delete(params TaskNew[] uselessTaskNews)
+        {
+            var taskNews = new List<TaskNew>(ReadAll());
+            for (var i = 0; i < uselessTaskNews.Length; i++)
             {
-                if (taskNews[index].HasSamePrimaryKey(changedTaskNew))
+                var index = IndexOf(taskNews, uselessTaskNews[i]);
+                if (index != -1)
                 {
-                    taskNews[index] = changedTaskNew;
+                    taskNews.RemoveAt(index);
+                    taskNewActionsLogStorage.RegisterDelete(uselessTaskNews[i].PrimaryKey);
                 }
             }
-
-            taskNewActionsLogStorage.RegisterUpdate(changedTaskNew.PrimaryKey, diffInfo);
-            cachedFileStorage.Write(dataFileName, taskNews);
+            UpdateStorage(taskNews.ToArray());
         }
 
         public TaskNew[] ReadAll()
         {
             return cachedFileStorage.Find<TaskNew[]>(dataFileName) ?? new TaskNew[0];
+        }
+
+        private void UpdateStorage(TaskNew[] taskNews)
+        {
+            lock (writeLock)
+            {
+                cachedFileStorage.Write(dataFileName, taskNews);
+            }
+        }
+
+        private static int IndexOf(IReadOnlyList<TaskNew> allTaskNews, TaskNew taskNew)
+        {
+            for (var index = 0; index < allTaskNews.Count; index++)
+            {
+                if (allTaskNews[index].HasSamePrimaryKey(taskNew))
+                {
+                    return index;
+                }
+            }
+            return -1;
         }
     }
 }

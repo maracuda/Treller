@@ -8,6 +8,7 @@ using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Consitency;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Import;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
@@ -43,10 +44,13 @@ namespace SKBKontur.Treller.WebApplication
 
             var operationsFactory = container.Get<IRegularOperationsFactory>();
             operationalService = container.Get<IOperationalService>();
+
             operationalService.Register(operationsFactory.Create("NewsRefresher", TimeSpan.FromMinutes(5), () => container.Get<INewsService>().Refresh()));
             operationalService.Register(operationsFactory.Create("NewsImporter", TimeSpan.FromMinutes(10), () => container.Get<INewsImporter>().ImportAll()));
             operationalService.Register(operationsFactory.Create("EveningNewsPublisher", TimeSpan.FromMinutes(5), TimeSpan.Parse("18:20:00"), TimeSpan.Parse("10:00:00"), () => container.Get<INewsService>().SendNews()));
             operationalService.Register(operationsFactory.Create("AfterNoonNewsPublisher", TimeSpan.FromMinutes(5), TimeSpan.Parse("12:00:00"), TimeSpan.Parse("13:00:00"), () => container.Get<INewsService>().SendNews()));
+            operationalService.Register(operationsFactory.Create("NewsConsistencyInspector", TimeSpan.FromDays(1), () => container.Get<IConsistencyIspector>().Run()));
+
             var cacheActualizerFunc = new Func<long, long>(timestamp => container.Get<ITaskCacher>().Actualize(new DateTime(timestamp)).Ticks);
             operationalService.Register(operationsFactory.Create("CacheActualizer", TimeSpan.FromMinutes(1), cacheActualizerFunc, () => DateTime.UtcNow.AddDays(-2).Ticks));
             //NOTE: turn off this process since it always fails (staff need personal domain account to send messages)

@@ -24,10 +24,20 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService
         public string ErrorRecipientEmail { get; private set; }
         public void SendError(string title, Exception ex)
         {
+            SendError(title, $"{title}{Environment.NewLine}{ex}");
+        }
+
+        public void SendError(string title)
+        {
+            SendError(title, title);
+        }
+
+        private void SendError(string title, string body)
+        {
             var notification = new Notification
             {
                 Title = title,
-                Body = $"{title}{Environment.NewLine}{ex}",
+                Body = body,
                 IsHtml = false,
                 Recipient = ErrorRecipientEmail,
             };
