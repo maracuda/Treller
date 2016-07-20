@@ -49,7 +49,7 @@ namespace SKBKontur.Treller.WebApplication
             operationalService.Register(operationsFactory.Create("NewsImporter", TimeSpan.FromMinutes(10), () => container.Get<INewsImporter>().ImportAll()));
             operationalService.Register(operationsFactory.Create("EveningNewsPublisher", TimeSpan.FromMinutes(5), TimeSpan.Parse("18:20:00"), TimeSpan.Parse("10:00:00"), () => container.Get<INewsService>().SendNews()));
             operationalService.Register(operationsFactory.Create("AfterNoonNewsPublisher", TimeSpan.FromMinutes(5), TimeSpan.Parse("12:00:00"), TimeSpan.Parse("13:00:00"), () => container.Get<INewsService>().SendNews()));
-            operationalService.Register(operationsFactory.Create("NewsConsistencyInspector", TimeSpan.FromDays(1), () => container.Get<IConsistencyIspector>().Run()));
+            operationalService.Register(operationsFactory.Create("NewsConsistencyInspector", TimeSpan.FromMinutes(10), () => container.Get<IConsistencyIspector>().Run()));
 
             var cacheActualizerFunc = new Func<long, long>(timestamp => container.Get<ITaskCacher>().Actualize(new DateTime(timestamp)).Ticks);
             operationalService.Register(operationsFactory.Create("CacheActualizer", TimeSpan.FromMinutes(1), cacheActualizerFunc, () => DateTime.UtcNow.AddDays(-2).Ticks));
