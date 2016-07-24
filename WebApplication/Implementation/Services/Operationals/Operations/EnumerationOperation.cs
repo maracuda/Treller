@@ -14,13 +14,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
         private long? timestamp = null;
         public string Name { get; }
         public OperationState State { get; private set; }
-        public TimeSpan RunPeriod { get; }
 
-        public EnumerationOperation(ICachedFileStorage cachedFileStorage, string name, TimeSpan runPeriod, Func<long, long> enumration, Func<long> defaultTimestampFunc)
+        public EnumerationOperation(ICachedFileStorage cachedFileStorage, string name, Func<long, long> enumration, Func<long> defaultTimestampFunc)
         {
             this.cachedFileStorage = cachedFileStorage;
             Name = name;
-            RunPeriod = runPeriod;
             State = OperationState.Idle;
             this.enumration = enumration;
             this.defaultTimestampFunc = defaultTimestampFunc;

@@ -39,7 +39,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
                 cachedFileStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
             }
 
-            var operation = new EnumerationOperation(cachedFileStorage, "zzz", TimeSpan.FromMinutes(5), enumeration, () => 1L);
+            var operation = new EnumerationOperation(cachedFileStorage, "zzz", enumeration, () => 1L);
             var operationResult = operation.Run();
             Assert.IsFalse(operationResult.HasValue);
             Assert.AreEqual(i, 1);
@@ -64,7 +64,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
                 cachedFileStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(oldTimestamp);
             }
 
-            var operation = new EnumerationOperation(cachedFileStorage, "zzz", TimeSpan.FromMinutes(5), enumeration, () => 1L);
+            var operation = new EnumerationOperation(cachedFileStorage, "zzz", enumeration, () => 1L);
             var operationResult = operation.Run();
             Assert.IsTrue(operationResult.HasValue);
             Assert.AreEqual(ex, operationResult.Value);
@@ -89,7 +89,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
                 cachedFileStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
             }
 
-            var operation = new EnumerationOperation(cachedFileStorage, "zzz", TimeSpan.FromMinutes(5), enumeration, () => 1L);
+            var operation = new EnumerationOperation(cachedFileStorage, "zzz", enumeration, () => 1L);
             var operationResult = operation.Run();
             Assert.IsFalse(operationResult.HasValue);
             Assert.AreEqual(i, 1);
@@ -115,7 +115,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
                 cachedFileStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
             }
 
-            var operation = new EnumerationOperation(cachedFileStorage, "zzz", TimeSpan.FromMinutes(5), enumeration, () => 1L);
+            var operation = new EnumerationOperation(cachedFileStorage, "zzz", enumeration, () => 1L);
 
             Task.Run(() =>
             {

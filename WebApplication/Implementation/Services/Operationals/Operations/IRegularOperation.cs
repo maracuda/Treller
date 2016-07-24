@@ -7,8 +7,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
     {
         string Name { get; }
         OperationState State { get; }
-        TimeSpan RunPeriod { get; }
-
         Maybe<Exception> Run();
     }
 }

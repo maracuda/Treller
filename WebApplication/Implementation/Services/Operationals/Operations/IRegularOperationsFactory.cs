@@ -4,8 +4,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
 {
     public interface IRegularOperationsFactory
     {
-        IRegularOperation Create(string name, TimeSpan runPeriod, Action action);
-        IRegularOperation Create(string name, TimeSpan runPeriod, TimeSpan minTimeToRun, TimeSpan maxTimeToRun, Action action);
-        IRegularOperation Create(string name, TimeSpan runPeriod, Func<long, long> enumeration, Func<long> defaultTimetampFunc);
+        IRegularOperation Create(string name, Action action);
+        IRegularOperation Create(string name, Func<long, long> enumeration, Func<long> defaultTimetampFunc);
     }
 }

@@ -18,19 +18,14 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
             this.cachedFileStorage = cachedFileStorage;
         }
 
-        public IRegularOperation Create(string name, TimeSpan runPeriod, Action action)
+        public IRegularOperation Create(string name, Action action)
         {
-            return new SimpleOperation(name, runPeriod, action);
+            return new SimpleOperation(name, action);
         }
 
-        public IRegularOperation Create(string name, TimeSpan runPeriod, TimeSpan minTimeToRun, TimeSpan maxTimeToRun, Action action)
+        public IRegularOperation Create(string name, Func<long, long> enumeration, Func<long> defaultTimetampFunc)
         {
-            return new ScheduledRegularOperation(dateTimeFactory, name, runPeriod, minTimeToRun, maxTimeToRun, action);
-        }
-
-        public IRegularOperation Create(string name, TimeSpan runPeriod, Func<long, long> enumeration, Func<long> defaultTimetampFunc)
-        {
-            return new EnumerationOperation(cachedFileStorage, name, runPeriod, enumeration, defaultTimetampFunc);
+            return new EnumerationOperation(cachedFileStorage, name, enumeration, defaultTimetampFunc);
         }
     }
 }

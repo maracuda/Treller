@@ -12,7 +12,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
         public void TestRunSimpleOperation()
         {
             var i = 0;
-            var operation = new SimpleOperation("zzz", TimeSpan.FromMilliseconds(10), () => { i++; });
+            var operation = new SimpleOperation("zzz", () => { i++; });
             var operationResult = operation.Run();
             Assert.IsFalse(operationResult.HasValue);
             Assert.AreEqual(1, i);
@@ -22,7 +22,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
         public void TestRunSimpleOperationWithException()
         {
             var exception = new Exception();
-            var operation = new SimpleOperation("zzz", TimeSpan.FromMilliseconds(10), () => { throw exception; });
+            var operation = new SimpleOperation("zzz", () => { throw exception; });
             var operationResult = operation.Run();
             Assert.IsTrue(operationResult.HasValue);
             Assert.AreEqual(exception, operationResult.Value);
@@ -33,7 +33,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
         {
             var i = 0;
             const int timeoutMs = 500;
-            var operation = new SimpleOperation("zzz", TimeSpan.FromMilliseconds(10), () => { i++; Thread.Sleep(timeoutMs); });
+            var operation = new SimpleOperation("zzz", () => { i++; Thread.Sleep(timeoutMs); });
 
             Task.Run(() =>
             {

@@ -4,18 +4,26 @@ using System.Linq;
 using System.Timers;
 using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
+using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Scheduler;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
 {
     public class OperationalService : IOperationalService
     {
         private readonly IErrorService errorService;
+        private readonly IOperationsLauncher operationsLauncher;
+        private readonly IScheduler scheduler;
         private readonly ConcurrentDictionary<Timer, IRegularOperation> operationsIndex = new ConcurrentDictionary<Timer, IRegularOperation>();
 
 
-        public OperationalService(IErrorService errorService)
+        public OperationalService(
+            IErrorService errorService,
+            IOperationsLauncher operationsLauncher,
+            IScheduler scheduler)
         {
             this.errorService = errorService;
+            this.operationsLauncher = operationsLauncher;
+            this.scheduler = scheduler;
         }
 
         public void Dispose()
@@ -29,38 +37,27 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
             }
         }
 
-        public void Register(IRegularOperation operation)
+        public void Register(IRegularOperation operation, ScheduleParams scheduleParams)
         {
             if (operationsIndex.Values.Any(x => x.Name.Equals(operation.Name)))
                 return;
 
-            var timer = new Timer(operation.RunPeriod.TotalMilliseconds) {Enabled = true};
+            scheduler.Register(operation.Name, scheduleParams);
+            var timer = new Timer(scheduleParams.PollingPeriod.TotalMilliseconds) {Enabled = true};
             operationsIndex.AddOrUpdate(timer, t => operation, (t, n) => operation);
-            timer.Elapsed += SafeExcute;
+            timer.Elapsed += Excute;
         }
 
-        private void SafeExcute(object sender, ElapsedEventArgs elapsedEventArg)
+        private void Excute(object sender, ElapsedEventArgs elapsedEventArg)
         {
-            try
+            var timer = sender as Timer;
+            if (timer == null || !operationsIndex.ContainsKey(timer))
             {
-                var timer = sender as Timer;
-                if (timer == null || !operationsIndex.ContainsKey(timer))
-                {
-                    errorService.SendError("Fail to find action to run regular process", new Exception());
-                    return;
-                }
+                errorService.SendError("Fail to find action to run operation", new Exception());
+                return;
+            }
 
-                var operation = operationsIndex[timer];
-                var operationResult = operation.Run();
-                if (operationResult.HasValue)
-                {
-                    errorService.SendError($"Operation with name {operation.Name} failed", operationResult.Value);
-                }
-            }
-            catch (Exception e)
-            {
-                errorService.SendError("Fail to run regular process", e);
-            }
+            operationsLauncher.SafeLaunch(operationsIndex[timer]);
         }
     }
 }

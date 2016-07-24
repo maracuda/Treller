@@ -10,14 +10,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
         private readonly Action action;
         public string Name { get; }
         public OperationState State { get; private set; }
-        public TimeSpan RunPeriod { get; }
 
-        public SimpleOperation(string name, TimeSpan runPeriod, Action action)
+        public SimpleOperation(string name, Action action)
         {
             this.action = action;
             State = OperationState.Idle;
             Name = name;
-            RunPeriod = runPeriod;
         }
 
         public Maybe<Exception> Run()

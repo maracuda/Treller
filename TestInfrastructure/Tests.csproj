@@ -80,7 +80,6 @@
     <Compile Include="Tests\UnitTests\MockExtensionTest.cs" />
     <Compile Include="Tests\UnitTests\News\Import\TextNewParserTest.cs" />
     <Compile Include="Tests\UnitTests\OperationalService\EnumerationOperationTest.cs" />
-    <Compile Include="Tests\UnitTests\OperationalService\SchedulableOperationTest.cs" />
     <Compile Include="Tests\UnitTests\OperationalService\SimpleOperationTest.cs" />
     <Compile Include="Tests\UnitTests\Repository\RepositoryTest.cs" />
     <Compile Include="Tests\UnitTests\UnitTest.cs" />
@@ -111,11 +110,7 @@
       <Name>WebApplication</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tests\UnitTests\News" />
-    <Folder Include="Tests\UnitTests\News\Import" />
-    <Folder Include="Tests\UnitTests\OperationalService" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

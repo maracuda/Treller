@@ -300,14 +300,21 @@
     <Compile Include="Implementation\Services\News\Storage\TaskNewStorage.cs" />
     <Compile Include="Implementation\Services\News\TaskNew.cs" />
     <Compile Include="Implementation\Services\Operationals\IOperationalService.cs" />
+    <Compile Include="Implementation\Services\Operationals\IOperationsLauncher.cs" />
     <Compile Include="Implementation\Services\Operationals\OperationalService.cs" />
+    <Compile Include="Implementation\Services\Operationals\OperationsLauncher.cs" />
+    <Compile Include="Implementation\Services\Operationals\OperationsLog\IOperationsLog.cs" />
+    <Compile Include="Implementation\Services\Operationals\OperationsLog\OperationsLog.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\EnumerationOperation.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\IRegularOperationsFactory.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\OperationState.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\IRegularOperation.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\RegularOperationsFactory.cs" />
-    <Compile Include="Implementation\Services\Operationals\Operations\ScheduledRegularOperation.cs" />
     <Compile Include="Implementation\Services\Operationals\Operations\SimpleOperation.cs" />
+    <Compile Include="Implementation\Services\Operationals\Scheduler\IScheduler.cs" />
+    <Compile Include="Implementation\Services\Operationals\Scheduler\ScheduleMode.cs" />
+    <Compile Include="Implementation\Services\Operationals\Scheduler\ScheduleParams.cs" />
+    <Compile Include="Implementation\Services\Operationals\Scheduler\Scheduler.cs" />
     <Compile Include="Implementation\Services\TaskCacher\ITaskCacher.cs" />
     <Compile Include="Implementation\Services\TaskCacher\TaskCacher.cs" />
     <Compile Include="Implementation\Services\TaskCacher\TaskCacherStoredTypes.cs" />
@@ -500,14 +507,7 @@
     <None Include="Views\Statistics\Index.cshtml" />
     <None Include="Views\VirtualMachines\ShowLogs.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Implementation\Services\News\Consitency" />
-    <Folder Include="Implementation\Services\News\Domain" />
-    <Folder Include="Implementation\Services\News\Import" />
-    <Folder Include="Implementation\Services\News\Search" />
-    <Folder Include="Implementation\Services\News\Storage" />
-    <Folder Include="Implementation\Services\Operationals\Operations" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
