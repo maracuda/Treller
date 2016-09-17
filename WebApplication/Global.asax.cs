@@ -7,6 +7,7 @@ using LightInject;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
+using SKBKontur.Treller.WebApplication.Implementation.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Consitency;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Import;
@@ -49,6 +50,7 @@ namespace SKBKontur.Treller.WebApplication
             operationalService.Register(operationsFactory.Create("NewsRefresher", () => container.Get<INewsService>().Refresh()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(5)));
             operationalService.Register(operationsFactory.Create("NewsImporter", () => container.Get<INewsImporter>().ImportAll()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
             operationalService.Register(operationsFactory.Create("NewsConsistencyInspector", () => container.Get<IConsistencyIspector>().Run()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
+            operationalService.Register(operationsFactory.Create("MergerBranchesNotificator", () => container.Get<IRepositoryNotificator>().NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15))), ScheduleParams.CreateEveryday(TimeSpan.FromMinutes(30), new TimeSpan(9, 0, 0)));
 
             var cacheActualizerFunc = new Func<long, long>(timestamp => container.Get<ITaskCacher>().Actualize(new DateTime(timestamp)).Ticks);
             operationalService.Register(operationsFactory.Create("CacheActualizer", cacheActualizerFunc, () => DateTime.UtcNow.AddDays(-2).Ticks), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(1)));
