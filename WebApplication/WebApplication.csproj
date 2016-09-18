@@ -223,8 +223,10 @@
     <Compile Include="Implementation\Infrastructure\Serialization\IJsonSerializer.cs" />
     <Compile Include="Implementation\Infrastructure\Serialization\JsonSerializer.cs" />
     <Compile Include="Implementation\Infrastructure\Storages\CachedFileStorage.cs" />
+    <Compile Include="Implementation\Infrastructure\Storages\CollectionsStorage.cs" />
     <Compile Include="Implementation\Infrastructure\Storages\EntityStorage.cs" />
     <Compile Include="Implementation\Infrastructure\Storages\ICachedFileStorage.cs" />
+    <Compile Include="Implementation\Infrastructure\Storages\ICollectionsStorage.cs" />
     <Compile Include="Implementation\Infrastructure\Storages\IEntitySotrage.cs" />
     <Compile Include="Implementation\Repository\IOldBranchesModelBuilder.cs" />
     <Compile Include="Implementation\Repository\IRepositoryNotificationBuilder.cs" />

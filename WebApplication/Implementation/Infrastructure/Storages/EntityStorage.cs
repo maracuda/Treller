@@ -36,11 +36,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storage
             return (T)cache.GetOrAdd(entityKey, key =>
             {
                 var str = fileSystemHandler.ReadUTF8(key);
-                if (string.IsNullOrEmpty(str))
-                {
-                    return default(T);
-                }
-                return jsonSerializer.Deserialize<T>(str);
+                return string.IsNullOrEmpty(str) ? default(T) : jsonSerializer.Deserialize<T>(str);
             });
         }
 

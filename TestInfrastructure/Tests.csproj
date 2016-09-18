@@ -76,6 +76,7 @@
     <Compile Include="Tests\IntegrationTests\Repository\GitlabClientTests.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\CommitTest.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\RepositoryTest.cs" />
+    <Compile Include="Tests\IntegrationTests\Storages\CollectionsStorageTest.cs" />
     <Compile Include="Tests\IntegrationTests\Storages\EntityStorageTest.cs" />
     <Compile Include="Tests\StringExtensions.cs" />
     <Compile Include="Tests\UnitTests\AssertionTests.cs" />
