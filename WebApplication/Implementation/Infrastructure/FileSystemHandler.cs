@@ -3,17 +3,20 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Web;
-using Newtonsoft.Json;
 using SKBKontur.Infrastructure.Common;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Serialization;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
 {
     public class FileSystemHandler : IFileSystemHandler
     {
+        private static readonly Encoding defaultEncoding = Encoding.UTF8;
+        private readonly IJsonSerializer jsonSerializer;
         private readonly string rootPath;
 
-        public FileSystemHandler()
+        public FileSystemHandler(IJsonSerializer jsonSerializer)
         {
+            this.jsonSerializer = jsonSerializer;
             string basePath;
             try
             {
@@ -38,47 +41,53 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
 
         public object FindSafeInJsonUtf8File(string fileName, Type type)
         {
+            var fileText = ReadUTF8(fileName);
+            return jsonSerializer.Deserialize(type, fileText);
+        }
+
+        public string ReadUTF8(string fileName)
+        {
             var fullName = GetFullPath(fileName);
 
-            if (!File.Exists(fullName))
-            {
-                return null;
-            }
-
-            try
-            {
-                var fileText = File.ReadAllText(fullName, Encoding.UTF8);
-                return JsonConvert.DeserializeObject(fileText, type);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return File.Exists(fullName) 
+                    ? File.ReadAllText(fullName, defaultEncoding) 
+                    : string.Empty;
         }
 
         public void WriteInJsonUtf8File<TEntity>(string fileName, TEntity entity)
         {
-            var fullName = GetFullPath(fileName);
-            var serializedEntity = JsonConvert.SerializeObject(entity);
-            var stopwatch = Stopwatch.StartNew();
+            var path = GetFullPath(fileName);
+            var json = jsonSerializer.Serialize(entity);
+            FaultTolerantWrite(path, json, defaultEncoding);
+        }
 
+        public void WriteUTF8(string fileName, string str)
+        {
+            var path = GetFullPath(fileName);
+            FaultTolerantWrite(path, str, defaultEncoding);
+        }
+
+        private static void FaultTolerantWrite(string path, string str, Encoding encoding)
+        {
+            var stopwatch = Stopwatch.StartNew();
             Exception exception;
             var attempt = 0;
-            while (!RecurcyWrite(fullName, serializedEntity, ref attempt, out exception))
+            while (!RecurcyWrite(path, str, encoding, ref attempt, out exception))
             {
                 if (stopwatch.Elapsed.TotalSeconds > 5 && attempt > 5)
                 {
                     stopwatch.Stop();
-                    throw new Exception(string.Format("Can't write file {0} for 5 seconds", fullName), exception);
+                    throw new Exception($"Can't write file {path} for 5 seconds", exception);
                 }
             }
+            stopwatch.Stop();
         }
 
-        private static bool RecurcyWrite(string fullName, string serializedEntity, ref int attempt, out Exception exception)
+        private static bool RecurcyWrite(string path, string str, Encoding encoding, ref int attempt, out Exception exception)
         {
             try
             {
-                File.WriteAllText(fullName, serializedEntity, Encoding.UTF8);
+                File.WriteAllText(path, str, encoding);
                 exception = null;
                 return true;
             }
@@ -90,6 +99,18 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
             finally
             {
                 attempt++;
+            }
+        }
+
+        public void Delete(string fileName)
+        {
+            try
+            {
+                File.Delete(GetFullPath(fileName));
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Fail to delete file {fileName}.", e);
             }
         }
 
