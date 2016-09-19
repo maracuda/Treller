@@ -1,5 +1,8 @@
 ﻿namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages
 {
+    //TODO: to create a factory for ICollectionStorage to have instance per collection
+    //TODO: to have a lock to changing the colletion
+    //TODO: to add a searching methods?
     public interface ICollectionsStorage
     {
         void Append<T>(T item);

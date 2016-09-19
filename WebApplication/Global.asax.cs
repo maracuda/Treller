@@ -49,7 +49,7 @@ namespace SKBKontur.Treller.WebApplication
 
             operationalService.Register(operationsFactory.Create("NewsRefresher", () => container.Get<INewsService>().Refresh()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(5)));
             operationalService.Register(operationsFactory.Create("NewsImporter", () => container.Get<INewsImporter>().ImportAll()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
-            operationalService.Register(operationsFactory.Create("NewsConsistencyInspector", () => container.Get<IConsistencyIspector>().Run()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
+            operationalService.Register(operationsFactory.Create("NewsConsistencyInspector", () => container.Get<IConsistencyIspector>().Run()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));
             operationalService.Register(operationsFactory.Create("MergerBranchesNotificator", () => container.Get<IRepositoryNotificator>().NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15))), ScheduleParams.CreateEveryday(TimeSpan.FromMinutes(30), new TimeSpan(9, 0, 0)));
 
             var cacheActualizerFunc = new Func<long, long>(timestamp => container.Get<ITaskCacher>().Actualize(new DateTime(timestamp)).Ticks);

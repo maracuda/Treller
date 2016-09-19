@@ -8,16 +8,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
 {
     public class TaskNewStorage : ITaskNewStorage
     {
-        private readonly ICachedFileStorage cachedFileStorage;
+        private readonly ICollectionsStorage collectionsStorage;
         private readonly ITaskNewActionsLogStorage taskNewActionsLogStorage;
-        private const string dataFileName = "TaskNews";
         private static readonly object writeLock = new object();
         
         public TaskNewStorage(
-            ICachedFileStorage cachedFileStorage,
+            ICollectionsStorage collectionsStorage,
             ITaskNewActionsLogStorage taskNewActionsLogStorage)
         {
-            this.cachedFileStorage = cachedFileStorage;
+            this.collectionsStorage = collectionsStorage;
             this.taskNewActionsLogStorage = taskNewActionsLogStorage;
         }
         
@@ -42,7 +41,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             }
 
             taskNewActionsLogStorage.RegisterCreate(taskNew.PrimaryKey);
-            UpdateStorage(taskNews.Concat(new[] {taskNew}).ToArray());
+            lock (writeLock)
+            {
+                collectionsStorage.Append(taskNew);
+            }
         }
 
         public void Update(TaskNew changedTaskNew, string diffInfo)
@@ -61,9 +63,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             if (index == -1)
                 throw new Exception($"Fail to find task new with {changedTaskNew.PrimaryKey} at storage.");
 
-            taskNews[index] = changedTaskNew;
             taskNewActionsLogStorage.RegisterUpdate(changedTaskNew.PrimaryKey, diffInfo);
-            UpdateStorage(taskNews);
+            lock (writeLock)
+            {
+                collectionsStorage.RemoveAt<TaskNew>(index);
+                collectionsStorage.Append(changedTaskNew);
+            }
         }
 
         public void Delete(params TaskNew[] uselessTaskNews)
@@ -74,24 +79,18 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
                 var index = IndexOf(taskNews, uselessTaskNews[i]);
                 if (index != -1)
                 {
-                    taskNews.RemoveAt(index);
                     taskNewActionsLogStorage.RegisterDelete(uselessTaskNews[i].PrimaryKey);
+                    lock (writeLock)
+                    {
+                        collectionsStorage.RemoveAt<TaskNew>(index);
+                    }
                 }
             }
-            UpdateStorage(taskNews.ToArray());
         }
 
         public TaskNew[] ReadAll()
         {
-            return cachedFileStorage.Find<TaskNew[]>(dataFileName) ?? new TaskNew[0];
-        }
-
-        private void UpdateStorage(TaskNew[] taskNews)
-        {
-            lock (writeLock)
-            {
-                cachedFileStorage.Write(dataFileName, taskNews);
-            }
+            return collectionsStorage.GetAll<TaskNew>();
         }
 
         private static int IndexOf(IReadOnlyList<TaskNew> allTaskNews, TaskNew taskNew)
