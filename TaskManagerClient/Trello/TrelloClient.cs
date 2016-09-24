@@ -59,6 +59,11 @@ namespace SKBKontur.TaskManagerClient.Trello
             return AsyncHelpers.RunSync(() => GetBoardListsAsync(boardIds));
         }
 
+        public BoardCard GetCard(string cardId)
+        {
+            return AsyncHelpers.RunSync(() => GetCardAsync(cardId));
+        }
+
         public Task<BoardCard[]> GetBoardCardsAsync(string[] boardIds)
         {
             return boardIds.Select(id => ReadAsync<Card[]>($"boards/{id}/cards"))

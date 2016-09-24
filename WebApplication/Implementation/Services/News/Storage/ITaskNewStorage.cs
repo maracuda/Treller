@@ -6,6 +6,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
     {
         Maybe<TaskNew[]> Find(string taskId);
         TaskNew[] ReadAll();
+        TaskNew[] Enumerate(long fromTimestampExclusive, int batchSize);
         void Create(TaskNew taskNew);
         void Update(TaskNew changedTaskNew, string diffInfo);
         void Delete(params TaskNew[] uselessTaskNews);

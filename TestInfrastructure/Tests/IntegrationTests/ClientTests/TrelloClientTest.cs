@@ -58,7 +58,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
         {
             var actualBoards = trelloClient.GetAllBoards(testOrgId);
             var firstBoard = actualBoards.First();
-            var boardLists = trelloClient.GetBoardLists("552ab670e01e4af28afdc2c2");
+            var boardLists = trelloClient.GetBoardLists(firstBoard.Id);
             Assert.True(boardLists.Length >= 1);
 
             Console.WriteLine(actualBoards.Stringify());

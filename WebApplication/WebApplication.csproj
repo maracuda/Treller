@@ -266,10 +266,17 @@
     <Compile Include="Implementation\Services\Digest\StaffClient.cs" />
     <Compile Include="Implementation\Services\ErrorService\ErrorService.cs" />
     <Compile Include="Implementation\Services\ErrorService\IErrorService.cs" />
+    <Compile Include="Implementation\Services\News\Actualization\AgingCardsFilter.cs" />
+    <Compile Include="Implementation\Services\News\Actualization\IAgingCardsFilter.cs" />
+    <Compile Include="Implementation\Services\News\Actualization\INewsActualizator.cs" />
+    <Compile Include="Implementation\Services\News\Actualization\NewsActualizator.cs" />
     <Compile Include="Implementation\Services\News\CardNewsModel.cs" />
     <Compile Include="Implementation\Services\News\Consitency\ConsistencyInspector.cs" />
     <Compile Include="Implementation\Services\News\Consitency\IConsistencyIspector.cs" />
+    <Compile Include="Implementation\Services\News\Domain\Builders\AgingBoardCardBuilder.cs" />
+    <Compile Include="Implementation\Services\News\Domain\Builders\IAgingBoardCardBuilder.cs" />
     <Compile Include="Implementation\Services\News\Domain\ITaskNewConverter.cs" />
+    <Compile Include="Implementation\Services\News\Domain\Models\AgingBoardCardModel.cs" />
     <Compile Include="Implementation\Services\News\Domain\TaskNewConverter.cs" />
     <Compile Include="Implementation\Services\News\Import\CustomerNewsTextParser.cs" />
     <Compile Include="Implementation\Services\News\Import\INewsImporter.cs" />

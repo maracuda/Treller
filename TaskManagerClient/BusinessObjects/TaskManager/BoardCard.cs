@@ -8,7 +8,7 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
     {
         public string Id { get; set; }
         public string BoardId { get; set; }
-        public string BoardListId { get; set; }
+        public string BoardListId { get;  set; }
         public string Name { get; set; }
         public double Position { get; set; }
         public string Description { get; set; }
@@ -18,6 +18,7 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
         public string[] UserIds { get; set; }
         public string Url { get; set; }
         public DateTime? DueDate { get; set; }
+        public bool IsArchived { get; set; }
 
         public static BoardCard ConvertFrom(Card card)
         {
@@ -40,7 +41,8 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
                     }).ToArray(),
                 LastActivity = card.DateLastActivity,
                 UserIds = card.IdMembers.ToArray(),
-                CheckListIds = card.IdCheckLists
+                CheckListIds = card.IdCheckLists,
+                IsArchived = card.Closed
             };
         }
     }

@@ -13,6 +13,7 @@ namespace SKBKontur.TaskManagerClient
         Task<BoardList[]> GetBoardListsAsync(params string[] boardIds);
 
         Task<BoardCard> GetCardAsync(string cardId);
+        BoardCard GetCard(string cardId);
         Task<BoardCard[]> GetBoardCardsAsync(string[] boardIds);
 
         Task<User[]> GetBoardUsersAsync(string[] boardIds);

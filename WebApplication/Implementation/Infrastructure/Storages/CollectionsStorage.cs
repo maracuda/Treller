@@ -42,6 +42,18 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storage
             return GetAll<T>()[index];
         }
 
+        public int IndexOf<T>(T item, IComparer<T> comparer)
+        {
+            var collection = GetAll<T>();
+            for (var index = 0; index < collection.Length; index++)
+            {
+                var current = collection[index];
+                if (comparer.Compare(item, current) == 0)
+                    return index;
+            }
+            return -1;
+        }
+
         public T[] GetAll<T>()
         {
             var entityKey = GetEntityKey(typeof(T));

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Actualization;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
@@ -13,17 +14,20 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ITaskNewConverter taskNewConverter;
         private readonly ITaskNewStorage taskNewStorage;
+        private readonly IAgingCardsFilter agingCardsFilter;
 
         public NewsImporter(
             IBoardsService boardsService,
             ITaskManagerClient taskManagerClient,
             ITaskNewConverter taskNewConverter,
-            ITaskNewStorage taskNewStorage)
+            ITaskNewStorage taskNewStorage,
+            IAgingCardsFilter agingCardsFilter)
         {
             this.boardsService = boardsService;
             this.taskManagerClient = taskManagerClient;
             this.taskNewConverter = taskNewConverter;
             this.taskNewStorage = taskNewStorage;
+            this.agingCardsFilter = agingCardsFilter;
         }
 
         public void ImportAll()
@@ -40,7 +44,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
             {
                 foreach (var boardListCardInfo in boardsList.Cards)
                 {
-                    newsList.AddRange(taskNewConverter.Convert(boardsList.BoardId, boardListCardInfo));
+                    var taskNews = taskNewConverter.Convert(boardsList.BoardId, boardListCardInfo);
+                    var freshNews = agingCardsFilter.FilterFresh(taskNews);
+                    newsList.AddRange(freshNews);
                 }
             }
 
