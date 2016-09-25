@@ -306,6 +306,7 @@
     <Compile Include="Implementation\Services\News\Search\TaskNewModel.cs" />
     <Compile Include="Implementation\Services\News\Search\TaskNewState.cs" />
     <Compile Include="Implementation\Services\News\Sender\IMagazine.cs" />
+    <Compile Include="Implementation\Services\News\Sender\Magazine.cs" />
     <Compile Include="Implementation\Services\News\Storage\ITaskNewActionsLogStorage.cs" />
     <Compile Include="Implementation\Services\News\Storage\ITaskNewStorage.cs" />
     <Compile Include="Implementation\Services\News\Storage\TaskNewActionLogItem.cs" />

@@ -2,7 +2,6 @@
 {
     public interface IMagazine
     {
-        void Publish(TaskNew taskNew);
         void Publish(string taskId);
     }
 }
