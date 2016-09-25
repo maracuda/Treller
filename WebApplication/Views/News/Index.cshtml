@@ -39,11 +39,11 @@
                     <span class="news-block__column date">@taskNew.DoNotDeliverUntilStr</span>
                     <span class="news-block__column action">@taskNew.DeliveryChannel</span>
                     <span class="news-block__column action">
-                        @using (Html.BeginForm("Deliver", "News", FormMethod.Post))
+                        @*@using (Html.BeginForm("Deliver", "News", FormMethod.Post))
                         {
                             @Html.TextBox("taskId", taskNew.TaskId);
                             <input id="@taskNew.TaskId + @taskNew.DeliveryChannel" type="submit" value="Доставить" class="news__button news_actualize_button" />
-                        }
+                        }*@
                     </span>
                 </div>
             }
