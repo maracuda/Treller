@@ -42,7 +42,7 @@
                         @using (Html.BeginForm("Deliver", "News", FormMethod.Post))
                         {
                             @Html.TextBox("taskId", taskNew.TaskId);
-                            <input type="submit" value="Доставить" class="news__button news_actualize_button" />
+                            <input id="@taskNew.TaskId + @taskNew.DeliveryChannel" type="submit" value="Доставить" class="news__button news_actualize_button" />
                         }
                     </span>
                 </div>
@@ -56,6 +56,6 @@
     {
         @Html.TextBox("technicalEmail", Model.Settings.TechMailingList, new { placeholder = "Адрес технической рассылки", title = "Адрес технической рассылки", @class = "news_actualize_text_area" });
         @Html.TextBox("releaseEmail", Model.Settings.PublicMailingList, new { placeholder = "Адрес публичной рассылки", title = "Адрес публичной рассылки", @class = "news_actualize_text_area" });
-        <input type="submit" value="Сохранить адреса" class="news__button news_actualize_button" />
+        <input id="settingsFormId" type="submit" value="Сохранить адреса" class="news__button news_actualize_button" />
     }
 </div>
