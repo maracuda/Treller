@@ -9,17 +9,14 @@ namespace SKBKontur.Treller.WebApplication.Controllers
     {
         private readonly INewsModelBuilder newsModelBuilder;
         private readonly IMagazine magazine;
-        private readonly INewsSettingsService newsSettingsService;
 
         public NewsController(
             INewsModelBuilder newsModelBuilder,
             IMagazine magazine,
-            INewsSettingsService newsSettingsService,
             IErrorService errorService) : base(errorService)
         {
             this.newsModelBuilder = newsModelBuilder;
             this.magazine = magazine;
-            this.newsSettingsService = newsSettingsService;
         }
 
         [HttpGet]
@@ -32,18 +29,6 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         public ActionResult Deliver(string taskId)
         {
             magazine.Publish(taskId);
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult UpdateSettings(string technicalEmail, string releaseEmail)
-        {
-            newsSettingsService.Update(technicalEmail, releaseEmail);
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult ResetSettings()
-        {
-            newsSettingsService.Reset();
             return RedirectToAction("Index");
         }
     }

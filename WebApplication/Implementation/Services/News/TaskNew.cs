@@ -18,7 +18,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public string PrimaryKey => $"{TaskId}{DeliveryChannel}";
 
-        public bool TryDeliver(INewsNotificator notificator, NewsSettings settings, DateTime now)
+        public bool TryDeliver(INewsNotificator notificator, DateTime now)
         {
             if (DoNotDeliverUntil.HasValue && DoNotDeliverUntil.Value > now)
                 return false;
@@ -26,13 +26,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             if (Delivered)
                 return false;
 
-            Deliver(notificator, settings, now);
+            Deliver(notificator, now);
             return true;
         }
 
-        public void Deliver(INewsNotificator notificator, NewsSettings settings, DateTime now)
+        public void Deliver(INewsNotificator notificator, DateTime now)
         {
-            var mailingList = ChooseMailingList(settings);
+            var mailingList = ChooseMailingList();
             notificator.NotifyAboutReleases(mailingList, Title, Text);
 
             Delivered = true;
@@ -40,14 +40,14 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             TimeStamp = now.Ticks;
         }
 
-        private string ChooseMailingList(NewsSettings settings)
+        private string ChooseMailingList()
         {
             switch (DeliveryChannel)
             {
                 case NewDeliveryChannelType.Customer:
-                    return settings.PublicMailingList;
+                    return "news.billing@skbkontur.ru";
                 case NewDeliveryChannelType.Support:
-                    return settings.TechMailingList;
+                    return "tech.news.billing@skbkontur.ru";
                 case NewDeliveryChannelType.Team:
                     return "dream_proj@skbkontur.ru";
                 default:

@@ -48,7 +48,6 @@ namespace SKBKontur.Treller.WebApplication
             var operationsFactory = container.Get<IRegularOperationsFactory>();
             operationalService = container.Get<IOperationalService>();
 
-            operationalService.Register(operationsFactory.Create("NewsRefresher", () => container.Get<INewsService>().Refresh()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(5)));
             operationalService.Register(operationsFactory.Create("NewsImporter", () => container.Get<INewsImporter>().ImportAll()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
             operationalService.Register(operationsFactory.Create("NewsConsistencyInspector", () => container.Get<IConsistencyIspector>().Run()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));
             operationalService.Register(operationsFactory.Create("AgingNewsActualizator", () => container.Get<INewsActualizator>().ActualizeAll()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));

@@ -3,6 +3,5 @@
     public interface INewsModelBuilder
     {
         NewsViewModel BuildViewModel();
-        CardNewsModel[] BuildNewsModel();
     }
 }
