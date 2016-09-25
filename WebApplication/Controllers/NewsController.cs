@@ -29,7 +29,6 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             return View("Index", news);
         }
 
-        [HttpGet]
         public ActionResult Deliver(string taskId)
         {
             magazine.Publish(taskId);
