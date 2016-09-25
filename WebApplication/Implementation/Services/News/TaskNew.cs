@@ -32,8 +32,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public void Deliver(INewsNotificator notificator, NewsSettings settings, DateTime now)
         {
-            //var mailingList = ChooseMailingList(settings);
-            notificator.NotifyAboutReleases("hvorost@skbkontur.ru", Title, Text);
+            var mailingList = ChooseMailingList(settings);
+            notificator.NotifyAboutReleases(mailingList, Title, Text);
 
             Delivered = true;
             DeliverDateTime = now;
