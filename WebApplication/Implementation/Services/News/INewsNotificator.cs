@@ -2,6 +2,6 @@
 {
     public interface INewsNotificator
     {
-        void NotifyAboutReleases(string recipient, NewsModel newsModel);
+        void NotifyAboutReleases(string mailingList, string title, string text);
     }
 }

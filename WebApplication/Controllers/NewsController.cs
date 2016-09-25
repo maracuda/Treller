@@ -1,23 +1,24 @@
 ﻿using System.Web.Mvc;
 using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Sender;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public class NewsController : ExceptionHandledController
     {
-        private readonly INewsService newsService;
         private readonly INewsModelBuilder newsModelBuilder;
+        private readonly IMagazine magazine;
         private readonly INewsSettingsService newsSettingsService;
 
         public NewsController(
-            INewsService newsService,
             INewsModelBuilder newsModelBuilder,
+            IMagazine magazine,
             INewsSettingsService newsSettingsService,
             IErrorService errorService) : base(errorService)
         {
-            this.newsService = newsService;
             this.newsModelBuilder = newsModelBuilder;
+            this.magazine = magazine;
             this.newsSettingsService = newsSettingsService;
         }
 
@@ -29,31 +30,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         }
 
         [HttpGet]
-        public ActionResult SendNews()
+        public ActionResult Deliver(string taskId)
         {
-            newsService.SendNews();
-
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult ActualizeNews()
-        {
-            newsService.Refresh();
-
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult RestoreCardForNews(string cardId)
-        {
-            newsService.RestoreCard(cardId);
-
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult DeleteCardFromNews(string cardId)
-        {
-            newsService.DeleteCard(cardId);
-
+            magazine.Publish(taskId);
             return RedirectToAction("Index");
         }
 

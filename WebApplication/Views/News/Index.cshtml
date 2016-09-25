@@ -19,7 +19,7 @@
     @if (Model.TaskNews == null || Model.TaskNews.Length == 0)
     {
         <div class="news-block">
-            Нет технических новостей для отправки
+            Нет новостей для отправки
         </div>
     }
     else
@@ -38,7 +38,13 @@
                     <span class="news-block__column title" title="@taskNew.Text">@taskNew.Title</span>
                     <span class="news-block__column date">@taskNew.DoNotDeliverUntilStr</span>
                     <span class="news-block__column action">@taskNew.DeliveryChannel</span>
-                    <span class="news-block__column action">TODO</span>
+                    <span class="news-block__column action">
+                        @using (Html.BeginForm("Deliver", "News", FormMethod.Post))
+                        {
+                            @Html.TextBox("taskId", taskNew.TaskId);
+                            <input type="submit" value="Доставить" class="news__button news_actualize_button" />
+                        }
+                    </span>
                 </div>
             }
         </div>

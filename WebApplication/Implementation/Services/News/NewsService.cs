@@ -96,7 +96,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             newsNotificator.NotifyAboutReleases(
                 technical
                     ? newsSettingsService.GetOrRead().TechMailingList
-                    : newsSettingsService.GetOrRead().PublicMailingList, newsModel);
+                    : newsSettingsService.GetOrRead().PublicMailingList, newsModel.NewsHeader, newsModel.NewsText);
             foreach (var card in newsModel.Cards)
             {
                 card.MarkPublished(technical);

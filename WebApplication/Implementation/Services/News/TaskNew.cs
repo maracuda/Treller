@@ -12,9 +12,48 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         public string Text { get; set; }
         public NewDeliveryChannelType DeliveryChannel { get; set; }
         public DateTime? DoNotDeliverUntil { get; set; }
+        public bool Delivered { get; set; }
+        public DateTime? DeliverDateTime { get; set; }
         public long TimeStamp { get; set; }
 
         public string PrimaryKey => $"{TaskId}{DeliveryChannel}";
+
+        public bool TryDeliver(INewsNotificator notificator, NewsSettings settings, DateTime now)
+        {
+            if (DoNotDeliverUntil.HasValue && DoNotDeliverUntil.Value > now)
+                return false;
+
+            if (Delivered)
+                return false;
+
+            Deliver(notificator, settings, now);
+            return true;
+        }
+
+        public void Deliver(INewsNotificator notificator, NewsSettings settings, DateTime now)
+        {
+            //var mailingList = ChooseMailingList(settings);
+            notificator.NotifyAboutReleases("hvorost@skbkontur.ru", Title, Text);
+
+            Delivered = true;
+            DeliverDateTime = now;
+            TimeStamp = now.Ticks;
+        }
+
+        private string ChooseMailingList(NewsSettings settings)
+        {
+            switch (DeliveryChannel)
+            {
+                case NewDeliveryChannelType.Customer:
+                    return settings.PublicMailingList;
+                case NewDeliveryChannelType.Support:
+                    return settings.TechMailingList;
+                case NewDeliveryChannelType.Team:
+                    return "dream_proj@skbkontur.ru";
+                default:
+                    throw new Exception($"Fail to find mailing list for delivery channel {DeliveryChannel}.");
+            }
+        }
 
         public bool HasSamePrimaryKey(TaskNew anotherTaskNew)
         {
