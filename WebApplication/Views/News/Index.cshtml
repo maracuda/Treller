@@ -41,7 +41,7 @@
                     <span class="news-block__column action">
                         @using (Html.BeginForm("Deliver", "News", FormMethod.Post))
                         {
-                            @Html.TextBox("taskId", taskNew.TaskId);
+                            @Html.TextBox("taskId", taskNew.TaskId, new { @class = "display: none;" });
                             <input id="@taskNew.TaskId + @taskNew.DeliveryChannel" type="submit" value="Доставить" class="news__button news_actualize_button" />
                         }
                     </span>

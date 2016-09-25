@@ -92,12 +92,12 @@
 }
 
 .news_actualize_button {
-    font-size: 16px;
+    font-size: 10px;
 }
 
 .news_actualize_text_area {
     display: inline-block;
-    padding: 10px;
+    padding: 3px;
     text-align: center;
     -ms-border-radius: 3px;
     border-radius: 3px;
