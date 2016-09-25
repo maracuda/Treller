@@ -66,10 +66,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
                     }
                     else
                     {
-                        var newsDiff = exisitentTask.BuildDiff(taskNew);
-                        if (!string.IsNullOrEmpty(newsDiff))
+                        if (!exisitentTask.Delivered)
                         {
-                            taskNewStorage.Update(taskNew, newsDiff);
+                            var newsDiff = exisitentTask.BuildDiff(taskNew);
+                            if (!string.IsNullOrEmpty(newsDiff))
+                            {
+                                taskNewStorage.Update(taskNew, newsDiff);
+                            }
                         }
                     }
                 }
