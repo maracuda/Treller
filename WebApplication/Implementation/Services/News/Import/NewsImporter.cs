@@ -34,10 +34,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
         {
             var boardIds = boardsService.SelectKanbanBoards(false).Select(x => x.Id).ToArray();
             var boardsLists = taskManagerClient.GetBoardLists(boardIds)
-                .Where(x => string.Equals(x.Name, KanbanBoardTemplate.TestingListName, StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(x.Name, KanbanBoardTemplate.WaitForReleaseListName, StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(x.Name, KanbanBoardTemplate.ReleasedListName, StringComparison.OrdinalIgnoreCase))
-                .ToArray();
+                                               .Where(x => string.Equals(x.Name, KanbanBoardTemplate.TestingListName, StringComparison.OrdinalIgnoreCase) ||
+                                                           string.Equals(x.Name, KanbanBoardTemplate.WaitForReleaseListName, StringComparison.OrdinalIgnoreCase) ||
+                                                           string.Equals(x.Name, KanbanBoardTemplate.ReleasedListName, StringComparison.OrdinalIgnoreCase))
+                                               .ToArray();
 
             var newsList = new List<TaskNew>();
             foreach (var boardsList in boardsLists)

@@ -25,7 +25,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Actualiz
                 newsBatch = taskNewStorage.Enumerate(currentTimestamp, batchSize);
                 var uselessTaskNews = agingCardsFilter.FilterAging(newsBatch);
                 taskNewStorage.Delete(uselessTaskNews);
-                currentTimestamp = newsBatch.Max(x => x.TimeStamp);
+                if (newsBatch.Length > 0)
+                    currentTimestamp =  newsBatch.Max(x => x.TimeStamp);
             } while (newsBatch.Length > 0);
         }
     }
