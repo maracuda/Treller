@@ -42,14 +42,36 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
             var newsList = new List<TaskNew>();
             foreach (var boardsList in boardsLists)
             {
-                foreach (var boardListCardInfo in boardsList.Cards)
-                {
-                    var taskNews = taskNewConverter.Convert(boardsList.BoardId, boardListCardInfo);
-                    var freshNews = agingCardsFilter.FilterFresh(taskNews);
-                    newsList.AddRange(freshNews);
-                }
+                var taskNews = taskNewConverter.Convert(boardsList);
+                var freshNews = agingCardsFilter.FilterFresh(taskNews);
+                newsList.AddRange(freshNews);
             }
 
+            ImportNews(newsList);
+        }
+
+        public void Import(string trelloCardId)
+        {
+            var card = taskManagerClient.GetCard(trelloCardId);
+            var cardList = taskManagerClient.GetBoardLists(card.BoardId).FirstOrDefault(l => l.Id.Equals(card.BoardListId));
+            if (cardList == null)
+            {
+                //TODO: handle this
+                return;
+            }
+
+            if (string.Equals(cardList.Name, KanbanBoardTemplate.TestingListName, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(cardList.Name, KanbanBoardTemplate.WaitForReleaseListName, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(cardList.Name, KanbanBoardTemplate.ReleasedListName, StringComparison.OrdinalIgnoreCase))
+            {
+                var taskNews = taskNewConverter.Convert(card.BoardId, card.Id, card.Name, card.Description, card.DueDate);
+                var freshNews = agingCardsFilter.FilterFresh(taskNews);
+                ImportNews(freshNews);
+            }
+        }
+
+        private void ImportNews(IEnumerable<TaskNew> newsList)
+        {
             foreach (var taskNew in newsList)
             {
                 var existentTaskNews = taskNewStorage.Find(taskNew.TaskId);

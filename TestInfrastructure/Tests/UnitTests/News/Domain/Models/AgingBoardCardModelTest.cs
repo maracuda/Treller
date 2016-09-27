@@ -11,39 +11,33 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Models
         public void TestIsGrowedOldWhenCardIsArchived()
         {
             var model = GenerateAgingCardModel(true);
-            Assert.IsTrue(model.IsGrowedOld());
+            Assert.IsTrue(model.IsGrowedOld(DateTime.UtcNow));
         }
 
         [Test]
         public void TestIsGrowedOldWhenCardDoesNotReleased()
         {
             var model = GenerateAgingCardModel(false);
-            Assert.IsFalse(model.IsGrowedOld());
+            Assert.IsFalse(model.IsGrowedOld(DateTime.UtcNow));
         }
 
         [Test]
         public void TestIsGrowedOldWhenCardReleasedButNotLongTimeAgo()
         {
             var now = DateTime.Now;
-            var model = GenerateAgingCardModel(false, KanbanBoardTemplate.ReleasedListName, now, now);
-            Assert.IsFalse(model.IsGrowedOld());
+            var model = GenerateAgingCardModel(false, KanbanBoardTemplate.ReleasedListName, now, TimeSpan.FromDays(3));
+            Assert.IsFalse(model.IsGrowedOld(now));
+            Assert.IsFalse(model.IsGrowedOld(now.AddDays(3).AddMilliseconds(-1)));
+            Assert.IsTrue(model.IsGrowedOld(now.AddDays(3)));
         }
 
-        [Test]
-        public void TestIsGrowedOldWhenCardReleasedLongTimeAgo()
-        {
-            var now = DateTime.Now;
-            var model = GenerateAgingCardModel(false, KanbanBoardTemplate.ReleasedListName, now.AddMilliseconds(-1), now);
-            Assert.IsTrue(model.IsGrowedOld());
-        }
-
-        private AgingBoardCardModel GenerateAgingCardModel(bool isArchived = false, string boardListName = null, DateTime? lastActivity = null, DateTime? expirationTime = null )
+        private static AgingBoardCardModel GenerateAgingCardModel(bool isArchived = false, string boardListName = null, DateTime? lastActivity = null, TimeSpan? expirationPeriod = null )
         {
             return new AgingBoardCardModel
             {
                 CardId = DataGenerator.GenEnglishString(10),
                 BoardListName = boardListName ?? DataGenerator.GenEnglishString(10),
-                ExpirationTime = expirationTime ?? DateTime.Now,
+                ExpirationPeriod = expirationPeriod ?? TimeSpan.Zero,
                 LastActivity = lastActivity ?? DateTime.Now,
                 IsArchived = isArchived,
             };

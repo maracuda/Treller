@@ -8,14 +8,14 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.M
         public string CardId { get; set; }
         public string BoardListName { private get; set; }
         public DateTime LastActivity { private get; set; }
-        public DateTime ExpirationTime { private get; set; }
+        public TimeSpan ExpirationPeriod { private get; set; }
         public bool IsArchived { private get; set; }
 
-        public bool IsGrowedOld()
+        public bool IsGrowedOld(DateTime at)
         {
             if (IsArchived)
                 return true;
-            return KanbanBoardTemplate.ReleasedListName.Equals(BoardListName) && LastActivity < ExpirationTime;
+            return KanbanBoardTemplate.ReleasedListName.Equals(BoardListName) && LastActivity.Add(ExpirationPeriod) <= at;
         }
     }
 }

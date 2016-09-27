@@ -1,5 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Rhino.Mocks;
+using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Actualization;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders;
@@ -11,14 +13,16 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Actualization
     {
         private IAgingBoardCardBuilder agingBoardCardBuilder;
         private AgingCardsFilter agingCardsFilter;
+        private IDateTimeFactory dateTimeFactory;
 
         public override void SetUp()
         {
             base.SetUp();
 
             agingBoardCardBuilder = mock.Create<IAgingBoardCardBuilder>();
+            dateTimeFactory = mock.Create<IDateTimeFactory>();
 
-            agingCardsFilter = new AgingCardsFilter(agingBoardCardBuilder);
+            agingCardsFilter = new AgingCardsFilter(agingBoardCardBuilder, dateTimeFactory);
         }
 
         [Test]
@@ -36,9 +40,11 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Actualization
             {
                 IsArchived = true
             };
+            var now = DateTime.Now;
 
             using (mock.Record())
             {
+                dateTimeFactory.Stub(f => f.UtcNow).Return(now);
                 agingBoardCardBuilder.Stub(f => f.TryBuildModel(task1.TaskId)).Return(agingModel1);
                 agingBoardCardBuilder.Stub(f => f.TryBuildModel(task2.TaskId)).Return(agingModel2);
                 agingBoardCardBuilder.Stub(f => f.TryBuildModel(task3.TaskId)).Return(agingModel3);

@@ -24,14 +24,21 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
         [TestCase(cardDesciptionWithEmptyNewText, 1)]
         public void TestConvert(string description, int expectedNewsCount)
         {
-            var cardInfo = new BoardListCardInfo
+            var boardList = new BoardList
             {
-                Id = "cardId",
-                Name = "Some task",
-                Desc = description,
-                Due = DateTime.Now
+                BoardId = "someboard",
+                Cards = new[]
+                {
+                    new BoardListCardInfo
+                    {
+                        Id = "cardId",
+                        Name = "Some task",
+                        Desc = description,
+                        Due = DateTime.Now
+                    }
+                }
             };
-            var actuals = taskNewConverter.Convert("someboard", cardInfo);
+            var actuals = taskNewConverter.Convert(boardList);
             Assert.AreEqual(expectedNewsCount, actuals.Count);
         }
     }

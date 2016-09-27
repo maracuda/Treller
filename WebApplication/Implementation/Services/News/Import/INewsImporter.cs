@@ -3,5 +3,6 @@
     public interface INewsImporter
     {
         void ImportAll();
+        void Import(string trelloCardId);
     }
 }

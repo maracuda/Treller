@@ -1,7 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
@@ -14,7 +13,6 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
     {
         private ITaskManagerClient taskManagerClient;
         private IErrorService errorService;
-        private IDateTimeFactory dateTimeFactory;
         private AgingBoardCardBuilder agingBoardCardBuilder;
 
         public override void SetUp()
@@ -22,10 +20,9 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
             base.SetUp();
 
             taskManagerClient = mock.Create<ITaskManagerClient>();
-            dateTimeFactory = mock.Create<IDateTimeFactory>();
             errorService = mock.Create<IErrorService>();
 
-            agingBoardCardBuilder = new AgingBoardCardBuilder(taskManagerClient, dateTimeFactory, errorService);
+            agingBoardCardBuilder = new AgingBoardCardBuilder(taskManagerClient, errorService);
         }
 
         [Test]
@@ -73,7 +70,6 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
             var boardListId = DataGenerator.GenEnglishString(14);
             var listName = DataGenerator.GenEnglishString(10);
             var lastActivity = DateTime.Now;
-            var now = DateTime.Now;
             var card = new BoardCard
             {
                 Id = cardId,
@@ -92,7 +88,6 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
             {
                 taskManagerClient.Expect(f => f.GetCard(cardId)).Return(card);
                 taskManagerClient.Expect(f => f.GetBoardLists(Arg<string[]>.Matches(arg => arg.Length == 1 && arg[0].Equals(boardId)))).Return(new[] {boardList});
-                dateTimeFactory.Expect(f => f.UtcNow).Return(now);
             }
 
             var expected = new AgingBoardCardModel
@@ -101,7 +96,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
                 IsArchived = true,
                 BoardListName = listName,
                 LastActivity = lastActivity,
-                ExpirationTime = now.AddDays(3)
+                ExpirationPeriod = TimeSpan.FromDays(3)
             };
             var actual = agingBoardCardBuilder.TryBuildModel(cardId);
             Assert.IsTrue(actual.HasValue);

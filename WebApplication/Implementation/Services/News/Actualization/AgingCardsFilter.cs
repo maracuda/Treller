@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Antlr.Runtime.Misc;
+using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
 
@@ -8,20 +9,24 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Actualiz
     public class AgingCardsFilter : IAgingCardsFilter
     {
         private readonly IAgingBoardCardBuilder agingBoardCardBuilder;
+        private readonly IDateTimeFactory dateTimeFactory;
 
-        public AgingCardsFilter(IAgingBoardCardBuilder agingBoardCardBuilder)
+        public AgingCardsFilter(
+            IAgingBoardCardBuilder agingBoardCardBuilder,
+            IDateTimeFactory dateTimeFactory)
         {
             this.agingBoardCardBuilder = agingBoardCardBuilder;
+            this.dateTimeFactory = dateTimeFactory;
         }
 
         public TaskNew[] FilterAging(IEnumerable<TaskNew> taskNews)
         {
-            return Filter(taskNews, agingCardModel => agingCardModel.IsGrowedOld());
+            return Filter(taskNews, agingCardModel => agingCardModel.IsGrowedOld(dateTimeFactory.UtcNow));
         }
 
         public TaskNew[] FilterFresh(IEnumerable<TaskNew> taskNews)
         {
-            return Filter(taskNews, agingCardModel => !agingCardModel.IsGrowedOld());
+            return Filter(taskNews, agingCardModel => !agingCardModel.IsGrowedOld(dateTimeFactory.UtcNow));
         }
 
         private TaskNew[] Filter(IEnumerable<TaskNew> taskNews, Func<AgingBoardCardModel, bool> selector)

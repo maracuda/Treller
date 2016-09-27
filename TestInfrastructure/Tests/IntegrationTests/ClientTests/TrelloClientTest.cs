@@ -64,5 +64,12 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
             Console.WriteLine(actualBoards.Stringify());
             Console.WriteLine(boardLists.Stringify());
         }
+
+        [Test]
+        public void TestGetCardById()
+        {
+            var actual = trelloClient.GetCard("lpDZvlGm");
+            var x = 1;
+        }
     }
 }

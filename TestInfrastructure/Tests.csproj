@@ -71,6 +71,7 @@
     <Compile Include="Tests\IntegrationTests\Kanban\BoardServiceTest.cs" />
     <Compile Include="Tests\IntegrationTests\MemoryCacheTest.cs" />
     <Compile Include="Tests\IntegrationTests\News\NewsActualizatorTest.cs" />
+    <Compile Include="Tests\IntegrationTests\News\NewsImporterTest.cs" />
     <Compile Include="Tests\IntegrationTests\News\TaskNewConverterTest.cs" />
     <Compile Include="Tests\IntegrationTests\News\TaskNewsStorageTest.cs" />
     <Compile Include="Tests\IntegrationTests\Repository\GitlabClientTests.cs" />
