@@ -270,8 +270,6 @@
     <Compile Include="Implementation\Services\News\Actualization\IAgingCardsFilter.cs" />
     <Compile Include="Implementation\Services\News\Actualization\INewsActualizator.cs" />
     <Compile Include="Implementation\Services\News\Actualization\NewsActualizator.cs" />
-    <Compile Include="Implementation\Services\News\Consitency\ConsistencyInspector.cs" />
-    <Compile Include="Implementation\Services\News\Consitency\IConsistencyIspector.cs" />
     <Compile Include="Implementation\Services\News\Domain\Builders\AgingBoardCardBuilder.cs" />
     <Compile Include="Implementation\Services\News\Domain\Builders\IAgingBoardCardBuilder.cs" />
     <Compile Include="Implementation\Services\News\Domain\ITaskNewConverter.cs" />
