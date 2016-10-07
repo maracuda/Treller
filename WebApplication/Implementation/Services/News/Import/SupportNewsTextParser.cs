@@ -8,7 +8,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
 
         public SupportNewsTextParser()
         {
-            substringParser = new SubstringParser("**Технические новости**:", "\n\n");
+            substringParser = new SubstringParser("**Технические новости**:", "**");
         }
 
         public NewDeliveryChannelType DeliveryChannelType => NewDeliveryChannelType.Support;

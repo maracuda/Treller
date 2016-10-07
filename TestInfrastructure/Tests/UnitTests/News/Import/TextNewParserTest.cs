@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.IO;
+using NUnit.Framework;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Import;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Import
@@ -25,8 +27,8 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Import
         }
 
         [Test]
-        [TestCase("Просто какой-то текст", false, "")]
-        [TestCase(textWithMotivationAndBothNews, true, "в сценарии распределенной продажи клиент закрепляется в соответствие с действующими правилами за S-агентом. По услугам УЦ сценарий РП работает на договоренности, что продлять клиента должен D-агент. Необходимо описать правила и реализовать массовый перевод по всем счетам РП по услугам УЦ за период с октября 2015 по июнь 2016 года.\nДо тех пор, пока не будет реализована схема автоматической передачи на продление клиентов в схеме РП по УЦ, такие действия по массовому переводу могут быть произведены еще несколько раз с периодичностью раз в квартал.")]
+        [TestCase("Просто какой-то текст", true, "Всем доброго времени суток.\r\nКомадна Биллинга только что доставила огненный релиз на боевые.\r\n")]
+        [TestCase(textWithMotivationAndBothNews, true, "Всем доброго времени суток.\r\nКомадна Биллинга только что доставила огненный релиз на боевые.\r\nНемного о задаче: в сценарии распределенной продажи клиент закрепляется в соответствие с действующими правилами за S-агентом. По услугам УЦ сценарий РП работает на договоренности, что продлять клиента должен D-агент. Необходимо описать правила и реализовать массовый перевод по всем счетам РП по услугам УЦ за период с октября 2015 по июнь 2016 года.\nДо тех пор, пока не будет реализована схема автоматической передачи на продление клиентов в схеме РП по УЦ, такие действия по массовому переводу могут быть произведены еще несколько раз с периодичностью раз в квартал.\r\nПодробнее читайте здесь: [ссылка](https://wiki.skbkontur.ru/pages/viewpage.action?pageId=145690959)")]
         public void TestParseTeamNews(string text, bool isParsedSuccesfully, string expectedNewText)
         {
             var actual = new TeamNewsTextParser().TryParse(text);
@@ -48,6 +50,22 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Import
             {
                 Assert.AreEqual(expectedNewText, actual.Value);
             }
+        }
+
+        [Test]
+        public void TestParseCustomerNewsForAlternativeFormat()
+        {
+            var text = GetNewsData("BigNewWithComplexSeparator.txt");
+            var expected = GetNewsData("BigNewWithComplexSeparatorExpected.txt");
+            var actual = new CustomerNewsTextParser().TryParse(text);
+            Assert.AreEqual(true, actual.HasValue);
+            Assert.AreEqual(expected, actual.Value);
+        }
+
+        private static string GetNewsData(string fileName)
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tests", "UnitTests", "TestData", "NewsExamples", fileName);
+            return File.ReadAllText(path);
         }
     }
 }

@@ -4,18 +4,25 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
 {
     public class CustomerNewsTextParser : ITextNewParser
     {
-        private readonly SubstringParser substringParser;
+        private readonly SubstringParser commonParser;
+        private readonly SubstringParser customParser;
 
         public CustomerNewsTextParser()
         {
-            substringParser = new SubstringParser("**Новости**:", "\n\n");
+            commonParser = new SubstringParser("**Новости**:", "**");
+            customParser = new SubstringParser("**Новости**:", "---");
         }
         
         public NewDeliveryChannelType DeliveryChannelType => NewDeliveryChannelType.Customer;
         
         public Maybe<string> TryParse(string cardDescription)
         {
-            return substringParser.TryParse(cardDescription);
+            var commonResult = commonParser.TryParse(cardDescription);
+            var customResult = customParser.TryParse(cardDescription);
+
+            if (customResult.HasValue && customResult.HasValue && customResult.Value.Length < commonResult.Value.Length)
+                return customResult;
+            return commonResult;
         }
     }
 }

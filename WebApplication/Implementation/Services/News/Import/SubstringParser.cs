@@ -8,7 +8,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
         private readonly string startToken;
         private readonly string endToken;
 
-        public SubstringParser(string startToken, string endToken)
+        public SubstringParser(string startToken, string endToken = null)
         {
             this.startToken = startToken;
             this.endToken = endToken;
@@ -16,14 +16,18 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
 
         public Maybe<string> TryParse(string str)
         {
-            var newStartIndex = str.IndexOf(startToken, StringComparison.OrdinalIgnoreCase);
-            if (newStartIndex == -1)
+            var startTokenIndex = str.IndexOf(startToken, StringComparison.OrdinalIgnoreCase);
+            if (startTokenIndex == -1)
                 return null;
 
-            var newEndIndex = str.IndexOf(endToken, newStartIndex, StringComparison.OrdinalIgnoreCase);
-            return newEndIndex == -1
-                ? str.Substring(newStartIndex + startToken.Length).Trim()
-                : str.Substring(newStartIndex + startToken.Length, newEndIndex - (newStartIndex + startToken.Length)).Trim();
+            var newSartIndex = startTokenIndex + startToken.Length;
+            if (endToken == null)
+                return str.Substring(newSartIndex).Trim();
+
+            var endTokenStartIndex = str.IndexOf(endToken, newSartIndex, StringComparison.OrdinalIgnoreCase);
+            return endTokenStartIndex == -1
+                ? str.Substring(newSartIndex).Trim()
+                : str.Substring(newSartIndex, endTokenStartIndex - newSartIndex).Trim();
         }
     }
 }
