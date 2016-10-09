@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Import;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
 {

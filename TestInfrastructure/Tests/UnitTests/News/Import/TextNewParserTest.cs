@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using NUnit.Framework;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Import;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Import
 {

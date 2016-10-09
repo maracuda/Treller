@@ -1,6 +1,6 @@
-using SKBKontur.Infrastructure.Sugar;
+﻿using SKBKontur.Infrastructure.Sugar;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
 {
     public class CustomerNewsTextParser : ITextNewParser
     {

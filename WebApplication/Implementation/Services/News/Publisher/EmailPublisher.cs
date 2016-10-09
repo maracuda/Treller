@@ -1,15 +1,15 @@
 ﻿using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Sender
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher
 {
-    public class Magazine : IMagazine
+    public class EmailPublisher : IPublisher
     {
         private readonly INewsNotificator newsNotificator;
         private readonly IDateTimeFactory dateTimeFactory;
         private readonly ITaskNewStorage taskNewStorage;
 
-        public Magazine(
+        public EmailPublisher(
             INewsNotificator newsNotificator,
             IDateTimeFactory dateTimeFactory,
             ITaskNewStorage taskNewStorage

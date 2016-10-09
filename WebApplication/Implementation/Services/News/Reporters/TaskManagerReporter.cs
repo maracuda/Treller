@@ -4,30 +4,26 @@ using System.Linq;
 using SKBKontur.Infrastructure.Sugar;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
 {
-    public class NewsImporter : INewsImporter
+    public class TaskManagerReporter : IReporter
     {
         private readonly IBoardsService boardsService;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ITaskNewConverter taskNewConverter;
-        private readonly INewsFeed newsFeed;
 
-        public NewsImporter(
+        public TaskManagerReporter(
             IBoardsService boardsService,
             ITaskManagerClient taskManagerClient,
-            ITaskNewConverter taskNewConverter,
-            INewsFeed newsFeed)
+            ITaskNewConverter taskNewConverter)
         {
             this.boardsService = boardsService;
             this.taskManagerClient = taskManagerClient;
             this.taskNewConverter = taskNewConverter;
-            this.newsFeed = newsFeed;
         }
 
-        public void ImportAll()
+        public IEnumerable<TaskNew> MakeReport()
         {
             var boardIds = boardsService.SelectKanbanBoards(false).Select(x => x.Id).ToArray();
             var boardsLists = taskManagerClient.GetBoardLists(boardIds)
@@ -36,40 +32,38 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
                                                            string.Equals(x.Name, KanbanBoardTemplate.ReleasedListName, StringComparison.OrdinalIgnoreCase))
                                                .ToArray();
 
-            var newsList = new List<TaskNew>();
+            var result = new List<TaskNew>();
             foreach (var boardsList in boardsLists)
             {
                 var taskNews = taskNewConverter.Convert(boardsList);
-                newsList.AddRange(taskNews);
+                result.AddRange(taskNews);
             }
 
-            newsFeed.AddNews(newsList);
+            return result;
         }
 
-        public Maybe<string> TryImport(string trelloCardId)
+        public Maybe<IEnumerable<TaskNew>> TryToMakeReport(string aboutCardId)
         {
             try
             {
-                var card = taskManagerClient.GetCard(trelloCardId);
+                var card = taskManagerClient.GetCard(aboutCardId);
                 var cardList = taskManagerClient.GetBoardLists(card.BoardId).FirstOrDefault(l => l.Id.Equals(card.BoardListId));
                 if (cardList == null)
                 {
-                    return $"Не удалось испортировать карточку {trelloCardId} так как не нашли список в котором она находится";
+                    return null;
                 }
 
                 if (string.Equals(cardList.Name, KanbanBoardTemplate.TestingListName, StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(cardList.Name, KanbanBoardTemplate.WaitForReleaseListName, StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(cardList.Name, KanbanBoardTemplate.ReleasedListName, StringComparison.OrdinalIgnoreCase))
                 {
-                    var taskNews = taskNewConverter.Convert(card.BoardId, card.Id, card.Name, card.Description, card.DueDate);
-                    newsFeed.AddNews(taskNews);
-                    return null;
+                    return taskNewConverter.Convert(card.BoardId, card.Id, card.Name, card.Description, card.DueDate);
                 }
-                return $"Не удалось испортировать карточку {trelloCardId} так как она находится не в списке карточек готовых к релизу.";
+                return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return $"Не удалось испортировать карточку {trelloCardId} из-за непредвиденной ошибки. Сообщение об ошибке: {e.Message}.";
+                return null;
             }
         }
     }

@@ -1,23 +1,23 @@
 ﻿using NUnit.Framework;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Import;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
 {
     public class NewsImporterTest : IntegrationTest
     {
-        private NewsImporter newsImporter;
+        private TaskManagerReporter taskManagerReporter;
 
         public override void SetUp()
         {
             base.SetUp();
 
-            newsImporter = container.Get<NewsImporter>();
+            taskManagerReporter = container.Get<TaskManagerReporter>();
         }
 
         [Test]
         public void TestImportCard()
         {
-            newsImporter.TryImport("wtq5pHOg");
+            taskManagerReporter.TryToMakeReport("wtq5pHOg");
         }
     }
 }

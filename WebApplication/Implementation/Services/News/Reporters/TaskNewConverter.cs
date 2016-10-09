@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
 {
     public class TaskNewConverter : ITaskNewConverter
     {

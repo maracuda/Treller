@@ -1,7 +1,7 @@
 using System;
 using SKBKontur.Infrastructure.Sugar;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
 {
     internal class SubstringParser
     {
