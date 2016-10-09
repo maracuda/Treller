@@ -11,14 +11,14 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Models
         public void TestIsGrowedOldWhenCardIsArchived()
         {
             var model = GenerateAgingCardModel(true);
-            Assert.IsTrue(model.IsGrowedOld(DateTime.UtcNow));
+            Assert.IsTrue(model.IsOutdated(DateTime.UtcNow));
         }
 
         [Test]
         public void TestIsGrowedOldWhenCardDoesNotReleased()
         {
             var model = GenerateAgingCardModel(false);
-            Assert.IsFalse(model.IsGrowedOld(DateTime.UtcNow));
+            Assert.IsFalse(model.IsOutdated(DateTime.UtcNow));
         }
 
         [Test]
@@ -26,14 +26,14 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Models
         {
             var now = DateTime.Now;
             var model = GenerateAgingCardModel(false, KanbanBoardTemplate.ReleasedListName, now, TimeSpan.FromDays(3));
-            Assert.IsFalse(model.IsGrowedOld(now));
-            Assert.IsFalse(model.IsGrowedOld(now.AddDays(3).AddMilliseconds(-1)));
-            Assert.IsTrue(model.IsGrowedOld(now.AddDays(3)));
+            Assert.IsFalse(model.IsOutdated(now));
+            Assert.IsFalse(model.IsOutdated(now.AddDays(3).AddMilliseconds(-1)));
+            Assert.IsTrue(model.IsOutdated(now.AddDays(3)));
         }
 
-        private static AgingBoardCardModel GenerateAgingCardModel(bool isArchived = false, string boardListName = null, DateTime? lastActivity = null, TimeSpan? expirationPeriod = null )
+        private static OutdatedBoardCardModel GenerateAgingCardModel(bool isArchived = false, string boardListName = null, DateTime? lastActivity = null, TimeSpan? expirationPeriod = null )
         {
-            return new AgingBoardCardModel
+            return new OutdatedBoardCardModel
             {
                 CardId = DataGenerator.GenEnglishString(10),
                 BoardListName = boardListName ?? DataGenerator.GenEnglishString(10),

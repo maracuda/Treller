@@ -13,7 +13,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
     {
         private ITaskManagerClient taskManagerClient;
         private IErrorService errorService;
-        private AgingBoardCardBuilder agingBoardCardBuilder;
+        private OutdatedBoardCardBuilder outdatedBoardCardBuilder;
 
         public override void SetUp()
         {
@@ -22,7 +22,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
             taskManagerClient = mock.Create<ITaskManagerClient>();
             errorService = mock.Create<IErrorService>();
 
-            agingBoardCardBuilder = new AgingBoardCardBuilder(taskManagerClient, errorService);
+            outdatedBoardCardBuilder = new OutdatedBoardCardBuilder(taskManagerClient, errorService);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
                 errorService.Expect(f => f.SendError(Arg<string>.Is.NotNull, Arg<Exception>.Is.NotNull));
             }
 
-            var actual = agingBoardCardBuilder.TryBuildModel(cardId);
+            var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);
             Assert.IsFalse(actual.HasValue);
         }
 
@@ -58,7 +58,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
                 errorService.Expect(f => f.SendError(Arg<string>.Is.NotNull));
             }
 
-            var actual = agingBoardCardBuilder.TryBuildModel(cardId);
+            var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);
             Assert.IsFalse(actual.HasValue);
         }
 
@@ -90,7 +90,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
                 taskManagerClient.Expect(f => f.GetBoardLists(Arg<string[]>.Matches(arg => arg.Length == 1 && arg[0].Equals(boardId)))).Return(new[] {boardList});
             }
 
-            var expected = new AgingBoardCardModel
+            var expected = new OutdatedBoardCardModel
             {
                 CardId = cardId,
                 IsArchived = true,
@@ -98,7 +98,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
                 LastActivity = lastActivity,
                 ExpirationPeriod = TimeSpan.FromDays(3)
             };
-            var actual = agingBoardCardBuilder.TryBuildModel(cardId);
+            var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);
             Assert.IsTrue(actual.HasValue);
             UnitWrappers.Assert.AreDeepEqual(actual, expected);
         }

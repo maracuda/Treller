@@ -3,7 +3,7 @@ using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models
 {
-    public class AgingBoardCardModel
+    public class OutdatedBoardCardModel
     {
         public string CardId { get; set; }
         public string BoardListName { private get; set; }
@@ -11,7 +11,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.M
         public TimeSpan ExpirationPeriod { private get; set; }
         public bool IsArchived { private get; set; }
 
-        public bool IsGrowedOld(DateTime at)
+        public bool IsOutdated(DateTime at)
         {
             if (IsArchived)
                 return true;

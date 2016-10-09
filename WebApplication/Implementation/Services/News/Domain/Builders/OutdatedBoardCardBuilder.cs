@@ -7,14 +7,14 @@ using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Model
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders
 {
-    public class AgingBoardCardBuilder : IAgingBoardCardBuilder
+    public class OutdatedBoardCardBuilder : IOutdatedBoardCardBuilder
     {
         private readonly ITaskManagerClient taskManagerClient;
         private readonly IErrorService errorService;
 
         private static readonly TimeSpan cardExpirationPeriod = TimeSpan.FromDays(3);
 
-        public AgingBoardCardBuilder(
+        public OutdatedBoardCardBuilder(
             ITaskManagerClient taskManagerClient,
             IErrorService errorService)
         {
@@ -22,7 +22,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.B
             this.errorService = errorService;
         }
 
-        public Maybe<AgingBoardCardModel> TryBuildModel(string cardId)
+        public Maybe<OutdatedBoardCardModel> TryBuildModel(string cardId)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.B
                     return null;
                 }
 
-                return new AgingBoardCardModel
+                return new OutdatedBoardCardModel
                 {
                     CardId = cardId,
                     IsArchived = boardCard.IsArchived,

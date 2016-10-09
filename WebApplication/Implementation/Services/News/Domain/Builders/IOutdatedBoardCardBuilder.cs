@@ -3,8 +3,8 @@ using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Model
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders
 {
-    public interface IAgingBoardCardBuilder
+    public interface IOutdatedBoardCardBuilder
     {
-        Maybe<AgingBoardCardModel> TryBuildModel(string cardId);
+        Maybe<OutdatedBoardCardModel> TryBuildModel(string cardId);
     }
 }

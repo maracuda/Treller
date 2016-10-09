@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SKBKontur.Infrastructure.Sugar;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Actualization;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
 {
@@ -13,21 +13,18 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
         private readonly IBoardsService boardsService;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ITaskNewConverter taskNewConverter;
-        private readonly ITaskNewStorage taskNewStorage;
-        private readonly IAgingCardsFilter agingCardsFilter;
+        private readonly INewsFeed newsFeed;
 
         public NewsImporter(
             IBoardsService boardsService,
             ITaskManagerClient taskManagerClient,
             ITaskNewConverter taskNewConverter,
-            ITaskNewStorage taskNewStorage,
-            IAgingCardsFilter agingCardsFilter)
+            INewsFeed newsFeed)
         {
             this.boardsService = boardsService;
             this.taskManagerClient = taskManagerClient;
             this.taskNewConverter = taskNewConverter;
-            this.taskNewStorage = taskNewStorage;
-            this.agingCardsFilter = agingCardsFilter;
+            this.newsFeed = newsFeed;
         }
 
         public void ImportAll()
@@ -43,61 +40,36 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
             foreach (var boardsList in boardsLists)
             {
                 var taskNews = taskNewConverter.Convert(boardsList);
-                var freshNews = agingCardsFilter.FilterFresh(taskNews);
-                newsList.AddRange(freshNews);
+                newsList.AddRange(taskNews);
             }
 
-            ImportNews(newsList);
+            newsFeed.AddNews(newsList);
         }
 
-        public void Import(string trelloCardId)
+        public Maybe<string> TryImport(string trelloCardId)
         {
-            var card = taskManagerClient.GetCard(trelloCardId);
-            var cardList = taskManagerClient.GetBoardLists(card.BoardId).FirstOrDefault(l => l.Id.Equals(card.BoardListId));
-            if (cardList == null)
+            try
             {
-                //TODO: handle this
-                return;
-            }
-
-            if (string.Equals(cardList.Name, KanbanBoardTemplate.TestingListName, StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(cardList.Name, KanbanBoardTemplate.WaitForReleaseListName, StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(cardList.Name, KanbanBoardTemplate.ReleasedListName, StringComparison.OrdinalIgnoreCase))
-            {
-                var taskNews = taskNewConverter.Convert(card.BoardId, card.Id, card.Name, card.Description, card.DueDate);
-                var freshNews = agingCardsFilter.FilterFresh(taskNews);
-                ImportNews(freshNews);
-            }
-        }
-
-        private void ImportNews(IEnumerable<TaskNew> newsList)
-        {
-            foreach (var taskNew in newsList)
-            {
-                var existentTaskNews = taskNewStorage.Find(taskNew.TaskId);
-                if (existentTaskNews.HasNoValue)
+                var card = taskManagerClient.GetCard(trelloCardId);
+                var cardList = taskManagerClient.GetBoardLists(card.BoardId).FirstOrDefault(l => l.Id.Equals(card.BoardListId));
+                if (cardList == null)
                 {
-                    taskNewStorage.Create(taskNew);
+                    return $"Не удалось испортировать карточку {trelloCardId} так как не нашли список в котором она находится";
                 }
-                else
+
+                if (string.Equals(cardList.Name, KanbanBoardTemplate.TestingListName, StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(cardList.Name, KanbanBoardTemplate.WaitForReleaseListName, StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(cardList.Name, KanbanBoardTemplate.ReleasedListName, StringComparison.OrdinalIgnoreCase))
                 {
-                    var exisitentTask = existentTaskNews.Value.FirstOrDefault(x => x.DeliveryChannel == taskNew.DeliveryChannel);
-                    if (exisitentTask == null)
-                    {
-                        taskNewStorage.Create(taskNew);
-                    }
-                    else
-                    {
-                        if (!exisitentTask.Delivered)
-                        {
-                            var newsDiff = exisitentTask.BuildDiff(taskNew);
-                            if (!string.IsNullOrEmpty(newsDiff))
-                            {
-                                taskNewStorage.Update(taskNew, newsDiff);
-                            }
-                        }
-                    }
+                    var taskNews = taskNewConverter.Convert(card.BoardId, card.Id, card.Name, card.Description, card.DueDate);
+                    newsFeed.AddNews(taskNews);
+                    return null;
                 }
+                return $"Не удалось испортировать карточку {trelloCardId} так как она находится не в списке карточек готовых к релизу.";
+            }
+            catch (Exception e)
+            {
+                return $"Не удалось испортировать карточку {trelloCardId} из-за непредвиденной ошибки. Сообщение об ошибке: {e.Message}.";
             }
         }
     }

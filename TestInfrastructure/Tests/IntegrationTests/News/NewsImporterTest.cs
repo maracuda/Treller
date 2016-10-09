@@ -17,7 +17,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
         [Test]
         public void TestImportCard()
         {
-            newsImporter.Import("wtq5pHOg");
+            newsImporter.TryImport("wtq5pHOg");
         }
     }
 }

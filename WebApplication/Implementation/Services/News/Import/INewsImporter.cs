@@ -1,8 +1,10 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
+﻿using SKBKontur.Infrastructure.Sugar;
+
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Import
 {
     public interface INewsImporter
     {
         void ImportAll();
-        void Import(string trelloCardId);
+        Maybe<string> TryImport(string trelloCardId);
     }
 }
