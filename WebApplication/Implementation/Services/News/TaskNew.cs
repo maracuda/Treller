@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 {

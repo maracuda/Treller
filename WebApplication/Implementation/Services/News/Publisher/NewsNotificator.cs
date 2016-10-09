@@ -1,6 +1,6 @@
 ﻿using SKBKontur.TaskManagerClient.Notifications;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher
 {
     public class NewsNotificator : INewsNotificator
     {

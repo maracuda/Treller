@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
+﻿namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher
 {
     public interface INewsNotificator
     {

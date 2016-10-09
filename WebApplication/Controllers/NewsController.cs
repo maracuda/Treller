@@ -1,28 +1,32 @@
 ﻿using System.Web.Mvc;
 using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Search;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public class NewsController : ExceptionHandledController
     {
-        private readonly INewsModelBuilder newsModelBuilder;
+        private readonly INewsFeed newsFeed;
         private readonly IPublisher publisher;
 
         public NewsController(
-            INewsModelBuilder newsModelBuilder,
+            INewsFeed newsFeed,
             IPublisher publisher,
             IErrorService errorService) : base(errorService)
         {
-            this.newsModelBuilder = newsModelBuilder;
+            this.newsFeed = newsFeed;
             this.publisher = publisher;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var news = newsModelBuilder.BuildViewModel();
+            var news = new NewsViewModel
+            {
+                TaskNews = newsFeed.SelectAll()
+            };
             return View("Index", news);
         }
 
@@ -31,5 +35,10 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             publisher.Publish(taskId);
             return RedirectToAction("Index");
         }
+    }
+
+    public class NewsViewModel
+    {
+        public TaskNewModel[] TaskNews { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Search
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
 {
     public class TaskNewModel
     {

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Search;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
@@ -8,13 +10,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
     {
         private readonly ITaskNewStorage taskNewStorage;
         private readonly IOutdatedNewsFilter outdatedNewsFilter;
+        private readonly ITaskNewConverter taskNewConverter;
 
         public NewsFeed(
             ITaskNewStorage taskNewStorage,
-            IOutdatedNewsFilter outdatedNewsFilter)
+            IOutdatedNewsFilter outdatedNewsFilter,
+            ITaskNewConverter taskNewConverter)
         {
             this.taskNewStorage = taskNewStorage;
             this.outdatedNewsFilter = outdatedNewsFilter;
+            this.taskNewConverter = taskNewConverter;
         }
 
         public void AddNews(IEnumerable<TaskNew> news)
@@ -47,6 +52,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
                     }
                 }
             }
+        }
+
+        public TaskNewModel[] SelectAll()
+        {
+            return taskNewStorage.ReadAll()
+                     .Select(x => taskNewConverter.Build(x))
+                     .ToArray();
         }
 
         public void Refresh(int batchSize = 30)
