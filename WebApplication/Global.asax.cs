@@ -8,8 +8,8 @@ using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Scheduler;
@@ -46,10 +46,7 @@ namespace SKBKontur.Treller.WebApplication
             var operationsFactory = container.Get<IRegularOperationsFactory>();
             operationalService = container.Get<IOperationalService>();
 
-            operationalService.Register(operationsFactory.Create("TaskManagerReporter", () =>
-            {
-                container.Get<INewsFeed>().AddNews(container.Get<IReporter>().MakeReport());
-            }), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
+            operationalService.Register(operationsFactory.Create("TaskManagerReporter", () => { container.Get<IBillingTimes>().LookForNews(); }), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
             operationalService.Register(operationsFactory.Create("AgingNewsActualizator", () => container.Get<INewsFeed>().Refresh()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));
 
             operationalService.Register(operationsFactory.Create("MergerBranchesNotificator", () => container.Get<IRepositoryNotificator>().NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15))), ScheduleParams.CreateAnytime(TimeSpan.FromHours(24)));

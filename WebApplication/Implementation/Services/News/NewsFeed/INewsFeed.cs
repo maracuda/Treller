@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Search;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
 {
