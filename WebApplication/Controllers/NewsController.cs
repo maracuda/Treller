@@ -31,6 +31,12 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             billingTimes.Publish(taskId);
             return RedirectToAction("Index");
         }
+
+        public ActionResult TryToRequestNew(string aboutCardId)
+        {
+            billingTimes.TryToRequestNew(aboutCardId);
+            return RedirectToAction("Index");
+        }
     }
 
     public class NewsViewModel
