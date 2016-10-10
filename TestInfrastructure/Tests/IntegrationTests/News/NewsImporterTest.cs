@@ -17,7 +17,8 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
         [Test]
         public void TestImportCard()
         {
-            taskManagerReporter.TryToMakeReport("XiPNHjuM");
+            var zzz = taskManagerReporter.TryToMakeReport("XiPNHjuM");
+            var x = 1;
         }
     }
 }

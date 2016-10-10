@@ -28,6 +28,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         public bool TryToRequestNew(string aboutCardId)
         {
             var result = reporter.TryToMakeReport(aboutCardId);
+            if (result.HasValue)
+            {
+                newsFeed.AddNews(result.Value);
+            }
             return result.HasValue;
         }
 
