@@ -26,9 +26,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             return View("Index", news);
         }
 
-        public ActionResult Deliver(string taskId)
+        public ActionResult Deliver(string taskId, NewDeliveryChannelType deliveryChannel)
         {
-            billingTimes.Publish(taskId);
+            billingTimes.Publish(taskId, deliveryChannel);
             return RedirectToAction("Index");
         }
 

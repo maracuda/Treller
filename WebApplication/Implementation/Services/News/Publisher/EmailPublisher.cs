@@ -1,4 +1,5 @@
-﻿using SKBKontur.Infrastructure.Common;
+﻿using System.Linq;
+using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher
@@ -20,13 +21,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publishe
             this.taskNewStorage = taskNewStorage;
         }
 
-        public void Publish(string taskId)
+        public void Publish(string taskId, NewDeliveryChannelType deliveryChannel)
         {
             var maybeTaskNews = taskNewStorage.Find(taskId);
             if (maybeTaskNews.HasValue)
             {
                 var now = dateTimeFactory.UtcNow;
-                foreach (var taskNew in maybeTaskNews.Value)
+                foreach (var taskNew in maybeTaskNews.Value.Where(x => x.DeliveryChannel == deliveryChannel))
                 {
                     if (taskNew.TryDeliver(newsNotificator, now))
                     {
