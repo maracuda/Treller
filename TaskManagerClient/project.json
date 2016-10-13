@@ -1,0 +1,24 @@
+{
+    "version": "1.0.0-*",
+
+    "dependencies": {
+        "CacheManager.Core": "0.9.0",
+        "CacheManager.Memcached": "0.9.0",
+        "EnyimMemcached": "2.16.0",
+        "HttpInfrastructure": "1.0.0-*",
+        "Infrastructure": "1.0.0-*",
+        "NETStandard.Library": "1.6.0"
+    },
+
+    "frameworks": {
+        "net461": {
+            "frameworkAssemblies": {
+                "System.Xml.Linq": "4.0.0.0"
+            }
+        }
+    },
+
+    "buildOptions": {
+        "outputName": "SKBKontur.TaskManagerClient"
+    }
+}
