@@ -1,0 +1,26 @@
+{
+    "version": "1.0.0-*",
+
+    "dependencies": {
+        "CacheManager.Core": "0.9.0",
+        "CacheManager.Memcached": "0.9.0",
+        "EnyimMemcached": "2.16.0",
+        "HttpInfrastructure": "1.0.0-*",
+        "Infrastructure": "1.0.0-*",
+        "NETStandard.Library": "1.6.0",
+        "Newtonsoft.Json": "9.0.1",
+        "NUnit": "3.4.1",
+        "RhinoMocks": "3.6.1",
+        "TaskManagerClient": "1.0.0-*",
+        "WebApplication": "1.0.0-*"
+    },
+
+    "frameworks": {
+        "net461": {
+            "frameworkAssemblies": {
+                "System.Xml": "4.0.0.0",
+                "System.Xml.Serialization": "4.0.0.0"
+            }
+        }
+    }
+}
