@@ -1,7 +1,7 @@
 ﻿# git ignore file
 *.user
 *.suo
-*.json
+project.lock.json
 [Bb]in
 obj
 _ReSharper*/

@@ -1,0 +1,21 @@
+{
+    "version": "1.0.0-*",
+
+    "dependencies": {
+        "Microsoft.AspNet.WebApi.Client": "5.2.2",
+        "NETStandard.Library": "1.6.0",
+        "Newtonsoft.Json": "6.0.6"
+    },
+
+    "frameworks": {
+        "net461": {
+            "frameworkAssemblies": {
+                "System.Web": "4.0.0.0"
+            }
+        }
+    },
+
+    "buildOptions": {
+        "outputName": "SKBKontur.HttpInfrastructure"
+    }
+}

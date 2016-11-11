@@ -1,0 +1,17 @@
+{
+    "version": "1.0.0-*",
+
+    "dependencies": {
+        "LightInject": "3.0.2.1",
+        "NETStandard.Library": "1.6.0"
+    },
+
+    "frameworks": {
+        "net461": {
+        }
+    },
+
+    "buildOptions": {
+        "outputName": "SKBKontur.Infrastructure"
+    }
+}
