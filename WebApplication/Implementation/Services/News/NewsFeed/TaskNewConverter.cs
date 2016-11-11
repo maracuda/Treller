@@ -6,14 +6,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
         {
             return new TaskNewModel
             {
-                BoardId = taskNew.BoardId,
                 DeliveryChannel = taskNew.DeliveryChannel,
                 DoNotDeliverUntil = taskNew.DoNotDeliverUntil,
                 State = TaskNewState.Reported,
                 TaskId = taskNew.TaskId,
-                Text = taskNew.Text,
+                Text = taskNew.GetContentTitle(),
                 TimeStamp = taskNew.TimeStamp,
-                Title = taskNew.Title
+                Title = taskNew.GetContentTitle()
             };
         }
     }

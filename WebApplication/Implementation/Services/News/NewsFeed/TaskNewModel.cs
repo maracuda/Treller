@@ -5,7 +5,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
 {
     public class TaskNewModel
     {
-        public string BoardId { get; set; }
         public string TaskId { get; set; }
         public TaskNewState State { get; set; }
         public string Title { get; set; }

@@ -67,13 +67,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
                 throw new Exception($"Unable to update task new with empty diff.");
             }
 
-            var index = collectionsStorage.IndexOf(changedTaskNew, taskNewComparer);
-            if (index == -1)
-                throw new Exception($"Fail to find task new with {changedTaskNew.PrimaryKey} at storage.");
-
-            taskNewActionsLogStorage.RegisterUpdate(changedTaskNew.PrimaryKey, diffInfo);
             lock (writeLock)
             {
+                var index = collectionsStorage.IndexOf(changedTaskNew, taskNewComparer);
+                if (index == -1)
+                    throw new Exception($"Fail to find task new with {changedTaskNew.PrimaryKey} at storage.");
+
+                taskNewActionsLogStorage.RegisterUpdate(changedTaskNew.PrimaryKey, diffInfo);
                 collectionsStorage.RemoveAt<TaskNew>(index);
                 collectionsStorage.Append(changedTaskNew);
             }
@@ -83,12 +83,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
         {
             foreach (TaskNew taskNew in uselessTaskNews)
             {
-                var index = collectionsStorage.IndexOf(taskNew, taskNewComparer);
-                if (index != -1)
+                lock (writeLock)
                 {
-                    taskNewActionsLogStorage.RegisterDelete(taskNew.PrimaryKey);
-                    lock (writeLock)
+                    var index = collectionsStorage.IndexOf(taskNew, taskNewComparer);
+                    if (index != -1)
                     {
+                        taskNewActionsLogStorage.RegisterDelete(taskNew.PrimaryKey);
                         collectionsStorage.RemoveAt<TaskNew>(index);
                     }
                 }

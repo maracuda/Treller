@@ -9,6 +9,7 @@ using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Migration;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
@@ -42,6 +43,8 @@ namespace SKBKontur.Treller.WebApplication
             BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             runspacePool = container.Get<IVirtualMachinesRunspacePool>();
+
+            container.Get<TaskNewContentMigrator>().Run();
 
             var operationsFactory = container.Get<IRegularOperationsFactory>();
             operationalService = container.Get<IOperationalService>();

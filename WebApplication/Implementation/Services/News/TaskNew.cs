@@ -7,9 +7,14 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 {
     public class TaskNew
     {
+        public Content.Content Content { get; set; }
+
+        [Obsolete]
         public string BoardId { get; set; }
         public string TaskId { get; set; }
+        [Obsolete]
         public string Title { get; set; }
+        [Obsolete]
         public string Text { get; set; }
         public NewDeliveryChannelType DeliveryChannel { get; set; }
         public DateTime? DoNotDeliverUntil { get; set; }
@@ -18,6 +23,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         public long TimeStamp { get; set; }
 
         public string PrimaryKey => $"{TaskId}{DeliveryChannel}";
+
+        public string GetContentTitle()
+        {
+            return Content == null ? Title : Content.Title;
+        }
+
+        public string GetContentText()
+        {
+            return Content == null ? Text : $"{Content.Motivation}\r\n{Content.Analytics}\r\n{Content.Branch}\r\n{Content.PubicInfo}\r\n{Content.TechInfo}";
+        }
 
         public bool TryDeliver(INewsNotificator notificator, DateTime now)
         {
@@ -64,8 +79,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public string BuildDiff(TaskNew anotherTaskNew)
         {
-            if (!string.Equals(BoardId, anotherTaskNew.BoardId, StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException($"Fail to build diff for task news with different board ids. This: {BoardId}. Another: {anotherTaskNew.BoardId}.");
             if (!HasSamePrimaryKey(anotherTaskNew))
                 throw new ArgumentException($"Fail to build diff for task news with different primary keys. " +
                                             $"This: {TaskId},{DeliveryChannel}. Another: {anotherTaskNew.TaskId},{anotherTaskNew.DeliveryChannel}.");

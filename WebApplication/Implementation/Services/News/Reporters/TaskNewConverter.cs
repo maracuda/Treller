@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Sources;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
 {
@@ -9,18 +11,26 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
     {
         private readonly IDateTimeFactory dateTimeFactory;
         private readonly ITextNewParser[] textNewParsers;
+        private readonly IContentParser contentParser;
+        private readonly IContentSourceRepository contentSourceRepository;
 
         public TaskNewConverter(
             IDateTimeFactory dateTimeFactory,
-            ITextNewParser[] textNewParsers)
+            ITextNewParser[] textNewParsers,
+            IContentParser contentParser,
+            IContentSourceRepository contentSourceRepository)
         {
             this.dateTimeFactory = dateTimeFactory;
             this.textNewParsers = textNewParsers;
+            this.contentParser = contentParser;
+            this.contentSourceRepository = contentSourceRepository;
         }
 
         public List<TaskNew> Convert(string boardId, string cardId, string cardName, string cardDesc, DateTime? cardDueDate)
         {
             var result = new List<TaskNew>();
+            var contentSource = contentSourceRepository.FindOrRegister(cardId);
+            var content = contentParser.Parse(contentSource.Id, cardName, cardDesc, cardDueDate);
             foreach (var textNewParser in textNewParsers)
             {
                 var parseResult = textNewParser.TryParse(cardDesc);
@@ -28,8 +38,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
                 {
                     result.Add(new TaskNew
                     {
-                        BoardId = boardId,
                         TaskId = cardId,
+                        Content = content,
                         Title = cardName,
                         Text = parseResult.Value,
                         DeliveryChannel = textNewParser.DeliveryChannelType,
