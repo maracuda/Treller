@@ -10,7 +10,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
                 DoNotDeliverUntil = taskNew.DoNotDeliverUntil,
                 State = TaskNewState.Reported,
                 TaskId = taskNew.TaskId,
-                Text = taskNew.GetContentTitle(),
+                Text = taskNew.GetContentText(),
                 TimeStamp = taskNew.TimeStamp,
                 Title = taskNew.GetContentTitle()
             };
