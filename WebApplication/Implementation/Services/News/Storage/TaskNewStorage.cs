@@ -10,15 +10,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
     {
         private readonly TaskNewComparer taskNewComparer = new TaskNewComparer();
         private readonly ICollectionsStorage collectionsStorage;
-        private readonly ITaskNewActionsLogStorage taskNewActionsLogStorage;
         private static readonly object writeLock = new object();
         
         public TaskNewStorage(
-            ICollectionsStorage collectionsStorage,
-            ITaskNewActionsLogStorage taskNewActionsLogStorage)
+            ICollectionsStorage collectionsStorage)
         {
             this.collectionsStorage = collectionsStorage;
-            this.taskNewActionsLogStorage = taskNewActionsLogStorage;
         }
         
         public Maybe<TaskNew[]> Find(string taskId)
@@ -49,22 +46,17 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
                 throw new Exception($"Unable to add duplicate task new by primary key {taskNew.PrimaryKey}.");
             }
 
-            taskNewActionsLogStorage.RegisterCreate(taskNew.PrimaryKey);
             lock (writeLock)
             {
                 collectionsStorage.Append(taskNew);
             }
         }
 
-        public void Update(TaskNew changedTaskNew, string diffInfo)
+        public void Update(TaskNew changedTaskNew)
         {
             if (changedTaskNew == null)
             {
                 throw new Exception($"Unable to update null task new.");
-            }
-            if (string.IsNullOrWhiteSpace(diffInfo))
-            {
-                throw new Exception($"Unable to update task new with empty diff.");
             }
 
             lock (writeLock)
@@ -73,7 +65,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
                 if (index == -1)
                     throw new Exception($"Fail to find task new with {changedTaskNew.PrimaryKey} at storage.");
 
-                taskNewActionsLogStorage.RegisterUpdate(changedTaskNew.PrimaryKey, diffInfo);
                 collectionsStorage.RemoveAt<TaskNew>(index);
                 collectionsStorage.Append(changedTaskNew);
             }
@@ -88,7 +79,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
                     var index = collectionsStorage.IndexOf(taskNew, taskNewComparer);
                     if (index != -1)
                     {
-                        taskNewActionsLogStorage.RegisterDelete(taskNew.PrimaryKey);
                         collectionsStorage.RemoveAt<TaskNew>(index);
                     }
                 }

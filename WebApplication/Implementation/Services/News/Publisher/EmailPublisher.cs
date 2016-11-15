@@ -31,7 +31,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publishe
                 {
                     if (taskNew.TryPublish(newsNotificator, now))
                     {
-                        taskNewStorage.Update(taskNew, $"New delivered at {now.ToString("G")}");
+                        taskNewStorage.Update(taskNew);
                     }
                 }
             }

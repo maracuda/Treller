@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
@@ -53,15 +51,50 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
     {
         public Content.Content Content { get; set; }
         public string TaskId { get; set; }
+
         [Obsolete]
         public string Text { get; set; }
+
         public PublishStrategy DeliveryChannel { get; set; }
         public DateTime? DoNotDeliverUntil { get; set; }
-        public bool Delivered { get; set; }
         public DateTime? DeliverDateTime { get; set; }
         public long TimeStamp { get; set; }
 
         public string PrimaryKey => $"{TaskId}{DeliveryChannel}";
+
+        protected bool Equals(TaskNew other)
+        {
+            return Equals(Content, other.Content) && string.Equals(TaskId, other.TaskId) &&
+                   string.Equals(Text, other.Text) && DeliveryChannel == other.DeliveryChannel &&
+                   DoNotDeliverUntil.Equals(other.DoNotDeliverUntil) && DeliverDateTime.Equals(other.DeliverDateTime);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((TaskNew) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Content != null ? Content.GetHashCode() : 0;
+                hashCode = (hashCode*397) ^ (TaskId != null ? TaskId.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (Text != null ? Text.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (int) DeliveryChannel;
+                hashCode = (hashCode*397) ^ DoNotDeliverUntil.GetHashCode();
+                hashCode = (hashCode*397) ^ DeliverDateTime.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public bool IsDelivered()
+        {
+            return DeliverDateTime.HasValue;
+        }
 
         public string GetContentTitle()
         {
@@ -74,7 +107,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         {
             if (Content == null)
                 throw new Exception($"Content is empty for TaskNew with TaskId {TaskId}.");
-            return $"{Content.Motivation}\r\n{Content.Analytics}\r\n{Content.Branch}\r\n{Content.PubicInfo}\r\n{Content.TechInfo}";
+            return
+                $"{Content.Motivation}\r\n{Content.Analytics}\r\n{Content.Branch}\r\n{Content.PubicInfo}\r\n{Content.TechInfo}";
         }
 
         public bool TryPublish(INewsNotificator notificator, DateTime now)
@@ -82,7 +116,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             if (DoNotDeliverUntil.HasValue && DoNotDeliverUntil.Value > now)
                 return false;
 
-            if (Delivered)
+            if (IsDelivered())
                 return false;
 
             Publish(notificator, now);
@@ -93,8 +127,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         {
             var mailingList = ChooseMailingList();
             notificator.NotifyAboutReleases(mailingList, GetContentTitle(), Text);
-
-            Delivered = true;
             DeliverDateTime = now;
             TimeStamp = now.Ticks;
         }
@@ -118,28 +150,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         {
             return string.Equals(TaskId, anotherTaskNew.TaskId, StringComparison.OrdinalIgnoreCase)
                    && DeliveryChannel == anotherTaskNew.DeliveryChannel;
-        }
-
-        public string BuildDiff(TaskNew anotherTaskNew)
-        {
-            if (!HasSamePrimaryKey(anotherTaskNew))
-                throw new ArgumentException($"Fail to build diff for task news with different primary keys. " +
-                                            $"This: {TaskId},{DeliveryChannel}. Another: {anotherTaskNew.TaskId},{anotherTaskNew.DeliveryChannel}.");
-
-            var builder = new StringBuilder();
-            if (!string.Equals(GetContentTitle(), anotherTaskNew.GetContentTitle(), StringComparison.Ordinal))
-            {
-                builder.Append($"Title {GetContentTitle()} changed to {anotherTaskNew.GetContentTitle()}");
-            }
-            if (!string.Equals(Text, anotherTaskNew.Text, StringComparison.Ordinal))
-            {
-                builder.Append($"Text {Text} changed to {anotherTaskNew.Text}");
-            }
-            if (DoNotDeliverUntil != anotherTaskNew.DoNotDeliverUntil)
-            {
-                builder.Append($"DoNotDeliverUntil {DoNotDeliverUntil.SafeDateTimeFormat()} changed to {anotherTaskNew.DoNotDeliverUntil.SafeDateTimeFormat()}");
-            }
-            return builder.ToString();
         }
     }
 

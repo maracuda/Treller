@@ -39,13 +39,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
                     }
                     else
                     {
-                        if (!exisitentTask.Delivered)
+                        if (!exisitentTask.IsDelivered() && !exisitentTask.Equals(taskNew))
                         {
-                            var newsDiff = exisitentTask.BuildDiff(taskNew);
-                            if (!string.IsNullOrEmpty(newsDiff))
-                            {
-                                taskNewStorage.Update(taskNew, newsDiff);
-                            }
+                            taskNewStorage.Update(taskNew);
                         }
                     }
                 }
