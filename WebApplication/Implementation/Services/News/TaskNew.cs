@@ -26,12 +26,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public string GetContentTitle()
         {
-            return Content == null ? Title : Content.Title;
+            if (Content == null)
+                throw new Exception($"Content is empty for TaskNew with TaskId {TaskId}.");
+            return Content.Title;
         }
 
         public string GetContentText()
         {
-            return Content == null ? Text : $"{Content.Motivation}\r\n{Content.Analytics}\r\n{Content.Branch}\r\n{Content.PubicInfo}\r\n{Content.TechInfo}";
+            if (Content == null)
+                throw new Exception($"Content is empty for TaskNew with TaskId {TaskId}.");
+            return $"{Content.Motivation}\r\n{Content.Analytics}\r\n{Content.Branch}\r\n{Content.PubicInfo}\r\n{Content.TechInfo}";
         }
 
         public bool TryDeliver(INewsNotificator notificator, DateTime now)
@@ -46,10 +50,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             return true;
         }
 
-        public void Deliver(INewsNotificator notificator, DateTime now)
+        private void Deliver(INewsNotificator notificator, DateTime now)
         {
             var mailingList = ChooseMailingList();
-            notificator.NotifyAboutReleases(mailingList, Title, Text);
+            notificator.NotifyAboutReleases(mailingList, GetContentTitle(), Text);
 
             Delivered = true;
             DeliverDateTime = now;

@@ -40,7 +40,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
                     {
                         TaskId = cardId,
                         Content = content,
-                        Title = cardName,
                         Text = parseResult.Value,
                         DeliveryChannel = textNewParser.DeliveryChannelType,
                         DoNotDeliverUntil = cardDueDate,
