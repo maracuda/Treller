@@ -23,7 +23,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.
         private ContentSource Find(string externalId)
         {
             var index = collectionsStorage.IndexOf(new ContentSource { ExternalId = externalId }, ContentSource.ExternalIdComparer);
-            return index != -1 ? null : collectionsStorage.Get<ContentSource>(index);
+            return index == -1 ? null : collectionsStorage.Get<ContentSource>(index);
         }
 
         public ContentSource FindOrRegister(string externalId)
