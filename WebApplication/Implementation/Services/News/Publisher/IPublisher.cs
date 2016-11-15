@@ -2,6 +2,6 @@
 {
     public interface IPublisher
     {
-        void Publish(string taskId, PublishStrategy deliveryChannel);
+        void Publish(string taskId, PublishStrategy publishStrategy);
     }
 }
