@@ -11,7 +11,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
             substringParser = new SubstringParser("**Технические новости**:", "**");
         }
 
-        public NewDeliveryChannelType DeliveryChannelType => NewDeliveryChannelType.Support;
+        public PublishStrategy PublishStrategy => PublishStrategy.Support;
 
         public Maybe<string> TryParse(string cardDescription)
         {

@@ -5,18 +5,57 @@ using SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 {
+    public class Report
+    {
+        public string TaskId { get; set; }
+        public string Title { get; set; }
+        public string Message { get; set; }
+        public PublishStrategy PublishStrategy { get; set; }
+        public DateTime? DoNotDeliverUntil { get; set; }
+        public DateTime? PublishDate { get; set; }
+
+        public bool TryPublish(INewsNotificator notificator, DateTime now)
+        {
+            if (DoNotDeliverUntil.HasValue && DoNotDeliverUntil.Value > now)
+                return false;
+
+            if (PublishDate.HasValue)
+                return false;
+
+            Publish(notificator, now);
+            return true;
+        }
+
+        private void Publish(INewsNotificator notificator, DateTime now)
+        {
+            var mailingList = ChooseMailingList();
+            notificator.NotifyAboutReleases(mailingList, Title, Message);
+            PublishDate = now;
+        }
+
+        private string ChooseMailingList()
+        {
+            switch (PublishStrategy)
+            {
+                case PublishStrategy.Customer:
+                    return "news.billing@skbkontur.ru";
+                case PublishStrategy.Support:
+                    return "tech.news.billing@skbkontur.ru";
+                case PublishStrategy.Team:
+                    return "dream_proj@skbkontur.ru";
+                default:
+                    throw new Exception($"Fail to find mailing list for publish strategy {PublishStrategy}.");
+            }
+        }
+    }
+
     public class TaskNew
     {
         public Content.Content Content { get; set; }
-
-        //[Obsolete]
-        //public string BoardId { get; set; }
         public string TaskId { get; set; }
-        //[Obsolete]
-        //public string Title { get; set; }
         [Obsolete]
         public string Text { get; set; }
-        public NewDeliveryChannelType DeliveryChannel { get; set; }
+        public PublishStrategy DeliveryChannel { get; set; }
         public DateTime? DoNotDeliverUntil { get; set; }
         public bool Delivered { get; set; }
         public DateTime? DeliverDateTime { get; set; }
@@ -38,7 +77,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             return $"{Content.Motivation}\r\n{Content.Analytics}\r\n{Content.Branch}\r\n{Content.PubicInfo}\r\n{Content.TechInfo}";
         }
 
-        public bool TryDeliver(INewsNotificator notificator, DateTime now)
+        public bool TryPublish(INewsNotificator notificator, DateTime now)
         {
             if (DoNotDeliverUntil.HasValue && DoNotDeliverUntil.Value > now)
                 return false;
@@ -46,11 +85,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             if (Delivered)
                 return false;
 
-            Deliver(notificator, now);
+            Publish(notificator, now);
             return true;
         }
 
-        private void Deliver(INewsNotificator notificator, DateTime now)
+        private void Publish(INewsNotificator notificator, DateTime now)
         {
             var mailingList = ChooseMailingList();
             notificator.NotifyAboutReleases(mailingList, GetContentTitle(), Text);
@@ -64,11 +103,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         {
             switch (DeliveryChannel)
             {
-                case NewDeliveryChannelType.Customer:
+                case PublishStrategy.Customer:
                     return "news.billing@skbkontur.ru";
-                case NewDeliveryChannelType.Support:
+                case PublishStrategy.Support:
                     return "tech.news.billing@skbkontur.ru";
-                case NewDeliveryChannelType.Team:
+                case PublishStrategy.Team:
                     return "dream_proj@skbkontur.ru";
                 default:
                     throw new Exception($"Fail to find mailing list for delivery channel {DeliveryChannel}.");
@@ -104,7 +143,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         }
     }
 
-    public enum NewDeliveryChannelType
+    public enum PublishStrategy
     {
         Team = 1,
         Support = 2,

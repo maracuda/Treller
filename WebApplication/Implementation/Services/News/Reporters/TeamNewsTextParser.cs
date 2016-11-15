@@ -13,7 +13,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
             analyticsParser = new SubstringParser("**Аналитика**:", "**");
         }
         
-        public NewDeliveryChannelType DeliveryChannelType => NewDeliveryChannelType.Team;
+        public PublishStrategy PublishStrategy => PublishStrategy.Team;
 
         public Maybe<string> TryParse(string cardDescription)
         {

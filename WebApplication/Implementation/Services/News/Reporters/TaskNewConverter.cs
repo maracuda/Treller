@@ -41,7 +41,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
                         TaskId = cardId,
                         Content = content,
                         Text = parseResult.Value,
-                        DeliveryChannel = textNewParser.DeliveryChannelType,
+                        DeliveryChannel = textNewParser.PublishStrategy,
                         DoNotDeliverUntil = cardDueDate,
                         TimeStamp = dateTimeFactory.UtcTicks
                     });

@@ -9,7 +9,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
         public TaskNewState State { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
-        public NewDeliveryChannelType DeliveryChannel { get; set; }
+        public PublishStrategy DeliveryChannel { get; set; }
         public DateTime? DoNotDeliverUntil { get; set; }
         public long TimeStamp { get; set; }
 

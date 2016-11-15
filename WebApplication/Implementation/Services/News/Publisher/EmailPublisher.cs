@@ -21,7 +21,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publishe
             this.taskNewStorage = taskNewStorage;
         }
 
-        public void Publish(string taskId, NewDeliveryChannelType deliveryChannel)
+        public void Publish(string taskId, PublishStrategy deliveryChannel)
         {
             var maybeTaskNews = taskNewStorage.Find(taskId);
             if (maybeTaskNews.HasValue)
@@ -29,7 +29,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publishe
                 var now = dateTimeFactory.UtcNow;
                 foreach (var taskNew in maybeTaskNews.Value.Where(x => x.DeliveryChannel == deliveryChannel))
                 {
-                    if (taskNew.TryDeliver(newsNotificator, now))
+                    if (taskNew.TryPublish(newsNotificator, now))
                     {
                         taskNewStorage.Update(taskNew, $"New delivered at {now.ToString("G")}");
                     }

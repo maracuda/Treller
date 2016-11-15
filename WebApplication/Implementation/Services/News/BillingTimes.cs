@@ -40,9 +40,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             return newsFeed.SelectAll();
         }
 
-        public void Publish(string taskNewId, NewDeliveryChannelType deliveryChannel)
+        public void Publish(string taskNewId, PublishStrategy publishStrategy)
         {
-            publisher.Publish(taskNewId, deliveryChannel);
+            publisher.Publish(taskNewId, publishStrategy);
         }
     }
 }

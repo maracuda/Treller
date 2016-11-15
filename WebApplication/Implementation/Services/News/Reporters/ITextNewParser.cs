@@ -4,7 +4,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
 {
     public interface ITextNewParser
     {
-        NewDeliveryChannelType DeliveryChannelType { get; }
+        PublishStrategy PublishStrategy { get; }
         Maybe<string> TryParse(string cardDescription);
     }
 }

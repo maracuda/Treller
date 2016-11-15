@@ -25,7 +25,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
             var taskNew = new TaskNew
             {
                 TaskId = taskId,
-                DeliveryChannel = NewDeliveryChannelType.Team
+                DeliveryChannel = PublishStrategy.Team
             };
 
             taskNewStorage.Create(taskNew);
@@ -45,7 +45,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
             var taskNew = new TaskNew
             {
                 TaskId = taskId,
-                DeliveryChannel = NewDeliveryChannelType.Team
+                DeliveryChannel = PublishStrategy.Team
             };
 
             taskNewStorage.Create(taskNew);
