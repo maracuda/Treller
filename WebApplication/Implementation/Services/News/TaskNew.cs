@@ -42,7 +42,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                 case PublishStrategy.Support:
                     return "tech.news.billing@skbkontur.ru";
                 case PublishStrategy.Team:
-                    return "dream_proj@skbkontur.ru";
+                    return "hvorost@skbkontur.ru";
                 default:
                     throw new Exception($"Fail to find mailing list for publish strategy {PublishStrategy}.");
             }
@@ -108,7 +108,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                 case PublishStrategy.Support:
                     return "tech.news.billing@skbkontur.ru";
                 case PublishStrategy.Team:
-                    return "dream_proj@skbkontur.ru";
+                    return "hvorost@skbkontur.ru";
                 default:
                     throw new Exception($"Fail to find mailing list for delivery channel {DeliveryChannel}.");
             }
