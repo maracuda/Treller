@@ -9,11 +9,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
     {
         public Content.Content Content { get; set; }
 
-        [Obsolete]
-        public string BoardId { get; set; }
+        //[Obsolete]
+        //public string BoardId { get; set; }
         public string TaskId { get; set; }
-        [Obsolete]
-        public string Title { get; set; }
+        //[Obsolete]
+        //public string Title { get; set; }
         [Obsolete]
         public string Text { get; set; }
         public NewDeliveryChannelType DeliveryChannel { get; set; }
@@ -88,9 +88,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
                                             $"This: {TaskId},{DeliveryChannel}. Another: {anotherTaskNew.TaskId},{anotherTaskNew.DeliveryChannel}.");
 
             var builder = new StringBuilder();
-            if (!string.Equals(Title, anotherTaskNew.Title, StringComparison.Ordinal))
+            if (!string.Equals(GetContentTitle(), anotherTaskNew.GetContentTitle(), StringComparison.Ordinal))
             {
-                builder.Append($"Title {Title} changed to {anotherTaskNew.Title}");
+                builder.Append($"Title {GetContentTitle()} changed to {anotherTaskNew.GetContentTitle()}");
             }
             if (!string.Equals(Text, anotherTaskNew.Text, StringComparison.Ordinal))
             {
