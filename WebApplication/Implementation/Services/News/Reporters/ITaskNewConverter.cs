@@ -7,6 +7,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
     public interface ITaskNewConverter
     {
         List<TaskNew> Convert(BoardList boardList);
-        List<TaskNew> Convert(string boardId, string cardId, string cardName, string cardDesc, DateTime? cardDueDate);
+        List<TaskNew> Convert(string cardId, string cardName, string cardDesc, DateTime? cardDueDate);
     }
 }

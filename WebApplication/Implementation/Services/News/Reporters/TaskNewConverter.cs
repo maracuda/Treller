@@ -26,7 +26,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
             this.contentSourceRepository = contentSourceRepository;
         }
 
-        public List<TaskNew> Convert(string boardId, string cardId, string cardName, string cardDesc, DateTime? cardDueDate)
+        public List<TaskNew> Convert(string cardId, string cardName, string cardDesc, DateTime? cardDueDate)
         {
             var result = new List<TaskNew>();
             var contentSource = contentSourceRepository.FindOrRegister(cardId);
@@ -55,7 +55,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
             var result = new List<TaskNew>();
             foreach (var cardInfo in boardList.Cards)
             {
-                result.AddRange(Convert(boardList.BoardId, cardInfo.Id, cardInfo.Name, cardInfo.Desc, cardInfo.Due));
+                result.AddRange(Convert(cardInfo.Id, cardInfo.Name, cardInfo.Desc, cardInfo.Due));
             }
             return result;
         }

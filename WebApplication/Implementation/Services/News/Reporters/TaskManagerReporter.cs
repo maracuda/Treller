@@ -57,7 +57,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
                     string.Equals(cardList.Name, KanbanBoardTemplate.WaitForReleaseListName, StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(cardList.Name, KanbanBoardTemplate.ReleasedListName, StringComparison.OrdinalIgnoreCase))
                 {
-                    return taskNewConverter.Convert(card.BoardId, card.Id, card.Name, card.Description, card.DueDate);
+                    return taskNewConverter.Convert(card.Id, card.Name, card.Description, card.DueDate);
                 }
                 return null;
             }
