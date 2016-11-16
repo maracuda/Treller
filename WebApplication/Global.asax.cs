@@ -44,8 +44,6 @@ namespace SKBKontur.Treller.WebApplication
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             runspacePool = container.Get<IVirtualMachinesRunspacePool>();
 
-            container.Get<TaskNewActionsLogMigrator>().Migrate();
-
             var operationsFactory = container.Get<IRegularOperationsFactory>();
             operationalService = container.Get<IOperationalService>();
 
