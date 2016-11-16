@@ -1,11 +1,13 @@
 ﻿using SKBKontur.Treller.Tests.MockWrappers;
 using SKBKontur.Treller.Tests.UnitWrappers;
+using Xunit;
+using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests
 {
     public class MockExtensionTest : UnitTest
     {
-        [MyTest]
+        [Fact]
         public void MainWorkerShouldOrganizeWork()
         {
             const string enterstring = "enterString";
@@ -29,27 +31,27 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests
 
             var actual = mainWorker.Organize(enterstring);
 
-            Assert.AreEqual(actual, expected);
+            UnitWrappers.Assert.AreEqual(actual, expected);
         }
 
-        [MyTest]
+        [Fact]
         public void AssembleAssistantShouldAssembleText()
         {
             var assistant = new AssembleAssistant();
 
             var actual = assistant.EditText("text");
 
-            Assert.AreEqual(actual, "text text");
+            UnitWrappers.Assert.AreEqual(actual, "text text");
         }
 
-        [MyTest]
+        [Fact]
         public void SummurizeAssistantShouldSummurize()
         {
             var assistant = new SummurizeAssistant();
 
             var actual = assistant.EditText("text");
 
-            Assert.AreEqual(actual, "text 4");
+            UnitWrappers.Assert.AreEqual(actual, "text 4");
         }
     }
 

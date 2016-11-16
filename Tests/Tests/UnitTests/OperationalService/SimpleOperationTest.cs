@@ -1,34 +1,34 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 {
     public class SimpleOperationTest : UnitTest
     {
-        [Test]
+        [Fact]
         public void TestRunSimpleOperation()
         {
             var i = 0;
             var operation = new SimpleOperation("zzz", () => { i++; });
             var operationResult = operation.Run();
-            Assert.IsFalse(operationResult.HasValue);
-            Assert.AreEqual(1, i);
+            Assert.False(operationResult.HasValue);
+            Assert.Equal(1, i);
         }
 
-        [Test]
+        [Fact]
         public void TestRunSimpleOperationWithException()
         {
             var exception = new Exception();
             var operation = new SimpleOperation("zzz", () => { throw exception; });
             var operationResult = operation.Run();
-            Assert.IsTrue(operationResult.HasValue);
-            Assert.AreEqual(exception, operationResult.Value);
+            Assert.True(operationResult.HasValue);
+            Assert.Equal(exception, operationResult.Value);
         }
 
-        [Test]
+        [Fact]
         public void TestRunSimpleOperationTwiceAtOnTime()
         {
             var i = 0;
@@ -37,20 +37,20 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 
             Task.Run(() =>
             {
-                Assert.AreEqual(OperationState.Idle, operation.State);
+                Assert.Equal(OperationState.Idle, operation.State);
                 var firstRunResult = operation.Run();
-                Assert.IsFalse(firstRunResult.HasValue);
+                Assert.False(firstRunResult.HasValue);
             });
 
             Task.Run(() =>
             {
-                Assert.AreEqual(OperationState.Running, operation.State);
+                Assert.Equal(OperationState.Running, operation.State);
                 var secondRunResult = operation.Run();
-                Assert.IsFalse(secondRunResult.HasValue);
+                Assert.False(secondRunResult.HasValue);
             });
             Thread.Sleep(timeoutMs + 50);
-            Assert.AreEqual(OperationState.Idle, operation.State);
-            Assert.AreEqual(1, i);
+            Assert.Equal(OperationState.Idle, operation.State);
+            Assert.Equal(1, i);
         }
     }
 }

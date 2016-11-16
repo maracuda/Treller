@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using NUnit.Framework;
+using Xunit;
 using SKBKontur.TaskManagerClient.Repository.Clients;
 using SKBKontur.Treller.Tests.UnitWrappers;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
@@ -10,14 +10,12 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
     {
         private IRepositoryClient gitlabClient;
 
-        public override void SetUp()
+        public GitlabClientTests() : base()
         {
-            base.SetUp();
-
             gitlabClient = container.Get<IRepositoryClientFactory>().CreateGitLabClient("584");
         }
 
-        [MyTest]
+        [Fact]
         public void TestBranches()
         {
             var allBranches = gitlabClient.SelectAllBranches();
@@ -32,7 +30,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
             Assert.IsNotNull(releaseBranch.Commit.Committed_date);
         }
 
-        [Test]
+        [Fact]
         public void TestLastCommitAtBranch()
         {
             var lastCommits = gitlabClient.SelectLastBranchCommits("release", 1, 100);

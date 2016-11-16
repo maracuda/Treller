@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using SKBKontur.TaskManagerClient.Caching;
+using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
 {
@@ -11,14 +12,12 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
         private const string testKey = "testKey";
         private IMemoryCache memoryCache;
 
-        public override void SetUp()
+        public MemoryCacheTest() : base()
         {
-            base.SetUp();
-
             memoryCache = container.Get<ICacheFactory>().CreateMemoryCache("test", TimeSpan.FromMilliseconds(500));
         }
 
-        [Test]
+        [Fact]
         public void TestGetFromCacheValueType()
         {
             var value = 0;
@@ -29,7 +28,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
             Assert.AreEqual(1, memoryCache.GetOrLoad(testKey, loader));
         }
 
-        [Test]
+        [Fact]
         public void TestGetFromCacheRefType()
         {
             var value = 0;
@@ -40,7 +39,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
             Assert.AreEqual("1", memoryCache.GetOrLoad(testKey, loader));
         }
 
-        [Test]
+        [Fact]
         public void TestGetFromCacheWithGlobalTtl()
         {
             var value = 0;
@@ -51,7 +50,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
             Assert.AreEqual(2, memoryCache.GetOrLoad(testKey, loader));
         }
 
-        [Test]
+        [Fact]
         public void TestGetFromCacheWithLocalTtl()
         {
             var value = 0;
@@ -64,7 +63,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
             Assert.AreEqual(3, memoryCache.GetOrLoad(testKey, loader, TimeSpan.FromMilliseconds(100)));
         }
 
-        [Test]
+        [Fact]
         public void TestConcurrentGet()
         {
             var value = 0;
@@ -74,7 +73,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
             {
                 memoryCache.GetOrLoad(testKey, loader, TimeSpan.FromMilliseconds(1));
             });
-            Assert.LessOrEqual(memoryCache.GetOrLoad(testKey, loader), 100);
+            Assert.True(memoryCache.GetOrLoad(testKey, loader) <= 100);
         }
     }
 }

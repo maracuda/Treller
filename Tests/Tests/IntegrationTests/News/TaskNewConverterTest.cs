@@ -1,5 +1,5 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
 
@@ -12,16 +12,14 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
 
         private ITaskNewConverter taskNewConverter;
 
-        public override void SetUp()
+        public TaskNewConverterTest() : base()
         {
-            base.SetUp();
-
             taskNewConverter = container.Get<ITaskNewConverter>();
         }
 
-        [Test]
-        [TestCase(realCardDescription, 3)]
-        [TestCase(cardDesciptionWithEmptyNewText, 1)]
+        [Theory]
+        [InlineData(realCardDescription, 3)]
+        [InlineData(cardDesciptionWithEmptyNewText, 1)]
         public void TestConvert(string description, int expectedNewsCount)
         {
             var boardList = new BoardList
@@ -39,7 +37,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
                 }
             };
             var actuals = taskNewConverter.Convert(boardList);
-            Assert.AreEqual(expectedNewsCount, actuals.Count);
+            Assert.Equal(expectedNewsCount, actuals.Count);
         }
     }
 }

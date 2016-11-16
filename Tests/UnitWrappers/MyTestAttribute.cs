@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace SKBKontur.Treller.Tests.UnitWrappers
 {
-    public class MyTestAttribute : TestAttribute
-    {
-    }
+    //public class MyTestAttribute : TestAttribute
+    //{
+    //}
 }

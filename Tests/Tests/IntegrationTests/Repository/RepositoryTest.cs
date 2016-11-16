@@ -1,5 +1,5 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using SKBKontur.TaskManagerClient.Repository;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
@@ -8,21 +8,19 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
     {
         private IRepository repository;
 
-        public override void SetUp()
+        public RepositoryTest() : base()
         {
-            base.SetUp();
-
             repository = container.Get<IRepository>();
         }
 
-        [Test]
+        [Fact]
         public void TestSearchForOldBranches()
         {
             var actual = repository.SearchForOldBranches(TimeSpan.FromDays(1));
             Assert.True(actual.Length > 10);
         }
 
-        [Test]
+        [Fact]
         public void TestSearchForMergedBranches()
         {
             var actual = repository.SearchForMergedToReleaseBranches(TimeSpan.FromDays(10));

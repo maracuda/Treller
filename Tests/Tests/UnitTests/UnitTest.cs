@@ -1,21 +1,18 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using SKBKontur.Treller.Tests.MockWrappers;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests
 {
-    [TestFixture]
     public abstract class UnitTest
     {
         protected MyMock mock;
 
-        [SetUp]
-        public virtual void SetUp()
+        protected UnitTest()
         {
             mock = new MyMock();
         }
 
-        [TearDown]
-        public virtual void TearDown()
+        ~UnitTest()
         {
             mock.Dispose();
             mock.RunAll();

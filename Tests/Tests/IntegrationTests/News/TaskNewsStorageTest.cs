@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
@@ -11,14 +11,12 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
     {
         private TaskNewStorage taskNewStorage;
 
-        public override void SetUp()
+        public TaskNewsStorageTest() : base()
         {
-            base.SetUp();
-
             taskNewStorage = container.Get<TaskNewStorage>();
         }
 
-        [Test]
+        [Fact]
         public void TestDeleteAndFind()
         {
             var taskId = Guid.NewGuid().ToString();
@@ -38,7 +36,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
             Assert.False(actual.HasValue);
         }
 
-        [Test]
+        [Fact]
         public void TestDeleteAndReadAll()
         {
             var taskId = Guid.NewGuid().ToString();

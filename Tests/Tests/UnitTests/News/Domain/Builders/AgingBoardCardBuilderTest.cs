@@ -1,11 +1,12 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using Rhino.Mocks;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
+using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
 {
@@ -15,17 +16,15 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
         private IErrorService errorService;
         private OutdatedBoardCardBuilder outdatedBoardCardBuilder;
 
-        public override void SetUp()
+        public AgingBoardCardBuilderTest() : base()
         {
-            base.SetUp();
-
             taskManagerClient = mock.Create<ITaskManagerClient>();
             errorService = mock.Create<IErrorService>();
 
             outdatedBoardCardBuilder = new OutdatedBoardCardBuilder(taskManagerClient, errorService);
         }
 
-        [Test]
+        [Fact]
         public void TestyTryBuildButNeworkExceptionOccured()
         {
             var cardId = DataGenerator.GenEnglishString(15);
@@ -37,10 +36,10 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
             }
 
             var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);
-            Assert.IsFalse(actual.HasValue);
+            Assert.False(actual.HasValue);
         }
 
-        [Test]
+        [Fact]
         public void TestTryBuildWhenBoardListIsUndefined()
         {
             var cardId = DataGenerator.GenEnglishString(15);
@@ -59,10 +58,10 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
             }
 
             var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);
-            Assert.IsFalse(actual.HasValue);
+            Assert.False(actual.HasValue);
         }
 
-        [Test]
+        [Fact]
         public void TestTryBuildSuccessfully()
         {
             var cardId = DataGenerator.GenEnglishString(15);
@@ -99,7 +98,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
                 ExpirationPeriod = TimeSpan.FromDays(3)
             };
             var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);
-            Assert.IsTrue(actual.HasValue);
+            Assert.True(actual.HasValue);
             UnitWrappers.Assert.AreDeepEqual(actual, expected);
         }
     }

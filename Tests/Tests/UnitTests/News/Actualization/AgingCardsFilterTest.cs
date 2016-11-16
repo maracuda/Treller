@@ -1,11 +1,12 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using Rhino.Mocks;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
+using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Actualization
 {
@@ -15,17 +16,15 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Actualization
         private OutdatedNewsFilter outdatedNewsFilter;
         private IDateTimeFactory dateTimeFactory;
 
-        public override void SetUp()
+        public AgingCardsFilterTest() : base()
         {
-            base.SetUp();
-
             outdatedBoardCardBuilder = mock.Create<IOutdatedBoardCardBuilder>();
             dateTimeFactory = mock.Create<IDateTimeFactory>();
 
             outdatedNewsFilter = new OutdatedNewsFilter(outdatedBoardCardBuilder, dateTimeFactory);
         }
 
-        [Test]
+        [Fact]
         public void TestFilter()
         {
             var task1 = new TaskNew { TaskId = DataGenerator.GenEnglishString(10) };
@@ -52,11 +51,11 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Actualization
 
             var actual = outdatedNewsFilter.FilterOutdated(new [] { task1, task2, task3});
             Assert.AreEqual(2, actual.Length);
-            CollectionAssert.AreEquivalent(new [] {task1, task3}, actual);
+            Assert.AreEqual(new [] {task1, task3}, actual);
 
             actual = outdatedNewsFilter.FilterActual(new[] { task1, task2, task3 });
             Assert.AreEqual(1, actual.Length);
-            CollectionAssert.AreEquivalent(new[] { task2 }, actual);
+            Assert.AreEqual(new[] { task2 }, actual);
         }
     }
 }

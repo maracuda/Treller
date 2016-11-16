@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
 using SKBKontur.TaskManagerClient;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
@@ -11,24 +11,23 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
         private const string testOrgId = "konturbilling";
         private ITaskManagerClient trelloClient;
 
-        public override void SetUp()
+        public TrelloClientTest() : base()
         {
-            base.SetUp();
-
             trelloClient = container.Get<ITaskManagerClient>();
         }
 
-        [Test]
+        [Fact]
         public void TestGetAllBoards()
         {
             var actualBoards = trelloClient.GetAllBoards(testOrgId);
             Assert.True(actualBoards.Length > 2);
             var actualOpenBoards = trelloClient.GetOpenBoards(testOrgId);
-            Assert.True(actualOpenBoards.Length > 2);
-            CollectionAssert.IsSubsetOf(actualOpenBoards.Select(x => x.Name), actualBoards.Select(x => x.Name));
+            var query1 = actualBoards.Select(x => x.Name);
+            var query2 = actualOpenBoards.Select(x => x.Name);
+            Assert.True(query2.All(i => query1.Contains(i)));
         }
 
-        [Test]
+        [Fact]
         public void TestGelAllBoardsFromCache()
         {
             var originalActuals = trelloClient.GetAllBoards(testOrgId);
@@ -38,13 +37,13 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
             Assert.AreEqual(originalActuals, actuals);
         }
 
-        [Test]
+        [Fact]
         public void TestGetClosedBoard()
         {
             Assert.True(trelloClient.GetAllBoards(testOrgId).Any(x => x.IsClosed));
         }
 
-        [Test]
+        [Fact]
         public void TestReadAllCardsForBoard()
         {
             var actualBoards = trelloClient.GetAllBoards(testOrgId);
@@ -53,7 +52,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
             Assert.True(boardCards.Length > 1);
         }
 
-        [Test]
+        [Fact]
         public void TestReadListsForBoard()
         {
             var actualBoards = trelloClient.GetAllBoards(testOrgId);
@@ -65,7 +64,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
             Console.WriteLine(boardLists.Stringify());
         }
 
-        [Test]
+        [Fact]
         public void TestGetCardById()
         {
             var actual = trelloClient.GetCard("lpDZvlGm");

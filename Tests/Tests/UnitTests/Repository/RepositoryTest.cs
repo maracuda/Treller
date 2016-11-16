@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using Xunit;
 using Rhino.Mocks;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient.Repository;
 using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.TaskManagerClient.Repository.Clients;
+using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
 {
@@ -17,10 +18,8 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
         private IDateTimeFactory dateTimeFactory;
         private IRepositoryClient repositoryClient;
 
-        public override void SetUp()
+        public RepositoryTest() : base()
         {
-            base.SetUp();
-
             repositorySettings = mock.Create<IRepositorySettings>();
             repositoryClientFactory = mock.Create <IRepositoryClientFactory>();
             dateTimeFactory = mock.Create<IDateTimeFactory>();
@@ -36,7 +35,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             repository = new TaskManagerClient.Repository.Repository(repositorySettings, repositoryClientFactory, dateTimeFactory);
         }
 
-        [Test]
+        [Fact]
         public void TestSearchForOldBranches()
         {
             var olderThan = TimeSpan.FromDays(1);
@@ -53,10 +52,10 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             }
 
             var actual = repository.SearchForOldBranches(olderThan);
-            CollectionAssert.AreEquivalent(new[] {branch2}, actual);
+            Assert.AreEqual(new[] {branch2}, actual);
         }
 
-        [Test]
+        [Fact]
         public void TestSearchForOldBranchesWhenFilterNonTrackingBranch()
         {
             var olderThan = TimeSpan.FromDays(1);
@@ -72,9 +71,9 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             }
 
             var actual = repository.SearchForOldBranches(olderThan);
-            CollectionAssert.AreEquivalent(new[] {branch}, actual);
+            Assert.AreEqual(new[] {branch}, actual);
         }
-        [Test]
+        [Fact]
         public void TestSearchForOldBranchesInPeriod()
         {
             var now = DateTime.Now;
@@ -90,10 +89,10 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             }
 
             var actual = repository.SearchForOldBranches(TimeSpan.FromDays(1), TimeSpan.FromDays(2));
-            CollectionAssert.AreEquivalent(new[] { branch2 }, actual);
+            Assert.AreEqual(new[] { branch2 }, actual);
         }
 
-        [Test]
+        [Fact]
         public void TestSearchForOldBranchesWithInvalidPeriod()
         {
             Assert.Throws<ArgumentException>(() =>

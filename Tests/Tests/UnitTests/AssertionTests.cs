@@ -1,22 +1,23 @@
 ﻿using System;
 using SKBKontur.Treller.Tests.UnitWrappers;
+using Xunit;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests
 {
     public class AssertionTests : UnitTest
     {
-        [MyTest]
+        [Fact]
         public void AssertsShouldWorkCorrectly()
         {
             var id = Guid.NewGuid();
 
-            Assert.AreEqual(1, 1);
-            Assert.AreNotEqual(new SomeType { Id = id }, new SomeType { Id = id });
-            Assert.AreDeepEqual(new SomeType { Id = id }, new SomeType { Id = id });
-            Assert.False(false);
-            Assert.True(true);
-            Assert.Throws(typeof(Exception), () => { throw new Exception("mess"); }, "mess");
-            Assert.Throws<Exception>(() => { throw new Exception("mess"); }, "mess");
+            UnitWrappers.Assert.AreEqual(1, 1);
+            UnitWrappers.Assert.AreNotEqual(new SomeType { Id = id }, new SomeType { Id = id });
+            UnitWrappers.Assert.AreDeepEqual(new SomeType { Id = id }, new SomeType { Id = id });
+            UnitWrappers.Assert.False(false);
+            UnitWrappers.Assert.True(true);
+            UnitWrappers.Assert.Throws(typeof(Exception), () => { throw new Exception("mess"); }, "mess");
+            UnitWrappers.Assert.Throws<Exception>(() => { throw new Exception("mess"); }, "mess");
         }
 
         public class SomeType

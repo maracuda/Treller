@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.Treller.Tests.Tests.UnitTests;
 using SKBKontur.Treller.Tests.UnitWrappers;
@@ -8,11 +8,11 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
 {
     public class CommitTest : UnitTest
     {
-        [MyTest]
-        [TestCase("Merge branch 'ui/videos' into release", "ui/videos", "release")]
-        [TestCase("Merge remote-tracking branch 'origin/release' into bill_info/cert_applications", "release", "bill_info/cert_applications")]
-        [TestCase("Merge branch 'release' of https://git.skbkontur.ru/billy/billy into release", "release", "release")]
-        [TestCase("Merge branch 'bill_info/clients_highlight' into 'release'", "bill_info/clients_highlight", "release")]
+        [Theory]
+        [InlineData("Merge branch 'ui/videos' into release", "ui/videos", "release")]
+        [InlineData("Merge remote-tracking branch 'origin/release' into bill_info/cert_applications", "release", "bill_info/cert_applications")]
+        [InlineData("Merge branch 'release' of https://git.skbkontur.ru/billy/billy into release", "release", "release")]
+        [InlineData("Merge branch 'bill_info/clients_highlight' into 'release'", "bill_info/clients_highlight", "release")]
         public void TestIsMerge(string title, string fromBranch, string toBranch)
         {
             var commit = GenerateCommit(title);
@@ -21,9 +21,9 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
             Assert.True(commit.IsMerge(toBranch));
         }
 
-        [MyTest]
-        [TestCase("Merge branch 'ui/videos' into release", "ui/videos")]
-        [TestCase("Merge branch 'bill_info/clients_highlight' into 'release'", "bill_info/clients_highlight")]
+        [Theory]
+        [InlineData("Merge branch 'ui/videos' into release", "ui/videos")]
+        [InlineData("Merge branch 'bill_info/clients_highlight' into 'release'", "bill_info/clients_highlight")]
         public void TestParseFromBranchNameSuccessfully(string title, string toBranch)
         {
             var commit = GenerateCommit(title);
@@ -32,7 +32,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
             Assert.AreEqual(toBranch, actual.Value);
         }
 
-        [MyTest]
+        [Fact]
         public void TestParseFromBranchNameFail()
         {
             var commit = GenerateCommit("bla bla bla");

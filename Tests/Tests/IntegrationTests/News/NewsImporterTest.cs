@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
 
@@ -8,14 +8,12 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
     {
         private TaskManagerReporter taskManagerReporter;
 
-        public override void SetUp()
+        public NewsImporterTest() : base()
         {
-            base.SetUp();
-
             taskManagerReporter = container.Get<TaskManagerReporter>();
         }
 
-        [Test]
+        [Fact]
         public void TestImportCard()
         {
             var zzz = taskManagerReporter.TryToMakeReport("XiPNHjuM");

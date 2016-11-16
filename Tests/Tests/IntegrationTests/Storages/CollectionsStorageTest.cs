@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
@@ -7,30 +7,26 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
     {
         private CollectionsStorage collectionsStorage;
 
-        public override void SetUp()
+        public CollectionsStorageTest() : base()
         {
-            base.SetUp();
-
             collectionsStorage = container.Get<CollectionsStorage>();
         }
 
-        public override void TearDown()
+        ~CollectionsStorageTest()
         {
-            base.TearDown();
-
             collectionsStorage.DeleteAll();
         }
 
-        [Test]
+        [Fact]
         public void TestPutAndGet()
         {
             var items = new[] {27, 349, 929};
             collectionsStorage.Put(items);
             var actual = collectionsStorage.GetAll<int>();
-            CollectionAssert.AreEqual(items, actual);
+            Assert.Equal(items, actual);
         }
 
-        [Test]
+        [Fact]
         public void TestDoublePut()
         {
             var items1 = new[] { 27, 349, 929 };
@@ -38,56 +34,56 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
             collectionsStorage.Put(items1);
             collectionsStorage.Put(items2);
             var actual = collectionsStorage.GetAll<int>();
-            CollectionAssert.AreEqual(items2, actual);
+            Assert.Equal(items2, actual);
         }
 
-        [Test]
+        [Fact]
         public void TestAppend()
         {
             var items = new[] { 27, 349, 929 };
             collectionsStorage.Put(items);
             collectionsStorage.Append(12);
             var actual = collectionsStorage.GetAll<int>();
-            CollectionAssert.AreEqual(new[] { 27, 349, 929, 12 }, actual);
+            Assert.Equal(new[] { 27, 349, 929, 12 }, actual);
         }
 
-        [Test]
+        [Fact]
         public void TestGetEmpty()
         {
             var actual = collectionsStorage.GetAll<int>();
-            CollectionAssert.AreEqual(new int[0], actual);
+            Assert.Equal(new int[0], actual);
         }
 
-        [Test]
+        [Fact]
         public void TestGetByIndex()
         {
             var items = new[] { 27, 349, 929 };
             collectionsStorage.Put(items);
             var actual = collectionsStorage.Get<int>(1);
-            Assert.AreEqual(349, actual);
+            Assert.Equal(349, actual);
         }
 
-        [Test]
+        [Fact]
         public void TestRemoveAt()
         {
             var items = new[] { 27, 349, 929 };
             collectionsStorage.Put(items);
             collectionsStorage.RemoveAt<int>(1);
             var actual = collectionsStorage.GetAll<int>();
-            CollectionAssert.AreEqual(new[] { 27, 929 }, actual);
+            Assert.Equal(new[] { 27, 929 }, actual);
         }
 
-        [Test]
+        [Fact]
         public void TestDelete()
         {
             var items = new[] { 27, 349, 929 };
             collectionsStorage.Put(items);
             collectionsStorage.Delete<int>();
             var actual = collectionsStorage.GetAll<int>();
-            CollectionAssert.AreEqual(new int[0], actual);
+            Assert.Equal(new int[0], actual);
         }
 
-        [Test]
+        [Fact]
         public void TestDeleteAll()
         {
             var ints = new[] { 27, 349, 929 };
@@ -95,8 +91,8 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
             collectionsStorage.Put(ints);
             collectionsStorage.Put(longs);
             collectionsStorage.DeleteAll();
-            CollectionAssert.AreEqual(new int[0], collectionsStorage.GetAll<int>());
-            CollectionAssert.AreEqual(new long[0], collectionsStorage.GetAll<long>());
+            Assert.Equal(new int[0], collectionsStorage.GetAll<int>());
+            Assert.Equal(new long[0], collectionsStorage.GetAll<long>());
         }
 
     }

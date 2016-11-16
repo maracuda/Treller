@@ -6,52 +6,54 @@ namespace SKBKontur.Treller.Tests.UnitWrappers
     {
         public static void AreEqual(dynamic a, dynamic b)
         {
-            NUnit.Framework.Assert.AreEqual(a, b);
+            Xunit.Assert.Equal(a, b);
         }
 
         public static void AreNotEqual(dynamic a, dynamic b)
         {
-            NUnit.Framework.Assert.AreNotEqual(a, b);
+            Xunit.Assert.NotEqual(a, b);
         }
 
         public static void True(bool condition, string message = null)
         {
-            NUnit.Framework.Assert.True(condition, message);
+            Xunit.Assert.True(condition, message);
         }
 
         public static void False(bool condition, string message = null)
         {
-            NUnit.Framework.Assert.False(condition, message);
+            Xunit.Assert.False(condition, message);
         }
 
         public static void Fail(string message = null)
         {
-            NUnit.Framework.Assert.Fail(message);
+            Xunit.Assert.True(false, message);
         }
 
         public static void Throws(Type exceptionType, Action testAction, string message = null)
         {
-            NUnit.Framework.Assert.Throws(exceptionType, () => testAction(), message);
+            var exception = Xunit.Assert.Throws(exceptionType, () => testAction());
+            Xunit.Assert.Equal(message, exception.Message);
         }
 
         public static void Throws<T>(Action testAction, string message = null) where T : Exception
         {
-            NUnit.Framework.Assert.Throws<T>(() => testAction(), message);
+            var exception = Xunit.Assert.Throws<T>(() => testAction());
+            Xunit.Assert.Equal(message, exception.Message);
         }
 
         public static void AreDeepEqual<T>(T actual, T expected, string message = null)
         {
-            NUnit.Framework.Assert.That(actual, new DataContractConstraint<T>(expected), message);
+            Xunit.Assert.True(ObjectComparer.AreEqual(actual, expected), message);
         }
 
         public static void IsNull(Object obj)
         {
-            NUnit.Framework.Assert.IsNull(obj);
+            Xunit.Assert.Null(obj);
         }
 
         public static void IsNotNull(Object obj)
         {
-            NUnit.Framework.Assert.IsNotNull(obj);
+            Xunit.Assert.NotNull(obj);
         }
     }
 }
