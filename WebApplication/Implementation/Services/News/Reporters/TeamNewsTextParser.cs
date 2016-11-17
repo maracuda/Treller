@@ -19,7 +19,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
         {
             var motivationResult = motivationParser.TryParse(cardDescription);
             var analyticsResult = analyticsParser.TryParse(cardDescription);
-            var result = $"Всем доброго времени суток.\r\nКомадна Биллинга только что доставила огненный релиз на боевые.\r\n";
+            var result = $"Комадна Биллинга только что доставила огненный релиз на боевые.\r\n";
             if (motivationResult.HasValue)
                 result += $"Немного о задаче: {motivationResult.Value}\r\n";
             if (analyticsResult.HasValue)

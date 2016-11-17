@@ -13,12 +13,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publishe
 
         public void NotifyAboutReleases(string mailingList, string title, string text)
         {
-            var body = $"{text}<br/><br/>Вы можете ответить на это письмо, если у вас возникли вопросы или комментарии касающиеся релизов<br/><br/>--<br/>С уважением, команда Контур.Биллинг";
+            var body = $"Всем доброго времени суток.\r\n\r\n{text}\r\n\r\nВы можете ответить на это письмо, если у вас возникли вопросы или комментарии касающиеся релизов\r\n\r\n--\r\nС уважением, команда Контур.Биллинг";
             var notification = new Notification
             {
                 Title = title,
                 Body = body,
-                IsHtml = true,
+                IsHtml = false,
                 Recipient = mailingList,
                 ReplyTo = "ask.billing@skbkontur.ru"
             };
