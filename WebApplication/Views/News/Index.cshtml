@@ -40,7 +40,7 @@
                         @using (Html.BeginForm("Deliver", "News", FormMethod.Post))
                         {
                             @Html.TextBox("taskId", taskNew.TaskId, new { @class = "news_hidden" });
-                            <input id="@taskNew.TaskId + @taskNew.DeliveryChannel" type="submit" value="Доставить" class="news__button news_actualize_button" />
+                            <input id="@taskNew.TaskId" type="submit" value="Доставить" class="news__button news_actualize_button" />
                         }
                     </span>
                 </div>
