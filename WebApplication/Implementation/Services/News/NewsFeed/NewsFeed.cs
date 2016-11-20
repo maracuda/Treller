@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
@@ -32,17 +33,36 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
                 }
                 else
                 {
-                    var exisitentTask = existentTaskNews.Value.FirstOrDefault(x => x.DeliveryChannel == taskNew.DeliveryChannel);
-                    if (exisitentTask == null)
+                    if (existentTaskNews.Value.Length > 1)
+                        throw new Exception($"Found more than one task news for taskId {taskNew.TaskId}.");
+
+                    if (existentTaskNews.Value.Length == 0)
                     {
                         taskNewStorage.Create(taskNew);
                     }
                     else
                     {
-                        if (!exisitentTask.IsDelivered() && !exisitentTask.Equals(taskNew))
+                        var existentTaskNew = existentTaskNews.Value[0];
+                        existentTaskNew.Content = taskNew.Content;
+                        existentTaskNew.TimeStamp = taskNew.TimeStamp;
+                        foreach (var report in taskNew.Reports)
                         {
-                            taskNewStorage.Update(taskNew);
+                            var existentReport = existentTaskNew.Reports.FirstOrDefault(r => r.PublishStrategy == report.PublishStrategy);
+                            if (existentReport == null)
+                            {
+                                existentTaskNew.Reports = new List<Report>(existentTaskNew.Reports) { existentReport }.ToArray();
+                            }
+                            else
+                            {
+                                if (!existentReport.PublishDate.HasValue)
+                                {
+                                    existentReport.Title = report.Title;
+                                    existentReport.Message = report.Message;
+                                    existentReport.DoNotDeliverUntil = report.DoNotDeliverUntil;
+                                }
+                            }
                         }
+                        taskNewStorage.Update(existentTaskNew);
                     }
                 }
             }

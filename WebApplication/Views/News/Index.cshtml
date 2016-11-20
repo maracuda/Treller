@@ -28,7 +28,6 @@
             <div class="news-block__header clearfix">
                 <span class="news-block__column title">Заголовок</span>
                 <span class="news-block__column date">Не доставлять до</span>
-                <span class="news-block__column action">Канал доставки</span>
                 <span class="news-block__column action">Действия</span>
             </div>
 
@@ -37,12 +36,10 @@
                 <div class="news-block__row clearfix fitrow" title="@taskNew.Text">
                     <span class="news-block__column title" title="@taskNew.Text">@taskNew.Title</span>
                     <span class="news-block__column date">@taskNew.DoNotDeliverUntilStr</span>
-                    <span class="news-block__column action">@taskNew.DeliveryChannel</span>
                     <span class="news-block__column action">
                         @using (Html.BeginForm("Deliver", "News", FormMethod.Post))
                         {
                             @Html.TextBox("taskId", taskNew.TaskId, new { @class = "news_hidden" });
-                            @Html.TextBox("deliveryChannel", taskNew.DeliveryChannel, new { @class = "news_hidden" });
                             <input id="@taskNew.TaskId + @taskNew.DeliveryChannel" type="submit" value="Доставить" class="news__button news_actualize_button" />
                         }
                     </span>

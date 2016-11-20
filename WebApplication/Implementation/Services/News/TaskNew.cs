@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
@@ -50,30 +51,29 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
     public class TaskNew
     {
         public Content.Content Content { get; set; }
+        public Report[] Reports { get; set; }
         public string TaskId { get; set; }
 
-        [Obsolete]
-        public string Text { get; set; }
-
         public PublishStrategy DeliveryChannel { get; set; }
+        [Obsolete]
         public DateTime? DoNotDeliverUntil { get; set; }
+        [Obsolete]
         public DateTime? DeliverDateTime { get; set; }
         public long TimeStamp { get; set; }
 
+        [Obsolete]
         public string PrimaryKey => $"{TaskId}{DeliveryChannel}";
 
         protected bool Equals(TaskNew other)
         {
-            return Equals(Content, other.Content) && string.Equals(TaskId, other.TaskId) &&
-                   string.Equals(Text, other.Text) && DeliveryChannel == other.DeliveryChannel &&
-                   DoNotDeliverUntil.Equals(other.DoNotDeliverUntil) && DeliverDateTime.Equals(other.DeliverDateTime);
+            return Equals(Content, other.Content) && string.Equals(TaskId, other.TaskId);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
+            if (obj.GetType() != this.GetType()) return false;
             return Equals((TaskNew) obj);
         }
 
@@ -81,26 +81,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         {
             unchecked
             {
-                var hashCode = Content != null ? Content.GetHashCode() : 0;
-                hashCode = (hashCode*397) ^ (TaskId != null ? TaskId.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (Text != null ? Text.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (int) DeliveryChannel;
-                hashCode = (hashCode*397) ^ DoNotDeliverUntil.GetHashCode();
-                hashCode = (hashCode*397) ^ DeliverDateTime.GetHashCode();
-                return hashCode;
+                return ((Content != null ? Content.GetHashCode() : 0)*397) ^ (TaskId != null ? TaskId.GetHashCode() : 0);
             }
-        }
-
-        public bool IsDelivered()
-        {
-            return DeliverDateTime.HasValue;
-        }
-
-        public string GetContentTitle()
-        {
-            if (Content == null)
-                throw new Exception($"Content is empty for TaskNew with TaskId {TaskId}.");
-            return Content.Title;
         }
 
         public string GetContentText()
@@ -113,43 +95,20 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 
         public bool TryPublish(INewsNotificator notificator, DateTime now)
         {
-            if (DoNotDeliverUntil.HasValue && DoNotDeliverUntil.Value > now)
-                return false;
-
-            if (IsDelivered())
-                return false;
-
-            Publish(notificator, now);
-            return true;
-        }
-
-        private void Publish(INewsNotificator notificator, DateTime now)
-        {
-            var mailingList = ChooseMailingList();
-            notificator.NotifyAboutReleases(mailingList, GetContentTitle(), Text);
-            DeliverDateTime = now;
-            TimeStamp = now.Ticks;
-        }
-
-        private string ChooseMailingList()
-        {
-            switch (DeliveryChannel)
+            var isPublished = false;
+            foreach (var report in Reports)
             {
-                case PublishStrategy.Customer:
-                    return "news.billing@skbkontur.ru";
-                case PublishStrategy.Support:
-                    return "tech.news.billing@skbkontur.ru";
-                case PublishStrategy.Team:
-                    return "hvorost@skbkontur.ru";
-                default:
-                    throw new Exception($"Fail to find mailing list for delivery channel {DeliveryChannel}.");
+                isPublished = report.TryPublish(notificator, now);
+                if (isPublished)
+                    TimeStamp = now.Ticks;
             }
+
+            return isPublished;
         }
 
         public bool HasSamePrimaryKey(TaskNew anotherTaskNew)
         {
-            return string.Equals(TaskId, anotherTaskNew.TaskId, StringComparison.OrdinalIgnoreCase)
-                   && DeliveryChannel == anotherTaskNew.DeliveryChannel;
+            return string.Equals(TaskId, anotherTaskNew.TaskId, StringComparison.OrdinalIgnoreCase);
         }
     }
 

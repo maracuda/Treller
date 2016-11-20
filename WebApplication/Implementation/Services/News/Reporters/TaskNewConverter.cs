@@ -10,44 +10,36 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
     public class TaskNewConverter : ITaskNewConverter
     {
         private readonly IDateTimeFactory dateTimeFactory;
-        private readonly ITextNewParser[] textNewParsers;
         private readonly IContentParser contentParser;
         private readonly IContentSourceRepository contentSourceRepository;
+        private readonly IReportFactory reportFactory;
 
         public TaskNewConverter(
             IDateTimeFactory dateTimeFactory,
-            ITextNewParser[] textNewParsers,
             IContentParser contentParser,
-            IContentSourceRepository contentSourceRepository)
+            IContentSourceRepository contentSourceRepository,
+            IReportFactory reportFactory)
         {
             this.dateTimeFactory = dateTimeFactory;
-            this.textNewParsers = textNewParsers;
             this.contentParser = contentParser;
             this.contentSourceRepository = contentSourceRepository;
+            this.reportFactory = reportFactory;
         }
 
         public List<TaskNew> Convert(string cardId, string cardName, string cardDesc, DateTime? cardDueDate)
         {
-            var result = new List<TaskNew>();
             var contentSource = contentSourceRepository.FindOrRegister(cardId);
             var content = contentParser.Parse(contentSource.Id, cardName, cardDesc, cardDueDate);
-            foreach (var textNewParser in textNewParsers)
+            var reports = BuildReports(content, cardId);
+
+            var taskNew = new TaskNew
             {
-                var parseResult = textNewParser.TryParse(cardDesc);
-                if (parseResult.HasValue && !string.IsNullOrWhiteSpace(parseResult.Value))
-                {
-                    result.Add(new TaskNew
-                    {
-                        TaskId = cardId,
-                        Content = content,
-                        Text = parseResult.Value,
-                        DeliveryChannel = textNewParser.PublishStrategy,
-                        DoNotDeliverUntil = cardDueDate,
-                        TimeStamp = dateTimeFactory.UtcTicks
-                    });
-                }
-            }
-            return result;
+                TaskId = cardId,
+                Content = content,
+                Reports = reports,
+                TimeStamp = dateTimeFactory.UtcTicks
+            };
+            return new List<TaskNew> {taskNew};
         }
 
         public List<TaskNew> Convert(BoardList boardList)
@@ -58,6 +50,21 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporter
                 result.AddRange(Convert(cardInfo.Id, cardInfo.Name, cardInfo.Desc, cardInfo.Due));
             }
             return result;
+        }
+
+        private Report[] BuildReports(Content.Content content, string taskId)
+        {
+            var reports = new List<Report>();
+            if (!string.IsNullOrEmpty(content.PubicInfo))
+            {
+                reports.Add(reportFactory.CreateCutomerReport(content, taskId));
+            }
+            if (!string.IsNullOrEmpty(content.TechInfo))
+            {
+                reports.Add(reportFactory.CreateSupportReport(content, taskId));
+            }
+            reports.Add(reportFactory.CreateTeamReport(content, taskId));
+            return reports.ToArray();
         }
     }
 }

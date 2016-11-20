@@ -22,6 +22,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
         {
             var result = ReadAll().Where(x => string.Equals(taskId, x.TaskId, StringComparison.OrdinalIgnoreCase))
                                   .ToArray();
+
+            if (result.Length > 1)
+                throw new Exception($"Several task news found with id {taskId}.");
+
             return result.Any() ? result : null;
         }
 
@@ -43,7 +47,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             var index = collectionsStorage.IndexOf(taskNew, taskNewComparer);
             if (index != -1)
             {
-                throw new Exception($"Unable to add duplicate task new by primary key {taskNew.PrimaryKey}.");
+                throw new Exception($"Unable to add duplicate task with id {taskNew.TaskId}.");
             }
 
             lock (writeLock)
@@ -63,7 +67,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             {
                 var index = collectionsStorage.IndexOf(changedTaskNew, taskNewComparer);
                 if (index == -1)
-                    throw new Exception($"Fail to find task new with {changedTaskNew.PrimaryKey} at storage.");
+                    throw new Exception($"Fail to find task new with id {changedTaskNew.TaskId} at storage.");
 
                 collectionsStorage.RemoveAt<TaskNew>(index);
                 collectionsStorage.Append(changedTaskNew);
@@ -99,7 +103,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             if (ReferenceEquals(x, null)) return -1;
             if (ReferenceEquals(y, null)) return -1;
 
-            return x.HasSamePrimaryKey(y) ? 0 : -1;
+            return  x.HasSamePrimaryKey(y) ? 0 : -1;
         }
     }
 }
