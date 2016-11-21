@@ -2,6 +2,7 @@
 using System.IO;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing;
 using Xunit;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;

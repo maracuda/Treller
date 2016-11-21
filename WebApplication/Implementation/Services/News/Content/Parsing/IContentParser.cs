@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing
 {
     public interface IContentParser
     {

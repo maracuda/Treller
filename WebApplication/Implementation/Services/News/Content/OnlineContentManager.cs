@@ -1,6 +1,7 @@
 ﻿using System;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Sources;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content

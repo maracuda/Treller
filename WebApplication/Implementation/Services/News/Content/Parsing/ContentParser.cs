@@ -1,8 +1,7 @@
 ﻿using System;
 using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing
 {
     public class ContentParser : IContentParser
     {
@@ -27,7 +26,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content
                 Analytics = tokenParserFactory.GetAnalyticsParser().TryParse(desc, string.Empty),
                 Branch = tokenParserFactory.GetBranchParser().TryParse(desc, string.Empty),
                 PubicInfo = tokenParserFactory.GetPublicInfoParser().TryParse(desc, string.Empty),
-                TechInfo = tokenParserFactory.GetPublicInfoParser().TryParse(desc, string.Empty),
+                TechInfo = tokenParserFactory.GetTechInfoParser().TryParse(desc, string.Empty),
                 DeadLine = deadLine,
                 Timestamp = dateTimeFactory.Ticks
             };
