@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.Infrastructure.Sugar;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
@@ -8,7 +7,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
 {
     public class TaskNewStorage : ITaskNewStorage
     {
-        private readonly TaskNewComparer taskNewComparer = new TaskNewComparer();
         private readonly ICollectionsStorage collectionsStorage;
         private static readonly object writeLock = new object();
         
@@ -18,15 +16,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             this.collectionsStorage = collectionsStorage;
         }
         
-        public Maybe<TaskNew[]> Find(string taskId)
+        public Maybe<TaskNew> Find(string taskId)
         {
-            var result = ReadAll().Where(x => string.Equals(taskId, x.TaskId, StringComparison.OrdinalIgnoreCase))
-                                  .ToArray();
-
-            if (result.Length > 1)
-                throw new Exception($"Several task news found with id {taskId}.");
-
-            return result.Any() ? result : null;
+            return ReadAll().FirstOrDefault(x => string.Equals(taskId, x.TaskId, StringComparison.OrdinalIgnoreCase));
         }
 
         public TaskNew[] Enumerate(long fromTimestampExclusive, int batchSize)
@@ -44,7 +36,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
                 throw new Exception("Unable to add null task new.");
             }
 
-            var index = collectionsStorage.IndexOf(taskNew, taskNewComparer);
+            var index = collectionsStorage.IndexOf(taskNew, TaskNew.TaskIdComparer);
             if (index != -1)
             {
                 throw new Exception($"Unable to add duplicate task with id {taskNew.TaskId}.");
@@ -65,9 +57,11 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
 
             lock (writeLock)
             {
-                var index = collectionsStorage.IndexOf(changedTaskNew, taskNewComparer);
+                var index = collectionsStorage.IndexOf(changedTaskNew, TaskNew.TaskIdComparer);
                 if (index == -1)
+                {
                     throw new Exception($"Fail to find task new with id {changedTaskNew.TaskId} at storage.");
+                }
 
                 collectionsStorage.RemoveAt<TaskNew>(index);
                 collectionsStorage.Append(changedTaskNew);
@@ -80,7 +74,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
             {
                 lock (writeLock)
                 {
-                    var index = collectionsStorage.IndexOf(taskNew, taskNewComparer);
+                    var index = collectionsStorage.IndexOf(taskNew, TaskNew.TaskIdComparer);
                     if (index != -1)
                     {
                         collectionsStorage.RemoveAt<TaskNew>(index);
@@ -92,18 +86,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
         public TaskNew[] ReadAll()
         {
             return collectionsStorage.GetAll<TaskNew>();
-        }
-    }
-
-    internal class TaskNewComparer : IComparer<TaskNew>
-    {
-        public int Compare(TaskNew x, TaskNew y)
-        {
-            if (ReferenceEquals(x, y)) return 0;
-            if (ReferenceEquals(x, null)) return -1;
-            if (ReferenceEquals(y, null)) return -1;
-
-            return  x.HasSamePrimaryKey(y) ? 0 : -1;
         }
     }
 }

@@ -22,16 +22,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publishe
 
         public void Publish(string taskId)
         {
-            var maybeTaskNews = taskNewStorage.Find(taskId);
-            if (maybeTaskNews.HasValue)
+            var maybeTaskNew = taskNewStorage.Find(taskId);
+            if (maybeTaskNew.HasValue)
             {
                 var now = dateTimeFactory.UtcNow;
-                foreach (var taskNew in maybeTaskNews.Value)
+                if (maybeTaskNew.Value.TryPublish(newsNotificator, now))
                 {
-                    if (taskNew.TryPublish(newsNotificator, now))
-                    {
-                        taskNewStorage.Update(taskNew);
-                    }
+                    taskNewStorage.Update(maybeTaskNew.Value);
                 }
             }
         }

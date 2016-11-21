@@ -4,7 +4,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
 {
     public interface ITaskNewStorage
     {
-        Maybe<TaskNew[]> Find(string taskId);
+        Maybe<TaskNew> Find(string taskId);
         TaskNew[] ReadAll();
         TaskNew[] Enumerate(long fromTimestampExclusive, int batchSize);
         void Create(TaskNew taskNew);

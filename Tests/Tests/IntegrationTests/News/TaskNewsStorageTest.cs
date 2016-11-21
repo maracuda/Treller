@@ -9,7 +9,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
 {
     public class TaskNewsStorageTest : IntegrationTest
     {
-        private TaskNewStorage taskNewStorage;
+        private readonly TaskNewStorage taskNewStorage;
 
         public TaskNewsStorageTest() : base()
         {
@@ -23,14 +23,12 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
             var taskNew = new TaskNew
             {
                 TaskId = taskId,
-                DeliveryChannel = PublishStrategy.Team
             };
 
             taskNewStorage.Create(taskNew);
             var actual = taskNewStorage.Find(taskId);
             Assert.True(actual.HasValue);
-            Assert.AreEqual(1, actual.Value.Length);
-            Assert.AreDeepEqual(actual.Value.First(), taskNew);
+            Assert.AreDeepEqual(actual.Value, taskNew);
             taskNewStorage.Delete(taskNew);
             actual = taskNewStorage.Find(taskId);
             Assert.False(actual.HasValue);
@@ -43,7 +41,6 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
             var taskNew = new TaskNew
             {
                 TaskId = taskId,
-                DeliveryChannel = PublishStrategy.Team
             };
 
             taskNewStorage.Create(taskNew);

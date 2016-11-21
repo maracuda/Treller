@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
@@ -26,44 +25,34 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
             var actualNews = outdatedNewsFilter.FilterActual(news);
             foreach (var taskNew in actualNews)
             {
-                var existentTaskNews = taskNewStorage.Find(taskNew.TaskId);
-                if (existentTaskNews.HasNoValue)
+                var maybeTaskNew = taskNewStorage.Find(taskNew.TaskId);
+                if (maybeTaskNew.HasNoValue)
                 {
                     taskNewStorage.Create(taskNew);
                 }
                 else
                 {
-                    if (existentTaskNews.Value.Length > 1)
-                        throw new Exception($"Found more than one task news for taskId {taskNew.TaskId}.");
-
-                    if (existentTaskNews.Value.Length == 0)
+                    var existentTaskNew = maybeTaskNew.Value;
+                    existentTaskNew.Content = taskNew.Content;
+                    existentTaskNew.TimeStamp = taskNew.TimeStamp;
+                    foreach (var report in taskNew.Reports)
                     {
-                        taskNewStorage.Create(taskNew);
-                    }
-                    else
-                    {
-                        var existentTaskNew = existentTaskNews.Value[0];
-                        existentTaskNew.Content = taskNew.Content;
-                        existentTaskNew.TimeStamp = taskNew.TimeStamp;
-                        foreach (var report in taskNew.Reports)
+                        var existentReport = existentTaskNew.Reports.FirstOrDefault(r => r.PublishStrategy == report.PublishStrategy);
+                        if (existentReport == null)
                         {
-                            var existentReport = existentTaskNew.Reports.FirstOrDefault(r => r.PublishStrategy == report.PublishStrategy);
-                            if (existentReport == null)
+                            existentTaskNew.Reports = new List<Report>(existentTaskNew.Reports) { existentReport }.ToArray();
+                        }
+                        else
+                        {
+                            if (!existentReport.PublishDate.HasValue)
                             {
-                                existentTaskNew.Reports = new List<Report>(existentTaskNew.Reports) { existentReport }.ToArray();
-                            }
-                            else
-                            {
-                                if (!existentReport.PublishDate.HasValue)
-                                {
-                                    existentReport.Title = report.Title;
-                                    existentReport.Message = report.Message;
-                                    existentReport.DoNotDeliverUntil = report.DoNotDeliverUntil;
-                                }
+                                existentReport.Title = report.Title;
+                                existentReport.Message = report.Message;
+                                existentReport.DoNotDeliverUntil = report.DoNotDeliverUntil;
                             }
                         }
-                        taskNewStorage.Update(existentTaskNew);
                     }
+                    taskNewStorage.Update(existentTaskNew);
                 }
             }
         }

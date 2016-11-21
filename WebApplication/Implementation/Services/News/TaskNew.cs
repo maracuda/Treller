@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
@@ -53,37 +53,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         public Content.Content Content { get; set; }
         public Report[] Reports { get; set; }
         public string TaskId { get; set; }
-
-        public PublishStrategy DeliveryChannel { get; set; }
-        [Obsolete]
-        public DateTime? DoNotDeliverUntil { get; set; }
-        [Obsolete]
-        public DateTime? DeliverDateTime { get; set; }
         public long TimeStamp { get; set; }
-
-        [Obsolete]
-        public string PrimaryKey => $"{TaskId}{DeliveryChannel}";
-
-        protected bool Equals(TaskNew other)
-        {
-            return Equals(Content, other.Content) && string.Equals(TaskId, other.TaskId);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((TaskNew) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((Content != null ? Content.GetHashCode() : 0)*397) ^ (TaskId != null ? TaskId.GetHashCode() : 0);
-            }
-        }
 
         public string GetContentText()
         {
@@ -106,9 +76,39 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             return isPublished;
         }
 
-        public bool HasSamePrimaryKey(TaskNew anotherTaskNew)
+        protected bool Equals(TaskNew other)
         {
-            return string.Equals(TaskId, anotherTaskNew.TaskId, StringComparison.OrdinalIgnoreCase);
+            return Equals(Content, other.Content) && string.Equals(TaskId, other.TaskId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TaskNew) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Content != null ? Content.GetHashCode() : 0)*397) ^ (TaskId != null ? TaskId.GetHashCode() : 0);
+            }
+        }
+
+        public static readonly IComparer<TaskNew> TaskIdComparer = new TaskNewIdComparer();
+
+        private sealed class TaskNewIdComparer : IComparer<TaskNew>
+        {
+            public int Compare(TaskNew x, TaskNew y)
+            {
+                if (ReferenceEquals(x, y)) return 0;
+                if (ReferenceEquals(x, null)) return -1;
+                if (ReferenceEquals(y, null)) return -1;
+
+                return string.Equals(x.TaskId, y.TaskId, StringComparison.OrdinalIgnoreCase) ? 0 : -1;
+            }
         }
     }
 
