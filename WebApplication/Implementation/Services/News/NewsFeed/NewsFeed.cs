@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
@@ -62,6 +63,21 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
             return taskNewStorage.ReadAll()
                      .Select(x => taskNewConverter.Build(x))
                      .ToArray();
+        }
+
+        public TaskNewModel Read(string taskId)
+        {
+            var result = taskNewStorage.ReadAll()
+                                       .Where(x => x.TaskId.Equals(taskId, StringComparison.Ordinal))
+                                       .Select(x => taskNewConverter.Build(x))
+                                       .FirstOrDefault();
+
+            if (result == null)
+            {
+                throw new Exception($"Fail to read task new model with id {taskId}.");
+            }
+
+            return result;
         }
 
         public void Refresh(int batchSize = 30)

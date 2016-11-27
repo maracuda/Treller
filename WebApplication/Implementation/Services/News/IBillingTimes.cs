@@ -8,7 +8,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         bool TryToRequestNew(string aboutCardId);
 
         TaskNewModel[] SelectAll();
+        TaskNewModel Read(string taskId);
 
-        void Publish(string taskNewId);
+        void Publish(string taskId);
     }
 }

@@ -26,7 +26,14 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             return View("Index", news);
         }
 
-        public ActionResult Deliver(string taskId)
+        [HttpGet]
+        public ActionResult GoToDetails(string taskId)
+        {
+            var taskNewModel = billingTimes.Read(taskId);
+            return View("New", taskNewModel);
+        }
+
+        public ActionResult Publish(string taskId)
         {
             billingTimes.Publish(taskId);
             return RedirectToAction("Index");

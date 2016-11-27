@@ -1,0 +1,28 @@
+﻿@model SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed.TaskNewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Header
+{
+    @Styles.Render("~/bundles/css/News")
+}
+
+<div class="news-content">
+    <span class="news-block header">
+        @Model.Content.Title
+    </span>
+
+    <div class="news-block">
+        <span class="news-block__column title">@Model.Content.Motivation</span>
+        @*<span class="news-block__column date">@taskNew.DoNotDeliverUntilStr</span>
+        <span class="news-block__column action">
+            @using (Html.BeginForm("Deliver", "News", FormMethod.Post))
+            {
+                @Html.TextBox("taskId", taskNew.TaskId, new { @class = "news_hidden" });
+                <input id="@taskNew.TaskId" type="submit" value="Доставить" class="news__button news_actualize_button" />
+            }
+        </span>*@
+    </div>
+</div>

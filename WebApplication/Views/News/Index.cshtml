@@ -11,10 +11,8 @@
 
 <div class="news-content">
     <span class="news-block header">
-        Новости о релизах Контур.Биллинг
+        Добро пожаловать в Billing Times
     </span>
-
-    <h3>Новости</h3>
 
     @if (Model.TaskNews == null || Model.TaskNews.Length == 0)
     {
@@ -33,16 +31,10 @@
 
             @foreach (var taskNew in Model.TaskNews)
             {
-                <div class="news-block__row clearfix fitrow" title="@taskNew.Text">
-                    <span class="news-block__column title" title="@taskNew.Text">@taskNew.Title</span>
+                <div class="news-block__row clearfix fitrow" title="@taskNew.Hint">
+                    <span class="news-block__column title" title="@taskNew.Hint">@taskNew.Content.Title</span>
                     <span class="news-block__column date">@taskNew.DoNotDeliverUntilStr</span>
-                    <span class="news-block__column action">
-                        @using (Html.BeginForm("Deliver", "News", FormMethod.Post))
-                        {
-                            @Html.TextBox("taskId", taskNew.TaskId, new { @class = "news_hidden" });
-                            <input id="@taskNew.TaskId" type="submit" value="Доставить" class="news__button news_actualize_button" />
-                        }
-                    </span>
+                    <span class="news-block__column action">@Html.ActionLink("Подробная информация", "GoToDetails", taskNew.TaskId)</span>
                 </div>
             }
         </div>
