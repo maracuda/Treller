@@ -15,27 +15,31 @@
     </span>
 
     <div class="news-block">
-        <div class="news-block__header clearfix">
-            <span class="news-block__column title">@Model.Content.Motivation</span>
-            <span class="news-block__column title">@Model.Content.Analytics</span>
-            <span class="news-block__column title">@Model.Content.Branch</span>
-            <span class="news-block__column title">@Model.Content.TechInfo</span>
-            <span class="news-block__column title">@Model.Content.PubicInfo</span>
+        <div class="clearfix">
+            @if (!string.IsNullOrEmpty(Model.Content.Motivation))
+            {
+                <div class="title">@Model.Content.Motivation</div>
+            }
+            
+            <div class="title">@Model.Content.Analytics</div>
+            <div class="title">@Model.Content.Branch</div>
+            <div class="title">@Model.Content.TechInfo</div>
+            <div class="title">@Model.Content.PubicInfo</div>
         </div>
         
         @foreach (var report in Model.Reports) {
-            <div class="news-block__row clearfix fitrow" >
-                <<span class="news-block__column title">@report.Title</span>
-                <<span class="news-block__column title">@report.Message</span>
-                <<span class="news-block__column title">@report.PublishStrategy</span>
-                <span class="news-block__column action">
+            <div class="clearfix fitrow" >
+                <div class="title">@report.Title</div>
+                <div class="title">@report.Message</div>
+                <div class="title">@report.PublishStrategy</div>
+                <div class="action">
                     @using (Html.BeginForm("Publish", "News", FormMethod.Post))
                     {
                         @Html.TextBox("taskId", Model.TaskId, new { @class = "news_hidden" });
                         @Html.TextBox("publishStrategy", report.PublishStrategy, new { @class = "news_hidden" });
                         <input id="@Model.TaskId" type="submit" value="Опубликовать" class="news__button news_actualize_button" />
                     }
-                </span>
+                </div>
             </div>
         }
     </div>
