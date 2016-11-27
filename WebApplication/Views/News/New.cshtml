@@ -19,23 +19,23 @@
         <div class="clearfix">
             @if (!string.IsNullOrEmpty(Model.Content.Motivation))
             {
-                <div class="title">@Model.Content.Motivation</div>
+                <div class="title"><b>Мотивация:</b>@Model.Content.Motivation</div>
             }
             @if (!string.IsNullOrEmpty(Model.Content.Analytics))
             {
-                <div class="title">@Model.Content.Analytics</div>
+                <div class="title"><b>Аналитика:</b>@Model.Content.Analytics</div>
             }
             @if (!string.IsNullOrEmpty(Model.Content.Branch))
             {
-                <div class="title">@Model.Content.Branch</div>
+                <div class="title"><b>Ветка:</b>@Model.Content.Branch</div>
             }
             @if (!string.IsNullOrEmpty(Model.Content.TechInfo))
             {
-                <div class="title">@Model.Content.TechInfo</div>
+                <div class="title"><b>Техническая новость:</b>@Model.Content.TechInfo</div>
             }
             @if (!string.IsNullOrEmpty(Model.Content.PubicInfo))
             {
-                <div class="title">@Model.Content.PubicInfo</div>
+                <div class="title"><b>Публичная новость:</b>@Model.Content.PubicInfo</div>
             }
         </div>
         
