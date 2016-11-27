@@ -26,7 +26,7 @@
             <div class="news-block__header clearfix">
                 <span class="news-block__column title">Заголовок</span>
                 <span class="news-block__column date">Не доставлять до</span>
-                <span class="news-block__column action">Действия</span>
+                <span class="news-block__column action"></span>
             </div>
 
             @foreach (var taskNew in Model.TaskNews)
@@ -35,7 +35,7 @@
                     <span class="news-block__column title" title="@taskNew.Hint">@taskNew.Content.Title</span>
                     <span class="news-block__column date">@taskNew.DoNotDeliverUntilStr</span>
                     <span class="news-block__column action">@Html.ActionLink("Подробная информация", "GoToDetails", new RouteValueDictionary { { "taskId", taskNew.TaskId } })</span>
-                    @Html.TextBox("taskId", taskNew.TaskId, new { @class = "news_hidden" });
+                    @Html.TextBox("taskId", taskNew.TaskId, new { @class = "news_hidden" })
                 </div>
             }
         </div>

@@ -15,14 +15,28 @@
     </span>
 
     <div class="news-block">
-        <span class="news-block__column title">@Model.Content.Motivation</span>
-        @*<span class="news-block__column date">@taskNew.DoNotDeliverUntilStr</span>
-        <span class="news-block__column action">
-            @using (Html.BeginForm("Deliver", "News", FormMethod.Post))
-            {
-                @Html.TextBox("taskId", taskNew.TaskId, new { @class = "news_hidden" });
-                <input id="@taskNew.TaskId" type="submit" value="Доставить" class="news__button news_actualize_button" />
-            }
-        </span>*@
+        <div class="news-block__header clearfix">
+            <span class="news-block__column title">@Model.Content.Motivation</span>
+            <span class="news-block__column title">@Model.Content.Analytics</span>
+            <span class="news-block__column title">@Model.Content.Branch</span>
+            <span class="news-block__column title">@Model.Content.TechInfo</span>
+            <span class="news-block__column title">@Model.Content.PubicInfo</span>
+        </div>
+        
+        @foreach (var report in Model.Reports) {
+            <div class="news-block__row clearfix fitrow" >
+                <<span class="news-block__column title">@report.Title</span>
+                <<span class="news-block__column title">@report.Message</span>
+                <<span class="news-block__column title">@report.PublishStrategy</span>
+                <span class="news-block__column action">
+                    @using (Html.BeginForm("Publish", "News", FormMethod.Post))
+                    {
+                        @Html.TextBox("taskId", Model.TaskId, new { @class = "news_hidden" });
+                        @Html.TextBox("publishStrategy", report.PublishStrategy, new { @class = "news_hidden" });
+                        <input id="@Model.TaskId" type="submit" value="Опубликовать" class="news__button news_actualize_button" />
+                    }
+                </span>
+            </div>
+        }
     </div>
 </div>
