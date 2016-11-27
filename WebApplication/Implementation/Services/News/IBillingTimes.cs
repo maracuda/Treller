@@ -10,6 +10,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
         TaskNewModel[] SelectAll();
         TaskNewModel Read(string taskId);
 
-        void Publish(string taskId);
+        void Publish(string taskId, PublishStrategy publishStrategy);
     }
 }

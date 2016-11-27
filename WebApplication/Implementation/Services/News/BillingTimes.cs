@@ -45,9 +45,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
             return newsFeed.Read(taskId);
         }
 
-        public void Publish(string taskId)
+        public void Publish(string taskId, PublishStrategy publishStrategy)
         {
-            publisher.Publish(taskId);
+            publisher.Publish(taskId, publishStrategy);
         }
     }
 }

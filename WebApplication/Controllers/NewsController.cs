@@ -33,9 +33,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             return View("New", taskNewModel);
         }
 
-        public ActionResult Publish(string taskId)
+        public ActionResult Publish(string taskId, PublishStrategy publishStrategy)
         {
-            billingTimes.Publish(taskId);
+            billingTimes.Publish(taskId, publishStrategy);
             return RedirectToAction("Index");
         }
 
