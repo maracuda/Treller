@@ -34,7 +34,8 @@
                 <div class="news-block__row clearfix fitrow" title="@taskNew.Hint">
                     <span class="news-block__column title" title="@taskNew.Hint">@taskNew.Content.Title</span>
                     <span class="news-block__column date">@taskNew.DoNotDeliverUntilStr</span>
-                    <span class="news-block__column action">@Html.ActionLink("Подробная информация", "GoToDetails", taskNew.TaskId)</span>
+                    <span class="news-block__column action">@Html.ActionLink("Подробная информация", "GoToDetails", new RouteValueDictionary { { "taskId", taskNew.TaskId } })</span>
+                    @Html.TextBox("taskId", taskNew.TaskId, new { @class = "news_hidden" });
                 </div>
             }
         </div>
