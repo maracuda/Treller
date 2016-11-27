@@ -46,6 +46,8 @@
                 <div class="title">Отчет для @report.PublishStrategy</div>
                 <div class="title">@report.Title</div>
                 <div class="title">@report.Message</div>
+                <div class="title">Не доставлять до: @report.DoNotDeliverUntilStr</div>
+                <div class="title">Дата доставки: @report.PublishDateStr</div>
                 <div class="action">
                     @using (Html.BeginForm("Publish", "News", FormMethod.Post))
                     {
