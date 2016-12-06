@@ -21,7 +21,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Migratio
         {
             var taskNews = taskNewStorage.ReadAll();
             var taskNewsWithNullReportsCount = taskNews.Count(t => t.Reports.Any(r => r == null));
-            errorService.SendError($"NullReportConsistencyChecker observed {taskNews.Length} task news and found {taskNewsWithNullReportsCount} task news with null reports.");
+            var taskNewsWithNullReportsMirgratedCount = 0;
+            foreach (var taskNew in taskNews.Where(t => t.Reports.Any(r => r == null)))
+            {
+                taskNew.Reports = taskNew.Reports.Where(r => r != null).ToArray();
+                taskNewStorage.Update(taskNew);
+                taskNewsWithNullReportsMirgratedCount++;
+            }
+
+            errorService.SendError($"NullReportConsistencyChecker observed {taskNews.Length} task news and found {taskNewsWithNullReportsCount} task news with null reports, ${taskNewsWithNullReportsMirgratedCount} task news was migrated.");
         }
     }
 }

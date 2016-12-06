@@ -21,6 +21,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
                 {
                     TaskId = taskNew.TaskId,
                     Content = Build(taskNew.Content),
+                    //TODO: remove null check after we can gurantee that storage has no null reports.
                     Reports = taskNew.Reports.Where(x => x != null).Select(Build).ToArray()
                 };
             }
