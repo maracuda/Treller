@@ -8,7 +8,6 @@ using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
-using SKBKontur.Treller.WebApplication.Implementation.Services.TaskCacher;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
 
@@ -21,7 +20,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
         #region init
 
         private readonly ISocialNetworkClient socialNetworkClient;
-        private readonly ITaskCacher taskCacher;
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
         private readonly ICachedFileStorage cachedFileStorage;
@@ -31,7 +29,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
 
         public DigestService(
             ISocialNetworkClient socialNetworkClient,
-            ITaskCacher taskCacher,
             ITaskManagerClient taskManagerClient,
             ICardStateInfoBuilder cardStateInfoBuilder,
             ICachedFileStorage cachedFileStorage,
@@ -40,7 +37,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
             IBoardsService boardsService)
         {
             this.socialNetworkClient = socialNetworkClient;
-            this.taskCacher = taskCacher;
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
             this.cachedFileStorage = cachedFileStorage;
@@ -53,10 +49,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Digest
         public void SendAllToDigest()
         {
             var boardIds = boardsService.SelectKanbanBoards(false).Select(x => x.Id).ToArray();
-            var cards = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardCards);
-            var boardLists = taskCacher.GetCached(boardIds, ids => taskManagerClient.GetBoardListsAsync(ids).Result, TaskCacherStoredTypes.BoardLists).ToLookup(x => x.BoardId);
-            var cardActions = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetActionsForBoardCardsAsync(strings).Result, TaskCacherStoredTypes.BoardActions).ToLookup(x => x.CardId);
-            var users = taskCacher.GetCached(boardIds, strings => taskManagerClient.GetBoardUsersAsync(strings).Result, TaskCacherStoredTypes.BoardUsers).ToDictionary(x => x.Id);
+            var cards = taskManagerClient.GetBoardCardsAsync(boardIds).Result;
+            var boardLists = taskManagerClient.GetBoardListsAsync(boardIds).Result.ToLookup(x => x.BoardId);
+            var cardActions = taskManagerClient.GetActionsForBoardCardsAsync(boardIds).Result.ToLookup(x => x.CardId);
+            var users = taskManagerClient.GetBoardUsersAsync(boardIds).Result.ToDictionary(x => x.Id);
 
             var actualCards = cards
                 .Where(x => !x.Name.Contains("Автотесты", StringComparison.OrdinalIgnoreCase) && x.LastActivity.Date > DateTime.Now.Date.AddDays(-3))
