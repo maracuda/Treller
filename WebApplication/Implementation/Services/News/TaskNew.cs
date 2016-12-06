@@ -1,28 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
 {
     public class TaskNew
     {
+        public TaskNew()
+        {
+            Reports = new Report[0];
+        }
+
         public Content.Content Content { get; set; }
         public Report[] Reports { get; set; }
         public string TaskId { get; set; }
         public long TimeStamp { get; set; }
-
-        public bool TryPublish(INewsNotificator notificator, DateTime now)
-        {
-            var isPublished = false;
-            foreach (var report in Reports)
-            {
-                isPublished = report.TryPublish(notificator, now);
-                if (isPublished)
-                    TimeStamp = now.Ticks;
-            }
-
-            return isPublished;
-        }
 
         protected bool Equals(TaskNew other)
         {

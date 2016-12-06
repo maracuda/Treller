@@ -41,7 +41,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
                         var existentReport = existentTaskNew.Reports.FirstOrDefault(r => r.PublishStrategy == report.PublishStrategy);
                         if (existentReport == null)
                         {
-                            existentTaskNew.Reports = new List<Report>(existentTaskNew.Reports) { existentReport }.ToArray();
+                            existentTaskNew.Reports = new List<Report>(existentTaskNew.Reports) { report }.ToArray();
                         }
                         else
                         {
