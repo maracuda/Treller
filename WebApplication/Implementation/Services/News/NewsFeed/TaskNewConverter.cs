@@ -1,17 +1,33 @@
+using System;
 using System.Linq;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Serialization;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
 {
     public class TaskNewConverter : ITaskNewConverter
     {
+        private readonly IJsonSerializer jsonSerializer;
+
+        public TaskNewConverter(IJsonSerializer jsonSerializer)
+        {
+            this.jsonSerializer = jsonSerializer;
+        }
+
         public TaskNewModel Build(TaskNew taskNew)
         {
-            return new TaskNewModel
+            try
             {
-                TaskId = taskNew.TaskId,
-                Content = Build(taskNew.Content),
-                Reports = taskNew.Reports.Select(Build).ToArray()
-            };
+                return new TaskNewModel
+                {
+                    TaskId = taskNew.TaskId,
+                    Content = Build(taskNew.Content),
+                    Reports = taskNew.Reports.Select(Build).ToArray()
+                };
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Fail to convert model for object {jsonSerializer.Serialize(taskNew)}.", e);
+            }
         }
 
         private static ReportModel Build(Report report)
