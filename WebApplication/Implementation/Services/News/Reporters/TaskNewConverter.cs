@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Sources;
 

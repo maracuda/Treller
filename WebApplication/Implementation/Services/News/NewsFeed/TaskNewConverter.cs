@@ -21,7 +21,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
                 {
                     TaskId = taskNew.TaskId,
                     Content = Build(taskNew.Content),
-                    Reports = taskNew.Reports.Select(Build).ToArray()
+                    Reports = taskNew.Reports.Where(x => x != null).Select(Build).ToArray()
                 };
             }
             catch (Exception e)
