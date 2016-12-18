@@ -12,12 +12,15 @@ namespace SKBKontur.Treller.Storage.FileStorage
         private readonly IJsonSerializer jsonSerializer;
         private readonly string rootPath;
 
-        public FileSystemHandler(IJsonSerializer jsonSerializer, string basePath, string dataDirName)
+        public FileSystemHandler(
+            IJsonSerializer jsonSerializer, 
+            IEnvironment environment,
+            string dataDirName = "TrellerData")
         {
             this.jsonSerializer = jsonSerializer;
             try
             {
-                rootPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(basePath)), dataDirName);
+                rootPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(environment.BasePath)), dataDirName);
             }
             catch (Exception)
             {
