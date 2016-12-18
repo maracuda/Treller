@@ -1,11 +1,10 @@
-﻿using Xunit;
-using SKBKontur.Treller.Tests.MockWrappers;
+﻿using SKBKontur.Treller.Tests.MockWrappers;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests
 {
     public abstract class UnitTest
     {
-        protected MyMock mock;
+        protected readonly MyMock mock;
 
         protected UnitTest()
         {

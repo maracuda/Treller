@@ -1,5 +1,5 @@
-﻿using Xunit;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+﻿using SKBKontur.Treller.Storage.FileStorage;
+using Xunit;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
 {
@@ -7,7 +7,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
     {
         private CollectionsStorage collectionsStorage;
 
-        public CollectionsStorageTest() : base()
+        public CollectionsStorageTest()
         {
             collectionsStorage = container.Get<CollectionsStorage>();
         }

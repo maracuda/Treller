@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages
+namespace SKBKontur.Treller.Storage
 {
     //TODO: to create a factory for ICollectionStorage to have instance per collection
     //TODO: to have a lock to changing the colletion

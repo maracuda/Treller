@@ -2,24 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+using SKBKontur.Treller.Storage;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Logging
 {
     public class VirtualMachinesExecuteLog : IVirtualMachinesExecuteLog
     {
-        private readonly ICachedFileStorage cachedFileStorage;
+        private readonly IKeyValueStorage keyValueStorage;
         private const string ExecuteLogFileName = "virtualMachinesExecuteLog";
 
-        public VirtualMachinesExecuteLog(ICachedFileStorage cachedFileStorage)
+        public VirtualMachinesExecuteLog(IKeyValueStorage keyValueStorage)
         {
-            this.cachedFileStorage = cachedFileStorage;
+            this.keyValueStorage = keyValueStorage;
         }
 
         public void WriteLog(CommandExecuteResult executeResult)
         {
-            var logs = cachedFileStorage.Find<Dictionary<Guid, VirtualMachinesExecuteLogModel>>(ExecuteLogFileName) ?? new Dictionary<Guid, VirtualMachinesExecuteLogModel>();
+            var logs = keyValueStorage.Find<Dictionary<Guid, VirtualMachinesExecuteLogModel>>(ExecuteLogFileName) ?? new Dictionary<Guid, VirtualMachinesExecuteLogModel>();
             if (logs.ContainsKey(executeResult.Id))
             {
                 var log = logs[executeResult.Id];
@@ -36,24 +36,24 @@ namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Loggin
                 };
             }
 
-            cachedFileStorage.Write(ExecuteLogFileName, logs);
+            keyValueStorage.Write(ExecuteLogFileName, logs);
         }
 
         public VirtualMachinesExecuteLogModel FindLog(Guid executeId)
         {
-            var result = cachedFileStorage.Find<Dictionary<Guid, VirtualMachinesExecuteLogModel>>(ExecuteLogFileName) ?? new Dictionary<Guid, VirtualMachinesExecuteLogModel>();
+            var result = keyValueStorage.Find<Dictionary<Guid, VirtualMachinesExecuteLogModel>>(ExecuteLogFileName) ?? new Dictionary<Guid, VirtualMachinesExecuteLogModel>();
             return result.SafeGet(executeId);
         }
 
         public VirtualMachinesExecuteLogModel[] SelectLastLogs(int count)
         {
-            var result = cachedFileStorage.Find<Dictionary<Guid, VirtualMachinesExecuteLogModel>>(ExecuteLogFileName) ?? new Dictionary<Guid, VirtualMachinesExecuteLogModel>();
+            var result = keyValueStorage.Find<Dictionary<Guid, VirtualMachinesExecuteLogModel>>(ExecuteLogFileName) ?? new Dictionary<Guid, VirtualMachinesExecuteLogModel>();
             return result.Select(x => x.Value).OrderByDescending(x => x.CreateTime).Take(count).ToArray();
         }
 
         public void DeleteAll()
         {
-            cachedFileStorage.Write(ExecuteLogFileName, new Dictionary<Guid, VirtualMachinesExecuteLogModel>());
+            keyValueStorage.Write(ExecuteLogFileName, new Dictionary<Guid, VirtualMachinesExecuteLogModel>());
         }
     }
 }

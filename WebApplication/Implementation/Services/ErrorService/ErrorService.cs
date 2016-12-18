@@ -1,6 +1,6 @@
 ﻿using System;
 using SKBKontur.TaskManagerClient.Notifications;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+using SKBKontur.Treller.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService
 {
@@ -9,16 +9,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService
         private const string NotificationFileName = "NotificationEmail";
 
         private readonly INotificationService notificationService;
-        private readonly ICachedFileStorage cachedFileStorage;
+        private readonly IKeyValueStorage keyValueStorage;
 
         public ErrorService(
             INotificationService notificationService,
-            ICachedFileStorage cachedFileStorage)
+            IKeyValueStorage keyValueStorage)
         {
             this.notificationService = notificationService;
-            this.cachedFileStorage = cachedFileStorage;
+            this.keyValueStorage = keyValueStorage;
 
-            ErrorRecipientEmail = cachedFileStorage.Find<string>(NotificationFileName) ?? "hvorost@skbkontur.ru";
+            ErrorRecipientEmail = keyValueStorage.Find<string>(NotificationFileName) ?? "hvorost@skbkontur.ru";
         }
 
         public string ErrorRecipientEmail { get; private set; }
@@ -47,7 +47,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService
         public void ChangeErrorRecipientEmail(string email)
         {
             ErrorRecipientEmail = email;
-            cachedFileStorage.Write(NotificationFileName, email);
+            keyValueStorage.Write(NotificationFileName, email);
         }
     }
 }

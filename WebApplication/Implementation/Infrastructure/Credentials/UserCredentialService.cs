@@ -1,12 +1,12 @@
 using System;
 using System.IO;
-using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using SKBKontur.TaskManagerClient.Notifications;
 using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
 using SKBKontur.TaskManagerClient.Wiki.BusinessObjects;
 using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
+using SKBKontur.Treller.Storage.FileStorage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials
 {

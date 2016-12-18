@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+using SKBKontur.Treller.Storage;
 using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 {
     public class RoundDancePeopleStorage : IRoundDancePeopleStorage
     {
-        private readonly ICachedFileStorage cachedFileStorage;
+        private readonly IKeyValueStorage keyValueStorage;
         private readonly Dictionary<string, RoundDancePeople> startVariant;
         private Dictionary<string, RoundDancePeople> peoples;
         private const string FileName = "RoundDancePeoples";
 
-        public RoundDancePeopleStorage(ICachedFileStorage cachedFileStorage)
+        public RoundDancePeopleStorage(IKeyValueStorage keyValueStorage)
         {
-            this.cachedFileStorage = cachedFileStorage;
+            this.keyValueStorage = keyValueStorage;
 
             #region default people storage
             startVariant = new[]
@@ -351,7 +351,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 
         private Dictionary<string, RoundDancePeople> GetCachedPeoples()
         {
-            return cachedFileStorage.Find<Dictionary<string, RoundDancePeople>>(FileName);
+            return keyValueStorage.Find<Dictionary<string, RoundDancePeople>>(FileName);
         }
 
         public RoundDancePeople[] GetAll()
@@ -365,7 +365,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                 {
                     FixEndDateAndOrder(people.Value);
                 }
-                cachedFileStorage.Write(FileName, peoples);
+                keyValueStorage.Write(FileName, peoples);
             }
 
             return peoples.Select(x => x.Value).ToArray();
@@ -400,7 +400,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
                 return;
             }
 
-            cachedFileStorage.Write(FileName, peoples);
+            keyValueStorage.Write(FileName, peoples);
         }
 
         public void Delete(string name, string direction, DateTime beginDate)
@@ -411,7 +411,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
             }
 
             peoples[name].WorkPeriods.RemoveAll(x => x.BeginDate == beginDate && x.Direction == direction);
-            cachedFileStorage.Write(FileName, peoples);
+            keyValueStorage.Write(FileName, peoples);
         }
 
         private static void FixEndDateAndOrder(RoundDancePeople people)

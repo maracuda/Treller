@@ -1,13 +1,13 @@
 ﻿using System;
 using SKBKontur.Infrastructure.Sugar;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+using SKBKontur.Treller.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations
 {
     public class EnumerationOperation : IRegularOperation
     {
         private static readonly object operationLock = new object();
-        private readonly ICachedFileStorage cachedFileStorage;
+        private readonly IKeyValueStorage keyValueStorage;
 
         private readonly Func<long, long> enumration;
         private readonly Func<long> defaultTimestampFunc;
@@ -15,9 +15,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
         public string Name { get; }
         public OperationState State { get; private set; }
 
-        public EnumerationOperation(ICachedFileStorage cachedFileStorage, string name, Func<long, long> enumration, Func<long> defaultTimestampFunc)
+        public EnumerationOperation(IKeyValueStorage keyValueStorage, string name, Func<long, long> enumration, Func<long> defaultTimestampFunc)
         {
-            this.cachedFileStorage = cachedFileStorage;
+            this.keyValueStorage = keyValueStorage;
             Name = name;
             State = OperationState.Idle;
             this.enumration = enumration;
@@ -39,12 +39,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
                     State = OperationState.Running;
                     if (!timestamp.HasValue)
                     {
-                        timestamp = cachedFileStorage.Find<long>($"{Name}Timestamp.json");
+                        timestamp = keyValueStorage.Find<long>($"{Name}Timestamp.json");
                         if (timestamp.Value == 0)
                             timestamp = defaultTimestampFunc.Invoke();
                     }
                     timestamp = enumration.Invoke(timestamp.Value);
-                    cachedFileStorage.Write($"{Name}Timestamp.json", timestamp.Value);
+                    keyValueStorage.Write($"{Name}Timestamp.json", timestamp.Value);
                     return null;
                 }
             }

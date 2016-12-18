@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Rhino.Mocks;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+using SKBKontur.Treller.Storage;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
@@ -11,11 +11,11 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 {
     public class EnumerationOperationTest : UnitTest
     {
-        private ICachedFileStorage cachedFileStorage;
+        private readonly IKeyValueStorage keyValueStorage;
 
-        public EnumerationOperationTest() : base()
+        public EnumerationOperationTest()
         {
-            cachedFileStorage = mock.Create<ICachedFileStorage>();
+            keyValueStorage = mock.Create<IKeyValueStorage>();
         }
 
         [Fact]
@@ -34,11 +34,11 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 
             using (mock.Record())
             {
-                cachedFileStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(oldTimestamp);
-                cachedFileStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
+                keyValueStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(oldTimestamp);
+                keyValueStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
             }
 
-            var operation = new EnumerationOperation(cachedFileStorage, "zzz", enumeration, () => 1L);
+            var operation = new EnumerationOperation(keyValueStorage, "zzz", enumeration, () => 1L);
             var operationResult = operation.Run();
             Assert.False(operationResult.HasValue);
             Assert.AreEqual(i, 1);
@@ -60,10 +60,10 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 
             using (mock.Record())
             {
-                cachedFileStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(oldTimestamp);
+                keyValueStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(oldTimestamp);
             }
 
-            var operation = new EnumerationOperation(cachedFileStorage, "zzz", enumeration, () => 1L);
+            var operation = new EnumerationOperation(keyValueStorage, "zzz", enumeration, () => 1L);
             var operationResult = operation.Run();
             Assert.True(operationResult.HasValue);
             Assert.AreEqual(ex, operationResult.Value);
@@ -84,11 +84,11 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 
             using (mock.Record())
             {
-                cachedFileStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(0);
-                cachedFileStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
+                keyValueStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(0);
+                keyValueStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
             }
 
-            var operation = new EnumerationOperation(cachedFileStorage, "zzz", enumeration, () => 1L);
+            var operation = new EnumerationOperation(keyValueStorage, "zzz", enumeration, () => 1L);
             var operationResult = operation.Run();
             Assert.False(operationResult.HasValue);
             Assert.AreEqual(i, 1);
@@ -110,11 +110,11 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 
             using (mock.Record())
             {
-                cachedFileStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(0);
-                cachedFileStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
+                keyValueStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(0);
+                keyValueStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
             }
 
-            var operation = new EnumerationOperation(cachedFileStorage, "zzz", enumeration, () => 1L);
+            var operation = new EnumerationOperation(keyValueStorage, "zzz", enumeration, () => 1L);
 
             Task.Run(() =>
             {

@@ -2,11 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Web;
-using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.Serialization;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
+namespace SKBKontur.Treller.Storage.FileStorage
 {
     public class FileSystemHandler : IFileSystemHandler
     {
@@ -14,19 +12,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
         private readonly IJsonSerializer jsonSerializer;
         private readonly string rootPath;
 
-        public FileSystemHandler(IJsonSerializer jsonSerializer)
+        public FileSystemHandler(IJsonSerializer jsonSerializer, string basePath, string dataDirName)
         {
             this.jsonSerializer = jsonSerializer;
-            string basePath;
             try
             {
-                basePath = HttpRuntime.AppDomainAppPath;
-                rootPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(basePath)), "TrellerData");
+                rootPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(basePath)), dataDirName);
             }
             catch (Exception)
             {
-                basePath = AppDomain.CurrentDomain.BaseDirectory;
-                rootPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(basePath))), "TrellerData");
+                rootPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory))), dataDirName);
             }
         }
 
@@ -39,7 +34,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
                     : default(TEntity);
         }
 
-        public object FindSafeInJsonUtf8File(string fileName, Type type)
+        private object FindSafeInJsonUtf8File(string fileName, Type type)
         {
             var fileText = ReadUTF8(fileName);
             return jsonSerializer.Deserialize(type, fileText);

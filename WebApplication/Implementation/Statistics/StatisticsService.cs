@@ -5,7 +5,7 @@ using Microsoft.Ajax.Utilities;
 using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+using SKBKontur.Treller.Storage;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager;
 using SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Models;
@@ -16,25 +16,25 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
     {
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardStateInfoBuilder cardStateInfoBuilder;
-        private readonly ICachedFileStorage cachedFileStorage;
+        private readonly IKeyValueStorage keyValueStorage;
         private readonly IBoardsService boardsService;
         private const string StatisticsFileStoreName = "billingTeamStatisticsInfo";
 
         public StatisticsService(
             ITaskManagerClient taskManagerClient, 
             ICardStateInfoBuilder cardStateInfoBuilder, 
-            ICachedFileStorage cachedFileStorage,
+            IKeyValueStorage keyValueStorage,
             IBoardsService boardsService)
         {
             this.taskManagerClient = taskManagerClient;
             this.cardStateInfoBuilder = cardStateInfoBuilder;
-            this.cachedFileStorage = cachedFileStorage;
+            this.keyValueStorage = keyValueStorage;
             this.boardsService = boardsService;
         }
 
         public StatisticsViewModel GetStatistics(DateTime statisticsStartTime, DateTime statisticsFinishTime, bool reCalculate)
         {
-            var result = cachedFileStorage.Find<StatisticsViewModel>(StatisticsFileStoreName);
+            var result = keyValueStorage.Find<StatisticsViewModel>(StatisticsFileStoreName);
             if (result != null && !reCalculate)
             {
                 return result;
@@ -61,7 +61,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Statistics
                 Overall = overall
             };
 
-            cachedFileStorage.Write(StatisticsFileStoreName, result);
+            keyValueStorage.Write(StatisticsFileStoreName, result);
             return result;
         }
 

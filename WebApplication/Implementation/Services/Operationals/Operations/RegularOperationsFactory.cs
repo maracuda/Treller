@@ -1,21 +1,21 @@
 ﻿using System;
 using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+using SKBKontur.Treller.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations
 {
     public class RegularOperationsFactory : IRegularOperationsFactory
     {
         private readonly IDateTimeFactory dateTimeFactory;
-        private readonly ICachedFileStorage cachedFileStorage;
+        private readonly IKeyValueStorage keyValueStorage;
 
         public RegularOperationsFactory(
             IDateTimeFactory dateTimeFactory,
-            ICachedFileStorage cachedFileStorage
+            IKeyValueStorage keyValueStorage
         )
         {
             this.dateTimeFactory = dateTimeFactory;
-            this.cachedFileStorage = cachedFileStorage;
+            this.keyValueStorage = keyValueStorage;
         }
 
         public IRegularOperation Create(string name, Action action)
@@ -25,7 +25,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.
 
         public IRegularOperation Create(string name, Func<long, long> enumeration, Func<long> defaultTimetampFunc)
         {
-            return new EnumerationOperation(cachedFileStorage, name, enumeration, defaultTimetampFunc);
+            return new EnumerationOperation(keyValueStorage, name, enumeration, defaultTimetampFunc);
         }
     }
 }
