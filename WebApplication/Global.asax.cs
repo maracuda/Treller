@@ -12,7 +12,6 @@ using SKBKontur.TaskManagerClient.Notifications;
 using SKBKontur.Treller.Serialization;
 using SKBKontur.Treller.Storage.FileStorage;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Migration;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
