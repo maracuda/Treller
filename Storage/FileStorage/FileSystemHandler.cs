@@ -52,13 +52,6 @@ namespace SKBKontur.Treller.Storage.FileStorage
                     : string.Empty;
         }
 
-        public void WriteInJsonUtf8File<TEntity>(string fileName, TEntity entity)
-        {
-            var path = GetFullPath(fileName);
-            var json = jsonSerializer.Serialize(entity);
-            FaultTolerantWrite(path, json, defaultEncoding);
-        }
-
         public void WriteUTF8(string fileName, string str)
         {
             var path = GetFullPath(fileName);

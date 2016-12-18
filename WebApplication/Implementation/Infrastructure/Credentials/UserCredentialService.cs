@@ -6,6 +6,7 @@ using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
 using SKBKontur.TaskManagerClient.Wiki.BusinessObjects;
 using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
+using SKBKontur.Treller.Serialization;
 using SKBKontur.Treller.Storage.FileStorage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials
@@ -13,17 +14,22 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
     public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService, INotificationCredentialsService, IStaffAdCredentialService
     {
         private readonly IFileSystemHandler fileSystemHandler;
+        private readonly IJsonSerializer jsonSerializer;
         private readonly Lazy<ClientsIntegrationCredentials> credentials;
 
-        public UserCredentialService(IFileSystemHandler fileSystemHandler)
+        public UserCredentialService(
+            IFileSystemHandler fileSystemHandler,
+            IJsonSerializer jsonSerializer)
         {
             this.fileSystemHandler = fileSystemHandler;
+            this.jsonSerializer = jsonSerializer;
             credentials = new Lazy<ClientsIntegrationCredentials>(LoadCredendials);
         }
 
         private ClientsIntegrationCredentials LoadCredendials()
         {
-            var result = fileSystemHandler.FindSafeInJsonUtf8File<ClientsIntegrationCredentials>("LogIn.json");
+            var serializedResult = fileSystemHandler.ReadUTF8("LogIn.json");
+            var result = jsonSerializer.Deserialize<ClientsIntegrationCredentials>(serializedResult);
             if (result == null)
                 throw new Exception($"Fail to load credentials from file LogIn.json at directory {Directory.GetCurrentDirectory()}");
             return result;
