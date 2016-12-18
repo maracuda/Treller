@@ -10,7 +10,6 @@
         "HttpInfrastructure": "1.0.0-*",
         "Infrastructure": "1.0.0-*",
         "NETStandard.Library": "1.6.0",
-        //"Newtonsoft.Json": "9.0.1",
         "xunit": "2.2.0-beta4-build3444",
         "dotnet-test-xunit": "2.2.0-preview2-build1029",
         "RhinoMocks": "3.6.1",
