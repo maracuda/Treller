@@ -51,9 +51,6 @@ namespace SKBKontur.Treller.WebApplication
             operationalService.Register(operationsFactory.Create("TaskManagerReporter", () => { container.Get<IBillingTimes>().LookForNews(); }), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
             operationalService.Register(operationsFactory.Create("AgingNewsActualizator", () => container.Get<INewsFeed>().Refresh()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));
             operationalService.Register(operationsFactory.Create("MergerBranchesNotificator", () => container.Get<IRepositoryNotificator>().NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15))), ScheduleParams.CreateAnytime(TimeSpan.FromHours(24)));
-            
-            //NOTE: turn off this process since it always fails (staff need personal domain account to send messages)
-            //operationalService.Register("DigestSender", TimeSpan.FromMinutes(5), () => container.Get<IDigestService>().SendAllToDigest());
         }
 
         protected void Application_End()
