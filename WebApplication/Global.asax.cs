@@ -9,9 +9,9 @@ using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
 using System.Web;
 using SKBKontur.Treller.Serialization;
-using SKBKontur.Treller.Storage;
 using SKBKontur.Treller.Storage.FileStorage;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
+using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Migration;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
@@ -30,7 +30,12 @@ namespace SKBKontur.Treller.WebApplication
         protected void Application_Start()
         {
             var container = new ContainerConfigurator().Configure();
+
+            container.Get<IErrorService>().SendError("init step completed");
+
             CustomizeContainer(container);
+
+            container.Get<IErrorService>().SendError($"customization step completed, {HttpRuntime.AppDomainAppPath}.");
             var serviceContainer = container.Get<IServiceContainer>();
             var assemblyService = container.Get<IAssemblyService>();
 
