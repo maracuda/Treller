@@ -31,7 +31,7 @@
         "Microsoft.Web.Infrastructure": "1.0.0",
         "Modernizr": "2.8.3",
         "MsieJavaScriptEngine": "1.5.1",
-        "Newtonsoft.Json": "6.0.6",
+        //"Newtonsoft.Json": "6.0.6",
         "normalize.css": "3.0.1",
         "React.Core": "1.4.0",
         "react.js": "0.13.0",
