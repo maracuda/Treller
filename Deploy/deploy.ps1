@@ -14,6 +14,7 @@ task Build {
     exec { dotnet restore "$base_dir\..\Infrastructure" }
     exec { dotnet restore "$base_dir\..\HttpInfrastructure" }
     exec { dotnet restore "$base_dir\..\Serialization" }
+    exec { dotnet restore "$base_dir\..\Storage" }
     exec { dotnet restore "$base_dir\..\TaskManagerClient" }
     exec { dotnet restore "$base_dir\..\WebApplication" }
     exec { dotnet build "$base_dir\..\WebApplication" -c Release }
