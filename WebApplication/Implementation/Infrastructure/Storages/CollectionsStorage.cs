@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Serialization;
+using SKBKontur.Treller.Serialization;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages
 {

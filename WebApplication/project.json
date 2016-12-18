@@ -7,6 +7,7 @@
         "bootstrap": "3.3.1",
         "EntityFramework": "5.0.0",
         "es5-shim": "2.3.0",
+        "Serialization": "1.0.0-*",
         "HttpInfrastructure": "1.0.0-*",
         "Infrastructure": "1.0.0-*",
         "JavaScriptEngineSwitcher.Core": "1.2.4",

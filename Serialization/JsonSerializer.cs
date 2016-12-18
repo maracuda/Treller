@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Serialization
+namespace SKBKontur.Treller.Serialization
 {
     public class JsonSerializer : IJsonSerializer
     {

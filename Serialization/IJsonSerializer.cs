@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Serialization
+namespace SKBKontur.Treller.Serialization
 {
     public interface IJsonSerializer
     {

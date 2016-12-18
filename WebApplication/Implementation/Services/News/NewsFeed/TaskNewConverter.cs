@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Serialization;
+using SKBKontur.Treller.Serialization;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
 {

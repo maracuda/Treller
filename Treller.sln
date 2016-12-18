@@ -18,6 +18,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Tests", "Tests\Tests.xproj"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "WebApplication", "WebApplication\WebApplication.xproj", "{1A829648-4110-49D0-84E3-177CBEF84840}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Serialization", "Serialization\Serialization.xproj", "{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{1A829648-4110-49D0-84E3-177CBEF84840}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A829648-4110-49D0-84E3-177CBEF84840}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A829648-4110-49D0-84E3-177CBEF84840}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

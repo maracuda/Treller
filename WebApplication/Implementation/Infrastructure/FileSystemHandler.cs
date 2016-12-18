@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Serialization;
+using SKBKontur.Treller.Serialization;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure
 {
