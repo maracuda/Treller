@@ -1,14 +1,13 @@
 ﻿using System.Linq;
 using Xunit;
 using SKBKontur.TaskManagerClient.Repository.Clients;
-using SKBKontur.Treller.Tests.UnitWrappers;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
 {
     public class GitlabClientTests : IntegrationTest
     {
-        private IRepositoryClient gitlabClient;
+        private readonly IRepositoryClient gitlabClient;
 
         public GitlabClientTests() : base()
         {

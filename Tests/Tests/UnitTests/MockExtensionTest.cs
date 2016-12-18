@@ -1,7 +1,5 @@
 ﻿using SKBKontur.Treller.Tests.MockWrappers;
-using SKBKontur.Treller.Tests.UnitWrappers;
 using Xunit;
-using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests
 {

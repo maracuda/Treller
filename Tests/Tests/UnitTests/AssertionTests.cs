@@ -1,5 +1,4 @@
 ﻿using System;
-using SKBKontur.Treller.Tests.UnitWrappers;
 using Xunit;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests

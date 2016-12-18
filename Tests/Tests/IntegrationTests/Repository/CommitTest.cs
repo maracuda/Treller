@@ -1,7 +1,6 @@
 ﻿using Xunit;
 using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.Treller.Tests.Tests.UnitTests;
-using SKBKontur.Treller.Tests.UnitWrappers;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
