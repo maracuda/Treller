@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Storages;
+using SKBKontur.Treller.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Sources
 {
