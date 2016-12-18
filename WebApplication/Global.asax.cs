@@ -8,7 +8,6 @@ using SKBKontur.Infrastructure.Common;
 using SKBKontur.Infrastructure.ContainerConfiguration;
 using System.Linq;
 using System.Web;
-using SKBKontur.TaskManagerClient.Notifications;
 using SKBKontur.Treller.Serialization;
 using SKBKontur.Treller.Storage.FileStorage;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
@@ -30,12 +29,7 @@ namespace SKBKontur.Treller.WebApplication
         protected void Application_Start()
         {
             var container = new ContainerConfigurator().Configure();
-
-            container.Get<INotificationService>().Send(new Notification { Title = "init step completed", Recipient = "hvorost@skbkontur.ru", Body = string.Empty});
-
             CustomizeContainer(container);
-
-            container.Get<INotificationService>().Send(new Notification { Title = "customization step completed", Recipient = "hvorost@skbkontur.ru", Body = $"customization step completed, {HttpRuntime.AppDomainAppPath}." });
             var serviceContainer = container.Get<IServiceContainer>();
             var assemblyService = container.Get<IAssemblyService>();
 
