@@ -3,11 +3,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using LightInject;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.Infrastructure.ContainerConfiguration;
-using System.Linq;
 using System.Web;
+using SKBKontur.Treller.IoCContainer;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Migration;
@@ -26,15 +23,9 @@ namespace SKBKontur.Treller.WebApplication
 
         protected void Application_Start()
         {
-            var container = new ContainerConfigurator().Configure();
-            var serviceContainer = container.Get<IServiceContainer>();
-            var assemblyService = container.Get<IAssemblyService>();
-
-            serviceContainer.RegisterControllers(assemblyService.GetLoadedAssemblies().ToArray());
-            serviceContainer.EnableMvc();
+            var container = ContainerFactory.CreateMvc();
             
             AreaRegistration.RegisterAllAreas();
-
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -42,8 +33,8 @@ namespace SKBKontur.Treller.WebApplication
 
             BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            runspacePool = container.Get<IVirtualMachinesRunspacePool>();
 
+            runspacePool = container.Get<IVirtualMachinesRunspacePool>();
             var operationsFactory = container.Get<IRegularOperationsFactory>();
             operationalService = container.Get<IOperationalService>();
 

@@ -9,6 +9,7 @@
         "Serialization": "1.0.0-*",
         "HttpInfrastructure": "1.0.0-*",
         "Infrastructure": "1.0.0-*",
+        "IoCContainer": "1.0.0-*",
         "JavaScriptEngineSwitcher.Core": "1.2.4",
         "JavaScriptEngineSwitcher.Msie": "1.2.4",
         "JavaScriptEngineSwitcher.V8": "1.2.4",
