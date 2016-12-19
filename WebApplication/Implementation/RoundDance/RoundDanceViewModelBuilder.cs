@@ -68,7 +68,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
 
             return lastChangeIndex >= 0
                 ? CreatePeople(people.Name,
-                    (lastChangeIndex > 1 ? people.WorkPeriods[lastChangeIndex - 1] : null).IfNotNull(x => x.Direction),
+                    (lastChangeIndex > 1 ? people.WorkPeriods[lastChangeIndex - 1] : null)?.Direction ?? string.Empty,
                     people.WorkPeriods[lastChangeIndex])
                 : null;
         }
@@ -107,12 +107,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
             return new PeopleRoundDanceViewModel
             {
                 Name = people.Name,
-                CurrentWeight = weights.SafeGet(people.GetCurrentDirection).IfNotNull(x => x.Weight),
-                
-                DutyWeight = weights.SafeGet(Direction.Duty.GetEnumDescription()).IfNotNull(x => x.RotationWeight, 100M),
-                InfrastructureWeight = weights.SafeGet(Direction.Infrastructure.GetEnumDescription()).IfNotNull(x => x.RotationWeight, 100M),
-                SpeedyWeight = weights.SafeGet(Direction.SpeedyFeatures.GetEnumDescription()).IfNotNull(x => x.RotationWeight, 100M),
-
+                CurrentWeight = weights.SafeGet(people.GetCurrentDirection)?.Weight ?? 0,
+                DutyWeight = weights.SafeGet(Direction.Duty.GetEnumDescription())?.RotationWeight ?? 100M,
+                InfrastructureWeight = weights.SafeGet(Direction.Infrastructure.GetEnumDescription())?.RotationWeight ?? 100M,
+                SpeedyWeight = weights.SafeGet(Direction.SpeedyFeatures.GetEnumDescription())?.RotationWeight ?? 100M,
                 FeatureWeight = 100 - (futureWeights.Length > 0 ? futureWeights.Max() : 0M)
             };
         }
