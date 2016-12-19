@@ -28,7 +28,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
 
         private ClientsIntegrationCredentials LoadCredendials()
         {
-            var serializedResult = fileSystemHandler.ReadUTF8("LogIn.json");
+            var serializedResult = fileSystemHandler.ReadUTF8("Store_LogIn.json");
             var result = jsonSerializer.Deserialize<ClientsIntegrationCredentials>(serializedResult);
             if (result == null)
                 throw new Exception($"Fail to load credentials from file LogIn.json at directory {Directory.GetCurrentDirectory()}");

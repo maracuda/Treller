@@ -26,3 +26,4 @@ _ReSharper*/
 .vs/*
 .idea*/*
 TrellerData/LogIn.json
+TrellerData/*.json
