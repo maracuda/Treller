@@ -9,13 +9,13 @@ namespace SKBKontur.Treller.Storage.FileStorage
     public class FileSystemHandler : IFileSystemHandler
     {
         private static readonly Encoding defaultEncoding = Encoding.UTF8;
+        private const string dataDirName = "TrellerData";
         private readonly IJsonSerializer jsonSerializer;
         private readonly string rootPath;
 
         public FileSystemHandler(
             IJsonSerializer jsonSerializer, 
-            IEnvironment environment,
-            string dataDirName = "TrellerData")
+            IEnvironment environment)
         {
             this.jsonSerializer = jsonSerializer;
             try
