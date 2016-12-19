@@ -1,6 +1,6 @@
 using System;
 using SKBKontur.BlocksMapping.Abstrations;
-using SKBKontur.Infrastructure.ContainerConfiguration;
+using SKBKontur.Treller.IoCContainer;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions
 {

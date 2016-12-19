@@ -2,21 +2,22 @@ using System.Collections.Generic;
 using System.Reflection;
 using SKBKontur.BlocksMapping.Abstrations;
 using SKBKontur.Infrastructure.Common;
+using SKBKontur.Treller.IoCContainer.AssembliesLoader;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Abstractions
 {
     public class DomainService : IDomainService
     {
-        private readonly IAssemblyService assemblyService;
+        private readonly IAssembliesLoader assembliesLoader;
 
-        public DomainService(IAssemblyService assemblyService)
+        public DomainService(IAssembliesLoader assembliesLoader)
         {
-            this.assemblyService = assemblyService;
+            this.assembliesLoader = assembliesLoader;
         }
 
         public IEnumerable<Assembly> GetSystemAssemblies()
         {
-            return assemblyService.GetLoadedAssemblies();
+            return assembliesLoader.LoadAssemblies();
         }
     }
 }
