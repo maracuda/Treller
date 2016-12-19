@@ -11,7 +11,7 @@ using SKBKontur.Treller.Storage.FileStorage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials
 {
-    public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService, INotificationCredentialsService, IStaffAdCredentialService
+    public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService, INotificationCredentialsService
     {
         private readonly IFileSystemHandler fileSystemHandler;
         private readonly IJsonSerializer jsonSerializer;
@@ -58,11 +58,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
         public DomainCredentials GetNotificationCredentials()
         {
             return credentials.Value.NotificationCredentials;
-        }
-
-        public DomainCredentials GetStaffCredentials()
-        {
-            return credentials.Value.StaffCredentials;
         }
     }
 }
