@@ -11,6 +11,7 @@ properties {
 task default -depends SetAppOnline
 
 task Build {
+    exec { dotnet restore "$base_dir\..\IoCContainer" }
     exec { dotnet restore "$base_dir\..\Infrastructure" }
     exec { dotnet restore "$base_dir\..\HttpInfrastructure" }
     exec { dotnet restore "$base_dir\..\Serialization" }

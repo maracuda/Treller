@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace SKBKontur.Infrastructure.Common
+namespace SKBKontur.Treller.IoCContainer.AssembliesLoader
 {
     public static class AssemblyExtenssions
     {
