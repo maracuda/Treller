@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Migration
@@ -7,14 +7,14 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Migratio
     public class NullReportConsistencyChecker
     {
         private readonly ITaskNewStorage taskNewStorage;
-        private readonly IErrorService errorService;
+        private readonly ILoggerFactory loggerFactory;
 
         public NullReportConsistencyChecker(
             ITaskNewStorage taskNewStorage,
-            IErrorService errorService)
+            ILoggerFactory loggerFactory)
         {
             this.taskNewStorage = taskNewStorage;
-            this.errorService = errorService;
+            this.loggerFactory = loggerFactory;
         }
 
         public void Run()
@@ -29,7 +29,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Migratio
                 taskNewsWithNullReportsMirgratedCount++;
             }
 
-            errorService.SendError($"NullReportConsistencyChecker observed {taskNews.Length} task news and found {taskNewsWithNullReportsCount} task news with null reports, ${taskNewsWithNullReportsMirgratedCount} task news was migrated.");
+            loggerFactory.Get<NullReportConsistencyChecker>().LogError($"NullReportConsistencyChecker observed {taskNews.Length} task news and found {taskNewsWithNullReportsCount} task news with null reports, ${taskNewsWithNullReportsMirgratedCount} task news was migrated.");
         }
     }
 }

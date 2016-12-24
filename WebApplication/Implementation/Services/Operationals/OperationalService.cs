@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Timers;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Scheduler;
 
@@ -10,20 +9,18 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
 {
     public class OperationalService : IOperationalService
     {
-        private readonly IErrorService errorService;
         private readonly IOperationsLauncher operationsLauncher;
         private readonly IScheduler scheduler;
+        private readonly ILoggerFactory loggerFactory;
         private readonly ConcurrentDictionary<Timer, IRegularOperation> operationsIndex = new ConcurrentDictionary<Timer, IRegularOperation>();
 
-
-        public OperationalService(
-            IErrorService errorService,
-            IOperationsLauncher operationsLauncher,
-            IScheduler scheduler)
+        public OperationalService(IOperationsLauncher operationsLauncher,
+            IScheduler scheduler,
+            ILoggerFactory loggerFactory)
         {
-            this.errorService = errorService;
             this.operationsLauncher = operationsLauncher;
             this.scheduler = scheduler;
+            this.loggerFactory = loggerFactory;
         }
 
         public void Dispose()
@@ -53,7 +50,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
             var timer = sender as Timer;
             if (timer == null || !operationsIndex.ContainsKey(timer))
             {
-                errorService.SendError("Fail to find action to run operation", new Exception());
+                loggerFactory.Get<OperationalService>().LogError("Fail to find action to run operation");
                 return;
             }
 

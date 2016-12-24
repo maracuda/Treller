@@ -1,6 +1,6 @@
 using System;
 using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.OperationsLog;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Scheduler;
@@ -9,21 +9,21 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
 {
     public class OperationsLauncher : IOperationsLauncher
     {
-        private readonly IErrorService errorService;
         private readonly IDateTimeFactory dateTimeFactory;
         private readonly IScheduler scheduler;
         private readonly IOperationsLog operationsLog;
+        private readonly ILoggerFactory loggerFactory;
 
         public OperationsLauncher(
-            IErrorService errorService,
             IDateTimeFactory dateTimeFactory,
             IScheduler scheduler,
-            IOperationsLog operationsLog)
+            IOperationsLog operationsLog,
+            ILoggerFactory loggerFactory)
         {
-            this.errorService = errorService;
             this.dateTimeFactory = dateTimeFactory;
             this.scheduler = scheduler;
             this.operationsLog = operationsLog;
+            this.loggerFactory = loggerFactory;
         }
 
         public void SafeLaunch(IRegularOperation operation)
@@ -36,7 +36,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
                     var operationResult = operation.Run();
                     if (operationResult.HasValue)
                     {
-                        errorService.SendError($"Operation with name {operation.Name} failed", operationResult.Value);
+                        loggerFactory.Get<OperationsLauncher>().LogError($"Operation with name {operation.Name} failed", operationResult.Value);
                     }
                     var endDateTime = dateTimeFactory.Now;
                     operationsLog.Append(operation.Name, beginDateTime, endDateTime, !operationResult.HasValue);
@@ -44,7 +44,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
             }
             catch (Exception e)
             {
-                errorService.SendError($"Fail to launch operation {operation.Name}", e);
+                loggerFactory.Get<OperationsLauncher>().LogError($"Fail to launch operation {operation.Name}", e);
             }
         }
     }

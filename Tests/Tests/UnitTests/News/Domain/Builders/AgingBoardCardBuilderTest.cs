@@ -3,7 +3,7 @@ using Xunit;
 using Rhino.Mocks;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
@@ -12,16 +12,18 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
 {
     public class AgingBoardCardBuilderTest : UnitTest
     {
-        private ITaskManagerClient taskManagerClient;
-        private IErrorService errorService;
-        private OutdatedBoardCardBuilder outdatedBoardCardBuilder;
+        private readonly ITaskManagerClient taskManagerClient;
+        private readonly OutdatedBoardCardBuilder outdatedBoardCardBuilder;
+        private readonly ILoggerFactory loggerFactory;
+        private readonly ILogger logger;
 
-        public AgingBoardCardBuilderTest() : base()
+        public AgingBoardCardBuilderTest()
         {
             taskManagerClient = mock.Create<ITaskManagerClient>();
-            errorService = mock.Create<IErrorService>();
+            loggerFactory = mock.Create<ILoggerFactory>();
+            logger = mock.Create<ILogger>();
 
-            outdatedBoardCardBuilder = new OutdatedBoardCardBuilder(taskManagerClient, errorService);
+            outdatedBoardCardBuilder = new OutdatedBoardCardBuilder(taskManagerClient, loggerFactory);
         }
 
         [Fact]
@@ -32,7 +34,8 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
             using (mock.Record())
             {
                 taskManagerClient.Expect(f => f.GetCard(cardId)).Throw(new Exception());
-                errorService.Expect(f => f.SendError(Arg<string>.Is.NotNull, Arg<Exception>.Is.NotNull));
+                loggerFactory.Expect(f => f.Get<OutdatedBoardCardBuilder>()).Return(logger);
+                logger.Expect(f => f.LogError(Arg<string>.Is.NotNull));
             }
 
             var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);
@@ -54,7 +57,8 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
             {
                 taskManagerClient.Expect(f => f.GetCard(cardId)).Return(card);
                 taskManagerClient.Expect(f => f.GetBoardLists(Arg<string[]>.Matches(arg => arg.Length == 1 && arg[0].Equals(boardId)))).Return(new BoardList[0]);
-                errorService.Expect(f => f.SendError(Arg<string>.Is.NotNull));
+                loggerFactory.Expect(f => f.Get<OutdatedBoardCardBuilder>()).Return(logger);
+                logger.Expect(f => f.LogError(Arg<string>.Is.NotNull));
             }
 
             var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);

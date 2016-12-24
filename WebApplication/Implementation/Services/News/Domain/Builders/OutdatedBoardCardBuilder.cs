@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using SKBKontur.Infrastructure.Sugar;
 using SKBKontur.TaskManagerClient;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders
@@ -10,16 +10,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.B
     public class OutdatedBoardCardBuilder : IOutdatedBoardCardBuilder
     {
         private readonly ITaskManagerClient taskManagerClient;
-        private readonly IErrorService errorService;
+        private readonly ILoggerFactory loggerFactory;
 
         private static readonly TimeSpan cardExpirationPeriod = TimeSpan.FromDays(3);
 
         public OutdatedBoardCardBuilder(
             ITaskManagerClient taskManagerClient,
-            IErrorService errorService)
+            ILoggerFactory loggerFactory)
         {
             this.taskManagerClient = taskManagerClient;
-            this.errorService = errorService;
+            this.loggerFactory = loggerFactory;
         }
 
         public Maybe<OutdatedBoardCardModel> TryBuildModel(string cardId)
@@ -31,7 +31,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.B
                                                  .FirstOrDefault(x => x.Id == boardCard.BoardListId);
                 if (boardList == null)
                 {
-                    errorService.SendError($"Fail to find board list with id {boardCard.BoardListId} at board {boardCard.BoardId} for card {cardId}.");
+                    loggerFactory.Get<OutdatedBoardCardBuilder>().LogError($"Fail to find board list with id {boardCard.BoardListId} at board {boardCard.BoardId} for card {cardId}.");
                     return null;
                 }
 
@@ -46,7 +46,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.B
             }
             catch (Exception e)
             {
-                errorService.SendError("Fail to build model due to network or integration errors.", e);
+                loggerFactory.Get<OutdatedBoardCardBuilder>().LogError("Fail to build model due to network or integration errors.", e);
                 return null;
             }
         }
