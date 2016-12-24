@@ -5,6 +5,8 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web;
 using SKBKontur.Treller.IoCContainer;
+using SKBKontur.Treller.MessageBroker;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Migration;
@@ -24,6 +26,7 @@ namespace SKBKontur.Treller.WebApplication
         protected void Application_Start()
         {
             var container = ContainerFactory.CreateMvc();
+            CustomizeContainer(container);
             
             AreaRegistration.RegisterAllAreas();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -35,14 +38,34 @@ namespace SKBKontur.Treller.WebApplication
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             runspacePool = container.Get<IVirtualMachinesRunspacePool>();
+            RunRegularOperations(container);
+        }
+
+        private void CustomizeContainer(IContainer container)
+        {
+            var credentialService = container.Get<ICredentialService>();
+            var mbCredentials = credentialService.MessageBrokerCredentials;
+            var notificationService = new NotificationService(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            container.RegisterInstance<INotificationService>(notificationService);
+        }
+
+        private void RunRegularOperations(IContainer container)
+        {
             var operationsFactory = container.Get<IRegularOperationsFactory>();
             operationalService = container.Get<IOperationalService>();
 
             container.Get<NullReportConsistencyChecker>().Run();
 
-            operationalService.Register(operationsFactory.Create("TaskManagerReporter", () => { container.Get<IBillingTimes>().LookForNews(); }), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
-            operationalService.Register(operationsFactory.Create("AgingNewsActualizator", () => container.Get<INewsFeed>().Refresh()), ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));
-            operationalService.Register(operationsFactory.Create("MergerBranchesNotificator", () => container.Get<IRepositoryNotificator>().NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15))), ScheduleParams.CreateAnytime(TimeSpan.FromHours(24)));
+            operationalService.Register(
+                operationsFactory.Create("TaskManagerReporter", () => { container.Get<IBillingTimes>().LookForNews(); }),
+                ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
+            operationalService.Register(
+                operationsFactory.Create("AgingNewsActualizator", () => container.Get<INewsFeed>().Refresh()),
+                ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));
+            operationalService.Register(
+                operationsFactory.Create("MergerBranchesNotificator",
+                    () => container.Get<IRepositoryNotificator>().NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15))),
+                ScheduleParams.CreateAnytime(TimeSpan.FromHours(24)));
         }
 
         protected void Application_End()

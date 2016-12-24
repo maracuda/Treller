@@ -1,5 +1,5 @@
 ﻿using System;
-using SKBKontur.TaskManagerClient.Notifications;
+using SKBKontur.Treller.MessageBroker;
 using SKBKontur.Treller.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService

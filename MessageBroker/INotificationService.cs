@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.TaskManagerClient.Notifications
+﻿namespace SKBKontur.Treller.MessageBroker
 {
     public interface INotificationService
     {

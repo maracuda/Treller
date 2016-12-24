@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SKBKontur.TaskManagerClient.Notifications;
+using SKBKontur.Treller.MessageBroker;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Repository
 {

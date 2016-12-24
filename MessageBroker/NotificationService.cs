@@ -1,17 +1,30 @@
 ﻿using System.Net;
 using System.Net.Mail;
 
-namespace SKBKontur.TaskManagerClient.Notifications
+namespace SKBKontur.Treller.MessageBroker
 {
     public class NotificationService : INotificationService
     {
-        private readonly INotificationCredentialsService notificationCredentialsService;
+        private readonly string login;
+        private readonly string password;
+        private readonly string domain;
+        private readonly string smtpHost;
+        private readonly int smtpPort;
         private readonly string senderEmail;
 
-        public NotificationService(INotificationCredentialsService notificationCredentialsService)
+        public NotificationService(
+            string login,
+            string password,
+            string domain,
+            string smtpHost,
+            int smtpPort)
         {
-            this.notificationCredentialsService = notificationCredentialsService;
-            senderEmail = $"{notificationCredentialsService.GetNotificationCredentials().Login}@skbkontur.ru";
+            this.login = login;
+            this.password = password;
+            this.domain = domain;
+            this.smtpHost = smtpHost;
+            this.smtpPort = smtpPort;
+            senderEmail = $"{login}@skbkontur.ru";
         }
 
         public void Send(Notification notification)
@@ -37,12 +50,11 @@ namespace SKBKontur.TaskManagerClient.Notifications
 
         private SmtpClient CreateClient()
         {
-            var credentials = notificationCredentialsService.GetNotificationCredentials();
-            return new SmtpClient("dag3.kontur", 25)
+            return new SmtpClient(smtpHost, smtpPort)
             {
                 UseDefaultCredentials = false,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new NetworkCredential(credentials.Login, credentials.Password, credentials.Domain)
+                Credentials = new NetworkCredential(login, password, domain)
             };
         }
     }

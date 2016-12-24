@@ -7,7 +7,7 @@ namespace SKBKontur.TaskManagerClient.Extensions
 {
     public static class CommonExtensions
     {
-        public static async Task<TResult[]> Await<T, TResult>(this IEnumerable<Task<T>> tasksCollection, Func<T, TResult> converter)
+        private static async Task<TResult[]> Await<T, TResult>(this IEnumerable<Task<T>> tasksCollection, Func<T, TResult> converter)
         {
             var tasks = tasksCollection.ToArray();
             var length = tasks.Length;
@@ -46,36 +46,6 @@ namespace SKBKontur.TaskManagerClient.Extensions
         public static Task<TResult[]> Await<T, TResult>(this Task<T[]> task, Func<T, TResult> converter, Func<IEnumerable<TResult>, IEnumerable<TResult>> resultFilter = null)
         {
             return Await(new[] {task}, converter, resultFilter);
-        }
-
-        public static T SafeRun<T>(this Func<Task<T>> funcToRun)
-        {
-            T result;
-            try
-            {
-                result = funcToRun().Result;
-            }
-            catch (Exception)
-            {
-                result = default(T);
-            }
-
-            return result;
-        }
-
-        public static T SafeResult<T>(this Task<T> runningTask)
-        {
-            T result;
-            try
-            {
-                result = runningTask.Result;
-            }
-            catch (Exception)
-            {
-                result = default(T);
-            }
-
-            return result;
         }
     }
 }

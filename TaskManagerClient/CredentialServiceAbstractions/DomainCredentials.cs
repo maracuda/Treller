@@ -5,7 +5,5 @@ namespace SKBKontur.TaskManagerClient.CredentialServiceAbstractions
         public string Domain { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-
-        public string DomainLogin => $@"{Domain ?? "."}\{Login}";
     }
 }

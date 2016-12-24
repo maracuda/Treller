@@ -15,6 +15,7 @@
         "JavaScriptEngineSwitcher.V8": "1.2.4",
         "jQuery": "1.11.1",
         "JSPool": "0.2.0",
+        "MessageBroker": "1.0.0-*",
         "Microsoft.AspNet.Mvc": "4.0.20710.0",
         "Microsoft.AspNet.Providers.Core": "1.1",
         "Microsoft.AspNet.Providers.LocalDB": "1.1",

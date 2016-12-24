@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.Notifications;
 using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
 using SKBKontur.TaskManagerClient.Wiki.BusinessObjects;
@@ -10,7 +9,7 @@ using SKBKontur.Treller.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials
 {
-    public class UserCredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService, INotificationCredentialsService
+    public class UserCredentialService : ICredentialService
     {
         private readonly IKeyValueStorage keyValueStorage;
         private readonly Lazy<ClientsIntegrationCredentials> credentials;
@@ -49,9 +48,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
             return credentials.Value.WikiCredentials;
         }
 
-        public DomainCredentials GetNotificationCredentials()
-        {
-            return credentials.Value.NotificationCredentials;
-        }
+        public DomainCredentials MessageBrokerCredentials => credentials.Value.NotificationCredentials;
     }
 }
