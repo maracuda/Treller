@@ -38,7 +38,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService
             {
                 Title = title,
                 Body = body,
-                IsHtml = false,
                 Recipient = ErrorRecipientEmail,
             };
             notificationService.Send(notification);

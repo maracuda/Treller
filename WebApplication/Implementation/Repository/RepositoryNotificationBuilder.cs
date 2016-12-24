@@ -17,8 +17,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
                 Recipient = commiterEmail,
                 Title = "Уведомление о старых ветках",
                 Body = body,
-                CopyTo = "hvorost@skbkontur.ru",
-                IsHtml = false
+                CopyTo = "hvorost@skbkontur.ru"
             };
         }
 
@@ -34,8 +33,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
                 Recipient = commiterEmail,
                 Title = "Уведомление о зарелизенных ветках",
                 Body = body,
-                CopyTo = "hvorost@skbkontur.ru",
-                IsHtml = false
+                CopyTo = "hvorost@skbkontur.ru"
             };
         }
     }

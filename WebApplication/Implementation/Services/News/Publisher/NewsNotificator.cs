@@ -18,7 +18,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publishe
             {
                 Title = title,
                 Body = body,
-                IsHtml = false,
                 Recipient = mailingList,
                 ReplyTo = "ask.billing@skbkontur.ru"
             };

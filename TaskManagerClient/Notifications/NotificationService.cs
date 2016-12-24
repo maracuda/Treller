@@ -21,10 +21,8 @@ namespace SKBKontur.TaskManagerClient.Notifications
 
             using (var smtpClient = CreateClient())
             {
-                var message = new MailMessage(senderEmail, notification.Recipient, notification.Title, notification.Body)
-                {
-                    IsBodyHtml = notification.IsHtml,
-                };
+                var message = new MailMessage(senderEmail, notification.Recipient, notification.Title, notification.Body);
+
                 if (!string.IsNullOrEmpty(notification.ReplyTo))
                 {
                     message.ReplyToList.Add(new MailAddress(notification.ReplyTo));
