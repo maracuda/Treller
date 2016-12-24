@@ -1,20 +1,20 @@
 ﻿using System.Web.Mvc;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
+using SKBKontur.Treller.Logger;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public abstract class ExceptionHandledController : Controller
     {
-        protected readonly IErrorService errorService;
+        private readonly ILoggerFactory loggerFactory;
 
-        protected ExceptionHandledController(IErrorService errorService)
+        protected ExceptionHandledController(ILoggerFactory loggerFactory)
         {
-            this.errorService = errorService;
+            this.loggerFactory = loggerFactory;
         }
 
         protected override void OnException(ExceptionContext filterContext)
         {
-            errorService.SendError("Controller error", filterContext.Exception);
+            loggerFactory.Get<ExceptionHandledController>().LogError("Controller error", filterContext.Exception);
             base.OnException(filterContext);
         }
     }

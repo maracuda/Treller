@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Web.Mvc;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.RoundDance;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
@@ -14,7 +14,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         public RoundDanceController(
             IRoundDanceViewModelBuilder roundDanceViewModelBuilder,
             IRoundDancePeopleStorage roundDancePeopleStorage,
-            IErrorService errorService) : base(errorService)
+            ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             this.roundDanceViewModelBuilder = roundDanceViewModelBuilder;
             this.roundDancePeopleStorage = roundDancePeopleStorage;

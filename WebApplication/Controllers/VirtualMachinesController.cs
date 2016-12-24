@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Logging;
@@ -18,7 +18,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             IVirtualMachinesStorage virtualMachinesStorage, 
             IVirtualMachinesService virtualMachinesService,
             IVirtualMachinesExecuteLog virtualMachinesExecuteLog,
-            IErrorService errorService) : base(errorService)
+            ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             this.virtualMachinesStorage = virtualMachinesStorage;
             this.virtualMachinesService = virtualMachinesService;

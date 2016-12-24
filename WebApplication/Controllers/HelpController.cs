@@ -1,27 +1,26 @@
 ﻿using System.Web.Mvc;
 using SKBKontur.TaskManagerClient;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Help;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public class HelpController : ExceptionHandledController
     {
+        private readonly ILoggerFactory loggerFactory;
         private readonly IBugTrackerClient bugTrackerClient;
 
         public HelpController(
-            IBugTrackerClient bugTrackerClient,
-            IErrorService errorService) : base(errorService)
+            ILoggerFactory loggerFactory,
+            IBugTrackerClient bugTrackerClient) : base(loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
             this.bugTrackerClient = bugTrackerClient;
         }
 
         public ActionResult Index()
         {
-            return View("Index", new HelpViewModel
-            {
-                NotificationRecipientEmail = errorService.ErrorRecipientEmail
-            });
+            return View("Index", new HelpViewModel());
         }
 
         public ActionResult DeleteAllCommentsFromConsistencyBattle()
@@ -43,15 +42,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult UpdateNotificationEmail(string email)
-        {
-            errorService.ChangeErrorRecipientEmail(email);
-            return RedirectToAction("Index");
-        }
-
         public ActionResult SendNotification(string text)
         {
-            errorService.SendError(text, null);
+            loggerFactory.Get<HelpController>().LogError(text);
             return RedirectToAction("Index");
         }
     }

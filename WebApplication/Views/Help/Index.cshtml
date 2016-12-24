@@ -22,11 +22,6 @@
             {
                 <input type="submit" value="Удалить все данные из бага консистентности" class="news__button news_actualize_button" />
             }
-            @using (Html.BeginForm("UpdateNotificationEmail", "Help", FormMethod.Post))
-            {
-                @Html.TextBox("email", Model.NotificationRecipientEmail)
-                <input type="submit" value="Изменить мыло для уведомлений об ошибках треллера" class="news__button news_actualize_button" />
-            }
             @using (Html.BeginForm("SendNotification", "Help", FormMethod.Post))
             {
                 @Html.TextBox("text", "some text")

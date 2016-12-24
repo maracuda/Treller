@@ -5,6 +5,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web;
 using SKBKontur.Treller.IoCContainer;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.MessageBroker;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
@@ -22,12 +23,22 @@ namespace SKBKontur.Treller.WebApplication
     {
         private IVirtualMachinesRunspacePool runspacePool;
         private IOperationalService operationalService;
+        private IContainer container;
 
         protected void Application_Start()
         {
-            var container = ContainerFactory.CreateMvc();
-            CustomizeContainer(container);
-            
+            container = ContainerFactory.CreateMvc();
+            container.Get<ILogService>().OnError += HandleError;
+            CustomizeContainer();
+            PrepareWebApplication();
+
+            runspacePool = container.Get<IVirtualMachinesRunspacePool>();
+            operationalService = container.Get<IOperationalService>();
+            RunRegularOperations();
+        }
+
+        private static void PrepareWebApplication()
+        {
             AreaRegistration.RegisterAllAreas();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -36,12 +47,21 @@ namespace SKBKontur.Treller.WebApplication
 
             BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            runspacePool = container.Get<IVirtualMachinesRunspacePool>();
-            RunRegularOperations(container);
         }
 
-        private static void CustomizeContainer(IContainer container)
+        private void HandleError(object sender, ErrorEventArgs args)
+        {
+            container.Get<IMessageProducer>().Publish(new Message
+            {
+                Recipient = "hvorost@skbkontur.ru",
+                Title = args.Message,
+                Body = args.Exception == null
+                    ? $"{args.Message}{Environment.NewLine}{args.Exception}"
+                    : args.Message
+            });
+        }
+
+        private void CustomizeContainer()
         {
             var credentialService = container.Get<ICredentialService>();
             var mbCredentials = credentialService.MessageBrokerCredentials;
@@ -49,12 +69,11 @@ namespace SKBKontur.Treller.WebApplication
             container.RegisterInstance<IMessageProducer>(notificationService);
         }
 
-        private void RunRegularOperations(IContainer container)
+        private void RunRegularOperations()
         {
-            var operationsFactory = container.Get<IRegularOperationsFactory>();
-            operationalService = container.Get<IOperationalService>();
-
             container.Get<NullReportConsistencyChecker>().Run();
+
+            var operationsFactory = container.Get<IRegularOperationsFactory>();
 
             operationalService.Register(
                 operationsFactory.Create("TaskManagerReporter", () => { container.Get<IBillingTimes>().LookForNews(); }),

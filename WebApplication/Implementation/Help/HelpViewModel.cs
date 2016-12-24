@@ -2,6 +2,5 @@
 {
     public class HelpViewModel
     {
-        public string NotificationRecipientEmail { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Web.Mvc;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Statistics;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
@@ -12,7 +12,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public StatisticsController(
             IStatisticsService statisticsService,
-            IErrorService errorService) : base(errorService)
+            ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             this.statisticsService = statisticsService;
         }

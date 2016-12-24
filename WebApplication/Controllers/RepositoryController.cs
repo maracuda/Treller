@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
+using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
-using SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
@@ -13,7 +13,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         public RepositoryController(
             IOldBranchesModelBuilder oldBranchesModelBuilder,
             IRepositoryNotificator repositoryNotificator,
-            IErrorService errorService) : base(errorService)
+            ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             this.oldBranchesModelBuilder = oldBranchesModelBuilder;
             this.repositoryNotificator = repositoryNotificator;
