@@ -3,7 +3,7 @@ using System.Net.Mail;
 
 namespace SKBKontur.Treller.MessageBroker
 {
-    public class NotificationService : INotificationService
+    public class EmailMessageProducer : IMessageProducer
     {
         private readonly string login;
         private readonly string password;
@@ -12,7 +12,7 @@ namespace SKBKontur.Treller.MessageBroker
         private readonly int smtpPort;
         private readonly string senderEmail;
 
-        public NotificationService(
+        public EmailMessageProducer(
             string login,
             string password,
             string domain,
@@ -27,24 +27,24 @@ namespace SKBKontur.Treller.MessageBroker
             senderEmail = $"{login}@skbkontur.ru";
         }
 
-        public void Send(Notification notification)
+        public void Publish(Message message)
         {
-            if (string.IsNullOrEmpty(notification.Recipient))
+            if (string.IsNullOrEmpty(message.Recipient))
                 return;
 
             using (var smtpClient = CreateClient())
             {
-                var message = new MailMessage(senderEmail, notification.Recipient, notification.Title, notification.Body);
+                var mailMessage = new MailMessage(senderEmail, message.Recipient, message.Title, message.Body);
 
-                if (!string.IsNullOrEmpty(notification.ReplyTo))
+                if (!string.IsNullOrEmpty(message.ReplyTo))
                 {
-                    message.ReplyToList.Add(new MailAddress(notification.ReplyTo));
+                    mailMessage.ReplyToList.Add(new MailAddress(message.ReplyTo));
                 }
-                if (!string.IsNullOrEmpty(notification.CopyTo))
+                if (!string.IsNullOrEmpty(message.CopyTo))
                 {
-                    message.CC.Add(new MailAddress(notification.CopyTo));
+                    mailMessage.CC.Add(new MailAddress(message.CopyTo));
                 }
-                smtpClient.Send(message);
+                smtpClient.Send(mailMessage);
             }
         }
 

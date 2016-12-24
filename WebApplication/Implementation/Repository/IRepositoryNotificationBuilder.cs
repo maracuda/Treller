@@ -5,7 +5,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
 {
     public interface IRepositoryNotificationBuilder
     {
-        Notification BuildForOldBranch(string commiterEmail, IEnumerable<string> oldBranches);
-        Notification BuildForReleasedBranch(string commiterEmail, IEnumerable<string> releasedBranches);
+        Message BuildForOldBranch(string commiterEmail, IEnumerable<string> oldBranches);
+        Message BuildForReleasedBranch(string commiterEmail, IEnumerable<string> releasedBranches);
     }
 }

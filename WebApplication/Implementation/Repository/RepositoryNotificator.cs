@@ -9,16 +9,16 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
     {
         private readonly IRepository repository;
         private readonly IRepositoryNotificationBuilder repositoryNotificationBuilder;
-        private readonly INotificationService notificationService;
+        private readonly IMessageProducer messageProducer;
 
         public RepositoryNotificator(
             IRepository repository,
             IRepositoryNotificationBuilder repositoryNotificationBuilder,
-            INotificationService notificationService)
+            IMessageProducer messageProducer)
         {
             this.repository = repository;
             this.repositoryNotificationBuilder = repositoryNotificationBuilder;
-            this.notificationService = notificationService;
+            this.messageProducer = messageProducer;
         }
 
         public void NotifyCommitersAboutMergedBranches(TimeSpan maxMergingTimeSpan)
@@ -37,7 +37,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
             foreach (var emailToBranchesPair in commiterIndex)
             {
                 var notification = repositoryNotificationBuilder.BuildForReleasedBranch(emailToBranchesPair.Key, emailToBranchesPair.Value);
-                notificationService.Send(notification);
+                messageProducer.Publish(notification);
             }
         }
 
@@ -57,7 +57,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Repository
             foreach (var emailToBranchesPair in commiterIndex)
             {
                 var notification = repositoryNotificationBuilder.BuildForOldBranch(emailToBranchesPair.Key, emailToBranchesPair.Value);
-                notificationService.Send(notification);
+                messageProducer.Publish(notification);
             }
         }
     }

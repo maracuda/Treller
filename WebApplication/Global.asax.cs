@@ -45,8 +45,8 @@ namespace SKBKontur.Treller.WebApplication
         {
             var credentialService = container.Get<ICredentialService>();
             var mbCredentials = credentialService.MessageBrokerCredentials;
-            var notificationService = new NotificationService(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
-            container.RegisterInstance<INotificationService>(notificationService);
+            var notificationService = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            container.RegisterInstance<IMessageProducer>(notificationService);
         }
 
         private void RunRegularOperations(IContainer container)

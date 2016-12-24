@@ -8,14 +8,14 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService
     {
         private const string NotificationFileName = "NotificationEmail";
 
-        private readonly INotificationService notificationService;
+        private readonly IMessageProducer messageProducer;
         private readonly IKeyValueStorage keyValueStorage;
 
         public ErrorService(
-            INotificationService notificationService,
+            IMessageProducer messageProducer,
             IKeyValueStorage keyValueStorage)
         {
-            this.notificationService = notificationService;
+            this.messageProducer = messageProducer;
             this.keyValueStorage = keyValueStorage;
 
             ErrorRecipientEmail = keyValueStorage.Find<string>(NotificationFileName) ?? "hvorost@skbkontur.ru";
@@ -34,13 +34,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.ErrorService
 
         private void SendError(string title, string body)
         {
-            var notification = new Notification
+            var notification = new Message
             {
                 Title = title,
                 Body = body,
                 Recipient = ErrorRecipientEmail,
             };
-            notificationService.Send(notification);
+            messageProducer.Publish(notification);
         }
 
         public void ChangeErrorRecipientEmail(string email)
