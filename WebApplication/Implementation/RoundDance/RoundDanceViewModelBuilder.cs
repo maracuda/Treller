@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SKBKontur.BlocksMapping.BlockExtenssions;
-using SKBKontur.Infrastructure.CommonExtenssions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 using SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects;
 using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
 
@@ -52,7 +52,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
         public DutyViewModel BuildDuty()
         {
             var peoples = roundDancePeopleStorage.GetAll();
-            var dutyPeoples = peoples.Where(x => x.GetCurrentDirection == Direction.Duty.GetEnumDescription())
+            var dutyPeoples = peoples.Where(x => x.GetCurrentDirection == Direction.Duty.GetDescription())
                                      .Select(x => new PeopleDutyViewModel { Name = x.Name, Email = x.Email })
                                      .ToArray();
 
@@ -108,9 +108,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance
             {
                 Name = people.Name,
                 CurrentWeight = weights.SafeGet(people.GetCurrentDirection)?.Weight ?? 0,
-                DutyWeight = weights.SafeGet(Direction.Duty.GetEnumDescription())?.RotationWeight ?? 100M,
-                InfrastructureWeight = weights.SafeGet(Direction.Infrastructure.GetEnumDescription())?.RotationWeight ?? 100M,
-                SpeedyWeight = weights.SafeGet(Direction.SpeedyFeatures.GetEnumDescription())?.RotationWeight ?? 100M,
+                DutyWeight = weights.SafeGet(Direction.Duty.GetDescription())?.RotationWeight ?? 100M,
+                InfrastructureWeight = weights.SafeGet(Direction.Infrastructure.GetDescription())?.RotationWeight ?? 100M,
+                SpeedyWeight = weights.SafeGet(Direction.SpeedyFeatures.GetDescription())?.RotationWeight ?? 100M,
                 FeatureWeight = 100 - (futureWeights.Length > 0 ? futureWeights.Max() : 0M)
             };
         }

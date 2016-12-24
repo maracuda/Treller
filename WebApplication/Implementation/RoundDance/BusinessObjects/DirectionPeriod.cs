@@ -1,5 +1,5 @@
 using System;
-using SKBKontur.Infrastructure.CommonExtenssions;
+using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObjects
 {
@@ -14,7 +14,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObj
         {
             set
             {
-                Direction = value.GetEnumDescription();
+                Direction = value.GetDescription();
             }
         }
 
@@ -26,7 +26,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.RoundDance.BusinessObj
         public string GetPeriodString()
         {
             return EndDate.HasValue
-                ? string.Format("{0:dd.MM.yyyy} - {1:dd.MM.yyyy}", BeginDate, EndDate)
+                ? $"{BeginDate:dd.MM.yyyy} - {EndDate:dd.MM.yyyy}"
                 : BeginDate.ToString("dd.MM.yyyy");
         }
     }

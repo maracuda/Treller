@@ -34,7 +34,7 @@
         <h3>Медиана до релиза (без выходных): @Model.Overall.MedianReleaseTime</h3>
         @foreach (var statePair in (Model.Overall.PeriodStates ?? new Dictionary<CardState, int>()))
         {
-            <h3>Количество карточек в состоянии @statePair.Key.GetEnumDescription(): @statePair.Value</h3>
+            <h3>Количество карточек в состоянии @statePair.Key.GetDescription(): @statePair.Value</h3>
         }
         <h4>Среднее время в аналитике (без выходных): @Model.Overall.AverageAnalyticDays.ToString("F4")</h4>
         <h4>Среднее время в разработке (без выходных): @Model.Overall.AverageDevelopDays.ToString("F4")</h4>

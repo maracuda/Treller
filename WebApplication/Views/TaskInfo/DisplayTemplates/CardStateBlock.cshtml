@@ -3,7 +3,7 @@
 @model SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Blocks.CardStateBlock
 
 <section class="task-info-state-block">
-    <span class="label task-info-state">@Model.State.GetEnumDescription()</span>
+    <span class="label task-info-state">@Model.State.GetDescription()</span>
     
     <span class="text-muted">
         @Model.BeginDate.DateFormat()

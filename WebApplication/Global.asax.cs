@@ -41,7 +41,7 @@ namespace SKBKontur.Treller.WebApplication
             RunRegularOperations(container);
         }
 
-        private void CustomizeContainer(IContainer container)
+        private static void CustomizeContainer(IContainer container)
         {
             var credentialService = container.Get<ICredentialService>();
             var mbCredentials = credentialService.MessageBrokerCredentials;
