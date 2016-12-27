@@ -54,5 +54,10 @@ namespace SKBKontur.Treller.IoCContainer.Implementation
         {
             _serviceContainer.RegisterInstance(typeof(T), instance);
         }
+
+        public void RegisterInstance2<T, TImpl>(TImpl implementation) where TImpl : T
+        {
+            _serviceContainer.Register<T>(factory => implementation, new PerContainerLifetime());
+        }
     }
 }

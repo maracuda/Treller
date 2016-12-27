@@ -55,7 +55,7 @@ namespace SKBKontur.Treller.WebApplication
             var credentialService = container.Get<ICredentialService>();
             var mbCredentials = credentialService.MessageBrokerCredentials;
             var emailMessageProducer = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
-            container.RegisterInstance<IMessageProducer>(emailMessageProducer);
+            container.RegisterInstance2<IMessageProducer, EmailMessageProducer>(emailMessageProducer);
 
             var zzz = container.Get<IMessageProducer>();
         }

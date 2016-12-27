@@ -10,5 +10,6 @@ namespace SKBKontur.Treller.IoCContainer
         object Get(Type type);
         IEnumerable<object> GetAll(Type type);
         void RegisterInstance<T>(object instance);
+        void RegisterInstance2<T, TImpl>(TImpl implementation) where TImpl : T;
     }
 }
