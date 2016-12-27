@@ -27,11 +27,11 @@ namespace SKBKontur.Treller.WebApplication
 
         protected void Application_Start()
         {
+            PrepareWebApplication();
+
             container = ContainerFactory.CreateMvc();
             container.Get<ILogService>().OnError += HandleError;
             CustomizeContainer();
-
-            PrepareWebApplication();
 
             runspacePool = container.Get<IVirtualMachinesRunspacePool>();
             operationalService = container.Get<IOperationalService>();
