@@ -30,11 +30,20 @@ namespace SKBKontur.Treller.WebApplication
             container = ContainerFactory.CreateMvc();
             container.Get<ILogService>().OnError += HandleError;
             CustomizeContainer();
-            PrepareWebApplication();
 
-            runspacePool = container.Get<IVirtualMachinesRunspacePool>();
-            operationalService = container.Get<IOperationalService>();
-            RunRegularOperations();
+            try
+            {
+                PrepareWebApplication();
+
+                runspacePool = container.Get<IVirtualMachinesRunspacePool>();
+                operationalService = container.Get<IOperationalService>();
+                RunRegularOperations();
+            }
+            catch (Exception e)
+            {
+                container.Get<ILoggerFactory>().Get<MvcApplication>().LogError("Fail to start web application.", e);
+                throw;
+            }
         }
 
         private static void PrepareWebApplication()
@@ -49,6 +58,14 @@ namespace SKBKontur.Treller.WebApplication
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
+        private void CustomizeContainer()
+        {
+            var credentialService = container.Get<ICredentialService>();
+            var mbCredentials = credentialService.MessageBrokerCredentials;
+            var emailMessageProducer = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            container.RegisterInstance<IMessageProducer>(emailMessageProducer);
+        }
+
         private void HandleError(object sender, ErrorEventArgs args)
         {
             container.Get<IMessageProducer>().Publish(new Message
@@ -59,14 +76,6 @@ namespace SKBKontur.Treller.WebApplication
                     ? $"{args.Message}{Environment.NewLine}{args.Exception}"
                     : args.Message
             });
-        }
-
-        private void CustomizeContainer()
-        {
-            var credentialService = container.Get<ICredentialService>();
-            var mbCredentials = credentialService.MessageBrokerCredentials;
-            var notificationService = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
-            container.RegisterInstance<IMessageProducer>(notificationService);
         }
 
         private void RunRegularOperations()
