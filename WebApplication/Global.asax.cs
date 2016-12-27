@@ -31,19 +31,11 @@ namespace SKBKontur.Treller.WebApplication
             container.Get<ILogService>().OnError += HandleError;
             CustomizeContainer();
 
-            try
-            {
-                PrepareWebApplication();
+            PrepareWebApplication();
 
-                runspacePool = container.Get<IVirtualMachinesRunspacePool>();
-                operationalService = container.Get<IOperationalService>();
-                RunRegularOperations();
-            }
-            catch (Exception e)
-            {
-                container.Get<ILoggerFactory>().Get<MvcApplication>().LogError("Fail to start web application.", e);
-                throw;
-            }
+            runspacePool = container.Get<IVirtualMachinesRunspacePool>();
+            operationalService = container.Get<IOperationalService>();
+            RunRegularOperations();
         }
 
         private static void PrepareWebApplication()
@@ -64,6 +56,8 @@ namespace SKBKontur.Treller.WebApplication
             var mbCredentials = credentialService.MessageBrokerCredentials;
             var emailMessageProducer = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
             container.RegisterInstance<IMessageProducer>(emailMessageProducer);
+
+            var zzz = container.Get<IMessageProducer>();
         }
 
         private void HandleError(object sender, ErrorEventArgs args)
