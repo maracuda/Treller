@@ -12,21 +12,20 @@ namespace SKBKontur.Treller.MessageBroker
         private int smtpPort;
         private string senderEmail;
 
-        //TODO: uncomment this constructor after fix container configuration problem
-        //public EmailMessageProducer(
-        //    string login,
-        //    string password,
-        //    string domain,
-        //    string smtpHost,
-        //    int smtpPort)
-        //{
-        //    this.login = login;
-        //    this.password = password;
-        //    this.domain = domain;
-        //    this.smtpHost = smtpHost;
-        //    this.smtpPort = smtpPort;
-        //    senderEmail = $"{login}@skbkontur.ru";
-        //}
+        public EmailMessageProducer(
+            string login,
+            string password,
+            string domain,
+            string smtpHost,
+            int smtpPort)
+        {
+            this.login = login;
+            this.password = password;
+            this.domain = domain;
+            this.smtpHost = smtpHost;
+            this.smtpPort = smtpPort;
+            senderEmail = $"{login}@skbkontur.ru";
+        }
 
         public void Publish(Message message)
         {

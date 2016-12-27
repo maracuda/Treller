@@ -10,7 +10,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.IoCContainer
         public void CanRegisterCustomImplementationToContainer()
         {
             var container = ContainerFactory.CreateMvc();
-            var emailMessageProducer = new EmailMessageProducer();
+            var emailMessageProducer = new EmailMessageProducer("login", "password", "kontur", "localhost", 25);
             container.RegisterInstance<IMessageProducer>(emailMessageProducer);
 
             var result = container.Get<IMessageProducer>();

@@ -54,9 +54,9 @@ namespace SKBKontur.Treller.WebApplication
         {
             var credentialService = container.Get<ICredentialService>();
             var mbCredentials = credentialService.MessageBrokerCredentials;
-            //var emailMessageProducer = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
-            //container.RegisterInstance2<IMessageProducer, EmailMessageProducer>(emailMessageProducer);
-            container.Get<IMessageProducer>().Configure(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            var emailMessageProducer = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            container.RegisterInstance<IMessageProducer>(emailMessageProducer);
+            //container.Get<IMessageProducer>().Configure(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
         }
 
         private void HandleError(object sender, ErrorEventArgs args)
