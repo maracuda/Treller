@@ -5,27 +5,28 @@ namespace SKBKontur.Treller.MessageBroker
 {
     public class EmailMessageProducer : IMessageProducer
     {
-        private readonly string login;
-        private readonly string password;
-        private readonly string domain;
-        private readonly string smtpHost;
-        private readonly int smtpPort;
-        private readonly string senderEmail;
+        private string login;
+        private string password;
+        private string domain;
+        private string smtpHost;
+        private int smtpPort;
+        private string senderEmail;
 
-        public EmailMessageProducer(
-            string login,
-            string password,
-            string domain,
-            string smtpHost,
-            int smtpPort)
-        {
-            this.login = login;
-            this.password = password;
-            this.domain = domain;
-            this.smtpHost = smtpHost;
-            this.smtpPort = smtpPort;
-            senderEmail = $"{login}@skbkontur.ru";
-        }
+        //TODO: uncomment this constructor after fix container configuration problem
+        //public EmailMessageProducer(
+        //    string login,
+        //    string password,
+        //    string domain,
+        //    string smtpHost,
+        //    int smtpPort)
+        //{
+        //    this.login = login;
+        //    this.password = password;
+        //    this.domain = domain;
+        //    this.smtpHost = smtpHost;
+        //    this.smtpPort = smtpPort;
+        //    senderEmail = $"{login}@skbkontur.ru";
+        //}
 
         public void Publish(Message message)
         {
@@ -46,6 +47,16 @@ namespace SKBKontur.Treller.MessageBroker
                 }
                 smtpClient.Send(mailMessage);
             }
+        }
+
+        public void Configure(string login, string password, string domain, string smtpHost, int smtpPort)
+        {
+            this.login = login;
+            this.password = password;
+            this.domain = domain;
+            this.smtpHost = smtpHost;
+            this.smtpPort = smtpPort;
+            senderEmail = $"{login}@skbkontur.ru";
         }
 
         private SmtpClient CreateClient()
