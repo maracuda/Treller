@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
