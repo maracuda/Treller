@@ -25,10 +25,9 @@ namespace SKBKontur.Treller.Storage.FileStorage
 
         public string ReadUTF8(string fileName)
         {
-            var fullName = GetFullPath(fileName);
-
-            return File.Exists(fullName) 
-                    ? File.ReadAllText(fullName, defaultEncoding) 
+            var path = GetFullPath(fileName);
+            return File.Exists(path) 
+                    ? File.ReadAllText(path, defaultEncoding) 
                     : string.Empty;
         }
 
@@ -85,9 +84,14 @@ namespace SKBKontur.Treller.Storage.FileStorage
             }
         }
 
-        private string GetFullPath(string fileName)
+        public string GetFullPath(string fileName)
         {
             return Path.Combine(rootPath, fileName);
+        }
+
+        public bool Contains(string fileName)
+        {
+            return File.Exists(GetFullPath(fileName));
         }
     }
 }

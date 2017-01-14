@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using SKBKontur.Treller.Serialization;
 
 namespace SKBKontur.Treller.Storage.FileStorage
@@ -15,6 +16,18 @@ namespace SKBKontur.Treller.Storage.FileStorage
         {
             this.fileSystemHandler = fileSystemHandler;
             this.jsonSerializer = jsonSerializer;
+        }
+
+        public T Read<T>(string key)
+        {
+            if (cache.ContainsKey(key))
+                return cache[key];
+
+            var fileName = GetFileName(key);
+            if (!fileSystemHandler.Contains(fileName)) 
+                throw new Exception($"Fail to find file with name {fileName}. Full path {fileSystemHandler.GetFullPath(fileName)}.");
+
+            return Find<T>(key);
         }
 
         public T Find<T>(string key)

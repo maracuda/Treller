@@ -22,9 +22,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credent
 
         private ClientsIntegrationCredentials LoadCredendials()
         {
-            var result = keyValueStorage.Find<ClientsIntegrationCredentials>("LogIn");
+            var result = keyValueStorage.Read<ClientsIntegrationCredentials>("LogIn");
             if (result == null)
-                throw new Exception($"Fail to load credentials from file LogIn.json at directory {Directory.GetCurrentDirectory()}");
+                throw new Exception($"Loaded credentials are empty.");
             return result;
         }
 
