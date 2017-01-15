@@ -25,9 +25,5 @@
                 "System.Xml.Serialization": "4.0.0.0"
             }
         }
-    },
-
-    "buildOptions": {
-        "outputName": "SKBKontur.Tests"
     }
 }
