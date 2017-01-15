@@ -1,1 +1,0 @@
-powershell.exe -noexit -file .\run_tests.ps1
