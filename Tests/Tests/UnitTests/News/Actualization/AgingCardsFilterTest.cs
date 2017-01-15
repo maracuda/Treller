@@ -18,8 +18,8 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Actualization
 
         public AgingCardsFilterTest() : base()
         {
-            outdatedBoardCardBuilder = mock.Create<IOutdatedBoardCardBuilder>();
-            dateTimeFactory = mock.Create<IDateTimeFactory>();
+            outdatedBoardCardBuilder = mockRepository.Create<IOutdatedBoardCardBuilder>();
+            dateTimeFactory = mockRepository.Create<IDateTimeFactory>();
 
             outdatedNewsFilter = new OutdatedNewsFilter(outdatedBoardCardBuilder, dateTimeFactory);
         }
@@ -41,7 +41,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Actualization
             };
             var now = DateTime.Now;
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 dateTimeFactory.Stub(f => f.UtcNow).Return(now);
                 outdatedBoardCardBuilder.Stub(f => f.TryBuildModel(task1.TaskId)).Return(agingModel1);

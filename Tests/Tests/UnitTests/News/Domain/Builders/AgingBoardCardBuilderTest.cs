@@ -19,9 +19,9 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
 
         public AgingBoardCardBuilderTest()
         {
-            taskManagerClient = mock.Create<ITaskManagerClient>();
-            loggerFactory = mock.Create<ILoggerFactory>();
-            logger = mock.Create<ILogger>();
+            taskManagerClient = mockRepository.Create<ITaskManagerClient>();
+            loggerFactory = mockRepository.Create<ILoggerFactory>();
+            logger = mockRepository.Create<ILogger>();
 
             outdatedBoardCardBuilder = new OutdatedBoardCardBuilder(taskManagerClient, loggerFactory);
         }
@@ -31,7 +31,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
         {
             var cardId = DataGenerator.GenEnglishString(15);
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 taskManagerClient.Expect(f => f.GetCard(cardId)).Throw(new Exception());
                 loggerFactory.Expect(f => f.Get<OutdatedBoardCardBuilder>()).Return(logger);
@@ -53,7 +53,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
                 BoardId = boardId
             };
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 taskManagerClient.Expect(f => f.GetCard(cardId)).Return(card);
                 taskManagerClient.Expect(f => f.GetBoardLists(Arg<string[]>.Matches(arg => arg.Length == 1 && arg[0].Equals(boardId)))).Return(new BoardList[0]);
@@ -87,7 +87,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
                 Name = listName
             };
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 taskManagerClient.Expect(f => f.GetCard(cardId)).Return(card);
                 taskManagerClient.Expect(f => f.GetBoardLists(Arg<string[]>.Matches(arg => arg.Length == 1 && arg[0].Equals(boardId)))).Return(new[] {boardList});

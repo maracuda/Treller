@@ -1,20 +1,20 @@
-﻿using SKBKontur.Treller.Tests.MockWrappers;
+﻿using SKBKontur.Treller.Tests.Tests.UnitTests.Mocks;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests
 {
     public abstract class UnitTest
     {
-        protected readonly MyMock mock;
+        protected readonly IMockRepository mockRepository;
 
         protected UnitTest()
         {
-            mock = new MyMock();
+            mockRepository = new RhinoMockRepository();
         }
 
         ~UnitTest()
         {
-            mock.Dispose();
-            mock.RunAll();
+            mockRepository.Dispose();
+            mockRepository.Verify();
         }
     }
 }

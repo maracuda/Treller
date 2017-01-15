@@ -1,4 +1,4 @@
-﻿using SKBKontur.Treller.Tests.MockWrappers;
+﻿using SKBKontur.Treller.Tests.Tests.UnitTests.Mocks;
 using Xunit;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests
@@ -10,9 +10,9 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests
         {
             const string enterstring = "enterString";
 
-            var assistent1 = mock.Create<IAssistent>();
-            var assistent2 = mock.Create<IAssistent>();
-            var assistent3 = mock.Create<IAssistent>();
+            var assistent1 = mockRepository.Create<IAssistent>();
+            var assistent2 = mockRepository.Create<IAssistent>();
+            var assistent3 = mockRepository.Create<IAssistent>();
 
             var mainWorker = new MainWorker(assistent1, assistent2, assistent3);
 
@@ -20,7 +20,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests
             var outstring2 = "outString2";
             var expected = "outString3";
             
-            using(mock.Record())
+            using(mockRepository.Record())
             {
                 assistent1.Expect(x => x.EditText(enterstring), outstring1);
                 assistent2.Expect(x => x.EditText(outstring1), outstring2);
@@ -57,7 +57,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests
     {
         public string EditText(string text)
         {
-            return string.Format("{0} {1}", text, text.Length);
+            return $"{text} {text.Length}";
         }
     }
 
@@ -65,25 +65,25 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests
     {
         public string EditText(string text)
         {
-            return string.Format("{0} {0}", text);
+            return $"{text} {text}";
         }
     }
 
 
     public class MainWorker
     {
-        private readonly IAssistent[] _assistents;
+        private readonly IAssistent[] assistents;
 
         public MainWorker(params IAssistent[] assistents)
         {
-            _assistents = assistents;
+            this.assistents = assistents;
         }
         
         public string Organize(string text)
         {
             string result = text;
 
-            foreach (var assistent in _assistents)
+            foreach (var assistent in assistents)
             {
                 result = assistent.EditText(result);
             }

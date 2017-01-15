@@ -15,7 +15,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 
         public EnumerationOperationTest()
         {
-            keyValueStorage = mock.Create<IKeyValueStorage>();
+            keyValueStorage = mockRepository.Create<IKeyValueStorage>();
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
                 return newTimestamp;
             });
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 keyValueStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(oldTimestamp);
                 keyValueStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
@@ -58,7 +58,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 
             });
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 keyValueStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(oldTimestamp);
             }
@@ -82,7 +82,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
                 return newTimestamp;
             });
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 keyValueStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(0);
                 keyValueStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));
@@ -108,7 +108,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
                 return newTimestamp;
             });
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 keyValueStorage.Expect(f => f.Find<long>("zzzTimestamp.json")).Return(0);
                 keyValueStorage.Expect(f => f.Write("zzzTimestamp.json", newTimestamp));

@@ -6,26 +6,25 @@ using SKBKontur.Infrastructure.Common;
 using SKBKontur.TaskManagerClient.Repository;
 using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
 using SKBKontur.TaskManagerClient.Repository.Clients;
-using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
 {
     public class RepositoryTest : UnitTest
     {
-        private IRepositorySettings repositorySettings;
+        private readonly IRepositorySettings repositorySettings;
         private IRepositoryClientFactory repositoryClientFactory;
-        private TaskManagerClient.Repository.Repository repository;
-        private IDateTimeFactory dateTimeFactory;
-        private IRepositoryClient repositoryClient;
+        private readonly TaskManagerClient.Repository.Repository repository;
+        private readonly IDateTimeFactory dateTimeFactory;
+        private readonly IRepositoryClient repositoryClient;
 
         public RepositoryTest() : base()
         {
-            repositorySettings = mock.Create<IRepositorySettings>();
-            repositoryClientFactory = mock.Create <IRepositoryClientFactory>();
-            dateTimeFactory = mock.Create<IDateTimeFactory>();
-            repositoryClient = mock.Create<IRepositoryClient>();
+            repositorySettings = mockRepository.Create<IRepositorySettings>();
+            repositoryClientFactory = mockRepository.Create <IRepositoryClientFactory>();
+            dateTimeFactory = mockRepository.Create<IDateTimeFactory>();
+            repositoryClient = mockRepository.Create<IRepositoryClient>();
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 var repoId = DataGenerator.GenDigitString(5);
                 repositorySettings.Expect(f => f.RepositoryId).Return(repoId);
@@ -44,7 +43,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             var branch2 = GenerateBranch(now.Subtract(olderThan).Subtract(TimeSpan.FromTicks(1)));
             var branch3 = GenerateBranch(now.Subtract(olderThan));
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 repositorySettings.Stub(f => f.NotTrackedBrancheNames).Return(new HashSet<string>());
                 dateTimeFactory.Expect(f => f.Now).Return(now);
@@ -52,7 +51,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             }
 
             var actual = repository.SearchForOldBranches(olderThan);
-            Assert.AreEqual(new[] {branch2}, actual);
+            Assert.Equal(new[] {branch2}, actual);
         }
 
         [Fact]
@@ -63,7 +62,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             var branch = GenerateBranch(now.Subtract(olderThan).Subtract(TimeSpan.FromTicks(1)));
             var nontrackingBranch = GenerateBranch(now.Subtract(olderThan).Subtract(TimeSpan.FromTicks(1)));
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 repositorySettings.Stub(f => f.NotTrackedBrancheNames).Return(new HashSet<string>() { nontrackingBranch.Name });
                 dateTimeFactory.Expect(f => f.Now).Return(now);
@@ -71,7 +70,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             }
 
             var actual = repository.SearchForOldBranches(olderThan);
-            Assert.AreEqual(new[] {branch}, actual);
+            Assert.Equal(new[] {branch}, actual);
         }
         [Fact]
         public void TestSearchForOldBranchesInPeriod()
@@ -81,7 +80,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             var branch2 = GenerateBranch(now.Subtract(TimeSpan.FromDays(1).Add(TimeSpan.FromMilliseconds(1))));
             var branch3 = GenerateBranch(now.Subtract(TimeSpan.FromDays(2)));
 
-            using (mock.Record())
+            using (mockRepository.Record())
             {
                 repositorySettings.Stub(f => f.NotTrackedBrancheNames).Return(new HashSet<string>());
                 dateTimeFactory.Expect(f => f.Now).Return(now);
@@ -89,13 +88,13 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
             }
 
             var actual = repository.SearchForOldBranches(TimeSpan.FromDays(1), TimeSpan.FromDays(2));
-            Assert.AreEqual(new[] { branch2 }, actual);
+            Assert.Equal(new[] { branch2 }, actual);
         }
 
         [Fact]
-        public void TestSearchForOldBranchesWithInvalidPeriod()
+        public void SearchForOldBranchesWithInvalidPeriodThowsException()
         {
-            Assert.Throws<ArgumentException>(() =>
+            Xunit.Assert.Throws<ArgumentException>(() =>
             {
                 repository.SearchForOldBranches(TimeSpan.FromDays(2), TimeSpan.FromDays(1));
             });
