@@ -6,9 +6,12 @@ properties {
   $iis_app_pool_name = "Treller"
   $iis_app_pool_dotnet = "v4.5"
   $iis_site_name = "Treller.App"
+  $build_profile = "Release"
 }
 
-task default -depends SetAppOnline
+task default -depends Build, SetAppOffline, Clean, CopyContent, CreateWebsite, SetAppOnline
+
+task LocalDeploy -depends Build, Clean, CopyContent
 
 task Build {
     exec { dotnet restore "$base_dir\..\Logger" }
@@ -20,10 +23,10 @@ task Build {
     exec { dotnet restore "$base_dir\..\Storage" }
     exec { dotnet restore "$base_dir\..\TaskManagerClient" }
     exec { dotnet restore "$base_dir\..\WebApplication" }
-    exec { dotnet build "$base_dir\..\WebApplication" -c Release }
+    exec { dotnet build "$base_dir\..\WebApplication" -c $build_profile }
 }
 
-task SetAppOffline -depends Build {
+task SetAppOffline {
     if (Test-Path $install_path -pathType container)
     {
         Copy-Item "$base_dir\App_Offline.htm" $install_path -Force
@@ -33,7 +36,7 @@ task SetAppOffline -depends Build {
     }
 }
 
-task Clean -depends SetAppOffline {
+task Clean {
     if (Test-Path $install_path -pathType container)
     {
         Remove-Item "$install_path\*" -Exclude "App_Offline.htm","web.config" -Force -Recurse
@@ -42,12 +45,12 @@ task Clean -depends SetAppOffline {
     }
 }
 
-task CopyContent -depends Clean {
+task CopyContent{
     if (!(Test-Path $install_path -pathType container))
     {
         New-Item $install_path -Type Directory
     }
-    Copy-Item "$base_dir\..\WebApplication\bin\Release\net461\*" "$install_path\bin" -Recurse -Force
+    Copy-Item "$base_dir\..\WebApplication\bin\$build_profile\net461\*" "$install_path\bin" -Recurse -Force
     Copy-Item "$base_dir\..\WebApplication\Content" "$install_path\Content" -Recurse -Force
     Copy-Item "$base_dir\..\WebApplication\fonts" "$install_path\fonts" -Recurse -Force
     Copy-Item "$base_dir\..\WebApplication\Scripts" "$install_path\Scripts" -Recurse -Force
@@ -56,7 +59,7 @@ task CopyContent -depends Clean {
     Copy-Item "$base_dir\..\WebApplication\Web.config" "$install_path\Web.config" -Recurse -Force
 }
 
-task CreateWebsite -depends CopyContent {
+task CreateWebsite {
     [Reflection.Assembly]::LoadWithPartialName('Microsoft.Web.Administration')
     $server_manager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($remote_server)
     if (!$server_manager.ApplicationPools[$iis_app_pool_name])
@@ -74,7 +77,7 @@ task CreateWebsite -depends CopyContent {
     }
 }
 
-task SetAppOnline -depends CreateWebsite {
+task SetAppOnline {
     if (Test-Path "$install_path\App_Offline.htm")
     {
         Remove-Item "$install_path\App_Offline.htm" -Force
