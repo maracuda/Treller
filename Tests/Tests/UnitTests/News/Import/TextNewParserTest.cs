@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using SKBKontur.Infrastructure.Common;
+using SKBKontur.Treller.Tests.Tests.IntegrationTests.Configuration;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing;
 using Xunit;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
@@ -47,13 +48,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Import
 
         private static string GetNewsData(string fileName)
         {
-            var pathToTests = AppDomain.CurrentDomain.BaseDirectory;
-            var rootPath = Path.GetPathRoot(pathToTests);
-            while (!pathToTests.EndsWith("Tests\\") && !string.Equals(rootPath, pathToTests))
-            {
-                pathToTests = Path.GetFullPath(Path.Combine(pathToTests, "..\\"));
-            }
-
+            var pathToTests = new TestEnvironment().BasePath;
             var pathToFile = Path.Combine(pathToTests, "Tests", "UnitTests", "TestData", "NewsExamples", fileName);
             return File.ReadAllText(pathToFile);
         }

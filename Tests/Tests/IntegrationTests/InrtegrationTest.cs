@@ -1,6 +1,7 @@
 ﻿using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
 using SKBKontur.Treller.IoCContainer;
+using SKBKontur.Treller.Storage;
 using SKBKontur.Treller.Tests.Tests.IntegrationTests.Configuration;
 
 namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
@@ -12,7 +13,8 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
         protected IntegrationTest()
         {
             container = ContainerFactory.Create();
-            var credentialsService = new CredentialService();
+            container.RegisterInstance<IEnvironment>(new TestEnvironment());
+            var credentialsService = container.Create<CredentialService>();
             container.RegisterInstance<ITrelloUserCredentialService>(credentialsService);
             container.RegisterInstance<IGitLabCredentialService>(credentialsService);
         }

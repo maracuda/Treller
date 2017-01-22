@@ -22,7 +22,6 @@ namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
             credentialParameters = new Dictionary<string, string>
                                    {
                                        {"private_token", credentials.PrivateToken},
-                                       {"sudo", credentials.UserName}
                                    };
         }
 

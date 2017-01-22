@@ -10,9 +10,9 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
     public class MemoryCacheTest : IntegrationTest
     {
         private const string testKey = "testKey";
-        private IMemoryCache memoryCache;
+        private readonly IMemoryCache memoryCache;
 
-        public MemoryCacheTest() : base()
+        public MemoryCacheTest()
         {
             memoryCache = container.Get<ICacheFactory>().CreateMemoryCache("test", TimeSpan.FromMilliseconds(500));
         }
@@ -46,7 +46,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
             var loader = new Func<int>(() => ++value);
 
             Assert.AreEqual(1, memoryCache.GetOrLoad(testKey, loader));
-            Thread.Sleep(00);
+            Thread.Sleep(500);
             Assert.AreEqual(2, memoryCache.GetOrLoad(testKey, loader));
         }
 

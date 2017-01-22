@@ -6,7 +6,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Kanban
 {
     public class BoardServiceTest : IntegrationTest
     {
-        private IBoardsService boardsService;
+        private readonly IBoardsService boardsService;
 
         public BoardServiceTest() : base()
         {
@@ -16,7 +16,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Kanban
         [Fact]
         public void TestSelectKanbanBoards()
         {
-            var expected = new[] { "Service Team", "Модификаторы", "Продажи ОБ", "Детализация счета", "Загрузка Excel в ПП" };
+            var expected = new[] { "Service Team", "Бронирование по ПП", "Докупка и смена тарифа", "Миграция КЭ", "Связанные организации", "Скидончики" };
             var actuals = boardsService.SelectKanbanBoards(false);
             var actualNames = actuals.Select(x => x.Name).ToArray();
             Assert.Equal(expected, actualNames);

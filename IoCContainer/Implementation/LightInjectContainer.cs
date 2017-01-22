@@ -26,5 +26,10 @@ namespace SKBKontur.Treller.IoCContainer.Implementation
         {
             serviceContainer.RegisterInstance(typeof(T), instance);
         }
+
+        public T Create<T>() where T : class
+        {
+            return serviceContainer.Create<T>();
+        }
     }
 }

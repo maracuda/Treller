@@ -11,7 +11,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
     {
         private readonly TaskNewStorage taskNewStorage;
 
-        public TaskNewsStorageTest() : base()
+        public TaskNewsStorageTest()
         {
             taskNewStorage = container.Get<TaskNewStorage>();
         }

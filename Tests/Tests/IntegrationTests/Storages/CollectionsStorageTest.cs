@@ -5,11 +5,11 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
 {
     public class CollectionsStorageTest : IntegrationTest
     {
-        private CollectionsStorage collectionsStorage;
+        private readonly CollectionsStorage collectionsStorage;
 
         public CollectionsStorageTest()
         {
-            collectionsStorage = container.Get<CollectionsStorage>();
+            collectionsStorage = container.Create<CollectionsStorage>();
         }
 
         ~CollectionsStorageTest()

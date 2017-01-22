@@ -9,9 +9,9 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
     public class TrelloClientTest : IntegrationTest
     {
         private const string testOrgId = "konturbilling";
-        private ITaskManagerClient trelloClient;
+        private readonly ITaskManagerClient trelloClient;
 
-        public TrelloClientTest() : base()
+        public TrelloClientTest()
         {
             trelloClient = container.Get<ITaskManagerClient>();
         }
