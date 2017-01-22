@@ -1,0 +1,1 @@
+powershell.exe -ExecutionPolicy UnRestricted -NoExit -Command "Import-Module .\psake.psm1; Invoke-psake .\deploy.ps1 LocalDeploy -properties @{'remote_server' = '127.0.0.1'; 'install_path' = '\\127.0.0.1\c$\Treller'; 'build_profile' = 'Debug'}"
