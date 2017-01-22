@@ -47,8 +47,15 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Import
 
         private static string GetNewsData(string fileName)
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tests", "UnitTests", "TestData", "NewsExamples", fileName);
-            return File.ReadAllText(path);
+            var pathToTests = AppDomain.CurrentDomain.BaseDirectory;
+            var rootPath = Path.GetPathRoot(pathToTests);
+            while (!pathToTests.EndsWith("Tests\\") && !string.Equals(rootPath, pathToTests))
+            {
+                pathToTests = Path.GetFullPath(Path.Combine(pathToTests, "..\\"));
+            }
+
+            var pathToFile = Path.Combine(pathToTests, "Tests", "UnitTests", "TestData", "NewsExamples", fileName);
+            return File.ReadAllText(pathToFile);
         }
     }
 }

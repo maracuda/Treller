@@ -30,12 +30,13 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
         public void TestyTryBuildButNeworkExceptionOccured()
         {
             var cardId = DataGenerator.GenEnglishString(15);
+            var causeEx = new Exception();
 
             using (mockRepository.Record())
             {
-                taskManagerClient.Expect(f => f.GetCard(cardId)).Throw(new Exception());
+                taskManagerClient.Expect(f => f.GetCard(cardId)).Throw(causeEx);
                 loggerFactory.Expect(f => f.Get<OutdatedBoardCardBuilder>()).Return(logger);
-                logger.Expect(f => f.LogError(Arg<string>.Is.NotNull));
+                logger.Expect(f => f.LogError(Arg<string>.Is.NotNull, Arg<Exception>.Is.Equal(causeEx)));
             }
 
             var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);
@@ -103,7 +104,7 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
             };
             var actual = outdatedBoardCardBuilder.TryBuildModel(cardId);
             Assert.True(actual.HasValue);
-            UnitWrappers.Assert.AreDeepEqual(actual, expected);
+            Assert.AreDeepEqual(actual, expected);
         }
     }
 }
