@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Rhino.Mocks;
+using SKBKontur.Treller.OperationalService.Operations;
 using SKBKontur.Treller.Storage;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService

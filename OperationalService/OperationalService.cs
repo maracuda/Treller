@@ -2,11 +2,11 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Timers;
 using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Launcher;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Scheduler;
+using SKBKontur.Treller.OperationalService.Launcher;
+using SKBKontur.Treller.OperationalService.Operations;
+using SKBKontur.Treller.OperationalService.Scheduler;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
+namespace SKBKontur.Treller.OperationalService
 {
     public class OperationalService : IOperationalService
     {

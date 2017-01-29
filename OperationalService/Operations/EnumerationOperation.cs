@@ -2,7 +2,7 @@
 using SKBKontur.Infrastructure.Sugar;
 using SKBKontur.Treller.Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations
+namespace SKBKontur.Treller.OperationalService.Operations
 {
     public class EnumerationOperation : IRegularOperation
     {

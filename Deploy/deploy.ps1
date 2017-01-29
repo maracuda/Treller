@@ -20,6 +20,7 @@ task Build {
     exec { dotnet restore "$base_dir\..\HttpInfrastructure" }
     exec { dotnet restore "$base_dir\..\Serialization" }
     exec { dotnet restore "$base_dir\..\MessageBroker" }
+    exec { dotnet restore "$base_dir\..\OperationalService" }
     exec { dotnet restore "$base_dir\..\Storage" }
     exec { dotnet restore "$base_dir\..\TaskManagerClient" }
     exec { dotnet restore "$base_dir\..\WebApplication" }

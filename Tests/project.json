@@ -10,6 +10,7 @@
         "NETStandard.Library": "1.6.0",
         "xunit": "2.2.0-beta4-build3444",
         "dotnet-test-xunit": "2.2.0-preview2-build1029",
+        "OperationalService": "1.0.0-*",
         "RhinoMocks": "3.6.1",
         "TaskManagerClient": "1.0.0-*",
         "WebApplication": "1.0.0-*"

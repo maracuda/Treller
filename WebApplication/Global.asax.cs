@@ -7,14 +7,13 @@ using System.Web;
 using SKBKontur.Treller.IoCContainer;
 using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.MessageBroker;
+using SKBKontur.Treller.OperationalService;
+using SKBKontur.Treller.OperationalService.Operations;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
 using SKBKontur.Treller.WebApplication.Implementation.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Migration;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Scheduler;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces;
 
 namespace SKBKontur.Treller.WebApplication

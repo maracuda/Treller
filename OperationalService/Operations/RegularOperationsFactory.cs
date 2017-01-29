@@ -2,7 +2,7 @@
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations
+namespace SKBKontur.Treller.OperationalService.Operations
 {
     public class RegularOperationsFactory : IRegularOperationsFactory
     {

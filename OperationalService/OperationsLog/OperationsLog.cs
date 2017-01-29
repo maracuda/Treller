@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.OperationsLog
+namespace SKBKontur.Treller.OperationalService.OperationsLog
 {
     public class OperationsLog : IOperationsLog
     {

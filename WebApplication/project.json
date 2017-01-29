@@ -31,6 +31,7 @@
         "Modernizr": "2.8.3",
         "MsieJavaScriptEngine": "1.5.1",
         "normalize.css": "3.0.1",
+        "OperationalService": "1.0.0-*",
         "React.Core": "1.4.0",
         "react.js": "0.13.0",
         "React.Web": "1.4.0",

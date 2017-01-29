@@ -1,11 +1,11 @@
 using System;
 using SKBKontur.Infrastructure.Common;
 using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.OperationsLog;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Scheduler;
+using SKBKontur.Treller.OperationalService.Operations;
+using SKBKontur.Treller.OperationalService.OperationsLog;
+using SKBKontur.Treller.OperationalService.Scheduler;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Launcher
+namespace SKBKontur.Treller.OperationalService.Launcher
 {
     public class OperationsLauncher : IOperationsLauncher
     {

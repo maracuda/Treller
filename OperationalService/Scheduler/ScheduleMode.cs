@@ -1,4 +1,4 @@
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Scheduler
+namespace SKBKontur.Treller.OperationalService.Scheduler
 {
     public enum ScheduleMode
     {

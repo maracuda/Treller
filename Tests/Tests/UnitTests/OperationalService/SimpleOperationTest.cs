@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SKBKontur.Treller.OperationalService.Operations;
 using Xunit;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
 
 namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
 {

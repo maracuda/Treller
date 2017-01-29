@@ -1,7 +1,7 @@
 ﻿using System;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Operations;
+using SKBKontur.Treller.OperationalService.Operations;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
+namespace SKBKontur.Treller.OperationalService
 {
     public interface IOperationalService : IDisposable
     {
