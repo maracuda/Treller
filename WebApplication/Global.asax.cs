@@ -9,8 +9,8 @@ using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.MessageBroker;
 using SKBKontur.Treller.OperationalService;
 using SKBKontur.Treller.OperationalService.Operations;
+using SKBKontur.Treller.RepositoryHooks.BranchNotification;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
-using SKBKontur.Treller.WebApplication.Implementation.Repository;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.Migration;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
@@ -83,7 +83,7 @@ namespace SKBKontur.Treller.WebApplication
                 ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));
             operationalService.Register(
                 operationsFactory.Create("MergerBranchesNotificator",
-                    () => container.Get<IRepositoryNotificator>().NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15))),
+                    () => container.Get<IBranchNotificator>().NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15))),
                 ScheduleParams.CreateAnytime(TimeSpan.FromHours(24)));
         }
 

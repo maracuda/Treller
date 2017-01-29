@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Web.Mvc;
 using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.Repository;
+using SKBKontur.Treller.RepositoryHooks.BranchNotification;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public class RepositoryController : ExceptionHandledController
     {
         private readonly IOldBranchesModelBuilder oldBranchesModelBuilder;
-        private readonly IRepositoryNotificator repositoryNotificator;
+        private readonly IBranchNotificator branchNotificator;
 
         public RepositoryController(
             IOldBranchesModelBuilder oldBranchesModelBuilder,
-            IRepositoryNotificator repositoryNotificator,
+            IBranchNotificator branchNotificator,
             ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             this.oldBranchesModelBuilder = oldBranchesModelBuilder;
-            this.repositoryNotificator = repositoryNotificator;
+            this.branchNotificator = branchNotificator;
         }
 
         public ActionResult Index()
@@ -27,13 +27,13 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public ActionResult NotifyCommitersAboutOldBranches()
         {
-            repositoryNotificator.NotifyCommitersAboutIdlingBranches(TimeSpan.FromDays(15));
+            branchNotificator.NotifyCommitersAboutIdlingBranches(TimeSpan.FromDays(15));
             return RedirectToAction("Index");
         }
 
         public ActionResult NotifyCommitersAboutMergedBranches()
         {
-            repositoryNotificator.NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15));
+            branchNotificator.NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15));
             return RedirectToAction("Index");
         }
     }

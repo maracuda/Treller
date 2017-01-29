@@ -1,6 +1,6 @@
 using System;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Repository
+namespace SKBKontur.Treller.RepositoryHooks.BranchNotification
 {
     public interface IOldBranchesModelBuilder
     {

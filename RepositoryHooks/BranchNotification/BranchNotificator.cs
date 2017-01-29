@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using SKBKontur.TaskManagerClient.Repository;
 using SKBKontur.Treller.MessageBroker;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Repository
+namespace SKBKontur.Treller.RepositoryHooks.BranchNotification
 {
-    public class RepositoryNotificator : IRepositoryNotificator
+    public class BranchNotificator : IBranchNotificator
     {
         private readonly IRepository repository;
         private readonly IRepositoryNotificationBuilder repositoryNotificationBuilder;
         private readonly IMessageProducer messageProducer;
 
-        public RepositoryNotificator(
+        public BranchNotificator(
             IRepository repository,
             IRepositoryNotificationBuilder repositoryNotificationBuilder,
             IMessageProducer messageProducer)

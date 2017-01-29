@@ -36,6 +36,7 @@
         "react.js": "0.13.0",
         "React.Web": "1.4.0",
         "React.Web.Mvc4": "1.4.0",
+        "RepositoryHooks": "1.0.0-*",
         "Storage": "1.0.0-*",
         "System.Management.Automation": "6.1.7601.17515",
         "System.Web.Optimization.React": "1.4.0",

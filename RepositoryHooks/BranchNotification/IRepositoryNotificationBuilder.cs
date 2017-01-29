@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SKBKontur.Treller.MessageBroker;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Repository
+namespace SKBKontur.Treller.RepositoryHooks.BranchNotification
 {
     public interface IRepositoryNotificationBuilder
     {

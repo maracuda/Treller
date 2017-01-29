@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Repository
+namespace SKBKontur.Treller.RepositoryHooks.BranchNotification
 {
-    public interface IRepositoryNotificator
+    public interface IBranchNotificator
     {
         void NotifyCommitersAboutMergedBranches(TimeSpan maxMergingTimeSpan);
         void NotifyCommitersAboutIdlingBranches(TimeSpan branchIdlingMinTimeSpan);
