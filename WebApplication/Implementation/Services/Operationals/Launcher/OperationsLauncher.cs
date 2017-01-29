@@ -5,7 +5,7 @@ using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Oper
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.OperationsLog;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Scheduler;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.Operationals.Launcher
 {
     public class OperationsLauncher : IOperationsLauncher
     {
