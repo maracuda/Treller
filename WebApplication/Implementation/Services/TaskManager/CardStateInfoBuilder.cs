@@ -23,9 +23,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
 
             foreach (var action in actions.OrderBy(x => x.Date))
             {
-                if (action.ToListId != null || action.ListId != null)
+                if (action.ToList?.Id != null || action.List?.Id != null)
                 {
-                    var newState = boardLists.ContainsKey(action.BoardId) ? cardStateBuilder.GetState(action.ToListId ?? action.ListId, boardLists[action.BoardId]) : CardState.BeforeDevelop;
+                    var newState = boardLists.ContainsKey(action.BoardId) ? cardStateBuilder.GetState(action.ToList?.Id ?? action.List?.Id, boardLists[action.BoardId]) : CardState.BeforeDevelop;
                     if (newState != currentState)
                     {
                         if (states.ContainsKey(currentState))

@@ -1,4 +1,5 @@
 using System;
+using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions;
 using Action = SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions.Action;
 
 namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
@@ -12,9 +13,9 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
         public User AddedUser { get; set; }
         public string Comment { get; set; }
         public string BoardId { get; set; }
-        public string ListId { get; set; }
-        public string FromListId { get; set; }
-        public string ToListId { get; set; }
+        public ActionList List { get; set; }
+        public ActionList FromList { get; set; }
+        public ActionList ToList { get; set; }
         public string CreatedCheckListId { get; set; }
         public ActionType Type { get; set; }
 
@@ -33,9 +34,9 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
                            CardId = action.Data.Card == null ? string.Empty : action.Data.Card.Id,
                            Comment = action.Data.Text,
                            AddedUser = action.Member != null ? User.ConvertFrom(action.Member) : null,
-                           ListId = action.Data.List?.Id,
-                           FromListId = action.Data.ListBefore?.Id,
-                           ToListId = action.Data.ListAfter?.Id,
+                           List = action.Data.List,
+                           FromList = action.Data.ListBefore,
+                           ToList = action.Data.ListAfter,
                            CreatedCheckListId = action.Data.Checklist?.Id
                        };
         }

@@ -27,12 +27,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.TaskManager
             var cardChecklists = new HashSet<string>();
             foreach (var action in actions.OrderBy(x => x.Date))
             {
-                if (!beginDate.HasValue && (action.ToListId == card.BoardListId || action.ListId == card.BoardListId))
+                if (!beginDate.HasValue && (action.ToList?.Id == card.BoardListId || action.List?.Id == card.BoardListId))
                 {
                     beginDate = action.Date;
                 }
 
-                if (action.FromListId == card.BoardListId)
+                if (action.FromList?.Id == card.BoardListId)
                 {
                     endDate = action.Date;
                 }
