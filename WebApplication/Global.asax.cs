@@ -12,7 +12,6 @@ using SKBKontur.Treller.OperationalService.Operations;
 using SKBKontur.Treller.RepositoryHooks.BranchNotification;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Migration;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces;
 
@@ -71,8 +70,6 @@ namespace SKBKontur.Treller.WebApplication
 
         private void RunRegularOperations()
         {
-            container.Get<NullReportConsistencyChecker>().Run();
-
             var operationsFactory = container.Get<IRegularOperationsFactory>();
 
             operationalService.Register(
