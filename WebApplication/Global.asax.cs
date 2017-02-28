@@ -63,8 +63,8 @@ namespace SKBKontur.Treller.WebApplication
             {
                 Recipient = "hvorost@skbkontur.ru",
                 Title = args.Message,
-                Body = args.Exception == null
-                    ? $"{args.Message}{Environment.NewLine}{args.Exception}"
+                Body = args.Exception != null
+                    ? $"{args.Message}{Environment.NewLine}{args.Exception}{Environment.NewLine}{args.Exception.StackTrace}"
                     : args.Message
             });
         }
