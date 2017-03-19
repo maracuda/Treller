@@ -11,10 +11,17 @@ const webAppRoot = path.join(__dirname, "WebApplication");
 const appRoot = path.join(webAppRoot, "App");
 const isProduction = _.some(process.argv, _.partial(_.includes, ['-p', '--optimize-minimize', '--optimize-occurence-order']));
 
+const createEntry = (partialPath, entryNameToExpose) => {
+    const expose = entryNameToExpose ? `expose-loader?${entryNameToExpose}!` : null;
+    const fullPath = path.join(appRoot, partialPath);
+
+    return `${expose}${fullPath}`;
+};
+
 const baseConfig = {
     entry: {
         vendor: ["react", "react-dom", "redux", "react-redux", "redux-actions"],
-        news: path.join(appRoot, "News")
+        news: createEntry("News", "News")
     },
     module: {
         rules: [

@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -40,7 +41,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.React
 
         public string RenderJavaScript()
         {
-            return string.Format("ReactDOM.render({0}, document.getElementById('root'));", GetComponentInitialiser());
+            return string.Format("ReactDOM.render({0}, document.getElementById('{1}'));", GetComponentInitialiser(), GetId());
         }
 
         private string GetComponentInitialiser()
@@ -50,7 +51,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.React
                 Converters = new List<JsonConverter> { new StringEnumConverter() }
             });
 
-            return $"React.createElement({ComponentName}, {serializedObject})";
+            return $"React.createElement({ComponentName}.default, {serializedObject})";
         }
     }
 }

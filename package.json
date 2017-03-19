@@ -4,7 +4,7 @@
   "description": "Developer manager helper",
   "scripts": {
     "deploy:back": "cd ./Deploy && invoke_localdeploy.bat && cd ../",
-    "build": "webpack --display-error-details --config webpack.config.js"
+    "build": "webpack --progress --display-error-details --config webpack.config.js"
   },
   "dependencies": {
     "autoprefixer": "6.7.7",

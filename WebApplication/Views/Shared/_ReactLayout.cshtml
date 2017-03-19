@@ -5,6 +5,11 @@
     Layout = "~/Views/Shared/_BaseLayout.cshtml";
 }
 
+@section HeadCss
+{
+    @RenderSection("HeadCss", false)
+}
+
 @RenderBody()
 
 @section FooterScripts
