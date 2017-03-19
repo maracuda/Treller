@@ -27,3 +27,5 @@ _ReSharper*/
 .idea*/*
 TrellerData/LogIn.json
 TrellerData/*.json
+node_modules/
+**/Content/bundle/
