@@ -1,14 +1,16 @@
-﻿@using SKBKontur.Treller.WebApplication.Implementation.Webpack
+﻿@using SKBKontur.Treller.WebApplication.Implementation.React
+@using SKBKontur.Treller.WebApplication.Implementation.Webpack
 
 @{
-    Layout = "./_BaseLayout.cshtml";
+    Layout = "~/Views/Shared/_BaseLayout.cshtml";
 }
 
-<div id="root"></div>
+@RenderBody()
 
 @section FooterScripts
 {
     @Webpack.Scripts(WebpackEntries.Manifest)
     @Webpack.Scripts(WebpackEntries.Vendor)
     @RenderSection("FooterScripts", false)
+    @HtmlReact.Init()
 }

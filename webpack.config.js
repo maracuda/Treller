@@ -25,7 +25,9 @@ const baseConfig = {
                     appRoot
                 ],
                 exclude: /node_modules/
-            }
+            },
+            { test: require.resolve("react"), use: "expose-loader?React" },
+            { test: require.resolve("react-dom"), use: "expose-loader?ReactDOM" }
         ]
     },
     output: {
