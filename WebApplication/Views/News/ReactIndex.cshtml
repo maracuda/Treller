@@ -1,0 +1,18 @@
+﻿@using SKBKontur.Treller.WebApplication.Implementation.React
+@using SKBKontur.Treller.WebApplication.Implementation.Webpack
+@model SKBKontur.Treller.WebApplication.Controllers.NewsViewModel
+
+@{
+    Layout = "~/Views/Shared/_ReactLayout.cshtml";
+}
+
+@section HeadCss {
+    @Webpack.Styles(WebpackEntries.News)
+}
+
+@HtmlReact.Component(WebpackEntries.News, Model)
+
+@section FooterScripts
+{
+    @Webpack.Scripts(WebpackEntries.News)
+}

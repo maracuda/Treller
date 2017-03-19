@@ -27,6 +27,16 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         }
 
         [HttpGet]
+        public ActionResult ReactIndex()
+        {
+            var news = new NewsViewModel
+            {
+                TaskNews = billingTimes.SelectAll()
+            };
+            return View("ReactIndex", news);
+        }
+
+        [HttpGet]
         public ActionResult GoToDetails(string taskId)
         {
             var taskNewModel = billingTimes.Read(taskId);
