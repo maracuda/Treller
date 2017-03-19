@@ -1,36 +1,34 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+﻿@{
+    Layout = "./_BaseLayout.cshtml";
+}
 
-    <title>@ViewBag.Title</title>
+@section HeadCss
+{
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/fonts/font-awesome/css/font-awesome.min.css")" />
     @Styles.Render("~/bundles/layout")
 
     @RenderSection("Header", false)
     @Scripts.Render("~/bundles/modernizr")
-</head>
-    <body class="layout-body">
-        @RenderBody()
-        
-        <!--[if lte IE 8]>
-        @Scripts.Render("~/bundles/js/polyfills")
-        <![endif]-->
-        
-        @Scripts.Render("~/bundles/js/base-libraries")
-        @RenderSection("FooterScripts", false)
-    
-        <script>
-            $(function () {
-                $(".colorbox-link").colorbox({
-                    iframe: false,
-                    scrolling: false,
-                    returnFocus: false,
-                    top: "50px",
-                    close: "закрыть"
-                });
-            })
-        </script>
-    </body>
-</html>
+}
+
+<div class="layout-body">
+    @RenderBody()
+</div>
+
+@section FooterScripts
+    {
+    @Scripts.Render("~/bundles/js/base-libraries")
+    @RenderSection("FooterScripts", false)
+
+    <script>
+        $(function () {
+            $(".colorbox-link").colorbox({
+                iframe: false,
+                scrolling: false,
+                returnFocus: false,
+                top: "50px",
+                close: "закрыть"
+            });
+        })
+    </script>
+}
