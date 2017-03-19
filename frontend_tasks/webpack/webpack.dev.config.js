@@ -5,7 +5,6 @@ module.exports = {
         rules: [
             {
                 test: /\.scss$/,
-                // todo: postcss
                 use: [
                     "style-loader",
                     {
@@ -23,6 +22,14 @@ module.exports = {
                             outputStyle: "expanded",
                             sourceMap: true,
                             sourceMapContents: true
+                        }
+                    },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            plugins: () => ([
+                                require("autoprefixer")
+                            ])
                         }
                     }
                 ]
