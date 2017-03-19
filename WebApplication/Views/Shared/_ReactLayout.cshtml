@@ -1,0 +1,14 @@
+﻿@using SKBKontur.Treller.WebApplication.Implementation.Webpack
+
+@{
+    Layout = "./_BaseLayout.cshtml";
+}
+
+<div id="root"></div>
+
+@section FooterScripts
+{
+    @Webpack.Scripts(WebpackEntries.Manifest)
+    @Webpack.Scripts(WebpackEntries.Vendor)
+    @RenderSection("FooterScripts", false)
+}
