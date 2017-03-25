@@ -1,8 +1,8 @@
 import { PureComponent, PropTypes } from "react";
 
-import styles from "./News.scss";
+import styles from "./Releases.scss";
 
-class News extends PureComponent {
+class Releases extends PureComponent {
     render() {
         return (
             <div className={styles.wrapper}>
@@ -15,8 +15,8 @@ class News extends PureComponent {
     }
 }
 
-News.propTypes = {
+Releases.propTypes = {
     TaskNews: PropTypes.array
 };
 
-export default News;
+export default Releases;
