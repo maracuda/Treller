@@ -29,3 +29,4 @@ TrellerData/LogIn.json
 TrellerData/*.json
 node_modules/
 **/Content/bundle/
+*.log

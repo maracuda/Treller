@@ -5,6 +5,7 @@
   "scripts": {
     "deploy:back": "cd ./Deploy && invoke_localdeploy.bat && cd ../",
     "build": "webpack --progress --display-error-details --config webpack.config.js",
+    "deploy": "webpack --progress --display-error-details --config webpack.config.js --env.prod",
     "watch": "webpack -w --progress --config webpack.config.js"
   },
   "dependencies": {
