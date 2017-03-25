@@ -28,8 +28,8 @@ namespace SKBKontur.Treller.WebApplication
                 .IncludeDirectory("~/Content/Scripts/Layout", "*.jsx")
                 .IncludeDirectory("~/Content/Scripts/TaskList", "*.jsx"));
 
-            
-            
+
+
             bundles.Add(
                 new StyleBundle("~/bundles/layout")
                 .Include("~/Content/normalize.css")
@@ -38,7 +38,12 @@ namespace SKBKontur.Treller.WebApplication
                 .Include("~/Content/Colorbox/colorbox.css")
                 .Include("~/Content/site.css")
                 .IncludeDirectory("~/Content/Layout/", "*.css"));
-            
+
+            bundles.Add(
+                new StyleBundle("~/bundles/reactLayout")
+                .Include("~/Content/normalize.css")
+                .Include("~/Content/BaseStyle.css"));
+
             bundles.Add(
                 new StyleBundle("~/bundles/css/tasklist")
                 .IncludeDirectory("~/Content/Shared", "*.css")

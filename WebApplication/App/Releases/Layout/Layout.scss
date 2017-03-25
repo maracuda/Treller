@@ -1,5 +1,56 @@
+@import "~billing-ui/styles/variables";
+
+@font-face {
+    font-family: "Baskerville";
+    src: url("./baskerville_normal.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+$layoutBgColor: #e3e3e3;
+
 :local {
-    .wrapper {
-        color: green;
+    .layout {
+        background-color: $layoutBgColor;
+        padding-top: 40px;
+    }
+
+    .header {
+        background-color: $layoutBgColor;
+        text-align: center;
+        position: relative;
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 51px;
+            display: block;
+            height: 1px;
+            width: 100%;
+            background-color: $textDarkColor;
+        }
+    }
+
+    .title {
+        font-family: "Baskerville", serif;
+        background-color: $layoutBgColor;
+        font-size: 45px;
+        letter-spacing: 15px;
+        color: $textDarkColor;
+        display: inline-block;
+        padding: 0 50px;
+        position: relative;
+        top: -35px;
+        text-transform: uppercase;
+        z-index: 1;
+    }
+
+    .logo {
+        background-image: url("./pirateship.svg");
+        background-color: $layoutBgColor;
+        width: 80px;
+        height: 102px;
+        display: inline-block;
+        z-index: 1;
     }
 }

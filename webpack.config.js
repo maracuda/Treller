@@ -34,11 +34,14 @@ const baseConfig = {
                 exclude: /node_modules/
             },
             { test: require.resolve("react"), use: "expose-loader?React" },
-            { test: require.resolve("react-dom"), use: "expose-loader?ReactDOM" }
+            { test: require.resolve("react-dom"), use: "expose-loader?ReactDOM" },
+
+            { test: /\.(jpe?g|png|gif|svg)$/i, loader: "url-loader?name=[name].[hash].[ext]&limit=10000" },
+            { test: /\.ttf$/, loader: "file-loader?prefix=font/" }
         ]
     },
     output: {
-        publicPath: "/assets/",
+        // publicPath: "/assets/",
         filename: "[name].js",
         chunkFilename: "chunks/[name].[chunkhash].js"
     },

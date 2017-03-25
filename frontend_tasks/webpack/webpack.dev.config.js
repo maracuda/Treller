@@ -1,22 +1,20 @@
 const path = require("path");
 const webpack = require("webpack");
+const extractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     module: {
         rules: [
             {
                 test: /\.scss$/,
+                loader: extractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader?sourceMap&localIdentName=[name]-[local]-[hash:base64:8]"
+                })
+            },
+            {
+                test: /\.scss$/,
                 use: [
-                    "style-loader",
-                    {
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: true,
-                            modules: true,
-                            importLoaders: 1,
-                            localIdentName: "[name]-[local]-[hash:base64:8]"
-                        }
-                    },
                     {
                         loader: "sass-loader",
                         options: {
@@ -42,7 +40,11 @@ module.exports = {
     },
     plugins: [
         // new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin()
+        new webpack.NoEmitOnErrorsPlugin(),
+        new extractTextPlugin({
+            filename: "[name].css",
+            allChunks: true
+        })
         // new webpack.DefinePlugin({
         //     "process.env": {
         //         BUILD_TARGET: JSON.stringify("client")
