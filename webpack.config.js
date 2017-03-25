@@ -20,7 +20,7 @@ const createEntry = (partialPath, entryNameToExpose) => {
 
 const baseConfig = {
     entry: {
-        vendor: ["react", "react-dom", "redux", "react-redux", "redux-actions"],
+        vendor: ["react", "react-dom", "redux", "react-redux", "redux-actions", "reselect"],
         releases: createEntry("Releases", "Releases")
     },
     module: {

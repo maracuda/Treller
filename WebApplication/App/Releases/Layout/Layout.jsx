@@ -1,8 +1,10 @@
 import { PureComponent, PropTypes } from "react";
+import { connect } from "react-redux";
+import { getReleasesInfo } from "../selectors";
 
-import styles from "./Releases.scss";
+import styles from "./Layout.scss";
 
-class Releases extends PureComponent {
+class Layout extends PureComponent {
     render() {
         return (
             <div className={styles.wrapper}>
@@ -12,8 +14,8 @@ class Releases extends PureComponent {
     }
 }
 
-Releases.propTypes = {
+Layout.propTypes = {
     Releases: PropTypes.array
 };
 
-export default Releases;
+export default connect(getReleasesInfo)(Layout);
