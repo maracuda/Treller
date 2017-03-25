@@ -8,7 +8,7 @@ class Release extends PureComponent {
         const { CreateDate, Title, Content, ImageUrl } = this.props;
 
         return (
-            <div>
+            <div className={styles.release}>
                 <div className={styles.date}>
                     {formatDate(CreateDate)}
                 </div>

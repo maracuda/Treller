@@ -2,9 +2,12 @@
 
 $leftIndent: 50px;
 $rightIndent: 70px;
-$blocksIndent: 15px;
 
 :local {
+  .release {
+    color: #666;
+  }
+
   .date {
     background-color: $bgElementActiveLightColor;
     padding: 0 $leftIndent 0 $rightIndent;
@@ -19,7 +22,7 @@ $blocksIndent: 15px;
 
   .title {
     font-weight: bold;
-    margin-bottom: $blocksIndent;
+    margin-bottom: 15px;
     line-height: $lineHeightRegular;
   }
 
@@ -29,6 +32,6 @@ $blocksIndent: 15px;
 
   .image-wrapper {
     text-align: center;
-    margin-top: $blocksIndent;
+    margin-top: 20px;
   }
 }
