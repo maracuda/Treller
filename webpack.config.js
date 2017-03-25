@@ -21,7 +21,7 @@ const createEntry = (partialPath, entryNameToExpose) => {
 const baseConfig = {
     entry: {
         vendor: ["react", "react-dom", "redux", "react-redux", "redux-actions"],
-        news: createEntry("News", "News")
+        releases: createEntry("Releases", "Releases")
     },
     module: {
         rules: [
@@ -38,7 +38,6 @@ const baseConfig = {
         ]
     },
     output: {
-        path: path.join(webAppRoot, "Content", "bundle"),
         publicPath: "/assets/",
         filename: "[name].js",
         chunkFilename: "chunks/[name].[chunkhash].js"
@@ -62,7 +61,7 @@ const baseConfig = {
 };
 
 if (isProduction) {
-    resultConfig = webpackMerge(baseConfig, prodConfig);
+    resultConfig = webpackMerge(baseConfig, prodConfig(webAppRoot));
 } else {
     resultConfig = webpackMerge(baseConfig, devConfig);
 }

@@ -1,3 +1,4 @@
+const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
@@ -35,6 +36,9 @@ module.exports = {
                 ]
             }
         ]
+    },
+    output: {
+        path: path.join("C:\\Treller", "Content", "bundle")
     },
     plugins: [
         // new webpack.HotModuleReplacementPlugin(),
