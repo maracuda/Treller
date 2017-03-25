@@ -6,7 +6,6 @@ module.exports = function(webAppRoot) {
         module: {
             rules: [{
                 test: /\.scss$/,
-                // todo: postcss
                 loader: extractTextPlugin.extract({
                     fallback: "style-loader",
                     use: "css-loader?localIdentName=[name]-[local]-[hash:base64:8]&minimize"
@@ -14,7 +13,22 @@ module.exports = function(webAppRoot) {
             },
                 {
                     test: /\.scss$/,
-                    loader: "sass-loader?outputStyle=expanded"
+                    use: [
+                        {
+                            loader: "sass-loader",
+                            options: {
+                                outputStyle: "expanded"
+                            }
+                        },
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                plugins: () => ([
+                                    require("autoprefixer")
+                                ])
+                            }
+                        }
+                    ]
                 }
             ]
         },

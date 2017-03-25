@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const _ = require("lodash");
 const webpackMerge = require("webpack-merge");
 
-// const prodConfig = require("./frontend_tasks/webpack/webpack.prod.config");
+const prodConfig = require("./frontend_tasks/webpack/webpack.prod.config");
 const devConfig = require("./frontend_tasks/webpack/webpack.dev.config");
 
 module.exports = function(env) {
@@ -66,7 +66,7 @@ module.exports = function(env) {
     };
 
     if (isProduction) {
-        resultConfig = webpackMerge(baseConfig, devConfig(webAppRoot));
+        resultConfig = webpackMerge(baseConfig, prodConfig(webAppRoot));
     } else {
         resultConfig = webpackMerge(baseConfig, devConfig("C:\\Treller"));
     }
