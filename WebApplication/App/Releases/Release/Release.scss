@@ -1,4 +1,34 @@
 @import "~billing-ui/styles/variables";
 
+$leftIndent: 50px;
+$rightIndent: 70px;
+$blocksIndent: 15px;
+
 :local {
+  .date {
+    background-color: $bgElementActiveLightColor;
+    padding: 0 $leftIndent 0 $rightIndent;
+    line-height: 2;
+    font-weight: bold;
+    color: #bbb;
+  }
+
+  .content {
+    padding: 20px $leftIndent 40px $rightIndent;
+  }
+
+  .title {
+    font-weight: bold;
+    margin-bottom: $blocksIndent;
+    line-height: $lineHeightRegular;
+  }
+
+  .text {
+    line-height: $lineHeightRegular;
+  }
+
+  .image-wrapper {
+    text-align: center;
+    margin-top: $blocksIndent;
+  }
 }

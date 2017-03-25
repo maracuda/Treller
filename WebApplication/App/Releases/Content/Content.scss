@@ -1,0 +1,10 @@
+@import "~billing-ui/styles/variables";
+
+:local {
+  .content {
+    width: 925px;
+    background-color: $bgWhiteColor;
+    margin: 0 auto;
+    box-shadow: $elementBaseShadow;
+  }
+}

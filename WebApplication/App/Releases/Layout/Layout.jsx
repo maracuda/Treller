@@ -1,9 +1,5 @@
-import { PureComponent, PropTypes } from "react";
-import { connect } from "react-redux";
-import { getReleasesInfo } from "../selectors";
-
-import Release from "../Release";
-
+import { PureComponent } from "react";
+import Content from "../Content";
 import styles from "./Layout.scss";
 
 class Layout extends PureComponent {
@@ -15,16 +11,10 @@ class Layout extends PureComponent {
                     <div className={styles.logo} />
                     <div className={styles.title}>Биллинга</div>
                 </div>
-                {this.props.Releases.map(release => <div>{release.Title}</div>)}
+                <Content />
             </div>
         );
     }
 }
 
-Layout.propTypes = {
-    Releases: PropTypes.arrayOf(PropTypes.shape({
-        ReleaseId: PropTypes.string
-    }))
-};
-
-export default connect(getReleasesInfo)(Layout);
+export default Layout;

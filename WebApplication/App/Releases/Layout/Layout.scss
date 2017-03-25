@@ -12,13 +12,14 @@ $layoutBgColor: #e3e3e3;
 :local {
     .layout {
         background-color: $layoutBgColor;
-        padding-top: 40px;
+        padding: 40px 0 100px;
     }
 
     .header {
         background-color: $layoutBgColor;
         text-align: center;
         position: relative;
+        margin-bottom: 35px;
 
         &:after {
             content: "";
