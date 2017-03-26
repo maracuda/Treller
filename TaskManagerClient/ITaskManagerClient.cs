@@ -22,6 +22,8 @@ namespace SKBKontur.TaskManagerClient
         CardAction[] GetActionsForBoardCards(string[] boardIds, DateTime fromUtc, DateTime toUtc);
         Task<CardAction[]> GetActionsForBoardCardsAsync(string[] boardIds, DateTime? fromUtc = null, int limit = 1000);
         Task<CardAction[]> GetCardActionsAsync(string cardId);
+        CardAction[] GetCardActions(string cardId);
+        CardAction[] GetCardUpdateActions(string cardId);
 
         Task<CardChecklist[]> GetBoardChecklistsAsync(string[] boardIds);
         Task<CardChecklist[]> GetCardChecklistsAsync(string cardId);

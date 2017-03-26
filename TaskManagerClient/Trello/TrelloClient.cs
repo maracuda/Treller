@@ -118,6 +118,25 @@ namespace SKBKontur.TaskManagerClient.Trello
                     .Await(CardAction.ConvertFrom, result => result.Where(x => x != null));
         }
 
+        public CardAction[] GetCardActions(string cardId)
+        {
+            return Read<Action[]>($"cards/{cardId}/actions", new Dictionary<string, string> {{"filter", "all"}, {"limit", "1000"}})
+                    .Select(CardAction.ConvertFrom)
+                    .ToArray();
+        }
+
+        public CardAction[] GetCardUpdateActions(string cardId)
+        {
+            return Read<Action[]>($"cards/{cardId}/actions",
+                    new Dictionary<string, string>
+                    {
+                        {"filter", "updateCard"},
+                        {"limit", "1000"}
+                    })
+                .Select(CardAction.ConvertFrom)
+                .ToArray();
+        }
+
         public Task<CardAction[]> GetActionsForBoardCardsAsync(string[] boardIds, DateTime? fromUtc, int limit)
         {
             var queryString = new Dictionary<string, string> { { "filter", "all" }, { "limit", limit.ToString() } };
@@ -168,7 +187,8 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         private T Read<T>(string path, Dictionary<string, string> queryString = null)
         {
-            return AsyncHelpers.RunSync(() => ReadAsync<T>(path, queryString));
+            var parameters = queryString == null ? credentials : credentials.Union(queryString).ToDictionary(x => x.Key, x => x.Value);
+            return httpClient.SendGet<T>($"https://trello.com/1/{path}", parameters);
         }
     }
 }

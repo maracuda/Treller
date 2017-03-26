@@ -24,6 +24,7 @@ task Build {
     exec { dotnet restore "$base_dir\..\Storage" }
     exec { dotnet restore "$base_dir\..\TaskManagerClient" }
     exec { dotnet restore "$base_dir\..\RepositoryHooks" }
+	exec { dotnet restore "$base_dir\..\ProcessStats" }
     exec { dotnet restore "$base_dir\..\WebApplication" }
     exec { dotnet build "$base_dir\..\WebApplication" -c $build_profile }
 }

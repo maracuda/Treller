@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using SKBKontur.HttpInfrastructure.Clients;
 using Xunit;
 using SKBKontur.TaskManagerClient;
 using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
@@ -73,26 +72,17 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
         }
 
         [Fact]
-        public void ItCanLoadAllCardActionsAndFilterListMovements()
+        public void ItCanLoadAllCardActions()
         {
-            var actions = AsyncHelpers.RunSync(() => trelloClient.GetCardActionsAsync("9JRBHBaL"));
-            var actual = actions.Where(x => x.ToList != null && x.FromList != null)
-                .Select(x => new CardMovementModel
-                {
-                    FromList = x.FromList.Name,
-                    ToList = x.ToList.Name,
-                    Date = x.Date
-                })
-                .OrderBy(x => x.Date)
-                .ToArray();
-            Assert.True(actual.Length > 0);
+            var actions = trelloClient.GetCardActions("9JRBHBaL");
+            Assert.True(actions.Length > 0);
         }
 
-        class CardMovementModel
+        [Fact]
+        public void ItCanLoadOnlyCardUpdateActions()
         {
-            public string FromList { get; set; }
-            public string ToList { get; set; }
-            public DateTime Date { get; set; }
+            var actions = trelloClient.GetCardUpdateActions("9JRBHBaL");
+            Assert.True(actions.Length > 0);
         }
     }
 }
