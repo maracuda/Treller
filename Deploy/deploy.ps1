@@ -85,3 +85,7 @@ task SetAppOnline {
         Remove-Item "$install_path\App_Offline.htm" -Force
     }
 }
+
+task BuildFrontEnd {
+	# yarn deploy
+}
