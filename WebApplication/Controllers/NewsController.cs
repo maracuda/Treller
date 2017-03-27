@@ -1,7 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
+using SKBKontur.Treller.WebApplication.Implementation.Services.News.Releases;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
@@ -24,6 +26,34 @@ namespace SKBKontur.Treller.WebApplication.Controllers
                 TaskNews = billingTimes.SelectAll()
             };
             return View("Index", news);
+        }
+
+        [HttpGet]
+        public ActionResult Releases()
+        {
+            var releases = new[]
+            {
+                new Release
+                {
+                    ReleaseId = Guid.NewGuid(),
+                    CreateDate = DateTime.Now,
+                    Title = "Заголовок 1",
+                    Content = "Описание релиза",
+                    ImageUrl = null
+                },
+                new Release
+                {
+                    ReleaseId = Guid.NewGuid(),
+                    CreateDate = DateTime.Now,
+                    Title = "Очень длинный заголовок очень длинный заголовок Очень длинный заголовок очень длинный заголовок Очень длинный заголовок очень длинный заголовок",
+                    Content = "Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза",
+                    ImageUrl = null
+                }
+            };
+            return View("Releases", new ReleasesPageViewModel
+            {
+                Releases = releases
+            });
         }
 
         [HttpGet]

@@ -24,6 +24,9 @@ _ReSharper*/
 /packages/
 !packages/repositories.config
 .vs/*
-.idea*/*
+.idea/*
 TrellerData/LogIn.json
 TrellerData/*.json
+node_modules/
+**/Content/bundle/
+*.log
