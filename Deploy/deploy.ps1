@@ -9,9 +9,9 @@ properties {
   $build_profile = "Release"
 }
 
-task default -depends Build, SetAppOffline, Clean, CopyContent, CreateWebsite, SetAppOnline
+task default -depends Build, BuildFrontEnd, SetAppOffline, Clean, CopyContent, CreateWebsite, SetAppOnline
 
-task LocalDeploy -depends Build, Clean, CopyContent
+task LocalDeploy -depends Build, BuildFrontEnd, Clean, CopyContent
 
 task Build {
     exec { dotnet restore "$base_dir\..\Logger" }
@@ -88,5 +88,7 @@ task SetAppOnline {
 }
 
 task BuildFrontEnd {
-	# yarn deploy
+	cd ..\
+	yarn deploy
+	cd Deploy
 }
