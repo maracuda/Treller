@@ -89,6 +89,6 @@ task SetAppOnline {
 
 task BuildFrontEnd {
 	cd ..\
-	yarn deploy  --ignore-engines
+	exec { yarn deploy  --ignore-engines }
 	cd Deploy
 }
