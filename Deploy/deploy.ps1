@@ -9,9 +9,9 @@ properties {
   $build_profile = "Release"
 }
 
-task default -depends Build, BuildFrontEnd, SetAppOffline, Clean, CopyContent, CreateWebsite, SetAppOnline
+task default -depends Build, SetAppOffline, Clean, BuildFrontEnd, CopyContent, CreateWebsite, SetAppOnline
 
-task LocalDeploy -depends Build, BuildFrontEnd, Clean, CopyContent
+task LocalDeploy -depends Build, Clean, BuildFrontEnd, CopyContent
 
 task Build {
     exec { dotnet restore "$base_dir\..\Logger" }
