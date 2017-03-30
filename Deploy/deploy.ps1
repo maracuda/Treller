@@ -43,7 +43,7 @@ task Clean {
     if (Test-Path $install_path -pathType container)
     {
         Remove-Item "$install_path\*" -Exclude "App_Offline.htm","web.config" -Force -Recurse
-        Remove-Item "$install_path\Views" -Force -Recurse
+        #Remove-Item "$install_path\Views" -Force -Recurse
         Start-Sleep -s 10
     }
 }
@@ -89,6 +89,6 @@ task SetAppOnline {
 
 task BuildFrontEnd {
 	cd ..\
-	yarn deploy
+	yarn deploy  --ignore-engines
 	cd Deploy
 }
