@@ -12,6 +12,7 @@ $layoutBgColor: #e3e3e3;
 
 :local {
     .layout {
+        min-height: calc(100vh - 140px);
         background-color: $layoutBgColor;
         padding: 40px 0 100px;
     }
