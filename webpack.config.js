@@ -22,7 +22,7 @@ module.exports = function(env) {
 
     const baseConfig = {
         entry: {
-            vendor: ["react", "react-dom", "redux", "react-redux", "redux-actions", "reselect"],
+            vendor: ["react", "react-dom", "redux", "react-redux", "redux-actions", "reselect", "classnames"],
             releases: createEntry("Releases", "Releases")
         },
         module: {
@@ -31,9 +31,10 @@ module.exports = function(env) {
                     test: /\.jsx?$/,
                     use: "babel-loader",
                     include: [
-                        appRoot
+                        appRoot,
+                        /billing-ui/
                     ],
-                    exclude: /node_modules/
+                    exclude: /node_modules\/(?!(billing-ui)\/).*/
                 },
                 { test: require.resolve("react"), use: "expose-loader?React" },
                 { test: require.resolve("react-dom"), use: "expose-loader?ReactDOM" },

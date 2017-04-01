@@ -4,6 +4,8 @@ const extractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = function(webAppRoot) {
     return {
+        cache: true,
+        devtool: "inline-source-map",
         module: {
             rules: [
                 {
@@ -45,6 +47,9 @@ module.exports = function(webAppRoot) {
             new extractTextPlugin({
                 filename: "[name].css",
                 allChunks: true
+            }),
+            new webpack.LoaderOptionsPlugin({
+                debug: true
             })
             // new webpack.DefinePlugin({
             //     "process.env": {
