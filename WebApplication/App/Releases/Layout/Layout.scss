@@ -1,3 +1,4 @@
+@import "~billing-ui/styles/bourbon";
 @import "~billing-ui/styles/variables";
 
 @font-face {
@@ -47,11 +48,17 @@ $layoutBgColor: #e3e3e3;
     }
 
     .logo {
-        background-image: url("./pirateship.svg");
+        position: relative;
         background-color: $layoutBgColor;
         width: 80px;
-        height: 102px;
+        height: 101px;
         display: inline-block;
         z-index: 1;
+
+        &:after {
+            content: "";
+            @include position(absolute, 0 0 0 0);
+            background-image: url("./pirateship.svg");
+        }
     }
 }
