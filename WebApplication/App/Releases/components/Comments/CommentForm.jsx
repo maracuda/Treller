@@ -5,7 +5,7 @@ import TextArea from "billing-ui/components/TextArea";
 import Button, { ButtonSize } from "billing-ui/components/Button";
 
 import ValidationFields from "../../utils/ValidationFields";
-import { changeCommentField, checkValidity } from "../../actions";
+import { changeCommentField, checkValidity, submitComment } from "../../actions";
 import { getCommentForm } from "../../selectors";
 import styles from "./Comment.scss";
 
@@ -26,7 +26,7 @@ class CommentForm extends PureComponent {
     };
 
     render() {
-        const { name, text, validationResult, canSubmit } = this.props;
+        const { name, text, validationResult, canSubmit, submitComment, isLoading } = this.props;
 
         return (
             <div className={styles.comment}>
@@ -41,6 +41,7 @@ class CommentForm extends PureComponent {
                            placeholderClassName={styles.label}
                            inputClassName={styles.input}
                            wrapperClassName={styles["input-wrapper"]} />
+
                 <TextArea width="100%"
                           placeholder="Умные мысли, троллинг, сарказм здесь"
                           value={text}
@@ -52,7 +53,8 @@ class CommentForm extends PureComponent {
                           placeholderClassName={styles.label}
                           inputClassName={styles.input}
                           wrapperClassName={styles["input-wrapper"]} />
-                <Button size={ButtonSize.small} className={styles.button} disabled={!canSubmit}>
+
+                <Button size={ButtonSize.small} className={styles.button} disabled={!canSubmit || isLoading} onClick={submitComment}>
                     Погнали!
                 </Button>
             </div>
@@ -65,9 +67,11 @@ CommentForm.propTypes = {
     text: PropTypes.string,
     validationResult: PropTypes.object,
     canSubmit: PropTypes.bool,
+    isLoading: PropTypes.bool,
 
     changeCommentField: PropTypes.func,
-    checkValidity: PropTypes.func
+    checkValidity: PropTypes.func,
+    submitComment: PropTypes.func
 };
 
-export default connect(getCommentForm, { changeCommentField, checkValidity })(CommentForm);
+export default connect(getCommentForm, { changeCommentField, checkValidity, submitComment })(CommentForm);

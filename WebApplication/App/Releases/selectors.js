@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
-import { isFieldValid } from "billing-ui/helpers/ValidationHelpers";
 
 export const getReleases = store => store.Releases;
 export const getCommentsPanel = store => store.commentsPanel;
+export const getUrls = store => store.Urls;
 
 export const getReleasesInfo = createSelector(
     getReleases,
@@ -42,15 +42,33 @@ export const getCommentsPanelInfo = createSelector(
     }
 );
 
+export const getCommentFormFields = createSelector(
+    getCommentsPanel,
+    panel => ({
+        ...panel.commentForm
+    })
+);
+
 export const getCommentForm = createSelector(
     getCommentsPanel,
-    panel => {
+    getCommentFormFields,
+    (panel, form) => {
         const validationResult = panel.validationResult;
 
         return {
-            ...panel.commentForm,
+            ...form,
+            isLoading: panel.isLoading,
             validationResult,
-            canSubmit: isFieldValid(validationResult)
+            canSubmit: panel.canSubmit
         };
     }
+);
+
+export const getCommentSubmitData = createSelector(
+    getCommentFormFields,
+    getCommentsPanel,
+    (form, panel) => ({
+        ...form,
+        releaseId: panel.ReleaseId
+    })
 );
