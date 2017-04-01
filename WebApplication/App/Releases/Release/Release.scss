@@ -10,14 +10,14 @@ $rightIndent: 70px;
 
   .date {
     background-color: $bgElementActiveLightColor;
-    padding: 0 $leftIndent 0 $rightIndent;
+    padding: 0 $rightIndent 0 $leftIndent;
     line-height: 2;
     font-weight: bold;
     color: #bbb;
   }
 
   .content {
-    padding: 20px $leftIndent 40px $rightIndent;
+    padding: 20px $rightIndent 40px $leftIndent;
   }
 
   .title {
