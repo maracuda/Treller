@@ -11,7 +11,7 @@ module.exports = function(env) {
 
     const webAppRoot = path.join(__dirname, "WebApplication");
     const appRoot = path.join(webAppRoot, "App");
-    const isProduction = _.some(process.argv, _.partial(_.includes, ["-p", "--optimize-minimize", "--optimize-occurence-order"])) || env.prod;
+    const isProduction = _.some(process.argv, _.partial(_.includes, ["-p", "--optimize-minimize", "--optimize-occurence-order"])) || (env && env.prod);
 
     const createEntry = (partialPath, entryNameToExpose) => {
         const expose = entryNameToExpose ? `expose-loader?${entryNameToExpose}!` : null;
