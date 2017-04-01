@@ -1,11 +1,12 @@
 import { PureComponent, PropTypes } from "react";
 import { formatDate } from "billing-ui/libs/moment";
 
+import Actions from "../Actions";
 import styles from "./Release.scss";
 
 class Release extends PureComponent {
     render() {
-        const { CreateDate, Title, Content, ImageUrl } = this.props;
+        const { ReleaseId, CreateDate, Title, Content, ImageUrl } = this.props;
 
         return (
             <div className={styles.release}>
@@ -13,6 +14,8 @@ class Release extends PureComponent {
                     {formatDate(CreateDate)}
                 </div>
                 <div className={styles.content}>
+                    <Actions ReleaseId={ReleaseId} />
+
                     <div className={styles.title}>{Title}</div>
                     <div className={styles.text}>{Content}</div>
 
@@ -28,10 +31,12 @@ class Release extends PureComponent {
 }
 
 Release.propTypes = {
+    ReleaseId: PropTypes.string,
     CreateDate: PropTypes.string,
     Title: PropTypes.string,
     Content: PropTypes.string,
-    ImageUrl: PropTypes.string
+    ImageUrl: PropTypes.string,
+    Comments: PropTypes.array
 };
 
 export default Release;
