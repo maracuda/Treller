@@ -17,7 +17,8 @@ function* saveComment() {
             data,
             onBegin: actions.submitCommentBegin,
             onSuccess: actions.submitCommentSuccess,
-            onError: actions.submitCommentError
+            onError: actions.submitCommentError,
+            additionalResponseData: { releaseId: data.releaseId }
         });
     }
 }

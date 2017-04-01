@@ -1,9 +1,11 @@
-﻿@using SKBKontur.Treller.WebApplication.Implementation.React
+﻿@using System.Web.UI.WebControls
+@using SKBKontur.Treller.WebApplication.Implementation.React
 @using SKBKontur.Treller.WebApplication.Implementation.Webpack
 @model SKBKontur.Treller.WebApplication.Implementation.Services.News.Releases.ReleasesPageViewModel
 
 @{
     Layout = "~/Views/Shared/_ReactLayout.cshtml";
+    ViewBag.Title = "Новости Биллинга";
 }
 
 @section HeadCss {

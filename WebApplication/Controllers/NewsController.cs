@@ -86,7 +86,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             var savedComment = new Comment
             {
                 CommentId = Guid.NewGuid(),
-                CreateDate = DateTime.Now, // todo: баг - приходит в виде "/Date(1491053278576)/", возможно нужен NewtonsoftJson
+                CreateDate = DateTime.Now,
                 Name = name,
                 Text = text
             };
