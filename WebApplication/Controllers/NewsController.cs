@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
@@ -69,8 +70,28 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             };
             return View("Releases", new ReleasesPageViewModel
             {
-                Releases = releases
+                Releases = releases,
+                Urls = new Dictionary<string, string>
+                {
+                    {
+                        "saveComment", Url.Action("SaveComment")
+                    }
+                }
             });
+        }
+
+        [HttpPost]
+        public ActionResult SaveComment(Guid releaseId, string name, string text)
+        {
+            var savedComment = new Comment
+            {
+                CommentId = Guid.NewGuid(),
+                CreateDate = DateTime.Now, // todo: баг - приходит в виде "/Date(1491053278576)/", возможно нужен NewtonsoftJson
+                Name = name,
+                Text = text
+            };
+
+            return Json(savedComment);
         }
 
         [HttpGet]
