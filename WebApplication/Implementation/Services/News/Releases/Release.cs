@@ -9,5 +9,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Releases
         public string Title { get; set; }
         public string Content { get; set; }
         public string ImageUrl { get; set; }
+        public Comment[] Comments { get; set; }
     }
 }
