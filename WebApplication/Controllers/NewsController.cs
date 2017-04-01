@@ -39,7 +39,26 @@ namespace SKBKontur.Treller.WebApplication.Controllers
                     CreateDate = DateTime.Now,
                     Title = "Заголовок 1",
                     Content = "Описание релиза",
-                    ImageUrl = null
+                    ImageUrl = null,
+                    Comments = new []
+                    {
+                        new Comment
+                        {
+                            CommentId = Guid.NewGuid(),
+                            FirstName = "Айбелив",
+                            LastName = "Айкенфлаев",
+                            CreateDate = DateTime.Now,
+                            Text = "The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin."
+                        },
+                        new Comment
+                        {
+                            CommentId = Guid.NewGuid(),
+                            FirstName = "Иван",
+                            LastName = "Диван",
+                            CreateDate = DateTime.Now,
+                            Text = "The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin."
+                        }
+                    }
                 },
                 new Release
                 {
@@ -47,7 +66,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
                     CreateDate = DateTime.Now,
                     Title = "Очень длинный заголовок очень длинный заголовок Очень длинный заголовок очень длинный заголовок Очень длинный заголовок очень длинный заголовок",
                     Content = "Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза",
-                    ImageUrl = null
+                    ImageUrl = "https://media.giphy.com/media/jd6TVgsph6w7e/giphy.gif"
                 }
             };
             return View("Releases", new ReleasesPageViewModel
