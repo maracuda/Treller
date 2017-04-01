@@ -39,7 +39,7 @@ module.exports = function(env) {
                 { test: require.resolve("react-dom"), use: "expose-loader?ReactDOM" },
 
                 { test: /\.(jpe?g|png|gif|svg)$/i, loader: "url-loader?name=[name].[hash].[ext]&limit=10000" },
-                { test: /\.ttf$/, loader: "file-loader?prefix=font/" }
+                { test: /\.woff2?$/, loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },
             ]
         },
         output: {
