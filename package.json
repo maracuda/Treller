@@ -10,6 +10,7 @@
     "watch": "webpack -w --progress --config webpack.config.js"
   },
   "dependencies": {
+    "add-event-listener": "0.0.1",
     "autoprefixer": "6.7.7",
     "axios": "0.16.0",
     "babel-core": "6.24.0",
@@ -36,6 +37,8 @@
     "react": "15.4.2",
     "react-addons-perf": "15.4.2",
     "react-dom": "15.4.2",
+    "react-input-mask": "0.7.9",
+    "react-pure-render": "1.0.2",
     "react-redux": "5.0.3",
     "redux": "3.6.0",
     "redux-actions": "2.0.1",

@@ -6,6 +6,10 @@
     .comment {
         margin-top: 40px;
         font-size: $fontSizeRegular;
+
+        &:first-child {
+            margin-top: 20px;
+        }
     }
 
     .head {
@@ -39,5 +43,22 @@
     .text {
         line-height: $lineHeightRegular;
         margin-top: .5rem;
+    }
+
+    .input-wrapper {
+        width: 100%;
+
+        .input {
+            border-bottom-color: $textSecondaryColor;
+        }
+    }
+
+    .label {
+        font-size: $fontSizeRegular;
+    }
+
+    .button {
+        margin-top: 10px;
+        display: inline-block;
     }
 }

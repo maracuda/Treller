@@ -4,6 +4,7 @@ import { resolveString } from "billing-ui/helpers/PluralStringResolver";
 import Icon, { IconTypes } from "billing-ui/components/Icon";
 
 import Comment from "./Comment";
+import CommentForm from "./CommentForm";
 import { getCommentsPanelInfo } from "../../selectors";
 import { closeComments } from "../../actions";
 import styles from "./Comments.scss";
@@ -35,7 +36,10 @@ class Comments extends PureComponent {
                     </div>
                 </div>
 
-                {Comments.map(comment => <Comment key={comment.CommentId} { ...comment } />)}
+                <div>
+                    <CommentForm />
+                    {Comments.map(comment => <Comment key={comment.CommentId} { ...comment } />)}
+                </div>
             </div>
         );
     }
