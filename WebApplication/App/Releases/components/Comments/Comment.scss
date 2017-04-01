@@ -1,0 +1,43 @@
+@import "~billing-ui/styles/bourbon";
+@import "~billing-ui/styles/variables";
+@import "~billing-ui/styles/placeholders";
+
+:local {
+    .comment {
+        margin-top: 40px;
+        font-size: $fontSizeRegular;
+    }
+
+    .head {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        height: 45px;
+    }
+
+    .name {
+        position: relative;
+        padding-left: 50px;
+        max-width: 130px;
+        padding-top: 5px;
+    }
+
+    .avatar {
+        @include position(absolute, 0 null null 0);
+
+        width: 42px;
+        height: 42px;
+        border-radius: 100%;
+        margin-right: .3rem;
+    }
+
+    .date {
+        color: $textSecondaryColor;
+        padding-top: 5px;
+    }
+
+    .text {
+        line-height: $lineHeightRegular;
+        margin-top: .5rem;
+    }
+}

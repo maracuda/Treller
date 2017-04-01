@@ -1,0 +1,15 @@
+@import "~billing-ui/styles/_variables";
+
+:local {
+  .content {
+    display: flex;
+    justify-content: center;
+  }
+
+  .releases {
+    width: 925px;
+    background-color: $bgWhiteColor;
+    box-shadow: #bebebe 0 4px 50px 0;
+    transition: $transitionDefault;
+  }
+}

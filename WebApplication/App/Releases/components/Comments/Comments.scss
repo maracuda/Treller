@@ -1,0 +1,30 @@
+@import "~billing-ui/styles/_variables";
+
+:local {
+    .comments {
+        width: 275px;
+        transition: $transitionDefault;
+        display: none;
+        margin-left: 50px;
+
+        &.is-opened {
+            display: block;
+        }
+    }
+
+    .head {
+        color: $textSecondaryColor;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+
+    .close:hover {
+        color: $textBaseColor;
+        cursor: pointer;
+    }
+
+    .cross {
+        margin-right: .2rem;
+    }
+}

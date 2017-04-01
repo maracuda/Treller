@@ -1,8 +1,9 @@
 import { PureComponent, PropTypes } from "react";
 import { connect } from "react-redux";
-import { getReleasesInfo } from "../selectors";
+import { getReleasesInfo } from "../../selectors";
 
 import Release from "../Release";
+import Comments from "../Comments";
 import styles from "./Content.scss";
 
 class Content extends PureComponent {
@@ -11,7 +12,8 @@ class Content extends PureComponent {
 
         return (
             <div className={styles.content}>
-                {Releases.map(release => <Release key={release.ReleaseId} { ...release } />)}
+                <div className={styles.releases}>{Releases.map(release => <Release key={release.ReleaseId} { ...release } />)}</div>
+                <Comments />
             </div>
         );
     }

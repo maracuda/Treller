@@ -1,5 +1,5 @@
 import createPageComponent from "../utils/createPage";
-import Layout from "./Layout";
+import Layout from "./components/Layout";
 import { releasesRootSaga } from "./saga";
 import rootReducer from "./reducer";
 

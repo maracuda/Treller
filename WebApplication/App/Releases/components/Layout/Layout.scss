@@ -1,10 +1,24 @@
-@import "~billing-ui/styles/bourbon";
-@import "~billing-ui/styles/variables";
+@import "~billing-ui/styles/_bourbon";
+@import "~billing-ui/styles/_variables";
 
 @font-face {
     font-family: "Baskerville";
-    src: url("./baskerville.woff") format("woff");
+    src: url("baskerville.woff") format("woff");
     font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ProximaNova";
+    src: url("../Layout/ProximaNova-Reg.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ProximaNova";
+    src: url("../Layout/ProximaNova-Bold.woff") format("woff");
+    font-weight: 700;
     font-style: normal;
 }
 
@@ -15,6 +29,7 @@ $layoutBgColor: #e3e3e3;
         min-height: calc(100vh - 140px);
         background-color: $layoutBgColor;
         padding: 40px 0 100px;
+        font-family: "ProximaNova", "Segoe UI", Verdana, Helvetica, Sans-Serif;
     }
 
     .header {
