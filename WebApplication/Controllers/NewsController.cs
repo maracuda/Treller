@@ -45,16 +45,14 @@ namespace SKBKontur.Treller.WebApplication.Controllers
                         new Comment
                         {
                             CommentId = Guid.NewGuid(),
-                            FirstName = "Айбелив",
-                            LastName = "Айкенфлаев",
+                            Name = "Айбелив Айкенфлаев",
                             CreateDate = DateTime.Now,
                             Text = "The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin."
                         },
                         new Comment
                         {
                             CommentId = Guid.NewGuid(),
-                            FirstName = "Иван",
-                            LastName = "Диван",
+                            Name = "Иван Диван",
                             CreateDate = DateTime.Now,
                             Text = "The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin."
                         }
