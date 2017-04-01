@@ -1,4 +1,17 @@
-﻿body {
+﻿@font-face {
+    font-family: "Iconic";
+    src: url("/Content/fonts/Iconic/Kontur-Iconic-eco-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.iconic {
+    font-family: "Iconic";
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     color: #404040;
 }
