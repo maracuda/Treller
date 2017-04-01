@@ -47,7 +47,6 @@ class Comments extends PureComponent {
 
 Comments.propTypes = {
     isOpened: PropTypes.bool,
-    ReleaseId: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.shape({
         CommentId: PropTypes.string
     })),
