@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Routing;
 using SKBKontur.Treller.Logger;
 using SKBKontur.Treller.WebApplication.Implementation.Services.Releases;
 
@@ -8,54 +9,28 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 {
     public class ReleasesController : ExceptionHandledController
     {
+        private readonly IDemoPresentationsService demoPresentationsService;
 
         public ReleasesController(
+            IDemoPresentationsService demoPresentationsService,
             ILoggerFactory loggerFactory) : base(loggerFactory)
         {
+            this.demoPresentationsService = demoPresentationsService;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var releases = new[]
+            var presentations = demoPresentationsService.FetchPresentations(10);
+            foreach (var presentationModel in presentations)
             {
-                new Release
-                {
-                    ReleaseId = Guid.NewGuid(),
-                    CreateDate = DateTime.Now,
-                    Title = "Заголовок 1",
-                    Content = "Описание релиза",
-                    ImageUrl = null,
-                    Comments = new []
-                    {
-                        new Comment
-                        {
-                            CommentId = Guid.NewGuid(),
-                            Name = "Айбелив Айкенфлаев",
-                            CreateDate = DateTime.Now,
-                            Text = "The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin."
-                        },
-                        new Comment
-                        {
-                            CommentId = Guid.NewGuid(),
-                            Name = "Иван Диван",
-                            CreateDate = DateTime.Now,
-                            Text = "The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin."
-                        }
-                    }
-                },
-                new Release
-                {
-                    ReleaseId = Guid.NewGuid(),
-                    CreateDate = DateTime.Now,
-                    Title = "Очень длинный заголовок очень длинный заголовок Очень длинный заголовок очень длинный заголовок Очень длинный заголовок очень длинный заголовок",
-                    Content = "Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза Очень длинное описание релиза",
-                    ImageUrl = "https://media.giphy.com/media/jd6TVgsph6w7e/giphy.gif"
-                }
-            };
-            return View("Index", new ReleasesPageViewModel
+                //presentationModel.ImageUrl = Url.Action("DownloadContent", new RouteValueDictionary {{"presentationId", presentationModel.PresentationId}});
+                presentationModel.ImageUrl = "https://media.giphy.com/media/jd6TVgsph6w7e/giphy.gif";
+            }
+
+            return View("Index", new DemoPresentationPageViewModel
             {
-                Releases = releases,
+                Releases = presentations,
                 Urls = new Dictionary<string, string>
                 {
                     {
@@ -65,18 +40,18 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             });
         }
 
+        [HttpGet]
+        public ActionResult DownloadContent(Guid presentationId)
+        {
+            var content = demoPresentationsService.DownloadPresentationConent(presentationId);
+            return new FileContentResult(content.Bytes, content.Type);
+        }
+
         [HttpPost]
         public ActionResult SaveComment(Guid releaseId, string name, string text)
         {
-            var savedComment = new Comment
-            {
-                CommentId = Guid.NewGuid(),
-                CreateDate = DateTime.Now,
-                Name = name,
-                Text = text
-            };
-
-            return Json(savedComment);
+            var comment = demoPresentationsService.AppendComment(releaseId, name, text);
+            return Json(comment);
         }
     }
 }

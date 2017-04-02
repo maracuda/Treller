@@ -2,9 +2,9 @@
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
 {
-    public class Release
+    public class PresentationModel
     {
-        public Guid ReleaseId { get; set; }
+        public Guid PresentationId { get; set; }
         public DateTime CreateDate { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
