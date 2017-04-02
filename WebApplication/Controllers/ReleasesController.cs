@@ -24,8 +24,8 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             var presentations = demoPresentationsService.FetchPresentations(10);
             foreach (var presentationModel in presentations)
             {
-                //presentationModel.ImageUrl = Url.Action("DownloadContent", new RouteValueDictionary {{"presentationId", presentationModel.PresentationId}});
-                presentationModel.ImageUrl = "https://media.giphy.com/media/jd6TVgsph6w7e/giphy.gif";
+                presentationModel.ImageUrl = Url.Action("DownloadContent", new RouteValueDictionary {{"presentationId", presentationModel.PresentationId}});
+                //presentationModel.ImageUrl = "https://media.giphy.com/media/jd6TVgsph6w7e/giphy.gif";
             }
 
             return View("Index", new DemoPresentationPageViewModel
@@ -43,7 +43,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         [HttpGet]
         public ActionResult DownloadContent(Guid presentationId)
         {
-            var content = demoPresentationsService.DownloadPresentationConent(presentationId);
+            var content = demoPresentationsService.DownloadPresentationContent(presentationId);
             return new FileContentResult(content.Bytes, content.Type);
         }
 

@@ -6,6 +6,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
     {
         PresentationModel[] FetchPresentations(int count);
         Comment AppendComment(Guid presnetationId, string name, string text);
-        PresentationContent DownloadPresentationConent(Guid presentationId);
+        PresentationContent DownloadPresentationContent(Guid presentationId);
     }
 }

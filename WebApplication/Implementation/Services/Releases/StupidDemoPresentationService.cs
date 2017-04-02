@@ -5,12 +5,15 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
     public class StupidDemoPresentationService : IDemoPresentationsService
     {
         private readonly ICommentsService commentsService;
+        private readonly IPresentationContentService presentationContentService;
         private static readonly Guid relatedOrgsPresentationId = Guid.Parse("8007d88c-8596-4573-8ef9-eaf16b9cd157");
 
         public StupidDemoPresentationService(
-            ICommentsService commentsService)
+            ICommentsService commentsService,
+            IPresentationContentService presentationContentService)
         {
             this.commentsService = commentsService;
+            this.presentationContentService = presentationContentService;
         }
 
         public PresentationModel[] FetchPresentations(int count)
@@ -48,13 +51,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
             return commentsService.Append(presnetationId, name, text);
         }
 
-        public PresentationContent DownloadPresentationConent(Guid presentationId)
+        public PresentationContent DownloadPresentationContent(Guid presentationId)
         {
-            return new PresentationContent
-            {
-                Bytes = null,
-                Type = System.Net.Mime.MediaTypeNames.Image.Gif
-            };
+            return presentationContentService.Fetch(presentationId);
         }
 
         private Comment[] FetchComments(Guid presentationId)
