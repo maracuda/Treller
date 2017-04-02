@@ -11,12 +11,12 @@ export const getReleasesInfo = createSelector(
     })
 );
 
-export const findRelease = (releases, releaseId) => releases.find(release => release.ReleaseId === releaseId);
+export const findRelease = (releases, presentationId) => releases.find(release => release.PresentationId === presentationId);
 
 export const getCurrentRelease = createSelector(
     getReleases,
-    (state, { ReleaseId }) => ReleaseId,
-    (releases, releaseId) => findRelease(releases, releaseId)
+    (state, { PresentationId }) => PresentationId,
+    (releases, presentationId) => findRelease(releases, presentationId)
 );
 
 export const getCommentsCount = comments => comments ? comments.length : 0;
@@ -32,7 +32,7 @@ export const getCommentsPanelInfo = createSelector(
     getCommentsPanel,
     getReleases,
     (panel, releases) => {
-        const release = findRelease(releases, panel.ReleaseId);
+        const release = findRelease(releases, panel.PresentationId);
         const comments = release ? release.Comments : null;
         return {
             isOpened: panel.isOpened,
@@ -69,6 +69,6 @@ export const getCommentSubmitData = createSelector(
     getCommentsPanel,
     (form, panel) => ({
         ...form,
-        releaseId: panel.ReleaseId
+        presentationId: panel.PresentationId
     })
 );

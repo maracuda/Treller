@@ -4,7 +4,14 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
 {
     public class StupidDemoPresentationService : IDemoPresentationsService
     {
+        private readonly ICommentsService commentsService;
         private static readonly Guid relatedOrgsPresentationId = Guid.Parse("8007d88c-8596-4573-8ef9-eaf16b9cd157");
+
+        public StupidDemoPresentationService(
+            ICommentsService commentsService)
+        {
+            this.commentsService = commentsService;
+        }
 
         public PresentationModel[] FetchPresentations(int count)
         {
@@ -31,21 +38,14 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
 4. Изменить/добавить/удалить продукт связи
 5. Изменить комментарий к связи
 6. Удалить связь",
-                    Comments = FetchComments(relatedOrgsPresentationId, 10)
+                    Comments = FetchComments(relatedOrgsPresentationId)
                 }
             };
         }
 
         public Comment AppendComment(Guid presnetationId, string name, string text)
         {
-            return new Comment
-            {
-                PresentationId = presnetationId,
-                CommentId = Guid.NewGuid(),
-                CreateDate = DateTime.Now,
-                Name = name,
-                Text = text
-            };
+            return commentsService.Append(presnetationId, name, text);
         }
 
         public PresentationContent DownloadPresentationConent(Guid presentationId)
@@ -57,27 +57,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
             };
         }
 
-        private Comment[] FetchComments(Guid presentationId, int count)
+        private Comment[] FetchComments(Guid presentationId)
         {
-            return new[]
-            {
-                new Comment
-                {
-                    CommentId = Guid.NewGuid(),
-                    Name = "Айбелив Айкенфлаев",
-                    CreateDate = DateTime.Now,
-                    Text =
-                        "The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin."
-                },
-                new Comment
-                {
-                    CommentId = Guid.NewGuid(),
-                    Name = "Иван Диван",
-                    CreateDate = DateTime.Now,
-                    Text =
-                        "The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin."
-                }
-            };
+            return commentsService.Fetch(presentationId);
         }
     }
 }

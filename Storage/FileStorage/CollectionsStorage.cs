@@ -13,11 +13,12 @@ namespace SKBKontur.Treller.Storage.FileStorage
 
         public CollectionsStorage(
             IJsonSerializer jsonSerializer,
-            IFileSystemHandler fileSystemHandler)
+            IFileSystemHandler fileSystemHandler, 
+            string fileName)
         {
             this.jsonSerializer = jsonSerializer;
             this.fileSystemHandler = fileSystemHandler;
-            fileName = $"Store_{typeof(T).Name}.json";
+            this.fileName = fileName;
         }
 
         public void Append(T item)

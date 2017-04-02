@@ -8,9 +8,9 @@ import styles from "./Actions.scss";
 
 class Actions extends PureComponent {
     _handleOpenComments = () => {
-        const { openComments, ReleaseId } = this.props;
+        const { openComments, PresentationId } = this.props;
 
-        openComments({ ReleaseId });
+        openComments({ PresentationId });
     };
 
     render() {
@@ -28,7 +28,7 @@ class Actions extends PureComponent {
 }
 
 Actions.propTypes = {
-    ReleaseId: PropTypes.string,
+    PresentationId: PropTypes.string,
     commentsCount: PropTypes.number,
 
     openComments: PropTypes.func

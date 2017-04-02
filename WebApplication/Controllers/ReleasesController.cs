@@ -48,9 +48,9 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveComment(Guid releaseId, string name, string text)
+        public ActionResult SaveComment(Guid presentationId, string name, string text)
         {
-            var comment = demoPresentationsService.AppendComment(releaseId, name, text);
+            var comment = demoPresentationsService.AppendComment(presentationId, name, text);
             return Json(comment);
         }
     }

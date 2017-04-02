@@ -6,7 +6,7 @@ import styles from "./Release.scss";
 
 class Release extends PureComponent {
     render() {
-        const { ReleaseId, CreateDate, Title, Content, ImageUrl } = this.props;
+        const { PresentationId, CreateDate, Title, Content, ImageUrl } = this.props;
 
         return (
             <div className={styles.release}>
@@ -14,7 +14,7 @@ class Release extends PureComponent {
                     {formatDate(CreateDate)}
                 </div>
                 <div className={styles.content}>
-                    <Actions ReleaseId={ReleaseId} />
+                    <Actions PresentationId={PresentationId} />
 
                     <div className={styles.title}>{Title}</div>
                     <div className={styles.text}>{Content}</div>
@@ -31,7 +31,7 @@ class Release extends PureComponent {
 }
 
 Release.propTypes = {
-    ReleaseId: PropTypes.string,
+    PresentationId: PropTypes.string,
     CreateDate: PropTypes.string,
     Title: PropTypes.string,
     Content: PropTypes.string,

@@ -10,7 +10,7 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
 
         public CollectionsStorageTest()
         {
-            collectionsStorage = new CollectionsStorage<int>(container.Get<IJsonSerializer>(), container.Get<IFileSystemHandler>());
+            collectionsStorage = new CollectionsStorage<int>(container.Get<IJsonSerializer>(), container.Get<IFileSystemHandler>(), "testIntStorage");
         }
 
         ~CollectionsStorageTest()

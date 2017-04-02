@@ -6,10 +6,10 @@ import * as types from "../actionTypes";
 export default handleActions({
     [types.SUBMIT_COMMENT_SUCCESS]: (state, action) => {
         return arrayReduceHelper(
-            release => release.ReleaseId === action.payload.releaseId,
+            release => release.PresentationId === action.payload.presentationId,
             (release, { payload }) => ({
                 ...release,
-                Comments: [omit(payload, ["releaseId"])].concat(release.Comments || [])
+                Comments: [omit(payload, ["presentationId"])].concat(release.Comments || [])
             }),
             state,
             action

@@ -20,12 +20,13 @@ namespace SKBKontur.Treller.Storage
 
         public ICollectionsStorage<T> Get<T>()
         {
-            return (ICollectionsStorage<T>) storagesMap.GetOrAdd(typeof(T).Name, x => new CollectionsStorage<T>(jsonSerializer, fileSystemHandler));
+            return Get<T>($"Store_{typeof(T).Name}.json");
         }
 
         public ICollectionsStorage<T> Get<T>(string uniqueStorageName)
         {
-            return (ICollectionsStorage<T>)storagesMap.GetOrAdd(typeof(T).Name, x => new CollectionsStorage<T>(jsonSerializer, fileSystemHandler));
+            var fileName = $"Store_{uniqueStorageName}.json";
+            return (ICollectionsStorage<T>)storagesMap.GetOrAdd(fileName, key => new CollectionsStorage<T>(jsonSerializer, fileSystemHandler, key));
         }
     }
 }

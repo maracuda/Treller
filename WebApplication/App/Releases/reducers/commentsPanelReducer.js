@@ -21,7 +21,7 @@ const initialState = {
 export default handleActions({
     [types.OPEN_COMMENTS]: (state, { payload }) => ({
         ...state,
-        ReleaseId: payload.ReleaseId,
+        PresentationId: payload.PresentationId,
         isOpened: true
     }),
     [types.CLOSE_COMMENTS]: () => ({

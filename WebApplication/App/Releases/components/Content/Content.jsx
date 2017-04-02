@@ -12,7 +12,7 @@ class Content extends PureComponent {
 
         return (
             <div className={styles.content}>
-                <div className={styles.releases}>{Releases.map(release => <Release key={release.ReleaseId} { ...release } />)}</div>
+                <div className={styles.releases}>{Releases.map(release => <Release key={release.PresentationId} { ...release } />)}</div>
                 <Comments />
             </div>
         );
@@ -21,7 +21,7 @@ class Content extends PureComponent {
 
 Content.propTypes = {
     Releases: PropTypes.arrayOf(PropTypes.shape({
-        ReleaseId: PropTypes.string
+        PresentationId: PropTypes.string
     }))
 };
 
