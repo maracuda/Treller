@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Releases
+namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
 {
     public class ReleasesPageViewModel
     {
