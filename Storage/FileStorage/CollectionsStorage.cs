@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SKBKontur.Treller.Serialization;
 
 namespace SKBKontur.Treller.Storage.FileStorage
 {
-    public class CollectionsStorage : ICollectionsStorage
+    public class CollectionsStorage<T> : ICollectionsStorage<T>
     {
         private readonly IJsonSerializer jsonSerializer;
         private readonly IFileSystemHandler fileSystemHandler;
-        private readonly ConcurrentDictionary<string, dynamic> cache = new ConcurrentDictionary<string, dynamic>();
+        private readonly string fileName;
+        private readonly object changeLock = new object();
+        private T[] storedValue = null;
 
         public CollectionsStorage(
             IJsonSerializer jsonSerializer,
@@ -17,33 +17,33 @@ namespace SKBKontur.Treller.Storage.FileStorage
         {
             this.jsonSerializer = jsonSerializer;
             this.fileSystemHandler = fileSystemHandler;
+            fileName = $"Store_{typeof(T).Name}.json";
         }
 
-        public void Append<T>(T item)
+        public void Append(T item)
         {
-            var itemsList = new List<T>(GetAll<T>()) {item};
+            var itemsList = new List<T>(GetAll()) {item};
             Put(itemsList.ToArray());
         }
 
-        public void Put<T>(T[] items)
+        public void Put(T[] items)
         {
-            var entityKey = GetEntityKey(typeof(T));
-            dynamic stored;
-            cache.TryRemove(entityKey, out stored);
-            cache.TryAdd(entityKey, items);
-
-            var json = jsonSerializer.Serialize(items);
-            fileSystemHandler.WriteUTF8(entityKey, json);
+            lock (changeLock)
+            {
+                storedValue = items;
+                var json = jsonSerializer.Serialize(items);
+                fileSystemHandler.WriteUTF8(fileName, json);
+            }
         }
 
-        public T Get<T>(int index)
+        public T Get(int index)
         {
-            return GetAll<T>()[index];
+            return GetAll()[index];
         }
 
-        public int IndexOf<T>(T item, IComparer<T> comparer)
+        public int IndexOf(T item, IComparer<T> comparer)
         {
-            var collection = GetAll<T>();
+            var collection = GetAll();
             for (var index = 0; index < collection.Length; index++)
             {
                 var current = collection[index];
@@ -53,47 +53,34 @@ namespace SKBKontur.Treller.Storage.FileStorage
             return -1;
         }
 
-        public T[] GetAll<T>()
+        public T[] GetAll()
         {
-            var entityKey = GetEntityKey(typeof(T));
-            return (T[])cache.GetOrAdd(entityKey, key =>
+            if (storedValue != null)
+                return storedValue;
+
+            lock (changeLock)
             {
-                var str = fileSystemHandler.ReadUTF8(key);
-                return string.IsNullOrEmpty(str) ? new T[0] : jsonSerializer.Deserialize<T[]>(str);
-            });
+                var str = fileSystemHandler.ReadUTF8(fileName);
+                var result = string.IsNullOrEmpty(str) ? new T[0] : jsonSerializer.Deserialize<T[]>(str);
+                storedValue = result;
+                return result;
+            }
         }
 
-        public void RemoveAt<T>(int index)
+        public void RemoveAt(int index)
         {
-            var itemsList = new List<T>(GetAll<T>());
+            var itemsList = new List<T>(GetAll());
             itemsList.RemoveAt(index);
             Put(itemsList.ToArray());
         }
 
-        public void Delete<T>()
+        public void Clear()
         {
-            Delete(GetEntityKey(typeof(T)));
-        }
-
-        public void DeleteAll()
-        {
-            var entityKeys = cache.Keys;
-            foreach (var entityKey in entityKeys)
+            lock (changeLock)
             {
-                Delete(entityKey);
+                storedValue = new T[0];
+                fileSystemHandler.Delete(fileName);
             }
-        }
-
-        private void Delete(string entityKey)
-        {
-            dynamic stored;
-            cache.TryRemove(entityKey, out stored);
-            fileSystemHandler.Delete(entityKey);
-        }
-
-        private static string GetEntityKey(Type entityType)
-        {
-            return $"Store_{entityType.Name}.json";
         }
     }
 }

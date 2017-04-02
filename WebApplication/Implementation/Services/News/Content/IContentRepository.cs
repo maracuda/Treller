@@ -14,12 +14,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content
     public class ContentRepository : IContentRepository
     {
         private static readonly object changeLock = new object();
-        private readonly ICollectionsStorage collectionsStorage;
+        private readonly ICollectionsStorage<Content> collectionsStorage;
 
         public ContentRepository(
-            ICollectionsStorage collectionsStorage)
+            ICollectionsStorageRepository collectionsStorageRepository)
         {
-            this.collectionsStorage = collectionsStorage;
+            this.collectionsStorage = collectionsStorageRepository.Get<Content>();
         }
 
         public Maybe<Content> Find(Guid sourceId)
@@ -43,10 +43,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content
                 }
                 else
                 {
-                    var storageContent = collectionsStorage.Get<Content>(index);
+                    var storageContent = collectionsStorage.Get(index);
                     if (!storageContent.Equals(content))
                     {
-                        collectionsStorage.RemoveAt<Content>(index);
+                        collectionsStorage.RemoveAt(index);
                         collectionsStorage.Append(content);
                     }
                 }

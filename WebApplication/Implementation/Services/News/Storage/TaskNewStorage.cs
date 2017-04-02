@@ -7,13 +7,13 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
 {
     public class TaskNewStorage : ITaskNewStorage
     {
-        private readonly ICollectionsStorage collectionsStorage;
+        private readonly ICollectionsStorage<TaskNew> collectionsStorage;
         private static readonly object writeLock = new object();
         
         public TaskNewStorage(
-            ICollectionsStorage collectionsStorage)
+            ICollectionsStorageRepository collectionsStorageRepository)
         {
-            this.collectionsStorage = collectionsStorage;
+            this.collectionsStorage = collectionsStorageRepository.Get<TaskNew>();
         }
         
         public Maybe<TaskNew> Find(string taskId)
@@ -63,7 +63,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
                     throw new Exception($"Fail to find task new with id {changedTaskNew.TaskId} at storage.");
                 }
 
-                collectionsStorage.RemoveAt<TaskNew>(index);
+                collectionsStorage.RemoveAt(index);
                 collectionsStorage.Append(changedTaskNew);
             }
         }
@@ -77,7 +77,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
                     var index = collectionsStorage.IndexOf(taskNew, TaskNew.TaskIdComparer);
                     if (index != -1)
                     {
-                        collectionsStorage.RemoveAt<TaskNew>(index);
+                        collectionsStorage.RemoveAt(index);
                     }
                 }
             }
@@ -85,7 +85,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
 
         public TaskNew[] ReadAll()
         {
-            return collectionsStorage.GetAll<TaskNew>();
+            return collectionsStorage.GetAll();
         }
     }
 }

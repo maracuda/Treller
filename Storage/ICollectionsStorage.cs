@@ -5,15 +5,14 @@ namespace SKBKontur.Treller.Storage
     //TODO: to create a factory for ICollectionStorage to have instance per collection
     //TODO: to have a lock to changing the colletion
     //TODO: to add a searching methods?
-    public interface ICollectionsStorage
+    public interface ICollectionsStorage<T>
     {
-        void Append<T>(T item);
-        void Put<T>(T[] items);
-        T Get<T>(int index);
-        int IndexOf<T>(T item, IComparer<T> comparer);
-        T[] GetAll<T>();
-        void RemoveAt<T>(int index);
-        void Delete<T>();
-        void DeleteAll();
+        void Append(T item);
+        void Put(T[] items);
+        T Get(int index);
+        int IndexOf(T item, IComparer<T> comparer);
+        T[] GetAll();
+        void RemoveAt(int index);
+        void Clear();
     }
 }
