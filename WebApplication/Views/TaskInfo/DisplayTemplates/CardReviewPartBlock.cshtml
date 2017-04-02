@@ -1,8 +1,0 @@
-﻿@model SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Blocks.Parts.CardReviewPartBlock
-
-@foreach (var a in @Model.ReviewToDoListsViewModel)
-{
-    <div>
-        @string.Format("Список: {3}, Пунктов: {0}/{1}, Следующий: {2}", a.CompleteCount, a.Count, a.LastIncompletedDescription, a.ListName)
-    </div>
-}

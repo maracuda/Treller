@@ -1,9 +1,0 @@
-﻿@using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions
-@model SKBKontur.Treller.WebApplication.Implementation.TaskDetalization.BusinessObjects.Blocks.CardLabelsBlock
-
-<div class="task-info-label-list">
-    @foreach (var label in Model.Labels)
-    {
-        <span class="task-info-label card-label @label.Color.ToLowerString()" title="@label.Name">@label.Name</span>
-    }    
-</div>

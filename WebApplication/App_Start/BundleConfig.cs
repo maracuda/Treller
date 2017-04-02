@@ -25,9 +25,7 @@ namespace SKBKontur.Treller.WebApplication
                 .IncludeDirectory("~/Content/Scripts/Shared", "*.js"));
 
             bundles.Add(new JsxBundle("~/bunsles/jsx/tasklist")
-                .IncludeDirectory("~/Content/Scripts/Layout", "*.jsx")
-                .IncludeDirectory("~/Content/Scripts/TaskList", "*.jsx"));
-
+                .IncludeDirectory("~/Content/Scripts/Layout", "*.jsx"));
 
 
             bundles.Add(
@@ -46,9 +44,7 @@ namespace SKBKontur.Treller.WebApplication
 
             bundles.Add(
                 new StyleBundle("~/bundles/css/tasklist")
-                .IncludeDirectory("~/Content/Shared", "*.css")
-                .IncludeDirectory("~/Content/TaskList", "*.css")
-                .IncludeDirectory("~/Content/TaskInfo", "*.css"));
+                .IncludeDirectory("~/Content/Shared", "*.css"));
 
             bundles.Add(new StyleBundle("~/bundles/css/News")
                 .IncludeDirectory("~/Content/News", "*.css"));
