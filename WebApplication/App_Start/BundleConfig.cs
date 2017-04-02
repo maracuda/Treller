@@ -42,10 +42,6 @@ namespace SKBKontur.Treller.WebApplication
                 .Include("~/Content/normalize.css")
                 .Include("~/Content/BaseStyle.css"));
 
-            bundles.Add(
-                new StyleBundle("~/bundles/css/tasklist")
-                .IncludeDirectory("~/Content/Shared", "*.css"));
-
             bundles.Add(new StyleBundle("~/bundles/css/News")
                 .IncludeDirectory("~/Content/News", "*.css"));
         }
