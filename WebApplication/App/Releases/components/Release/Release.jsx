@@ -21,7 +21,7 @@ class Release extends PureComponent {
 
                     {ImageUrl && (
                         <div className={styles["image-wrapper"]}>
-                            <img src={ImageUrl} alt="Демонстрация функционала" />
+                            <img src={ImageUrl} className={styles.image} alt="Демонстрация функционала" />
                         </div>
                     )}
                 </div>
