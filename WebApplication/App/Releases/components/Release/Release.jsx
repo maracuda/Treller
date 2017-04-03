@@ -5,8 +5,10 @@ import Actions from "../Actions";
 import styles from "./Release.scss";
 
 class Release extends PureComponent {
+    _renderContent = () => ({ __html: this.props.Content });
+
     render() {
-        const { PresentationId, CreateDate, Title, Content, ImageUrl } = this.props;
+        const { PresentationId, CreateDate, Title, ImageUrl } = this.props;
 
         return (
             <div className={styles.release}>
@@ -17,7 +19,7 @@ class Release extends PureComponent {
                     <Actions PresentationId={PresentationId} />
 
                     <div className={styles.title}>{Title}</div>
-                    <div className={styles.text}>{Content}</div>
+                    <div className={styles.text} dangerouslySetInnerHTML={this._renderContent()} />
 
                     {ImageUrl && (
                         <div className={styles["image-wrapper"]}>
