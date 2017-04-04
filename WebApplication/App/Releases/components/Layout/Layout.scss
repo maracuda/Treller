@@ -30,6 +30,7 @@ $layoutBgColor: #e3e3e3;
         background-color: $layoutBgColor;
         padding: 40px 0 100px;
         font-family: "ProximaNova", "Segoe UI", Verdana, Helvetica, Sans-Serif;
+        -webkit-font-smoothing: antialiased;
     }
 
     .header {

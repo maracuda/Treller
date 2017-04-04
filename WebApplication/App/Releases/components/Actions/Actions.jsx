@@ -19,7 +19,7 @@ class Actions extends PureComponent {
         return (
             <div className={styles.wrapper}>
                 <div className={styles.action} onClick={this._handleOpenComments}>
-                    <Icon type={IconTypes.CommentLite} />
+                    <Icon type={IconTypes.CommentLite} className={styles.bubble} />
                     <div>{commentsCount}</div>
                 </div>
             </div>
