@@ -34,7 +34,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
 
         public Comment[] Fetch(Guid presentationId, int page = 1, int count = 20)
         {
-            return GetStorage(presentationId).GetAll().Skip((page - 1) * count).Take(count).ToArray();
+            return GetStorage(presentationId).GetAll().Skip((page - 1) * count).Take(count).Reverse().ToArray();
         }
 
         private ICollectionsStorage<Comment> GetStorage(Guid presentationId)

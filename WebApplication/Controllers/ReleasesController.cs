@@ -25,7 +25,6 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             foreach (var presentationModel in presentations)
             {
                 presentationModel.ImageUrl = Url.Action("DownloadContent", new RouteValueDictionary {{"presentationId", presentationModel.PresentationId}});
-                //presentationModel.ImageUrl = "https://media.giphy.com/media/jd6TVgsph6w7e/giphy.gif";
             }
 
             return View("Index", new DemoPresentationPageViewModel
