@@ -21,10 +21,8 @@ namespace SKBKontur.Treller.WebApplication.Implementation.React
 
         public static ReactComponent Instance(string componentName, object props)
         {
-            if (instance == null)
-            {
-                instance = new ReactComponent(componentName, props);
-            }
+            // todo: инициализировать только 1 раз
+            instance = new ReactComponent(componentName, props);
 
             return instance;
         }
