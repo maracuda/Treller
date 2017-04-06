@@ -46,6 +46,13 @@ namespace SKBKontur.Treller.WebApplication.Controllers
             return new FileContentResult(content.Bytes, content.Type);
         }
 
+        [HttpGet]
+        public ActionResult FetchComments(Guid presentationId)
+        {
+            var comments = demoPresentationsService.FetchComments(presentationId);
+            return Json(comments, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public ActionResult SaveComment(Guid presentationId, string name, string text)
         {

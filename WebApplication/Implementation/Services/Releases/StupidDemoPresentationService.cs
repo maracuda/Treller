@@ -60,7 +60,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
             return presentationContentService.Fetch(presentationId);
         }
 
-        private Comment[] FetchComments(Guid presentationId)
+        public Comment[] FetchComments(Guid presentationId)
         {
             return commentsService.Fetch(presentationId);
         }
