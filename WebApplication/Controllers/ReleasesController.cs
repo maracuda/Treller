@@ -7,6 +7,7 @@ using SKBKontur.Treller.WebApplication.Implementation.Services.Releases;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ReleasesController : ExceptionHandledController
     {
         private readonly IDemoPresentationsService demoPresentationsService;
