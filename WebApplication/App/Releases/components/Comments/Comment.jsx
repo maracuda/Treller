@@ -12,7 +12,7 @@ class Comment extends PureComponent {
         return (
             <div className={styles.comment}>
                 <div className={styles.head}>
-                    <div className={styles.name}>
+                    <div className={styles.name} title={Name}>
                         <img className={styles.avatar} src={avatar} alt={`Аватар для ${Name}`} />
                         {Name}
                     </div>

@@ -6,6 +6,7 @@
     .comment {
         margin-top: 40px;
         font-size: $fontSizeRegular;
+        overflow: hidden;
 
         &:first-child {
             margin-top: 20px;
@@ -20,10 +21,17 @@
     }
 
     .name {
+        @extend %fading-text;
+        white-space: nowrap;
         position: relative;
         padding-left: 50px;
-        max-width: 130px;
+        max-width: 150px;
         padding-top: 5px;
+        cursor: default;
+
+        &:before {
+            background-image: linear-gradient(to right, rgba(227, 227, 227, .2), rgb(227, 227, 227) 75%);
+        }
     }
 
     .avatar {
