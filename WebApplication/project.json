@@ -3,7 +3,6 @@
 
     "dependencies": {
         "Antlr": "3.4.1.9004",
-        "BlocksMapping": "0.0.90",
         "bootstrap": "3.3.1",
         "es5-shim": "2.3.0",
         "Serialization": "1.0.0-*",

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SKBKontur.BlocksMapping.BlockExtenssions;
 using SKBKontur.Treller.Storage;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
 
@@ -42,7 +41,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Loggin
         public VirtualMachinesExecuteLogModel FindLog(Guid executeId)
         {
             var result = keyValueStorage.Find<Dictionary<Guid, VirtualMachinesExecuteLogModel>>(ExecuteLogFileName) ?? new Dictionary<Guid, VirtualMachinesExecuteLogModel>();
-            return result.SafeGet(executeId);
+            return result.ContainsKey(executeId) ? result[executeId] : null;
         }
 
         public VirtualMachinesExecuteLogModel[] SelectLastLogs(int count)
