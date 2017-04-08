@@ -62,7 +62,7 @@ namespace SKBKontur.Treller.WebApplication
             var messageBuilder = new StringBuilder(args.Message);
             if (args.Exception != null)
                 messageBuilder.Append($"{Environment.NewLine}{args.Exception}{Environment.NewLine}{args.Exception.StackTrace}");
-            messageBuilder.Append($"{Environment.NewLine}Occured at {Environment.MachineName}.");
+            messageBuilder.Append($"{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}Occured at {Environment.MachineName}.");
 
             container.Get<IMessageProducer>().Publish(new Message
             {
