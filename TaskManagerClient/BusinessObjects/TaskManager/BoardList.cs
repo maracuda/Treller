@@ -12,6 +12,9 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
 
         public static BoardList ConvertFrom(Trello.BusinessObjects.Boards.BoardList x)
         {
+            if (x == null)
+                return null;
+
             return new BoardList
             {
                 Id = x.Id,
@@ -27,5 +30,7 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
                 }).ToArray()
             };
         }
+
+
     }
 }

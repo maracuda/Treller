@@ -22,6 +22,9 @@ namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
 
         public static BoardCard ConvertFrom(Card card)
         {
+            if (card == null)
+                return null;
+
             CardLabelColor result;
             return new BoardCard
             {

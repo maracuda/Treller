@@ -49,19 +49,25 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         public Task<BoardList[]> GetBoardListsAsync(params string[] boardIds)
         {
-            var parameters = new Dictionary<string, string>() {{"cards", "open"}, {"card_fields", "name,desc,descData,due"}};
+            var parameters = new Dictionary<string, string> {{"cards", "open"}, {"card_fields", "name,desc,descData,due"}};
             return boardIds.Select(id => ReadAsync<BusinessObjects.Boards.BoardList[]>($"boards/{id}/lists", parameters))
                            .Await(BoardList.ConvertFrom);
         }
 
         public BoardList[] GetBoardLists(params string[] boardIds)
         {
-            return AsyncHelpers.RunSync(() => GetBoardListsAsync(boardIds));
+            var parameters = new Dictionary<string, string> { { "cards", "open" }, { "card_fields", "name,desc,descData,due" } };
+            var resultList = new List<BoardList>();
+            foreach (var boardId in boardIds)
+            {
+                resultList.AddRange(Read<BusinessObjects.Boards.BoardList[]>($"boards/{boardId}/lists", parameters).Select(BoardList.ConvertFrom));
+            }
+            return resultList.ToArray();
         }
 
         public BoardCard GetCard(string cardId)
         {
-            return AsyncHelpers.RunSync(() => GetCardAsync(cardId));
+            return BoardCard.ConvertFrom(Read<Card>($"cards/{cardId}"));
         }
 
         public Task<BoardCard[]> GetBoardCardsAsync(string[] boardIds)
