@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using SKBKontur.HttpInfrastructure.Clients;
 using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.TaskManagerClient.Caching;
 using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Boards;
 using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Cards;
@@ -18,17 +17,14 @@ namespace SKBKontur.TaskManagerClient.Trello
     public class TrelloClient : ITaskManagerClient
     {
         private readonly IHttpClient httpClient;
-        private readonly IMemoryCache responsesCache;
         private readonly Dictionary<string, string> credentials;
         private const int MaxActionsLimitCount = 1000;
 
         public TrelloClient(
             IHttpClient httpClient, 
-            ITrelloUserCredentialService trelloUserCredentialService,
-            ICacheFactory cacheFactory)
+            ITrelloUserCredentialService trelloUserCredentialService)
         {
             this.httpClient = httpClient;
-            responsesCache = cacheFactory.CreateMemoryCache(GetType().Name, TimeSpan.FromMinutes(30));
             var trelloCredentials = trelloUserCredentialService.GetCredentials();
             credentials = new Dictionary<string, string>
                                    {
@@ -44,7 +40,8 @@ namespace SKBKontur.TaskManagerClient.Trello
 
         public Board[] GetAllBoards(string organizationIdOrName)
         {
-            return ReadOrGetCached<BusinessObjects.Boards.Board[], Board[]>($"organizations/{organizationIdOrName}/boards", o => o.Select(Board.ConvertFrom).ToArray());
+            return Read<BusinessObjects.Boards.Board[]>($"organizations/{organizationIdOrName}/boards")
+                        .Select(Board.ConvertFrom).ToArray();
         }
 
         public Task<BoardList[]> GetBoardListsAsync(params string[] boardIds)
@@ -168,21 +165,6 @@ namespace SKBKontur.TaskManagerClient.Trello
         public Task<CardChecklist[]> GetCardChecklistsAsync(string cardId)
         {
             return ReadAsync<Checklist[]>($"cards/{cardId}/checklists").Await(CardChecklist.ConvertFrom);
-        }
-
-        private T ReadOrGetCached<T>(string path)
-        {
-            return responsesCache.GetOrLoad(path, () => AsyncHelpers.RunSync(() => httpClient.SendGetAsync<T>($"https://trello.com/1/{path}", credentials)));
-        }
-
-        private TConverted ReadOrGetCached<TOriginal, TConverted>(string path, Func<TOriginal, TConverted> convertFunc)
-        {
-            var loader = new Func<TConverted>(() =>
-            {
-                var originalResponse = AsyncHelpers.RunSync(() => httpClient.SendGetAsync<TOriginal>($"https://trello.com/1/{path}", credentials));
-                return convertFunc.Invoke(originalResponse);
-            });
-            return responsesCache.GetOrLoad(path, loader);
         }
 
         private Task<T> ReadAsync<T>(string path, Dictionary<string, string> queryString = null)
