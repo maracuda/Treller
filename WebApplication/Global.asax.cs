@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -58,13 +59,16 @@ namespace SKBKontur.Treller.WebApplication
 
         private void HandleError(object sender, ErrorEventArgs args)
         {
+            var messageBuilder = new StringBuilder(args.Message);
+            if (args.Exception != null)
+                messageBuilder.Append($"{Environment.NewLine}{args.Exception}{Environment.NewLine}{args.Exception.StackTrace}");
+            messageBuilder.Append($"{Environment.NewLine}Occured at {Environment.MachineName}.");
+
             container.Get<IMessageProducer>().Publish(new Message
             {
                 Recipient = "hvorost@skbkontur.ru",
                 Title = args.Message,
-                Body = args.Exception != null
-                    ? $"{args.Message}{Environment.NewLine}{args.Exception}{Environment.NewLine}{args.Exception.StackTrace}"
-                    : args.Message
+                Body = messageBuilder.ToString()
             });
         }
 
