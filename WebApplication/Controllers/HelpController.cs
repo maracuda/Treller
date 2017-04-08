@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using SKBKontur.TaskManagerClient;
 using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.Help;
 
 namespace SKBKontur.Treller.WebApplication.Controllers
 {
@@ -20,7 +19,7 @@ namespace SKBKontur.Treller.WebApplication.Controllers
 
         public ActionResult Index()
         {
-            return View("Index", new HelpViewModel());
+            return View("Index");
         }
 
         public ActionResult DeleteAllCommentsFromConsistencyBattle()
