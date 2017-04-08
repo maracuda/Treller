@@ -7,6 +7,6 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
         public string TaskId { get; set; }
         public ContentModel Content { get; set; }
         public ReportModel[] Reports { get; set; }
-        public string DeadlineStr => Content.DeadLine.HasValue ? Content.DeadLine.Value.DateTimeFormat() : "не указано";
+        public string DeadlineStr => Content.DeadLine.Stringify("не указано");
     }
 }

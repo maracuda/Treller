@@ -9,6 +9,6 @@ namespace SkbKontur.Treller.ProcessStats.Dev
         public TimeSpan DevDuration { get; set; }
         public TimeSpan ReviewDuration { get; set; }
         public TimeSpan TestingDuration { get; set; }
-        public TimeSpan CicleDuration => AnaliticsDuration + DevDuration + ReviewDuration + TestingDuration;
+        public TimeSpan CycleDuration => AnaliticsDuration + DevDuration + ReviewDuration + TestingDuration;
     }
 }

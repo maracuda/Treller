@@ -9,9 +9,9 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
         public string Message { get; set; }
         public PublishStrategy PublishStrategy { get; set; }
         public DateTime? DoNotDeliverUntil { get; set; }
-        public string DoNotDeliverUntilStr => DoNotDeliverUntil.HasValue ? DoNotDeliverUntil.Value.DateTimeFormat() : "не указано";
+        public string DoNotDeliverUntilStr => DoNotDeliverUntil.Stringify("не указано");
         public DateTime? PublishDate { get; set; }
-        public string PublishDateStr => PublishDate.HasValue ? PublishDate.Value.DateTimeFormat() : "не указано";
+        public string PublishDateStr => PublishDate.Stringify("не указано");
 
     }
 }

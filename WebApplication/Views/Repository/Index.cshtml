@@ -27,7 +27,7 @@ else
         {
             <tr>
                 <td>@oldBranch.Name</td>
-                <td style="padding-left: 10px;">@oldBranch.Commit.Committed_date.DateTimeFormat()</td>
+                <td style="padding-left: 10px;">@oldBranch.Commit.Committed_date.Stringify()</td>
                 <td style="padding-left: 10px;">@oldBranch.Commit.Committer_email</td>
             </tr>
         }
@@ -56,7 +56,7 @@ else
         {
             <tr>
                 <td>@releasedBranch.Name</td>
-                <td style="padding-left: 10px;">@releasedBranch.LastCommit.Created_at.DateTimeFormat()</td>
+                <td style="padding-left: 10px;">@releasedBranch.LastCommit.Created_at.Stringify()</td>
                 <td style="padding-left: 10px;">@releasedBranch.LastCommit.Author_email</td>
             </tr>
         }
