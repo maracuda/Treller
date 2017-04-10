@@ -2,7 +2,7 @@ import { handleActions } from "redux-actions";
 import { isFieldValid } from "billing-ui/helpers/ValidationHelpers";
 import * as types from "../actionTypes";
 
-const defaultValidationResult = { isValid: true, error: "" };
+const defaultValidationResult = { isValid: false, error: "" };
 
 const initialState = {
     isOpened: false,
@@ -43,13 +43,18 @@ export default handleActions({
             canSubmit: isFieldValid(validationResult)
         };
     },
-    [types.CHECK_VALIDITY]: (state, { payload }) => ({
-        ...state,
-        validationResult: {
+    [types.CHECK_VALIDITY]: (state, { payload }) => {
+        const newValidationResult = {
             ...state.validationResult,
             [payload.field]: payload.validationResult || defaultValidationResult
-        }
-    }),
+        };
+
+        return {
+            ...state,
+            validationResult: newValidationResult,
+            canSubmit: isFieldValid(newValidationResult)
+        };
+    },
 
     [types.SUBMIT_COMMENT_BEGIN]: state => ({
         ...state,
