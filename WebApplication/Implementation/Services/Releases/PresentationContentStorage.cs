@@ -18,12 +18,12 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
             return content ?? PresentationContent.CreateEmpty(presentationId);
         }
 
-        public void Create(Guid presentationId, string type, byte[] bytes)
+        public void Create(Guid presentationId, string mimeType, byte[] bytes)
         {
             var content = new PresentationContent
             {
                 PresentationId = presentationId,
-                Type = type,
+                Type = mimeType,
                 Bytes = bytes
             };
             keyValueStorage.Write(BuildKey(presentationId), content);
