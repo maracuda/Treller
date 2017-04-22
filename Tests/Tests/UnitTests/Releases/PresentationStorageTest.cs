@@ -39,8 +39,8 @@ namespace SKBKontur.Treller.Tests.Tests.UnitTests.Releases
             presentationStorage = new PresentationStorage(collectionsStorageRepository);
             var actuals = presentationStorage.FetchAll();
             Assert.Equal(2, actuals.Length);
-            Assert.Equal(oldPresentation, actuals[0]);
-            Assert.Equal(youngPresentation, actuals[1]);
+            Assert.Equal(youngPresentation, actuals[0]);
+            Assert.Equal(oldPresentation, actuals[1]);
         }
     }
 }

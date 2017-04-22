@@ -16,7 +16,7 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
 
         public Presentation[] FetchAll()
         {
-            return collectionsStorage.GetAll().OrderBy(p => p.CreateDate).ToArray();
+            return collectionsStorage.GetAll().OrderByDescending(p => p.CreateDate).ToArray();
         }
 
         public void Append(Guid id, DateTime createDate, string title, string description)
