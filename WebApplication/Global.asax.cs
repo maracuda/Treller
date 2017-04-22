@@ -14,6 +14,7 @@ using SKBKontur.Treller.RepositoryHooks.BranchNotification;
 using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News;
 using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
+using SKBKontur.Treller.WebApplication.Implementation.Services.Releases;
 using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces;
 
 namespace SKBKontur.Treller.WebApplication
@@ -75,6 +76,8 @@ namespace SKBKontur.Treller.WebApplication
         private void RunRegularOperations()
         {
             var operationsFactory = container.Get<IRegularOperationsFactory>();
+
+            container.Create<PresentationConverter>().Convert();
 
             operationalService.Register(
                 operationsFactory.Create("TaskManagerReporter", () => { container.Get<IBillingTimes>().LookForNews(); }),

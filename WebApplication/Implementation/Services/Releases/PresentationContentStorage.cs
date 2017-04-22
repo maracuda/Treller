@@ -3,11 +3,11 @@ using SKBKontur.Treller.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
 {
-    public class PresentationContentService : IPresentationContentService
+    public class PresentationContentStorage : IPresentationContentStorage
     {
         private readonly IKeyValueStorage keyValueStorage;
 
-        public PresentationContentService(IKeyValueStorage keyValueStorage)
+        public PresentationContentStorage(IKeyValueStorage keyValueStorage)
         {
             this.keyValueStorage = keyValueStorage;
         }

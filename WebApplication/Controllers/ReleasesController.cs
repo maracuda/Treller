@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using SKBKontur.Treller.Logger;
@@ -21,7 +22,8 @@ namespace SKBKontur.Treller.WebApplication.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var presentations = demoPresentationsService.FetchPresentations(10);
+            var presentations = demoPresentationsService.FetchPresentations(10).ToArray();
+            //TODO: этот код говорит о том, что модели данных были плохо спроектированы.
             foreach (var presentationModel in presentations)
             {
                 presentationModel.ImageUrl = Url.Action("DownloadContent", new RouteValueDictionary {{"presentationId", presentationModel.PresentationId}});

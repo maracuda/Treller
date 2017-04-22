@@ -5,12 +5,12 @@ using SKBKontur.Treller.Storage;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
 {
-    public class CommentsService : ICommentsService
+    public class CommentsStorage : ICommentsStorage
     {
         private readonly ICollectionsStorageRepository collectionsStorageRepository;
         private readonly IDateTimeFactory dateTimeFactory;
 
-        public CommentsService(
+        public CommentsStorage(
             ICollectionsStorageRepository collectionsStorageRepository,
             IDateTimeFactory dateTimeFactory)
         {

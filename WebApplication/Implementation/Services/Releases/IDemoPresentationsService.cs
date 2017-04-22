@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
 {
     public interface IDemoPresentationsService
     {
-        PresentationModel[] FetchPresentations(int count);
+        IEnumerable<PresentationModel> FetchPresentations(int count);
         Comment AppendComment(Guid presnetationId, string name, string text);
         PresentationContent DownloadPresentationContent(Guid presentationId);
     }
