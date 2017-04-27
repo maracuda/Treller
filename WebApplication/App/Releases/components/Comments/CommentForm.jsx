@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import { PureComponent } from "react";
 import { connect } from "react-redux";
 import TextInput from "billing-ui/components/TextInput";
 import TextArea from "billing-ui/components/TextArea";

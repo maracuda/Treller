@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import { PureComponent } from "react";
 import { formatDate } from "billing-ui/libs/moment";
 
 import { getRandomAvatar } from "./avatar";

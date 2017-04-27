@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import { PureComponent } from "react";
 import { connect } from "react-redux";
 import { resolveString } from "billing-ui/helpers/PluralStringResolver";
 import Icon, { IconTypes } from "billing-ui/components/Icon";
