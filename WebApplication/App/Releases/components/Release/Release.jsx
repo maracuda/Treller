@@ -18,7 +18,7 @@ class Release extends PureComponent {
                 <div className={styles.content}>
                     <Actions PresentationId={PresentationId} />
 
-                    <div className={styles.title}>{Title}</div>
+                    {Title && <div className={styles.title}>{Title}</div>}
                     <div className={styles.text} dangerouslySetInnerHTML={this._renderContent()} />
 
                     {ImageUrl && (
