@@ -27,19 +27,22 @@ class Comments extends PureComponent {
 
         return (
             <div className={cx(styles.comments, { [styles["is-opened"]]: isOpened })}>
-                <div className={styles.head}>
-                    <div>
-                        {this._getCommentsCountString()}
+                <div className={styles.content}>
+                    <div className={styles.head}>
+                        <div>
+                            {this._getCommentsCountString()}
+                        </div>
+                        <div className={styles.close} onClick={closeComments}>
+                            <Icon type={IconTypes.Delete} className={styles.cross} />
+                            Закрыть
+                        </div>
                     </div>
-                    <div className={styles.close} onClick={closeComments}>
-                        <Icon type={IconTypes.Delete} className={styles.cross} />
-                        Закрыть
-                    </div>
-                </div>
 
-                <div>
                     <CommentForm />
-                    {Comments.map(comment => <Comment key={comment.CommentId} { ...comment } />)}
+
+                    <div className={styles["comments-list"]}>
+                        {Comments.map(comment => <Comment key={comment.CommentId} { ...comment } />)}
+                    </div>
                 </div>
             </div>
         );

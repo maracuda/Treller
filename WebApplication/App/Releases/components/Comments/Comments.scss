@@ -1,15 +1,32 @@
-@import "~billing-ui/styles/_variables";
+@import "~billing-ui/styles/variables";
 
 :local {
+    $width: 275px;
+
     .comments {
-        width: 275px;
+        width: $width;
         transition: $transitionDefault;
         display: none;
         margin-left: 50px;
+        position: relative;
 
         &.is-opened {
             display: block;
         }
+    }
+
+    .content {
+        top: 10px;
+        overflow: hidden;
+        position: sticky;
+    }
+
+    .comments-list {
+        $scrollbarWidth: 18px;
+        max-height: calc(100vh - 178px);
+        overflow-y: auto;
+        padding-right: $scrollbarWidth;
+        margin-right: (-$scrollbarWidth);
     }
 
     .head {
