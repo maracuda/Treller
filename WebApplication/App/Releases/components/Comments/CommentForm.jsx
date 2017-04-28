@@ -56,7 +56,7 @@ class CommentForm extends PureComponent {
                           wrapperClassName={styles["input-wrapper"]} />
 
                 <Button size={ButtonSize.small} className={styles.button} disabled={!canSubmit || isLoading} onClick={submitComment}>
-                    Погнали!
+                    Сохранить
                 </Button>
             </div>
         );
