@@ -114,12 +114,12 @@ namespace SKBKontur.TaskManagerClient.Youtrack
 
         public string GetBrowseFilterUrl(string filter)
         {
-            return BuildUrl(string.Format("issues?q={0}", HttpUtility.UrlEncode(filter)));
+            return BuildUrl($"issues?q={HttpUtility.UrlEncode(filter)}");
         }
 
         public BugTrackerIssueAttachment[] GetAttachments(string issueId)
         {
-            var url = BuildUrl(string.Format("rest/issue/{0}/attachment", issueId));
+            var url = BuildUrl($"rest/issue/{issueId}/attachment");
             var result = httpClient.SendGetAsString(url, null, authCookies.Value);
             
             var res = XDocument.Parse(result);

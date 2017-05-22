@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SKBKontur.HttpInfrastructure.Clients
@@ -10,12 +9,7 @@ namespace SKBKontur.HttpInfrastructure.Clients
         T SendGet<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null);
         string SendGetAsString(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null);
         Task<T> SendGetAsync<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null);
-        Task<string> SendGetStringAsync(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null);
-
-        void SendPost<T>(string url, T body, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null, string authHttpType = null, string authorizationToken = null);
-        T SendPost<T>(string url, Dictionary<string, string> queryParameters = null, HttpContent content = null, IEnumerable<Cookie> cookies = null, string authHttpType = null, string authorizationToken = null);
         Task<CookieCollection> SendEncodedFormPostAsync(string url, Dictionary<string, string> formData);
-
         void SendDelete(string url, Dictionary<string, string> queryParameters, IEnumerable<Cookie> cookies = null);
     }
 }

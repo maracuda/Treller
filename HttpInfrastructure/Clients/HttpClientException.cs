@@ -6,9 +6,23 @@ namespace SKBKontur.HttpInfrastructure.Clients
 {
     public class HttpClientException : Exception
     {
-        public HttpClientException(HttpResponseMessage response, string resultMessage = null)
-            : base(string.Format("StatusCode:{0};Reason:{1};Query:{2};HttpMethod:{3};ResultMessage:{4};Headers:({5})", response.StatusCode, response.ReasonPhrase, response.RequestMessage.RequestUri, response.RequestMessage.Method, resultMessage, string.Join(",", response.RequestMessage.Headers.Select(x => string.Format("{0}:{1}", x.Key, x.Value)))))
+        private HttpClientException(HttpResponseMessage response, string resultMessage = null)
+            : base($"StatusCode:{response.StatusCode};Reason:{response.ReasonPhrase};Query:{response.RequestMessage.RequestUri};HttpMethod:{response.RequestMessage.Method};ResultMessage:{resultMessage};Headers:({string.Join(",", response.RequestMessage.Headers.Select(x => $"{x.Key}:{x.Value}"))})"
+            )
         {
+        }
+
+        public static HttpClientException Create(HttpResponseMessage response)
+        {
+            try
+            {
+                var contentString = response.Content.ReadAsStringAsync().Result;
+                return new HttpClientException(response, contentString);
+            }
+            catch (Exception e)
+            {
+                return new HttpClientException(response, $"Fail to extract content string. The reason is {e.Message}.");
+            }
         }
     }
 }

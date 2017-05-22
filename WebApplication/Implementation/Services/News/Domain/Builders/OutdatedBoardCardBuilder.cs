@@ -27,8 +27,10 @@ namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.B
             try
             {
                 var boardCard = taskManagerClient.GetCard(cardId);
-                var boardList = taskManagerClient.GetBoardLists(boardCard.BoardId)
-                                                 .FirstOrDefault(x => x.Id == boardCard.BoardListId);
+                if (boardCard == null)
+                    return null;
+
+                var boardList = taskManagerClient.GetBoardLists(boardCard.BoardId).FirstOrDefault(x => x.Id == boardCard.BoardListId);
                 if (boardList == null)
                 {
                     loggerFactory.Get<OutdatedBoardCardBuilder>().LogError($"Fail to find board list with id {boardCard.BoardListId} at board {boardCard.BoardId} for card {cardId}.");

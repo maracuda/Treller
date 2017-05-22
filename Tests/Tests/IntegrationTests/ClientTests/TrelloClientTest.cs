@@ -84,5 +84,12 @@ namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.ClientTests
             var actions = trelloClient.GetCardUpdateActions("9JRBHBaL");
             Assert.True(actions.Length > 0);
         }
+
+        [Fact]
+        public void NotFoundCardWhenItMovedToAnotherBoard()
+        {
+            var result = trelloClient.GetCard("591996e9fe22eae8abc95ec4");
+            Assert.IsNull(result);
+        }
     }
 }

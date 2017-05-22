@@ -27,48 +27,27 @@ namespace SKBKontur.HttpInfrastructure.Clients
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 using (var response = await client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead))
                 {
-                    ValidateResponse(response);
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                        return default(T);
+                    if (!response.IsSuccessStatusCode)
+                        throw HttpClientException.Create(response);
                     return await response.Content.ReadAsAsync<T>().ConfigureAwait(false);
                 }
             }
         }
 
-        public async Task<string> SendGetStringAsync(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
+        private async Task<string> SendGetStringAsync(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
         {
             using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
             {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 using (var response = await client.GetAsync(GetFullUrl(url, queryParameters), HttpCompletionOption.ResponseContentRead))
                 {
-                    ValidateResponse(response);
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                        return default(string);
+                    if (!response.IsSuccessStatusCode)
+                        throw HttpClientException.Create(response);
                     return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-            }
-        }
-
-        public void SendPost<T>(string url, T body, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null, string authHttpType = null, string authorizationToken = null)
-        {
-            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
-            {
-                UpdateHttpBasicCredentials(client, authHttpType, authorizationToken);
-
-                using (var response = client.PostAsJsonAsync(GetFullUrl(url, queryParameters), body).Result)
-                {
-                    ValidateResponse(response);
-                }
-            }
-        }
-
-        public T SendPost<T>(string url, Dictionary<string, string> queryParameters = null, HttpContent content = null, IEnumerable<Cookie> cookies = null, string authHttpType = null, string authorizationToken = null)
-        {
-            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
-            {
-                UpdateHttpBasicCredentials(client, authHttpType, authorizationToken);
-
-                using (var response = client.PostAsync(GetFullUrl(url, queryParameters), content).Result)
-                {
-                    ValidateResponse(response);
-                    return response.Content.ReadAsAsync<T>().Result;
                 }
             }
         }
@@ -80,7 +59,8 @@ namespace SKBKontur.HttpInfrastructure.Clients
             {
                 using (var response = await client.PostAsync(url, new FormUrlEncodedContent(formData)))
                 {
-                    ValidateResponse(response);
+                    if (!response.IsSuccessStatusCode)
+                        throw HttpClientException.Create(response);
                     return cookies.GetCookies(new Uri(url));
                 }
             }
@@ -92,34 +72,10 @@ namespace SKBKontur.HttpInfrastructure.Clients
             {
                 using (var response = client.DeleteAsync(GetFullUrl(url, queryParameters)).Result)
                 {
-                    ValidateResponse(response);
+                    if (!response.IsSuccessStatusCode)
+                        throw HttpClientException.Create(response);
                 }
             }
-        }
-
-        private static void UpdateHttpBasicCredentials(System.Net.Http.HttpClient client, string authHttpType, string authorizationToken)
-        {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authHttpType, authorizationToken);
-        }
-
-        private static void ValidateResponse(HttpResponseMessage response)
-        {
-            if (response.IsSuccessStatusCode)
-            {
-                return;
-            }
-
-            string additionalErrorMessage;
-            try
-            {    
-                additionalErrorMessage = response.Content.ReadAsStringAsync().Result;
-            }
-            catch (Exception)
-            {
-                additionalErrorMessage = null;
-            }
-
-            throw new HttpClientException(response, additionalErrorMessage);
         }
 
         private static CookieContainer CreateCookieContainer(IEnumerable<Cookie> cookies)
