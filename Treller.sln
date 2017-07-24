@@ -1,38 +1,38 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F574830C-1205-46AB-9E70-45270DD97FE3}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Infrastructure", "Infrastructure\Infrastructure.xproj", "{91D838BC-B088-4881-B460-1ABD994402BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{91D838BC-B088-4881-B460-1ABD994402BC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HttpInfrastructure", "HttpInfrastructure\HttpInfrastructure.xproj", "{EEAEEF67-BB09-47DC-88AD-7B7109D1FC77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpInfrastructure", "HttpInfrastructure\HttpInfrastructure.csproj", "{EEAEEF67-BB09-47DC-88AD-7B7109D1FC77}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TaskManagerClient", "TaskManagerClient\TaskManagerClient.xproj", "{5E0E8B08-1EE2-4EBE-993F-458F3AB23D23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagerClient", "TaskManagerClient\TaskManagerClient.csproj", "{5E0E8B08-1EE2-4EBE-993F-458F3AB23D23}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Tests", "Tests\Tests.xproj", "{2725C660-62A4-4D1C-80E6-23EC741FA037}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{2725C660-62A4-4D1C-80E6-23EC741FA037}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "WebApplication", "WebApplication\WebApplication.xproj", "{1A829648-4110-49D0-84E3-177CBEF84840}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication", "WebApplication\WebApplication.csproj", "{1A829648-4110-49D0-84E3-177CBEF84840}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Serialization", "Serialization\Serialization.xproj", "{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization", "Serialization\Serialization.csproj", "{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Storage", "Storage\Storage.xproj", "{3C0669FA-3C06-435C-B469-8AE21E09A2C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage", "Storage\Storage.csproj", "{3C0669FA-3C06-435C-B469-8AE21E09A2C9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "IoCContainer", "IoCContainer\IoCContainer.xproj", "{8D4E6C8D-EA6D-4F1B-9C73-4835C1D48498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IoCContainer", "IoCContainer\IoCContainer.csproj", "{8D4E6C8D-EA6D-4F1B-9C73-4835C1D48498}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MessageBroker", "MessageBroker\MessageBroker.xproj", "{B246D9CD-3D05-49E4-9B38-914926D86A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBroker", "MessageBroker\MessageBroker.csproj", "{B246D9CD-3D05-49E4-9B38-914926D86A8A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Logger", "Logger\Logger.xproj", "{F82860FB-A1B2-4F90-816E-18AFAD20A081}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logger", "Logger\Logger.csproj", "{F82860FB-A1B2-4F90-816E-18AFAD20A081}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OperationalService", "OperationalService\OperationalService.xproj", "{8492B19B-1E87-424C-A39D-93A4BD3B26CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OperationalService", "OperationalService\OperationalService.csproj", "{8492B19B-1E87-424C-A39D-93A4BD3B26CF}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "RepositoryHooks", "RepositoryHooks\RepositoryHooks.xproj", "{0721C8A2-D5F1-4773-8BB9-6BC5ECE4E562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryHooks", "RepositoryHooks\RepositoryHooks.csproj", "{0721C8A2-D5F1-4773-8BB9-6BC5ECE4E562}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ProcessStats", "ProcessStats\ProcessStats.xproj", "{BDC66F8B-B4E4-45D1-9CFD-318A13E893BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProcessStats", "ProcessStats\ProcessStats.csproj", "{BDC66F8B-B4E4-45D1-9CFD-318A13E893BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
-using System.Web;
 using System.Linq;
 using System.Xml.Linq;
 using SKBKontur.HttpInfrastructure.Clients;
@@ -110,11 +109,6 @@ namespace SKBKontur.TaskManagerClient.Youtrack
         public string GetBaseUrl()
         {
             return youTrackDefaultUrl;
-        }
-
-        public string GetBrowseFilterUrl(string filter)
-        {
-            return BuildUrl($"issues?q={HttpUtility.UrlEncode(filter)}");
         }
 
         public BugTrackerIssueAttachment[] GetAttachments(string issueId)

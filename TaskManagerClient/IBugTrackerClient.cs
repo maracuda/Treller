@@ -12,7 +12,6 @@ namespace SKBKontur.TaskManagerClient
         string GetSprintUrl();
         string GetStrintUrlEndWord();
         string GetBaseUrl();
-        string GetBrowseFilterUrl(string filter);
 
         BugTrackerIssueAttachment[] GetAttachments(string issueId);
         BugTrackerIssueComment[] GetComments(string issueId);
