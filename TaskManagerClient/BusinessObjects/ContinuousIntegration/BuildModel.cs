@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.TaskManagerClient.BusinessObjects.ContinuousIntegration
+﻿namespace TaskManagerClient.BusinessObjects.ContinuousIntegration
 {
     public class BuildModel
     {

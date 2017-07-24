@@ -1,12 +1,12 @@
 ﻿using System;
+using ProcessStats.Dev;
 using Rhino.Mocks;
-using SkbKontur.Treller.ProcessStats.Dev;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions;
+using TaskManagerClient;
+using TaskManagerClient.BusinessObjects.TaskManager;
+using TaskManagerClient.Trello.BusinessObjects.Actions;
 using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.ProcessStats
+namespace Tests.Tests.UnitTests.ProcessStats
 {
     public class CardHistoryServiceTest :  UnitTest
     {

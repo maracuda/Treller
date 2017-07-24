@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 
-namespace SKBKontur.HttpInfrastructure.Clients
+namespace HttpInfrastructure.Clients
 {
     public class HttpClientException : Exception
     {

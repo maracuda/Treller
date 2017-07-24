@@ -1,7 +1,7 @@
-﻿using SKBKontur.Treller.Tests.Tests.UnitTests.Mocks;
+﻿using Tests.Tests.UnitTests.Mocks;
 using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests
+namespace Tests.Tests.UnitTests
 {
     public class MockExtensionTest : UnitTest
     {

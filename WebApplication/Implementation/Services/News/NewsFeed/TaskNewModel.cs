@@ -1,6 +1,6 @@
-﻿using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
+﻿using WebApplication.Implementation.Infrastructure.Extensions;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
+namespace WebApplication.Implementation.Services.News.NewsFeed
 {
     public class TaskNewModel
     {

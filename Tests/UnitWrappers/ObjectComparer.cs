@@ -3,7 +3,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace SKBKontur.Treller.Tests.UnitWrappers
+namespace Tests.UnitWrappers
 {
     public static class ObjectComparer
     {

@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Cards;
+using TaskManagerClient.Trello.BusinessObjects.Cards;
 
-namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
+namespace TaskManagerClient.BusinessObjects.TaskManager
 {
     public class BoardCard
     {

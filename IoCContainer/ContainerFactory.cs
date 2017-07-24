@@ -1,9 +1,9 @@
 using System.Linq;
+using IoCContainer.AssembliesLoader;
+using IoCContainer.Implementation;
 using LightInject;
-using SKBKontur.Treller.IoCContainer.AssembliesLoader;
-using SKBKontur.Treller.IoCContainer.Implementation;
 
-namespace SKBKontur.Treller.IoCContainer
+namespace IoCContainer
 {
     public static class ContainerFactory
     {

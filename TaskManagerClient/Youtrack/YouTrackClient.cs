@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Linq;
 using System.Xml.Linq;
-using SKBKontur.HttpInfrastructure.Clients;
-using SKBKontur.TaskManagerClient.BusinessObjects.BugTracker;
-using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
+using HttpInfrastructure.Clients;
+using TaskManagerClient.BusinessObjects.BugTracker;
+using TaskManagerClient.CredentialServiceAbstractions;
+using TaskManagerClient.Youtrack.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient.Youtrack
+namespace TaskManagerClient.Youtrack
 {
     public class YouTrackClient : IBugTrackerClient
     {

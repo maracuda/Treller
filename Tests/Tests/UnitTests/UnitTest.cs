@@ -1,6 +1,6 @@
-﻿using SKBKontur.Treller.Tests.Tests.UnitTests.Mocks;
+﻿using Tests.Tests.UnitTests.Mocks;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests
+namespace Tests.Tests.UnitTests
 {
     public abstract class UnitTest
     {

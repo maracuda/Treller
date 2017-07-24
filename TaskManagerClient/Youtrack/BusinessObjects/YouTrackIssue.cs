@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SKBKontur.TaskManagerClient.Youtrack.BusinessObjects
+namespace TaskManagerClient.Youtrack.BusinessObjects
 {
     public class YouTrackIssue
     {

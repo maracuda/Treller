@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
+using TaskManagerClient.BusinessObjects.TaskManager;
+using WebApplication.Implementation.Services.News.Reporters;
 using Xunit;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
+namespace Tests.Tests.IntegrationTests.News
 {
     public class TaskNewConverterTest : IntegrationTest
     {

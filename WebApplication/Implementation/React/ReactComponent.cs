@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.React
+namespace WebApplication.Implementation.React
 {
     public class ReactComponent
     {

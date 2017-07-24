@@ -1,14 +1,14 @@
 ﻿using System;
-using Xunit;
+using Infrastructure.Common;
 using Rhino.Mocks;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
-using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
+using WebApplication.Implementation.Services.News;
+using WebApplication.Implementation.Services.News.Domain.Builders;
+using WebApplication.Implementation.Services.News.Domain.Models;
+using WebApplication.Implementation.Services.News.NewsFeed;
+using Xunit;
+using Assert = Tests.UnitWrappers.Assert;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Actualization
+namespace Tests.Tests.UnitTests.News.Actualization
 {
     public class AgingCardsFilterTest : UnitTest
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using SKBKontur.Treller.Storage;
+using Storage;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Configuration
+namespace Tests.Tests.IntegrationTests.Configuration
 {
     public class TestEnvironment : IEnvironment
     {

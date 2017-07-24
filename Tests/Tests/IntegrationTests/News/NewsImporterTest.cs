@@ -1,8 +1,8 @@
-﻿using Xunit;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
+﻿using WebApplication.Implementation.Services.News.NewsFeed;
+using WebApplication.Implementation.Services.News.Reporters;
+using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
+namespace Tests.Tests.IntegrationTests.News
 {
     public class NewsImporterTest : IntegrationTest
     {

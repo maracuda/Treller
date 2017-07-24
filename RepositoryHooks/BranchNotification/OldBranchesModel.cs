@@ -1,6 +1,6 @@
-﻿using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
+﻿using TaskManagerClient.Repository.BusinessObjects;
 
-namespace SKBKontur.Treller.RepositoryHooks.BranchNotification
+namespace RepositoryHooks.BranchNotification
 {
     public class OldBranchesModel
     {

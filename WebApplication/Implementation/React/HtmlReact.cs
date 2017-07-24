@@ -1,8 +1,7 @@
-﻿using System.Text;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.React
+namespace WebApplication.Implementation.React
 {
     public class HtmlReact
     {

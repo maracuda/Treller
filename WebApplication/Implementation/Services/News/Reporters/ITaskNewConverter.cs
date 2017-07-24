@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using TaskManagerClient.BusinessObjects.TaskManager;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
+namespace WebApplication.Implementation.Services.News.Reporters
 {
     public interface ITaskNewConverter
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.TaskManagerClient.TeamCity.BusinessObjects
+namespace TaskManagerClient.TeamCity.BusinessObjects
 {
     public class TeamCityBuild
     {

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Antlr.Runtime.Misc;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
+using Infrastructure.Common;
+using WebApplication.Implementation.Services.News.Domain.Builders;
+using WebApplication.Implementation.Services.News.Domain.Models;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
+namespace WebApplication.Implementation.Services.News.NewsFeed
 {
     public class OutdatedNewsFilter : IOutdatedNewsFilter
     {

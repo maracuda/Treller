@@ -1,7 +1,7 @@
 using System;
-using SKBKontur.Infrastructure.Sugar;
+using Infrastructure.Sugar;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing
+namespace WebApplication.Implementation.Services.News.Content.Parsing
 {
     internal class SubstringParser
     {

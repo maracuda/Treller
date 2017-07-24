@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content
+﻿namespace WebApplication.Implementation.Services.News.Content
 {
     public interface IContentManager
     {

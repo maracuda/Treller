@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.OperationalService.Scheduler
+namespace OperationalService.Scheduler
 {
     public interface IScheduler
     {

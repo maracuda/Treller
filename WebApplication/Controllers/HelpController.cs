@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.Treller.Logger;
+using Logger;
+using TaskManagerClient;
 
-namespace SKBKontur.Treller.WebApplication.Controllers
+namespace WebApplication.Controllers
 {
     public class HelpController : ExceptionHandledController
     {

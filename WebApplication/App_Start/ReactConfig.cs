@@ -1,7 +1,7 @@
 using React;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions;
+using WebApplication.Implementation.Infrastructure.Extensions;
 
-namespace SKBKontur.Treller.WebApplication
+namespace WebApplication
 {
 	public static class ReactConfig
 	{

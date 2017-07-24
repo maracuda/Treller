@@ -1,7 +1,7 @@
 ﻿using System;
-using SKBKontur.Treller.OperationalService.Scheduler;
+using OperationalService.Scheduler;
 
-namespace SKBKontur.Treller.OperationalService
+namespace OperationalService
 {
     public class ScheduleParams
     {

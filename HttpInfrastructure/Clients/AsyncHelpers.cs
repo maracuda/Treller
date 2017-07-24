@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SKBKontur.HttpInfrastructure.Clients
+namespace HttpInfrastructure.Clients
 {
     public static class AsyncHelpers
     {

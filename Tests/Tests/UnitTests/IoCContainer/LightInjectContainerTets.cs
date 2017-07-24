@@ -1,8 +1,8 @@
-﻿using SKBKontur.Treller.IoCContainer;
-using SKBKontur.Treller.MessageBroker;
+﻿using IoCContainer;
+using MessageBroker;
 using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.IoCContainer
+namespace Tests.Tests.UnitTests.IoCContainer
 {
     public class LightInjectContainerTets : UnitTest
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.RepositoryHooks.BranchNotification
+namespace RepositoryHooks.BranchNotification
 {
     public interface IBranchNotificator
     {

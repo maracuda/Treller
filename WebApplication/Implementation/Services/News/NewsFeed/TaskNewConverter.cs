@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using SKBKontur.Treller.Serialization;
+using Serialization;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
+namespace WebApplication.Implementation.Services.News.NewsFeed
 {
     public class TaskNewConverter : ITaskNewConverter
     {

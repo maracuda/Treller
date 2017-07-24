@@ -1,8 +1,8 @@
-﻿using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters;
+﻿using WebApplication.Implementation.Services.News.NewsFeed;
+using WebApplication.Implementation.Services.News.Publisher;
+using WebApplication.Implementation.Services.News.Reporters;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
+namespace WebApplication.Implementation.Services.News
 {
     public class BillingTimes : IBillingTimes
     {

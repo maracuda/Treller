@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using SKBKontur.Infrastructure.Sugar;
-using SKBKontur.Treller.Storage;
+using Infrastructure.Sugar;
+using Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
+namespace WebApplication.Implementation.Services.News.Storage
 {
     public class TaskNewStorage : ITaskNewStorage
     {

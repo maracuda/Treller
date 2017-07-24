@@ -1,7 +1,7 @@
-﻿using SKBKontur.TaskManagerClient.BusinessObjects.BugTracker;
-using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
+﻿using TaskManagerClient.BusinessObjects.BugTracker;
+using TaskManagerClient.Youtrack.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient
+namespace TaskManagerClient
 {
     public interface IBugTrackerClient
     {

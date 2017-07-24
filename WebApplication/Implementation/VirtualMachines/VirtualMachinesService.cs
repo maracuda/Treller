@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Logging;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces;
+using WebApplication.Implementation.VirtualMachines.BusinessObjects;
+using WebApplication.Implementation.VirtualMachines.Logging;
+using WebApplication.Implementation.VirtualMachines.Runspaces;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines
+namespace WebApplication.Implementation.VirtualMachines
 {
     public class VirtualMachinesService : IVirtualMachinesService
     {

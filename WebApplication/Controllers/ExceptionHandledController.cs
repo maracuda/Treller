@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
-using SKBKontur.Treller.Logger;
+using Logger;
 
-namespace SKBKontur.Treller.WebApplication.Controllers
+namespace WebApplication.Controllers
 {
     public abstract class ExceptionHandledController : Controller
     {

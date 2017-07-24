@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using SKBKontur.Treller.Serialization;
+using Serialization;
 
-namespace SKBKontur.Treller.Storage.FileStorage
+namespace Storage.FileStorage
 {
     public class CachedFileStorage : IKeyValueStorage
     {

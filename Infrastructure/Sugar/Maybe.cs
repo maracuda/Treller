@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SKBKontur.Infrastructure.Sugar
+namespace Infrastructure.Sugar
 {
     public struct Maybe<T>
     {

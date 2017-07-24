@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.OperationalService.Operations
+namespace OperationalService.Operations
 {
     public interface IRegularOperationsFactory
     {

@@ -1,4 +1,4 @@
-namespace SKBKontur.TaskManagerClient.Wiki.BusinessObjects
+namespace TaskManagerClient.Wiki.BusinessObjects
 {
     public class WikiCredential
     {

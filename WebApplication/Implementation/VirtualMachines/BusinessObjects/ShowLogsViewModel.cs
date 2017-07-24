@@ -1,6 +1,6 @@
-﻿using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Logging;
+﻿using WebApplication.Implementation.VirtualMachines.Logging;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects
+namespace WebApplication.Implementation.VirtualMachines.BusinessObjects
 {
     public class ShowLogsViewModel
     {

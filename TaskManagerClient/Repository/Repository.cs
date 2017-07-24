@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
-using SKBKontur.TaskManagerClient.Repository.Clients;
+using Infrastructure.Common;
+using TaskManagerClient.Repository.BusinessObjects;
+using TaskManagerClient.Repository.Clients;
 
-namespace SKBKontur.TaskManagerClient.Repository
+namespace TaskManagerClient.Repository
 {
     public class Repository : IRepository
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace SKBKontur.Treller.IoCContainer.Implementation
+namespace IoCContainer.Implementation
 {
     public class ContainerGetException : Exception
     {

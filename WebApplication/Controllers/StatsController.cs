@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
-using SkbKontur.Treller.ProcessStats.Dev;
-using SKBKontur.Treller.Logger;
+using Logger;
+using ProcessStats.Dev;
 
-namespace SKBKontur.Treller.WebApplication.Controllers
+namespace WebApplication.Controllers
 {
     public class StatsController : ExceptionHandledController
     {

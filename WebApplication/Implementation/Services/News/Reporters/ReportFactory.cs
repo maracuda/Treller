@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
+namespace WebApplication.Implementation.Services.News.Reporters
 {
     public class ReportFactory : IReportFactory
     {

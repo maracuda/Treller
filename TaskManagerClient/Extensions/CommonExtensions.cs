@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace SKBKontur.TaskManagerClient.Extensions
+namespace TaskManagerClient.Extensions
 {
     public static class CommonExtensions
     {

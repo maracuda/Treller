@@ -1,4 +1,4 @@
-﻿namespace SkbKontur.Treller.ProcessStats.Dev
+﻿namespace ProcessStats.Dev
 {
     public interface IKanbanStats
     {

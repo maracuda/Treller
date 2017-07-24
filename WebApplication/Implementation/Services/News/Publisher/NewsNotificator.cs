@@ -1,6 +1,6 @@
-﻿using SKBKontur.Treller.MessageBroker;
+﻿using MessageBroker;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher
+namespace WebApplication.Implementation.Services.News.Publisher
 {
     public class NewsNotificator : INewsNotificator
     {

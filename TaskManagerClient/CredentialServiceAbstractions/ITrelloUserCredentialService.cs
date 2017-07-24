@@ -1,6 +1,6 @@
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
+using TaskManagerClient.Trello.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient.CredentialServiceAbstractions
+namespace TaskManagerClient.CredentialServiceAbstractions
 {
     public interface ITrelloUserCredentialService
     {

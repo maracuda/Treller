@@ -1,7 +1,7 @@
 using System;
 using Rhino.Mocks;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.Mocks
+namespace Tests.Tests.UnitTests.Mocks
 {
     public class RhinoMockRepository : IMockRepository
     {

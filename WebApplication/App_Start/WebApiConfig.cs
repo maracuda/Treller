@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace SKBKontur.Treller.WebApplication
+namespace WebApplication
 {
     public static class WebApiConfig
     {

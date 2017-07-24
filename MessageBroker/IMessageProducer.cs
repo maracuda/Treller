@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.MessageBroker
+﻿namespace MessageBroker
 {
     public interface IMessageProducer
     {

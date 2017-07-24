@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions
+namespace WebApplication.Implementation.Infrastructure.Extensions
 {
     public static class EnumExtension
     {

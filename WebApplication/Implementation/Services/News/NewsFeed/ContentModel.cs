@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
+namespace WebApplication.Implementation.Services.News.NewsFeed
 {
     public class ContentModel
     {

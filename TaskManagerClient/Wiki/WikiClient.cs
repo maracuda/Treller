@@ -1,7 +1,7 @@
-﻿using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.Wiki.BusinessObjects;
+﻿using TaskManagerClient.CredentialServiceAbstractions;
+using TaskManagerClient.Wiki.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient.Wiki
+namespace TaskManagerClient.Wiki
 {
     public class WikiClient : IWikiClient
     {

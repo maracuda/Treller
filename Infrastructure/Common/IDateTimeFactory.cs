@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Infrastructure.Common
+namespace Infrastructure.Common
 {
     public interface IDateTimeFactory
     {

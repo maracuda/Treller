@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.OperationalService.OperationsLog
+namespace OperationalService.OperationsLog
 {
     public interface IOperationsLog
     {

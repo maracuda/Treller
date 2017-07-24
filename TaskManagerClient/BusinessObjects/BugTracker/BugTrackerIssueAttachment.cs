@@ -1,4 +1,4 @@
-namespace SKBKontur.TaskManagerClient.BusinessObjects.BugTracker
+namespace TaskManagerClient.BusinessObjects.BugTracker
 {
     public class BugTrackerIssueAttachment
     {

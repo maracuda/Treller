@@ -1,7 +1,7 @@
 ﻿using System.Web.Optimization;
 using System.Web.Optimization.React;
 
-namespace SKBKontur.Treller.WebApplication
+namespace WebApplication
 {
     public static class BundleConfig
     {

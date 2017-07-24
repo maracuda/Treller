@@ -1,7 +1,7 @@
 ﻿using System;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher;
+using WebApplication.Implementation.Services.News.Publisher;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
+namespace WebApplication.Implementation.Services.News
 {
     public class Report
     {

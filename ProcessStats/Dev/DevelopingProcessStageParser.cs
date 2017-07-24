@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SkbKontur.Treller.ProcessStats.Dev
+namespace ProcessStats.Dev
 {
     public class DevelopingProcessStageParser : IDevelopingProcessStageParser
     {

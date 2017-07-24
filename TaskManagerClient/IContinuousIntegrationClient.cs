@@ -1,6 +1,6 @@
-﻿using SKBKontur.TaskManagerClient.BusinessObjects.ContinuousIntegration;
+﻿using TaskManagerClient.BusinessObjects.ContinuousIntegration;
 
-namespace SKBKontur.TaskManagerClient
+namespace TaskManagerClient
 {
     public interface IContinuousIntegrationClient
     {

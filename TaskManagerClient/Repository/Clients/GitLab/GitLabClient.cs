@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using SKBKontur.HttpInfrastructure.Clients;
-using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
+using HttpInfrastructure.Clients;
+using TaskManagerClient.Repository.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient.Repository.Clients.GitLab
+namespace TaskManagerClient.Repository.Clients.GitLab
 {
     public class GitLabClient : IRepositoryClient
     {

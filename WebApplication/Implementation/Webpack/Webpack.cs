@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
-using System.Linq;
 using System.Web.Mvc;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Webpack
+namespace WebApplication.Implementation.Webpack
 {
     public class Webpack
     {

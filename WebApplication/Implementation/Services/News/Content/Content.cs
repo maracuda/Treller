@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content
+namespace WebApplication.Implementation.Services.News.Content
 {
     public class Content
     {

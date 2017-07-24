@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.Logger
+﻿namespace Logger
 {
     public interface ILoggerFactory
     {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace SKBKontur.HttpInfrastructure.Clients
+namespace HttpInfrastructure.Clients
 {
     public interface IHttpClient
     {

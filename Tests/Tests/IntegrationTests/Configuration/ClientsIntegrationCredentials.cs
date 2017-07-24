@@ -1,7 +1,7 @@
-using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
+using TaskManagerClient.Repository.Clients.GitLab;
+using TaskManagerClient.Trello.BusinessObjects;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Configuration
+namespace Tests.Tests.IntegrationTests.Configuration
 {
     public class ClientsIntegrationCredentials
     {

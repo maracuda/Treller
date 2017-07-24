@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using SKBKontur.Treller.Storage;
+using Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Sources
+namespace WebApplication.Implementation.Services.News.Content.Sources
 {
     public class ContentSourceRepository : IContentSourceRepository
     {

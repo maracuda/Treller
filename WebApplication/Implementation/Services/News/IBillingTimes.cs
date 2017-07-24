@@ -1,6 +1,6 @@
-﻿using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
+﻿using WebApplication.Implementation.Services.News.NewsFeed;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
+namespace WebApplication.Implementation.Services.News
 {
     public interface IBillingTimes
     {

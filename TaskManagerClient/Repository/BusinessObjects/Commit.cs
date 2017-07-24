@@ -1,7 +1,7 @@
 ﻿using System;
-using SKBKontur.Infrastructure.Sugar;
+using Infrastructure.Sugar;
 
-namespace SKBKontur.TaskManagerClient.Repository.BusinessObjects
+namespace TaskManagerClient.Repository.BusinessObjects
 {
     public class Commit
     {

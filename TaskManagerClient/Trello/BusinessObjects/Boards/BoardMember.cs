@@ -1,6 +1,6 @@
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions;
+using TaskManagerClient.Trello.BusinessObjects.Actions;
 
-namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Boards
+namespace TaskManagerClient.Trello.BusinessObjects.Boards
 {
     public class BoardMember : ActionMember
     {

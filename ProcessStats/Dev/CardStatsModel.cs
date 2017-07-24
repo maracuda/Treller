@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkbKontur.Treller.ProcessStats.Dev
+namespace ProcessStats.Dev
 {
     public class CardStatsModel
     {

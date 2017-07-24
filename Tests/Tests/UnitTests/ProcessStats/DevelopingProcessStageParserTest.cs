@@ -1,7 +1,7 @@
-﻿using SkbKontur.Treller.ProcessStats.Dev;
+﻿using ProcessStats.Dev;
 using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.ProcessStats
+namespace Tests.Tests.UnitTests.ProcessStats
 {
     public class DevelopingProcessStageParserTest : UnitTest
     {

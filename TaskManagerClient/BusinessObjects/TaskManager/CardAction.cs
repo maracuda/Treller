@@ -1,8 +1,8 @@
 using System;
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions;
-using Action = SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions.Action;
+using TaskManagerClient.Trello.BusinessObjects.Actions;
+using Action = TaskManagerClient.Trello.BusinessObjects.Actions.Action;
 
-namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
+namespace TaskManagerClient.BusinessObjects.TaskManager
 {
     public class CardAction
     {

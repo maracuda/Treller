@@ -1,7 +1,7 @@
 ﻿using System;
 using log4net;
 
-namespace SKBKontur.Treller.Logger.Log4Net
+namespace Logger.Log4Net
 {
     public class Log4NetLogger : ILogger
     {

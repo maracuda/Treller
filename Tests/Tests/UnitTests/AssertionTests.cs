@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests
+namespace Tests.Tests.UnitTests
 {
     public class AssertionTests : UnitTest
     {

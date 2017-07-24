@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
+using Infrastructure.Common;
+using WebApplication.Implementation.Services.News.Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Publisher
+namespace WebApplication.Implementation.Services.News.Publisher
 {
     public class EmailPublisher : IPublisher
     {

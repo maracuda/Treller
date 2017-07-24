@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Web.Mvc;
-using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.RepositoryHooks.BranchNotification;
+using Logger;
+using RepositoryHooks.BranchNotification;
 
-namespace SKBKontur.Treller.WebApplication.Controllers
+namespace WebApplication.Controllers
 {
     public class RepositoryController : ExceptionHandledController
     {

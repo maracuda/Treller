@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.Tests.UnitWrappers
+namespace Tests.UnitWrappers
 {
     public static class Assert
     {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace SKBKontur.Treller.Storage.FileStorage
+namespace Storage.FileStorage
 {
     public class FileSystemHandler : IFileSystemHandler
     {

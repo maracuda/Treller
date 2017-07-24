@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
+namespace WebApplication.Implementation.Services.News
 {
     public class TaskNew
     {

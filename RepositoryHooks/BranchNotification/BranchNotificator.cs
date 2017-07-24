@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using SKBKontur.TaskManagerClient.Repository;
-using SKBKontur.Treller.MessageBroker;
+using MessageBroker;
+using TaskManagerClient.Repository;
 
-namespace SKBKontur.Treller.RepositoryHooks.BranchNotification
+namespace RepositoryHooks.BranchNotification
 {
     public class BranchNotificator : IBranchNotificator
     {

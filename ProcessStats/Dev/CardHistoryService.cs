@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using TaskManagerClient;
+using TaskManagerClient.BusinessObjects.TaskManager;
 
-namespace SkbKontur.Treller.ProcessStats.Dev
+namespace ProcessStats.Dev
 {
     public class CardHistoryService : ICardHistoryService
     {

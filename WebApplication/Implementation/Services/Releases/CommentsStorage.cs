@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.Storage;
+using Infrastructure.Common;
+using Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
+namespace WebApplication.Implementation.Services.Releases
 {
     public class CommentsStorage : ICommentsStorage
     {

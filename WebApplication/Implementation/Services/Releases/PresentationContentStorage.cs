@@ -1,7 +1,7 @@
 ﻿using System;
-using SKBKontur.Treller.Storage;
+using Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
+namespace WebApplication.Implementation.Services.Releases
 {
     public class PresentationContentStorage : IPresentationContentStorage
     {

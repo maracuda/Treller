@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions
+namespace WebApplication.Implementation.Infrastructure.Extensions
 {
     public static class FormattingExtensions
     {

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
+using TaskManagerClient.Repository.Clients;
 using Xunit;
-using SKBKontur.TaskManagerClient.Repository.Clients;
-using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
+using Assert = Tests.UnitWrappers.Assert;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
+namespace Tests.Tests.IntegrationTests.Repository
 {
     public class GitlabClientTests : IntegrationTest
     {

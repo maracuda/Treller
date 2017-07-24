@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using WebApplication.Implementation.Services.BoardsService;
 using Xunit;
-using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Kanban
+namespace Tests.Tests.IntegrationTests.Kanban
 {
     public class BoardServiceTest : IntegrationTest
     {

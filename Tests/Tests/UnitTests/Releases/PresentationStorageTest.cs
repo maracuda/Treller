@@ -1,10 +1,10 @@
 ﻿using System;
 using Rhino.Mocks;
-using SKBKontur.Treller.Storage;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Releases;
+using Storage;
+using WebApplication.Implementation.Services.Releases;
 using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.Releases
+namespace Tests.Tests.UnitTests.Releases
 {
     public class PresentationStorageTest : UnitTest
     {

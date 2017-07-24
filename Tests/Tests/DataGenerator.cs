@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.Tests.Tests
+namespace Tests.Tests
 {
     public static class DataGenerator
     {

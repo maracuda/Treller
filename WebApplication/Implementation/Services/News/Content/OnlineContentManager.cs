@@ -1,10 +1,10 @@
 ﻿using System;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Sources;
+using Logger;
+using TaskManagerClient;
+using WebApplication.Implementation.Services.News.Content.Parsing;
+using WebApplication.Implementation.Services.News.Content.Sources;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content
+namespace WebApplication.Implementation.Services.News.Content
 {
     public class OnlineContentManager : IContentManager
     {

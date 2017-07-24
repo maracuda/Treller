@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.TaskManagerClient.Repository.BusinessObjects
+﻿namespace TaskManagerClient.Repository.BusinessObjects
 {
     public class ReleasedBranch
     {

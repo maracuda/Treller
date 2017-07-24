@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions
+namespace TaskManagerClient.Trello.BusinessObjects.Actions
 {
     public class ActionData
     {

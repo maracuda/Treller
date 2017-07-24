@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
-using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
+using Logger;
+using WebApplication.Implementation.Services.News;
+using WebApplication.Implementation.Services.News.NewsFeed;
 
-namespace SKBKontur.Treller.WebApplication.Controllers
+namespace WebApplication.Controllers
 {
     public class NewsController : ExceptionHandledController
     {

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace SKBKontur.TaskManagerClient.BusinessObjects.TaskManager
+namespace TaskManagerClient.BusinessObjects.TaskManager
 {
     public class BoardList
     {

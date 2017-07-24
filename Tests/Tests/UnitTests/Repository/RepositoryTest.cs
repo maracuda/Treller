@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Xunit;
+using Infrastructure.Common;
 using Rhino.Mocks;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.TaskManagerClient.Repository;
-using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
-using SKBKontur.TaskManagerClient.Repository.Clients;
+using TaskManagerClient.Repository;
+using TaskManagerClient.Repository.BusinessObjects;
+using TaskManagerClient.Repository.Clients;
+using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.Repository
+namespace Tests.Tests.UnitTests.Repository
 {
     public class RepositoryTest : UnitTest
     {

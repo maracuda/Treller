@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Sources;
+using Infrastructure.Common;
+using TaskManagerClient.BusinessObjects.TaskManager;
+using WebApplication.Implementation.Services.News.Content.Parsing;
+using WebApplication.Implementation.Services.News.Content.Sources;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
+namespace WebApplication.Implementation.Services.News.Reporters
 {
     public class TaskNewConverter : ITaskNewConverter
     {

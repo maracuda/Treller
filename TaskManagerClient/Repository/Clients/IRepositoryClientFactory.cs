@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.TaskManagerClient.Repository.Clients
+﻿namespace TaskManagerClient.Repository.Clients
 {
     public interface IRepositoryClientFactory
     {

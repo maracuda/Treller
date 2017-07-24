@@ -1,6 +1,6 @@
 using System;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.Mocks
+namespace Tests.Tests.UnitTests.Mocks
 {
     public interface IMockRepository : IDisposable
     {

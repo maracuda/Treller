@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.Releases
+namespace WebApplication.Implementation.Services.Releases
 {
     public class DemoPresentationService : IDemoPresentationsService
     {

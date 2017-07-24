@@ -1,4 +1,4 @@
-namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects
+namespace TaskManagerClient.Trello.BusinessObjects
 {
     public class TrelloCredential
     {

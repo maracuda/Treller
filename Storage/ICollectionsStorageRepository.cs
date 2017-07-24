@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.Storage
+﻿namespace Storage
 {
     public interface ICollectionsStorageRepository
     {

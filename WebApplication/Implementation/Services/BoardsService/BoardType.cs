@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService
+﻿namespace WebApplication.Implementation.Services.BoardsService
 {
     public enum BoardType
     {

@@ -1,7 +1,7 @@
 ﻿using System;
-using SKBKontur.Infrastructure.Sugar;
+using Infrastructure.Sugar;
 
-namespace SKBKontur.Treller.OperationalService.Operations
+namespace OperationalService.Operations
 {
     public interface IRegularOperation
     {

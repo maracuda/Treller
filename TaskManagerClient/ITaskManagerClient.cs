@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using TaskManagerClient.BusinessObjects.TaskManager;
 
-namespace SKBKontur.TaskManagerClient
+namespace TaskManagerClient
 {
     public interface ITaskManagerClient
     {

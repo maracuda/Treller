@@ -1,8 +1,8 @@
-﻿using SKBKontur.Treller.Serialization;
-using SKBKontur.Treller.Storage.FileStorage;
+﻿using Serialization;
+using Storage.FileStorage;
 using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
+namespace Tests.Tests.IntegrationTests.Storages
 {
     public class CollectionsStorageTest : IntegrationTest
     {

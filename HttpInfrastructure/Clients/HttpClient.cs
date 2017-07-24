@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace SKBKontur.HttpInfrastructure.Clients
+namespace HttpInfrastructure.Clients
 {
     public class HttpClient : IHttpClient
     {

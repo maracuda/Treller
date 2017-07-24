@@ -1,7 +1,7 @@
 using System;
 using LightInject;
 
-namespace SKBKontur.Treller.IoCContainer.Implementation
+namespace IoCContainer.Implementation
 {
     public class LightInjectContainer : IContainer
     {

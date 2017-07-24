@@ -1,6 +1,6 @@
 using System;
 
-namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Boards
+namespace TaskManagerClient.Trello.BusinessObjects.Boards
 {
     public class BoardListCardInfo
     {

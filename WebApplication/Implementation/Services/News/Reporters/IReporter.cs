@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using SKBKontur.Infrastructure.Sugar;
+using Infrastructure.Sugar;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
+namespace WebApplication.Implementation.Services.News.Reporters
 {
     public interface IReporter
     {

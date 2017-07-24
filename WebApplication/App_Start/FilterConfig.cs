@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace SKBKontur.Treller.WebApplication
+namespace WebApplication
 {
     public class FilterConfig
     {

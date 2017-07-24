@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
+using WebApplication.Implementation.Services.News.Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
+namespace WebApplication.Implementation.Services.News.NewsFeed
 {
     public class NewsFeed : INewsFeed
     {

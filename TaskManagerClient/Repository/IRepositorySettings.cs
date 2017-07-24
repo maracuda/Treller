@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SKBKontur.TaskManagerClient.Repository
+namespace TaskManagerClient.Repository
 {
     public interface IRepositorySettings
     {

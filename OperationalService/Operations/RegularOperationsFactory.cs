@@ -1,8 +1,8 @@
 ﻿using System;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.Storage;
+using Infrastructure.Common;
+using Storage;
 
-namespace SKBKontur.Treller.OperationalService.Operations
+namespace OperationalService.Operations
 {
     public class RegularOperationsFactory : IRegularOperationsFactory
     {

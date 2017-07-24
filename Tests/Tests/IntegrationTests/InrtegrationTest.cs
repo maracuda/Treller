@@ -1,10 +1,10 @@
-﻿using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
-using SKBKontur.Treller.IoCContainer;
-using SKBKontur.Treller.Storage;
-using SKBKontur.Treller.Tests.Tests.IntegrationTests.Configuration;
+﻿using IoCContainer;
+using Storage;
+using TaskManagerClient.CredentialServiceAbstractions;
+using TaskManagerClient.Repository.Clients.GitLab;
+using Tests.Tests.IntegrationTests.Configuration;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests
+namespace Tests.Tests.IntegrationTests
 {
     public abstract class IntegrationTest
     {

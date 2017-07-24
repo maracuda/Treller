@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Logging;
+using Logger;
+using WebApplication.Implementation.VirtualMachines;
+using WebApplication.Implementation.VirtualMachines.BusinessObjects;
+using WebApplication.Implementation.VirtualMachines.Logging;
 
-namespace SKBKontur.Treller.WebApplication.Controllers
+namespace WebApplication.Controllers
 {
     public class VirtualMachinesController : ExceptionHandledController
     {

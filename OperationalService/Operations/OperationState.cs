@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.OperationalService.Operations
+﻿namespace OperationalService.Operations
 {
     public enum OperationState
     {

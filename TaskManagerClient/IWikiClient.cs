@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.TaskManagerClient
+﻿namespace TaskManagerClient
 {
     public interface IWikiClient
     {

@@ -1,4 +1,4 @@
-namespace SKBKontur.Treller.WebApplication.Implementation.Webpack
+namespace WebApplication.Implementation.Webpack
 {
     public class WebpackEntries
     {

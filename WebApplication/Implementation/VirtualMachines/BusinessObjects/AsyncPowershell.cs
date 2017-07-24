@@ -1,7 +1,7 @@
 using System;
 using System.Management.Automation;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects
+namespace WebApplication.Implementation.VirtualMachines.BusinessObjects
 {
     public class AsyncPowershell : IDisposable
     {

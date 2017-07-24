@@ -1,8 +1,8 @@
 ﻿using System;
-using SKBKontur.Infrastructure.Sugar;
-using SKBKontur.Treller.Storage;
+using Infrastructure.Sugar;
+using Storage;
 
-namespace SKBKontur.Treller.OperationalService.Operations
+namespace OperationalService.Operations
 {
     public class EnumerationOperation : IRegularOperation
     {

@@ -1,6 +1,6 @@
-﻿using SKBKontur.Infrastructure.Sugar;
+﻿using Infrastructure.Sugar;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage
+namespace WebApplication.Implementation.Services.News.Storage
 {
     public interface ITaskNewStorage
     {

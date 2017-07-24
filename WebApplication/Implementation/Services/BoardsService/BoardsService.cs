@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using TaskManagerClient;
+using TaskManagerClient.BusinessObjects.TaskManager;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService
+namespace WebApplication.Implementation.Services.BoardsService
 {
     public class BoardsService : IBoardsService
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
+using WebApplication.Implementation.VirtualMachines.BusinessObjects;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines
+namespace WebApplication.Implementation.VirtualMachines
 {
     public interface IVirtualMachinesStorage
     {

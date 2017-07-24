@@ -1,14 +1,14 @@
 ﻿using System;
-using Xunit;
+using Logger;
 using Rhino.Mocks;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
-using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
+using TaskManagerClient;
+using TaskManagerClient.BusinessObjects.TaskManager;
+using WebApplication.Implementation.Services.News.Domain.Builders;
+using WebApplication.Implementation.Services.News.Domain.Models;
+using Xunit;
+using Assert = Tests.UnitWrappers.Assert;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Builders
+namespace Tests.Tests.UnitTests.News.Domain.Builders
 {
     public class AgingBoardCardBuilderTest : UnitTest
     {

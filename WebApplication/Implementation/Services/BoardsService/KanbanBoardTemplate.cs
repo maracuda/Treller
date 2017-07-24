@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using TaskManagerClient.BusinessObjects.TaskManager;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService
+namespace WebApplication.Implementation.Services.BoardsService
 {
     public static class KanbanBoardTemplate
     {

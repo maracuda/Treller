@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using SKBKontur.Infrastructure.Sugar;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
+using Infrastructure.Sugar;
+using Logger;
+using TaskManagerClient;
+using WebApplication.Implementation.Services.News.Domain.Models;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Builders
+namespace WebApplication.Implementation.Services.News.Domain.Builders
 {
     public class OutdatedBoardCardBuilder : IOutdatedBoardCardBuilder
     {

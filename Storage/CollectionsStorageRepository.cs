@@ -1,8 +1,8 @@
 using System.Collections.Concurrent;
-using SKBKontur.Treller.Serialization;
-using SKBKontur.Treller.Storage.FileStorage;
+using Serialization;
+using Storage.FileStorage;
 
-namespace SKBKontur.Treller.Storage
+namespace Storage
 {
     public class CollectionsStorageRepository : ICollectionsStorageRepository
     {

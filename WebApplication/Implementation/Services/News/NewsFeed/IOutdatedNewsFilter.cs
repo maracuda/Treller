@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed
+namespace WebApplication.Implementation.Services.News.NewsFeed
 {
     public interface IOutdatedNewsFilter
     {

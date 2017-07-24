@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
+using TaskManagerClient.Repository.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient.Repository.Clients
+namespace TaskManagerClient.Repository.Clients
 {
     public interface IRepositoryClient
     {

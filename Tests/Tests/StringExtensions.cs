@@ -1,6 +1,6 @@
-﻿using SKBKontur.Treller.Serialization;
+﻿using Serialization;
 
-namespace SKBKontur.Treller.Tests.Tests
+namespace Tests.Tests
 {
     public static class StringExtensions
     {

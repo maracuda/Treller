@@ -1,7 +1,7 @@
 using System;
-using SKBKontur.TaskManagerClient.Repository;
+using TaskManagerClient.Repository;
 
-namespace SKBKontur.Treller.RepositoryHooks.BranchNotification
+namespace RepositoryHooks.BranchNotification
 {
     public class OldBranchesModelBuilder : IOldBranchesModelBuilder
     {

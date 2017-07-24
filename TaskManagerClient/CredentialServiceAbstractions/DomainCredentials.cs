@@ -1,4 +1,4 @@
-namespace SKBKontur.TaskManagerClient.CredentialServiceAbstractions
+namespace TaskManagerClient.CredentialServiceAbstractions
 {
     public class DomainCredentials
     {

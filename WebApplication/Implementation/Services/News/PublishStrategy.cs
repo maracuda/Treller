@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.Treller.WebApplication.Implementation.Services.News
+﻿namespace WebApplication.Implementation.Services.News
 {
     public enum PublishStrategy
     {

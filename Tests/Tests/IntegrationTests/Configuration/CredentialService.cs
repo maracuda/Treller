@@ -1,11 +1,11 @@
 using System.IO;
-using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
-using SKBKontur.Treller.Serialization;
-using SKBKontur.Treller.Storage;
+using Serialization;
+using Storage;
+using TaskManagerClient.CredentialServiceAbstractions;
+using TaskManagerClient.Repository.Clients.GitLab;
+using TaskManagerClient.Trello.BusinessObjects;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Configuration
+namespace Tests.Tests.IntegrationTests.Configuration
 {
     public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService
     {

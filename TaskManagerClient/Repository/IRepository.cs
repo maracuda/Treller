@@ -1,7 +1,7 @@
 ﻿using System;
-using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
+using TaskManagerClient.Repository.BusinessObjects;
 
-namespace SKBKontur.TaskManagerClient.Repository
+namespace TaskManagerClient.Repository
 {
     public interface IRepository
     {

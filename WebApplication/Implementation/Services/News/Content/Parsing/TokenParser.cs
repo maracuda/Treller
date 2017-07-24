@@ -1,4 +1,4 @@
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing
+namespace WebApplication.Implementation.Services.News.Content.Parsing
 {
     public class TokenParser : ITokenParser
     {

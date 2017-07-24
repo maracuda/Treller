@@ -4,7 +4,7 @@ using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Security;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces
+namespace WebApplication.Implementation.VirtualMachines.Runspaces
 {
     public class VirtualMachinesRunspacePool : IVirtualMachinesRunspacePool
     {

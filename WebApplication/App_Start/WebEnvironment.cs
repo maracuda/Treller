@@ -1,7 +1,7 @@
 ﻿using System.Web;
-using SKBKontur.Treller.Storage;
+using Storage;
 
-namespace SKBKontur.Treller.WebApplication
+namespace WebApplication
 {
     public class WebEnvironment : IEnvironment
     {

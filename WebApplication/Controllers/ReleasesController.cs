@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
-using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Releases;
+using Logger;
+using WebApplication.Implementation.Services.Releases;
 
-namespace SKBKontur.Treller.WebApplication.Controllers
+namespace WebApplication.Controllers
 {
     public class ReleasesController : ExceptionHandledController
     {

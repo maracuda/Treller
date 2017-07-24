@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
-using SKBKontur.Infrastructure.Common;
-using SKBKontur.Treller.Tests.Tests.IntegrationTests.Configuration;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Parsing;
+using Infrastructure.Common;
+using Tests.Tests.IntegrationTests.Configuration;
+using WebApplication.Implementation.Services.News.Content.Parsing;
 using Xunit;
-using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
+using Assert = Tests.UnitWrappers.Assert;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Import
+namespace Tests.Tests.UnitTests.News.Import
 {
     public class TextNewParserTest : UnitTest
     {

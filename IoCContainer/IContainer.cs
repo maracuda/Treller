@@ -1,6 +1,6 @@
 using System;
 
-namespace SKBKontur.Treller.IoCContainer
+namespace IoCContainer
 {
     public interface IContainer
     {

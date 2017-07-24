@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using React;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Extensions
+namespace WebApplication.Implementation.Infrastructure.Extensions
 {
     public static class ReactConfigurationExtensions
     {

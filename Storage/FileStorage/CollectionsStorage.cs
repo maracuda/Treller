@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using SKBKontur.Treller.Serialization;
+using Serialization;
 
-namespace SKBKontur.Treller.Storage.FileStorage
+namespace Storage.FileStorage
 {
     public class CollectionsStorage<T> : ICollectionsStorage<T>
     {

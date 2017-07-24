@@ -1,6 +1,6 @@
-using SKBKontur.Treller.OperationalService.Operations;
+using OperationalService.Operations;
 
-namespace SKBKontur.Treller.OperationalService.Launcher
+namespace OperationalService.Launcher
 {
     public interface IOperationsLauncher
     {

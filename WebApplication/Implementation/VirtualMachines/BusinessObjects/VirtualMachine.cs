@@ -1,4 +1,4 @@
-namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects
+namespace WebApplication.Implementation.VirtualMachines.BusinessObjects
 {
     public class VirtualMachine
     {

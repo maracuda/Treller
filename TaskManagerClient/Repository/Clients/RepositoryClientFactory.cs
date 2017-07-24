@@ -1,7 +1,7 @@
-﻿using SKBKontur.HttpInfrastructure.Clients;
-using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
+﻿using HttpInfrastructure.Clients;
+using TaskManagerClient.Repository.Clients.GitLab;
 
-namespace SKBKontur.TaskManagerClient.Repository.Clients
+namespace TaskManagerClient.Repository.Clients
 {
     public class RepositoryClientFactory : IRepositoryClientFactory
     {

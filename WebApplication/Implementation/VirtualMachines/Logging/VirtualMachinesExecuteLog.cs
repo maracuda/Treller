@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SKBKontur.Treller.Storage;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
+using Storage;
+using WebApplication.Implementation.VirtualMachines.BusinessObjects;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Logging
+namespace WebApplication.Implementation.VirtualMachines.Logging
 {
     public class VirtualMachinesExecuteLog : IVirtualMachinesExecuteLog
     {

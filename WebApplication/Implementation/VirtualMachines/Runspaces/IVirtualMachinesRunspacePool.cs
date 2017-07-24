@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Management.Automation.Runspaces;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces
+namespace WebApplication.Implementation.VirtualMachines.Runspaces
 {
     public interface IVirtualMachinesRunspacePool : IDisposable
     {

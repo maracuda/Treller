@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SKBKontur.Treller.Logger
+namespace Logger
 {
     public class ErrorEventArgs : EventArgs
     {

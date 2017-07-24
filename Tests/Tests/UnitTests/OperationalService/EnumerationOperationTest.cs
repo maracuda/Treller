@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
+using OperationalService.Operations;
 using Rhino.Mocks;
-using SKBKontur.Treller.OperationalService.Operations;
-using SKBKontur.Treller.Storage;
-using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
+using Storage;
+using Xunit;
+using Assert = Tests.UnitWrappers.Assert;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
+namespace Tests.Tests.UnitTests.OperationalService
 {
     public class EnumerationOperationTest : UnitTest
     {

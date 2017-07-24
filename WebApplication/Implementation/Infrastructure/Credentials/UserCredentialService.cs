@@ -1,12 +1,12 @@
 using System;
-using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.Repository.Clients.GitLab;
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects;
-using SKBKontur.TaskManagerClient.Wiki.BusinessObjects;
-using SKBKontur.TaskManagerClient.Youtrack.BusinessObjects;
-using SKBKontur.Treller.Storage;
+using Storage;
+using TaskManagerClient.CredentialServiceAbstractions;
+using TaskManagerClient.Repository.Clients.GitLab;
+using TaskManagerClient.Trello.BusinessObjects;
+using TaskManagerClient.Wiki.BusinessObjects;
+using TaskManagerClient.Youtrack.BusinessObjects;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials
+namespace WebApplication.Implementation.Infrastructure.Credentials
 {
     public class UserCredentialService : ICredentialService
     {

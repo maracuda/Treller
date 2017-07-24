@@ -1,7 +1,7 @@
 using System;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
+using TaskManagerClient.BusinessObjects.TaskManager;
 
-namespace SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions
+namespace TaskManagerClient.Trello.BusinessObjects.Actions
 {
     public class Action
     {

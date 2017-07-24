@@ -1,5 +1,5 @@
 ﻿
-namespace SKBKontur.Treller.Storage.FileStorage
+namespace Storage.FileStorage
 {
     public interface IFileSystemHandler
     {

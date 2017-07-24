@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
+using TaskManagerClient;
+using WebApplication.Implementation.Services.BoardsService;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content.Sources
+namespace WebApplication.Implementation.Services.News.Content.Sources
 {
     public class OnlineContentSourceCollector : IContentSourceCollector
     {

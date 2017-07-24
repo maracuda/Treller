@@ -1,6 +1,6 @@
-﻿using SKBKontur.Treller.Logger;
+﻿using Logger;
 
-namespace SkbKontur.Treller.ProcessStats.Dev
+namespace ProcessStats.Dev
 {
     public class KanbanStats : IKanbanStats
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
+using WebApplication.Implementation.Services.News;
+using WebApplication.Implementation.Services.News.Storage;
 using Xunit;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Storage;
-using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
+using Assert = Tests.UnitWrappers.Assert;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.News
+namespace Tests.Tests.IntegrationTests.News
 {
     public class TaskNewsStorageTest : IntegrationTest
     {

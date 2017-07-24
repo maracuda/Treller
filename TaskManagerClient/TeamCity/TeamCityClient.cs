@@ -1,6 +1,6 @@
-﻿using SKBKontur.TaskManagerClient.BusinessObjects.ContinuousIntegration;
+﻿using TaskManagerClient.BusinessObjects.ContinuousIntegration;
 
-namespace SKBKontur.TaskManagerClient.TeamCity
+namespace TaskManagerClient.TeamCity
 {
     public class TeamCityClient : IContinuousIntegrationClient
     {

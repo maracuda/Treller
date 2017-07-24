@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SKBKontur.HttpInfrastructure.Clients;
-using SKBKontur.TaskManagerClient.BusinessObjects.TaskManager;
-using SKBKontur.TaskManagerClient.CredentialServiceAbstractions;
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Boards;
-using SKBKontur.TaskManagerClient.Trello.BusinessObjects.Cards;
-using Action = SKBKontur.TaskManagerClient.Trello.BusinessObjects.Actions.Action;
-using Board = SKBKontur.TaskManagerClient.BusinessObjects.TaskManager.Board;
-using BoardList = SKBKontur.TaskManagerClient.BusinessObjects.TaskManager.BoardList;
-using SKBKontur.TaskManagerClient.Extensions;
+using HttpInfrastructure.Clients;
+using TaskManagerClient.BusinessObjects.TaskManager;
+using TaskManagerClient.CredentialServiceAbstractions;
+using TaskManagerClient.Extensions;
+using TaskManagerClient.Trello.BusinessObjects.Boards;
+using TaskManagerClient.Trello.BusinessObjects.Cards;
+using Action = TaskManagerClient.Trello.BusinessObjects.Actions.Action;
+using Board = TaskManagerClient.BusinessObjects.TaskManager.Board;
+using BoardList = TaskManagerClient.BusinessObjects.TaskManager.BoardList;
 
-namespace SKBKontur.TaskManagerClient.Trello
+namespace TaskManagerClient.Trello
 {
     public class TrelloClient : ITaskManagerClient
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SKBKontur.Infrastructure.Sugar;
-using SKBKontur.TaskManagerClient;
-using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
+using Infrastructure.Sugar;
+using TaskManagerClient;
+using WebApplication.Implementation.Services.BoardsService;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Reporters
+namespace WebApplication.Implementation.Services.News.Reporters
 {
     public class TaskManagerReporter : IReporter
     {

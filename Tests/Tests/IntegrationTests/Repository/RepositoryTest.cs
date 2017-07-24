@@ -1,8 +1,8 @@
 ﻿using System;
+using TaskManagerClient.Repository;
 using Xunit;
-using SKBKontur.TaskManagerClient.Repository;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
+namespace Tests.Tests.IntegrationTests.Repository
 {
     public class RepositoryTest : IntegrationTest
     {

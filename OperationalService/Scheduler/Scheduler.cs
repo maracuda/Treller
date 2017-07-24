@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Concurrent;
-using SKBKontur.Treller.OperationalService.OperationsLog;
+using OperationalService.OperationsLog;
 
-namespace SKBKontur.Treller.OperationalService.Scheduler
+namespace OperationalService.Scheduler
 {
     public class Scheduler : IScheduler
     {

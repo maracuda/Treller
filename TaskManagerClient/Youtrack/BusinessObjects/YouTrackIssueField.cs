@@ -1,4 +1,4 @@
-﻿namespace SKBKontur.TaskManagerClient.Youtrack.BusinessObjects
+﻿namespace TaskManagerClient.Youtrack.BusinessObjects
 {
     public class YouTrackIssueField
     {

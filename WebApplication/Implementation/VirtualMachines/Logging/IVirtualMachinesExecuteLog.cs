@@ -1,7 +1,7 @@
 using System;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.BusinessObjects;
+using WebApplication.Implementation.VirtualMachines.BusinessObjects;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Logging
+namespace WebApplication.Implementation.VirtualMachines.Logging
 {
     public interface IVirtualMachinesExecuteLog
     {

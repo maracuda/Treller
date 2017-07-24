@@ -1,7 +1,7 @@
 ﻿using System;
-using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
+using WebApplication.Implementation.Services.BoardsService;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models
+namespace WebApplication.Implementation.Services.News.Domain.Models
 {
     public class OutdatedBoardCardModel
     {

@@ -6,7 +6,7 @@ using log4net.Core;
 using log4net.Layout;
 using log4net.Repository.Hierarchy;
 
-namespace SKBKontur.Treller.Logger.Log4Net
+namespace Logger.Log4Net
 {
     public class Log4NetLoggerFactory : ILoggerFactory
     {

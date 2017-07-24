@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Text;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using System.Web;
-using SKBKontur.Treller.IoCContainer;
-using SKBKontur.Treller.Logger;
-using SKBKontur.Treller.MessageBroker;
-using SKBKontur.Treller.OperationalService;
-using SKBKontur.Treller.OperationalService.Operations;
-using SKBKontur.Treller.RepositoryHooks.BranchNotification;
-using SKBKontur.Treller.WebApplication.Implementation.Infrastructure.Credentials;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.NewsFeed;
-using SKBKontur.Treller.WebApplication.Implementation.VirtualMachines.Runspaces;
+using IoCContainer;
+using Logger;
+using MessageBroker;
+using OperationalService;
+using OperationalService.Operations;
+using RepositoryHooks.BranchNotification;
+using WebApplication.Implementation.Infrastructure.Credentials;
+using WebApplication.Implementation.Services.News;
+using WebApplication.Implementation.Services.News.NewsFeed;
+using WebApplication.Implementation.VirtualMachines.Runspaces;
 
-namespace SKBKontur.Treller.WebApplication
+namespace WebApplication
 {
     public class MvcApplication : HttpApplication
     {

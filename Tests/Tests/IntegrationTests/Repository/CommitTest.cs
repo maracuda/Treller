@@ -1,9 +1,9 @@
-﻿using Xunit;
-using SKBKontur.TaskManagerClient.Repository.BusinessObjects;
-using SKBKontur.Treller.Tests.Tests.UnitTests;
-using Assert = SKBKontur.Treller.Tests.UnitWrappers.Assert;
+﻿using TaskManagerClient.Repository.BusinessObjects;
+using Tests.Tests.UnitTests;
+using Xunit;
+using Assert = Tests.UnitWrappers.Assert;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Repository
+namespace Tests.Tests.IntegrationTests.Repository
 {
     public class CommitTest : UnitTest
     {

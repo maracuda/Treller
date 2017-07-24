@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using SKBKontur.Treller.WebApplication.Implementation.Services.Releases;
+using WebApplication.Implementation.Services.Releases;
 using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.IntegrationTests.Storages
+namespace Tests.Tests.IntegrationTests.Storages
 {
     public class KeyValueStorageTest : IntegrationTest
     {

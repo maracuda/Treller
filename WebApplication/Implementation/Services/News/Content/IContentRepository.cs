@@ -1,8 +1,8 @@
 using System;
-using SKBKontur.Infrastructure.Sugar;
-using SKBKontur.Treller.Storage;
+using Infrastructure.Sugar;
+using Storage;
 
-namespace SKBKontur.Treller.WebApplication.Implementation.Services.News.Content
+namespace WebApplication.Implementation.Services.News.Content
 {
     public interface IContentRepository
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using SKBKontur.Treller.OperationalService.Operations;
+using OperationalService.Operations;
 using Xunit;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.OperationalService
+namespace Tests.Tests.UnitTests.OperationalService
 {
     public class SimpleOperationTest : UnitTest
     {

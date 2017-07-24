@@ -1,9 +1,9 @@
 ﻿using System;
+using WebApplication.Implementation.Services.BoardsService;
+using WebApplication.Implementation.Services.News.Domain.Models;
 using Xunit;
-using SKBKontur.Treller.WebApplication.Implementation.Services.BoardsService;
-using SKBKontur.Treller.WebApplication.Implementation.Services.News.Domain.Models;
 
-namespace SKBKontur.Treller.Tests.Tests.UnitTests.News.Domain.Models
+namespace Tests.Tests.UnitTests.News.Domain.Models
 {
     public class AgingBoardCardModelTest : UnitTest
     {
