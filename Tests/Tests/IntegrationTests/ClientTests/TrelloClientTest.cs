@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TaskManagerClient;
+using TaskManagerClient.BusinessObjects.TaskManager;
 using Xunit;
 using Assert = Tests.UnitWrappers.Assert;
 
@@ -81,8 +82,10 @@ namespace Tests.Tests.IntegrationTests.ClientTests
         [Fact]
         public void ItCanLoadOnlyCardUpdateActions()
         {
-            var actions = trelloClient.GetCardUpdateActions("9JRBHBaL");
+            var actions = trelloClient.GetCardUpdateActions("HVOEKgf7");
             Assert.True(actions.Length > 0);
+            Assert.AreEqual(actions.Count(a => a.Type == ActionType.CreateCard), 1);
+            Assert.True(actions.Count(a => a.Type == ActionType.UpdateCard) > 0);
         }
 
         [Fact]

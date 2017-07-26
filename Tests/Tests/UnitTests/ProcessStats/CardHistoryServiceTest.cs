@@ -11,15 +11,13 @@ namespace Tests.Tests.UnitTests.ProcessStats
     public class CardHistoryServiceTest :  UnitTest
     {
         private readonly ITaskManagerClient taskMamanagerClient;
-        private readonly IDevelopingProcessStageParser developingProcessStageParser;
         private readonly CardHistoryService cardHistoryService;
 
         public CardHistoryServiceTest()
         {
             taskMamanagerClient = mockRepository.Create<ITaskManagerClient>();
-            developingProcessStageParser = mockRepository.Create<IDevelopingProcessStageParser>();
 
-            cardHistoryService = new CardHistoryService(taskMamanagerClient, developingProcessStageParser);
+            cardHistoryService = new CardHistoryService(taskMamanagerClient);
         }
 
         [Fact]
@@ -43,20 +41,18 @@ namespace Tests.Tests.UnitTests.ProcessStats
         public void ServiceCorrectlyBuildSingleMovement()
         {
             var actionDate = DateTime.Now;
-            var action = new CardAction { FromList = new ActionList { Name = "fromList"}, ToList = new ActionList { Name = "toList"}, Date = actionDate};
+            var action = new CardAction { FromList = new ActionList { Id = "id1", Name = "fromList"}, ToList = new ActionList { Id = "Id2", Name = "toList"}, Date = actionDate};
             var cardId = DataGenerator.GenEnglishString(10);
 
             using (mockRepository.Record())
             {
                 taskMamanagerClient.Expect(f => f.GetCardUpdateActions(cardId)).Return(new[] { action });
-                developingProcessStageParser.Expect(f => f.TryParse("fromList")).Return(DevelopingProcessStage.Analyzing);
-                developingProcessStageParser.Expect(f => f.TryParse("toList")).Return(DevelopingProcessStage.Developing);
             }
 
             var actual = cardHistoryService.Get(cardId);
             Assert.Equal(1, actual.Movements.Length);
-            Assert.Equal(DevelopingProcessStage.Analyzing, actual.Movements[0].From);
-            Assert.Equal(DevelopingProcessStage.Developing, actual.Movements[0].To);
+            Assert.Equal("id1", actual.Movements[0].FromListId);
+            Assert.Equal("id2", actual.Movements[0].ToListId);
             Assert.Equal(actionDate, actual.Movements[0].Date);
         }
 
@@ -72,8 +68,6 @@ namespace Tests.Tests.UnitTests.ProcessStats
             using (mockRepository.Record())
             {
                 taskMamanagerClient.Expect(f => f.GetCardUpdateActions(cardId)).Return(new[] { firstAction, secondAction });
-                developingProcessStageParser.Stub(f => f.TryParse("fromList")).Return(DevelopingProcessStage.Analyzing);
-                developingProcessStageParser.Stub(f => f.TryParse("toList")).Return(DevelopingProcessStage.Developing);
             }
 
             var actual = cardHistoryService.Get(cardId);

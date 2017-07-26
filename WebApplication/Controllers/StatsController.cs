@@ -6,19 +6,19 @@ namespace WebApplication.Controllers
 {
     public class StatsController : ExceptionHandledController
     {
-        private readonly IKanbanStats kanbanStats;
+        private readonly ICardStatsBuilder cardStatsBuilder;
 
         public StatsController(
-            IKanbanStats kanbanStats,
+            ICardStatsBuilder cardStatsBuilder,
             ILoggerFactory loggerFactory) : base(loggerFactory)
         {
-            this.kanbanStats = kanbanStats;
+            this.cardStatsBuilder = cardStatsBuilder;
         }
 
         [HttpGet]
         public ActionResult Index(string taskId)
         {
-            var statsModel = kanbanStats.Build(taskId);
+            var statsModel = cardStatsBuilder.Build(taskId);
             return View("Index", statsModel);
         }
     }

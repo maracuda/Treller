@@ -133,7 +133,7 @@ namespace TaskManagerClient.Trello
             return Read<Action[]>($"cards/{cardId}/actions",
                     new Dictionary<string, string>
                     {
-                        {"filter", "updateCard"},
+                        {"filter", "updateCard,createCard"},
                         {"limit", "1000"}
                     })
                 .Select(CardAction.ConvertFrom)

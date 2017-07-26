@@ -1,6 +1,6 @@
 ﻿namespace ProcessStats.Dev
 {
-    public interface IKanbanStats
+    public interface ICardStatsBuilder
     {
         CardStatsModel Build(string cardId);
     }

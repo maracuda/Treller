@@ -7,14 +7,10 @@ namespace ProcessStats.Dev
     public class CardHistoryService : ICardHistoryService
     {
         private readonly ITaskManagerClient taskManagerClient;
-        private readonly IDevelopingProcessStageParser developingProcessStageParser;
 
-        public CardHistoryService(
-            ITaskManagerClient taskManagerClient,
-            IDevelopingProcessStageParser developingProcessStageParser)
+        public CardHistoryService(ITaskManagerClient taskManagerClient)
         {
             this.taskManagerClient = taskManagerClient;
-            this.developingProcessStageParser = developingProcessStageParser;
         }
 
         public CardHistory Get(string cardId)
@@ -24,18 +20,18 @@ namespace ProcessStats.Dev
                 .Select(BuildMovement)
                 .OrderBy(x => x.Date)
                 .ToArray();
+            var createAction = updateActions.FirstOrDefault(a => a.Type == ActionType.CreateCard);
 
             return new CardHistory
             {
-                Movements = movements
+                Movements = movements,
+                CreateDate = createAction?.Date
             };
         }
 
-        private CardMovement BuildMovement(CardAction action)
+        private static CardMovement BuildMovement(CardAction action)
         {
-            var from = developingProcessStageParser.TryParse(action.FromList.Name);
-            var to = developingProcessStageParser.TryParse(action.ToList.Name);
-            return CardMovement.Create(from, to, action.Date);
+            return CardMovement.Create(action.FromList.Id, action.FromList.Name, action.ToList.Id, action.ToList.Name, action.Date);
         }
     }
 }

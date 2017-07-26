@@ -6,16 +6,20 @@ namespace ProcessStats.Dev
     {
         private CardMovement() { }
 
-        public DevelopingProcessStage From { get; private set; }
-        public DevelopingProcessStage To { get; private set; }
+        public string FromListId { get; private set; }
+        public string FromListName { get; private set; }
+        public string ToListId { get; private set; }
+        public string ToListName { get; private set; }
         public DateTime Date { get; private set; }
 
-        public static CardMovement Create(DevelopingProcessStage from, DevelopingProcessStage to, DateTime date)
+        public static CardMovement Create(string fromListId, string fromListName, string toListId, string toListName, DateTime date)
         {
             return new CardMovement
             {
-                From = from,
-                To = to,
+                FromListId = fromListId,
+                FromListName = fromListName,
+                ToListId = toListId,
+                ToListName = toListName,
                 Date = date
             };
         }
