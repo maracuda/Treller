@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,19 +19,23 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
         }
 
         [Fact]
-        public void ReportBuildsSomething()
+        public void BuildReportForBillingDeliveryBoard()
         {
             const string billingDeliveredBoardId = "58d22275df59d0815216e1f0";
-            var result = reportBuilder.BuildDetalization(billingDeliveredBoardId);
+            var detalization = reportBuilder.BuildDetalization(billingDeliveredBoardId);
             var lists = container.Get<ITaskManagerClient>().GetBoardLists(billingDeliveredBoardId);
             var listNames = lists.Select(l => l.Name).ToArray();
             var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
-            WriteStatsToFile(result, listNames, listNameToIdIndex);
+            WriteAggregationStatsToFile("fullStatsReport", detalization, listNames, listNameToIdIndex);
+            WriteAggregationStatsToFile($"statsBy{TaskQueuesKnownLabels.ProductQueueLabel.Name}Report", detalization.FilterBy(TaskQueuesKnownLabels.ProductQueueLabel), listNames, listNameToIdIndex);
+            WriteAggregationStatsToFile($"statsBy{TaskQueuesKnownLabels.CrmQueueLabel.Name}Report", detalization.FilterBy(TaskQueuesKnownLabels.CrmQueueLabel), listNames, listNameToIdIndex);
+            WriteAggregationStatsToFile($"statsBy{TaskQueuesKnownLabels.InfrastructureQueueLabel.Name}Report", detalization.FilterBy(TaskQueuesKnownLabels.InfrastructureQueueLabel), listNames, listNameToIdIndex);
+            WriteAggregationStatsToFile($"statsBy{TaskQueuesKnownLabels.SupportQueueLabel.Name}Report", detalization.FilterBy(TaskQueuesKnownLabels.SupportQueueLabel), listNames, listNameToIdIndex);
         }
 
-        private static void WriteStatsToFile(CardsAggregationStatsModel cardsAggregationStats, string[] listNames, Dictionary<string, string> listNameToIdIndex)
+        private static void WriteAggregationStatsToFile(string reportName, CardsAggregationStatsModel cardsAggregationStats, string[] listNames, Dictionary<string, string> listNameToIdIndex)
         {
-            const string reportPath = "statsDetalizationReport.csv";
+            var reportPath = $"{reportName}.csv";
             if (File.Exists(reportPath))
             {
                 File.Delete(reportPath);
@@ -43,26 +48,38 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
                 WriteCardStats(strBuilder, cardStats, listNames, listNameToIdIndex);
             }
             strBuilder.AppendLine(string.Empty);
-            WriteAgregationStats(strBuilder, cardsAggregationStats);
+            strBuilder.AppendLine("Full aggregation stats;");
+            WriteAgregationStats(strBuilder, cardsAggregationStats.FullAggregationStats);
+            strBuilder.AppendLine("S tasks aggregation stats;");
+            WriteAgregationStats(strBuilder, cardsAggregationStats.SAggregationStats);
+            strBuilder.AppendLine("M tasks aggregation stats;");
+            WriteAgregationStats(strBuilder, cardsAggregationStats.MAggregationStats);
+            strBuilder.AppendLine("L tasks aggregation stats;");
+            WriteAgregationStats(strBuilder, cardsAggregationStats.LAggregationStats);
+            strBuilder.AppendLine("XL tasks aggregation stats;");
+            WriteAgregationStats(strBuilder, cardsAggregationStats.XLAggregationStats);
             File.WriteAllText(reportPath, strBuilder.ToString());
         }
 
-        private static void WriteAgregationStats(StringBuilder strBuilder, CardsAggregationStatsModel cardsAggregationStats)
+        private static void WriteAgregationStats(StringBuilder strBuilder, AggregationTimeStats cardsAggregationStats)
         {
-            strBuilder.AppendLine($"Average cycle time;{cardsAggregationStats.AverageCycleTime};");
-            strBuilder.AppendLine($"Longest cycle time;{cardsAggregationStats.LongestCycleCardStats.CycleTime}, cardName {cardsAggregationStats.LongestCycleCardStats.CardName};");
-            strBuilder.AppendLine($"Shortest cycle time;{cardsAggregationStats.ShortestCycleCardStats.CycleTime}, cardName {cardsAggregationStats.ShortestCycleCardStats.CardName};");
+            if (cardsAggregationStats.AreEmpty())
+                return;
+
+            strBuilder.AppendLine($"Average cycle time;{FormatTimeSpan(cardsAggregationStats.AverageTime)}");
+            strBuilder.AppendLine($"Longest cycle time;{FormatTimeSpan(cardsAggregationStats.LongestTimeCard.CycleTime)}, cardName {cardsAggregationStats.LongestTimeCard.Name};");
+            strBuilder.AppendLine($"Shortest cycle time;{FormatTimeSpan(cardsAggregationStats.ShortestTimeCard.CycleTime)}, cardName {cardsAggregationStats.ShortestTimeCard.Name};");
         }
 
         private static void WriteCardStats(StringBuilder strBuilder, CardStatsModel cardStats, string[] listNames, Dictionary<string, string> listNameToIdIndex)
         {
-            strBuilder.Append($"{cardStats.CardName};{cardStats.CycleTime};");
+            strBuilder.Append($"{cardStats.Name};{cardStats.Size};{FormatTimeSpan(cardStats.CycleTime)};");
             foreach (var listName in listNames)
             {
                 var listId = listNameToIdIndex[listName];
                 if (cardStats.ListStats.ContainsKey(listId))
                 {
-                    strBuilder.Append($"{cardStats.ListStats[listId]}");
+                    strBuilder.Append($"{FormatTimeSpan(cardStats.ListStats[listId])}");
                 }
                 strBuilder.Append(";");
             }
@@ -71,12 +88,17 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
 
         private static void WriteReportHeader(StringBuilder strBuilder, string[] listNames)
         {
-            strBuilder.Append("CardName;CycleTime;");
+            strBuilder.Append("Name;Size;CycleTime;");
             foreach (var listName in listNames)
             {
                 strBuilder.Append($"{listName};");
             }
             strBuilder.AppendLine();
+        }
+
+        private static string FormatTimeSpan(TimeSpan timeSpan)
+        {
+            return $"{timeSpan.Days}";
         }
     }
 }

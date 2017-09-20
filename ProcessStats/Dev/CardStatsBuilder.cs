@@ -28,9 +28,11 @@ namespace ProcessStats.Dev
             var card = taskManagerClient.GetCard(cardId);
             var result = new CardStatsModel
             {
-                CardId = cardId,
-                CardName = card.Name
+                Id = cardId,
+                Name = card.Name
             };
+
+            result.SetLabels(card.Labels);
 
             if (cardHistory.Movements.Length <= 1)
             {
