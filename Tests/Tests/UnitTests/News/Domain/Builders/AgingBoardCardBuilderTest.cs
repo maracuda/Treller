@@ -82,11 +82,7 @@ namespace Tests.Tests.UnitTests.News.Domain.Builders
                 IsArchived = true,
                 LastActivity = lastActivity
             };
-            var boardList = new BoardList
-            {
-                Id = boardListId,
-                Name = listName
-            };
+            var boardList = new BoardList(boardListId, null, listName);
 
             using (mockRepository.Record())
             {

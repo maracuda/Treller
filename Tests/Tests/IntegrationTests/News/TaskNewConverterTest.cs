@@ -23,20 +23,16 @@ namespace Tests.Tests.IntegrationTests.News
         [InlineData(cardDesciptionWithEmptyNewText, 1)]
         public void TestConvert(string description, int expectedReportsCount)
         {
-            var boardList = new BoardList
+            var boardList = new BoardList(null, "someboard", null, new[]
             {
-                BoardId = "someboard",
-                Cards = new[]
+                new BoardListCardInfo
                 {
-                    new BoardListCardInfo
-                    {
-                        Id = "cardId",
-                        Name = "Some task",
-                        Desc = description,
-                        Due = DateTime.Now
-                    }
+                    Id = "cardId",
+                    Name = "Some task",
+                    Desc = description,
+                    Due = DateTime.Now
                 }
-            };
+            });
             var actuals = taskNewConverter.Convert(boardList);
             Assert.Equal(1, actuals.Count);
             Assert.Equal(expectedReportsCount, actuals.First().Reports.Length);

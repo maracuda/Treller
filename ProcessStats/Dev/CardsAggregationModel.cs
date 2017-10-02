@@ -5,9 +5,9 @@ using TaskManagerClient.BusinessObjects.TaskManager;
 
 namespace ProcessStats.Dev
 {
-    public class CardsAggregationStatsModel
+    public class CardsAggregationModel
     {
-        private CardsAggregationStatsModel() { }
+        private CardsAggregationModel() { }
 
         public CardStatsModel[] CardsStats { get; private set; }
         public AggregationTimeStats FullAggregationStats { get; private set; }
@@ -16,15 +16,15 @@ namespace ProcessStats.Dev
         public AggregationTimeStats LAggregationStats { get; private set; }
         public AggregationTimeStats XLAggregationStats { get; private set; }
 
-        public CardsAggregationStatsModel FilterBy(CardLabel label)
+        public CardsAggregationModel FilterBy(CardLabel label)
         {
             return Create(CardsStats.Where(c => c.HasLabel(label)).ToArray());
         }
 
-        public static CardsAggregationStatsModel Create(CardStatsModel[] cardStats)
+        public static CardsAggregationModel Create(CardStatsModel[] cardStats)
         {
             var filteredCardStats = cardStats.Where(c => c.CycleTime.Ticks > 0).OrderBy(c => c.Size).ToArray();
-            return new CardsAggregationStatsModel
+            return new CardsAggregationModel
             {
                 CardsStats = filteredCardStats,
                 FullAggregationStats = AggregationTimeStats.Create(filteredCardStats),
