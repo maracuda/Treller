@@ -22,7 +22,9 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
         public void BuildReportForBillingDeliveryBoard()
         {
             const string billingDeliveredBoardId = "58d22275df59d0815216e1f0";
-            var detalization = reportBuilder.BuildDetalization(billingDeliveredBoardId);
+            const string waitForFeedbackListId = "58d2295834d4e5619d71d008";
+            const string doneListId = "58d2296edeed2d3c3e25acdd";
+            var detalization = reportBuilder.BuildDetalization(billingDeliveredBoardId, doneListId, waitForFeedbackListId);
             var lists = container.Get<ITaskManagerClient>().GetBoardLists(billingDeliveredBoardId);
             var listNames = lists.Select(l => l.Name).ToArray();
             var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
@@ -31,6 +33,20 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
             WriteAggregationStatsToFile($"statsBy{TaskQueuesKnownLabels.CrmQueueLabel.Name}Report", detalization.FilterBy(TaskQueuesKnownLabels.CrmQueueLabel), listNames, listNameToIdIndex);
             WriteAggregationStatsToFile($"statsBy{TaskQueuesKnownLabels.InfrastructureQueueLabel.Name}Report", detalization.FilterBy(TaskQueuesKnownLabels.InfrastructureQueueLabel), listNames, listNameToIdIndex);
             WriteAggregationStatsToFile($"statsBy{TaskQueuesKnownLabels.SupportQueueLabel.Name}Report", detalization.FilterBy(TaskQueuesKnownLabels.SupportQueueLabel), listNames, listNameToIdIndex);
+        }
+
+        [Theory]
+        [InlineData("motocycle", "58874dd11d04205448b0435d", "58875668c6677244cf4ccd03")]
+        [InlineData("portalAuth", "5976f7264ba9e718190cc5d0", "5976f74a5e8b7544b1fc0738")]
+        [InlineData("market", "595b48916ed422e278c6c9f8", "595b48ae0cf6ee288bcba874")]
+        [InlineData("discounts", "59ad172066c11f4cccf3e894", "59ad1c5344878b519796fa37")]
+        public void BuildReportForDirectionBoards(string boardName, string boardId, string doneListId)
+        {
+            var lists = container.Get<ITaskManagerClient>().GetBoardLists(boardId);
+            var listNames = lists.Select(l => l.Name).ToArray();
+            var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
+            var detalization = reportBuilder.BuildDetalization(boardId, doneListId);
+            WriteAggregationStatsToFile($"{boardName}StatsReport", detalization, listNames, listNameToIdIndex);
         }
 
         private static void WriteAggregationStatsToFile(string reportName, CardsAggregationStatsModel cardsAggregationStats, string[] listNames, Dictionary<string, string> listNameToIdIndex)
@@ -58,7 +74,8 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
             WriteAgregationStats(strBuilder, cardsAggregationStats.LAggregationStats);
             strBuilder.AppendLine("XL tasks aggregation stats;");
             WriteAgregationStats(strBuilder, cardsAggregationStats.XLAggregationStats);
-            File.WriteAllText(reportPath, strBuilder.ToString());
+            File.WriteAllBytes(reportPath, Encoding.GetEncoding("windows-1251").GetBytes(strBuilder.ToString()));
+            //File.WriteAllText(reportPath, strBuilder.ToString());
         }
 
         private static void WriteAgregationStats(StringBuilder strBuilder, AggregationTimeStats cardsAggregationStats)

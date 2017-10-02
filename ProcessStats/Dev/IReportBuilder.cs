@@ -2,6 +2,6 @@
 {
     public interface IReportBuilder
     {
-        CardsAggregationStatsModel BuildDetalization(string boardId);
+        CardsAggregationStatsModel BuildDetalization(string boardId, string doneListId, string additionalDoneListId = null);
     }
 }

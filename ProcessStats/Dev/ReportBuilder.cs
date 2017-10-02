@@ -16,11 +16,9 @@ namespace ProcessStats.Dev
             this.cardStatsBuilder = cardStatsBuilder;
         }
 
-        public CardsAggregationStatsModel BuildDetalization(string boardId)
+        public CardsAggregationStatsModel BuildDetalization(string boardId, string doneListId, string additionalDoneListId = null)
         {
-            const string waitForFeedbackListId = "58d2295834d4e5619d71d008";
-            const string doneListId = "58d2296edeed2d3c3e25acdd";
-            var cardIds = taskManagerClient.GetBoardLists(boardId).Where(x => x.Id.Equals(waitForFeedbackListId) || x.Id.Equals(doneListId))
+            var cardIds = taskManagerClient.GetBoardLists(boardId).Where(x => x.Id.Equals(doneListId) || (additionalDoneListId != null && x.Id.Equals(additionalDoneListId)))
                                            .Select(l => l.Cards.Select(c => c.Id))
                                            .SelectMany(i => i)
                                            .ToArray();
