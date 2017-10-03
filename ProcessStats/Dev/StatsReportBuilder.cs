@@ -9,6 +9,7 @@ namespace ProcessStats.Dev
 {
     public class StatsReportBuilder : IStatsReportBuilder
     {
+        private static readonly Encoding defaultReportEncoding = Encoding.GetEncoding("windows-1251");
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardsAggregator cardsAggregator;
 
@@ -29,11 +30,11 @@ namespace ProcessStats.Dev
 
             var reportsList = new List<ReportModel>
             {
-                new ReportModel("full", Build(aggregation, listNames, listNameToIdIndex)),
-                new ReportModel("product", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("crm", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("infractructure", Build(aggregation.FilterBy(KnownTaskQueuesLabels.InfrastructureQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("support", Build(aggregation.FilterBy(KnownTaskQueuesLabels.SupportQueueLabel), listNames, listNameToIdIndex))
+                new ReportModel("full.csv", Build(aggregation, listNames, listNameToIdIndex)),
+                new ReportModel("product.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("crm.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("infractructure.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.InfrastructureQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("support.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.SupportQueueLabel), listNames, listNameToIdIndex))
             };
             return reportsList.ToArray();
         }
@@ -45,10 +46,10 @@ namespace ProcessStats.Dev
             var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
             var aggregation = cardsAggregator.Aggregate(doneList);
             var content = Build(aggregation, listNames, listNameToIdIndex);
-            return new ReportModel(doneList.BoardId, content);
+            return new ReportModel($"{doneList.BoardId}.csv", content);
         }
 
-        private static string Build(CardsAggregationModel cardsAggregation, string[] listNames, Dictionary<string, string> listNameToIdIndex)
+        private static byte[] Build(CardsAggregationModel cardsAggregation, string[] listNames, Dictionary<string, string> listNameToIdIndex)
         {
             var strBuilder = new StringBuilder();
             AppendReportHeader(strBuilder, listNames);
@@ -67,7 +68,7 @@ namespace ProcessStats.Dev
             AppendAgregationStats(strBuilder, cardsAggregation.LAggregationStats);
             strBuilder.AppendLine("XL tasks aggregation stats;");
             AppendAgregationStats(strBuilder, cardsAggregation.XLAggregationStats);
-            return strBuilder.ToString();
+            return defaultReportEncoding.GetBytes(strBuilder.ToString());
         }
 
         private static void AppendAgregationStats(StringBuilder strBuilder, AggregationTimeStats cardsAggregationStats)

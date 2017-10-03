@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text;
 using ProcessStats.Dev;
 using Xunit;
 
@@ -25,7 +24,7 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
                 {
                     File.Delete(reportPath);
                 }
-                File.WriteAllBytes(reportPath, Encoding.GetEncoding("windows-1251").GetBytes(reportModel.Content));
+                File.WriteAllBytes(reportPath, reportModel.Content);
             }
         }
 
@@ -41,7 +40,7 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
                 {
                     File.Delete(reportPath);
                 }
-                File.WriteAllBytes(reportPath, Encoding.GetEncoding("windows-1251").GetBytes(reportModel.Content));
+                File.WriteAllBytes(reportPath, reportModel.Content);
             }
         }
     }

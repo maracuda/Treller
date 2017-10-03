@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Net.Mail;
 
 namespace MessageBroker
@@ -35,7 +36,10 @@ namespace MessageBroker
             using (var smtpClient = CreateClient())
             {
                 var mailMessage = new MailMessage(senderEmail, message.Recipient, message.Title, message.Body);
-
+                foreach (var attachment in message.Attachments)
+                {
+                    mailMessage.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment.Content), attachment.Name));
+                }
                 if (!string.IsNullOrEmpty(message.ReplyTo))
                 {
                     mailMessage.ReplyToList.Add(new MailAddress(message.ReplyTo));
