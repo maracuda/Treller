@@ -58,24 +58,20 @@ namespace ProcessStats.Dev
                 AppendCardStats(strBuilder, cardStats, listNames, listNameToIdIndex);
             }
             strBuilder.AppendLine(string.Empty);
-            strBuilder.AppendLine("Full aggregation stats;");
-            AppendAgregationStats(strBuilder, cardsAggregation.FullAggregationStats);
-            strBuilder.AppendLine("S tasks aggregation stats;");
-            AppendAgregationStats(strBuilder, cardsAggregation.SAggregationStats);
-            strBuilder.AppendLine("M tasks aggregation stats;");
-            AppendAgregationStats(strBuilder, cardsAggregation.MAggregationStats);
-            strBuilder.AppendLine("L tasks aggregation stats;");
-            AppendAgregationStats(strBuilder, cardsAggregation.LAggregationStats);
-            strBuilder.AppendLine("XL tasks aggregation stats;");
-            AppendAgregationStats(strBuilder, cardsAggregation.XLAggregationStats);
+            AppendAgregationStats(strBuilder, "Full aggregation stats", cardsAggregation.FullAggregationStats);
+            AppendAgregationStats(strBuilder, "S tasks aggregation stats", cardsAggregation.SAggregationStats);
+            AppendAgregationStats(strBuilder, "M tasks aggregation stats", cardsAggregation.MAggregationStats);
+            AppendAgregationStats(strBuilder, "L tasks aggregation stats", cardsAggregation.LAggregationStats);
+            AppendAgregationStats(strBuilder, "XL tasks aggregation stats", cardsAggregation.XLAggregationStats);
             return defaultReportEncoding.GetBytes(strBuilder.ToString());
         }
 
-        private static void AppendAgregationStats(StringBuilder strBuilder, AggregationTimeStats cardsAggregationStats)
+        private static void AppendAgregationStats(StringBuilder strBuilder, string header, AggregationTimeStats cardsAggregationStats)
         {
             if (cardsAggregationStats.AreEmpty())
                 return;
 
+            strBuilder.AppendLine($"{header};");
             strBuilder.AppendLine($"Average cycle time;{FormatTimeSpan(cardsAggregationStats.AverageTime)}");
             strBuilder.AppendLine($"Longest cycle time;{FormatTimeSpan(cardsAggregationStats.LongestTimeCard.CycleTime)}, cardName {cardsAggregationStats.LongestTimeCard.Name};");
             strBuilder.AppendLine($"Shortest cycle time;{FormatTimeSpan(cardsAggregationStats.ShortestTimeCard.CycleTime)}, cardName {cardsAggregationStats.ShortestTimeCard.Name};");
