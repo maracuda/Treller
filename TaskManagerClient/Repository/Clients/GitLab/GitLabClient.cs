@@ -25,7 +25,7 @@ namespace TaskManagerClient.Repository.Clients.GitLab
                                    };
         }
 
-        public Commit[] SelectLastBranchCommits(string branchName, int pageNumber, int pageSize)
+        public Commit[] SelectLastCommits(string branchName, int pageNumber, int pageSize)
         {
             var parameters = new Dictionary<string, string>(credentialParameters)
                                  {
@@ -34,6 +34,16 @@ namespace TaskManagerClient.Repository.Clients.GitLab
                                      {"per_page", pageSize.ToString(CultureInfo.InvariantCulture)},
                                  };
             return httpClient.SendGet<Commit[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/commits", parameters);
+        }
+
+        public Branch[] SelectBranches(int pageNumber, int pageSize)
+        {
+            var parameters = new Dictionary<string, string>(credentialParameters)
+                                {
+                                    {"page", pageNumber.ToString(CultureInfo.InvariantCulture)},
+                                    {"per_page", pageSize.ToString(CultureInfo.InvariantCulture)},
+                                };
+            return httpClient.SendGet<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
         }
 
         public Branch[] SelectAllBranches()

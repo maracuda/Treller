@@ -5,7 +5,8 @@ namespace TaskManagerClient.Repository.Clients
 {
     public interface IRepositoryClient
     {
-        Commit[] SelectLastBranchCommits(string branchName, int pageNumber, int pageSize);
+        Commit[] SelectLastCommits(string branchName, int pageNumber, int pageSize);
+        Branch[] SelectBranches(int pageNumber, int pageSize);
         Branch[] SelectAllBranches();
         Task<Branch[]> SelectAllBranchesAsync();
     }

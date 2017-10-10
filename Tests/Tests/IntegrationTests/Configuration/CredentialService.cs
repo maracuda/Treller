@@ -26,5 +26,7 @@ namespace Tests.Tests.IntegrationTests.Configuration
         {
             return Credentials.GitLabClientCredentials;
         }
+
+        public DomainCredentials MessageBrokerCredentials => Credentials.NotificationCredentials;
     }
 }

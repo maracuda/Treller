@@ -26,6 +26,28 @@ namespace TaskManagerClient.Repository
 
         public int BranchesNumber => repositoryClient.SelectAllBranches().Length;
 
+        public Branch[] SelectMergedOrOldBranches(TimeSpan olderThan)
+        {
+            var result = new List<Branch>();
+            var deadline = dateTimeFactory.Now.Subtract(olderThan);
+            var pageNumber = 1;
+            Branch[] currentBranches;
+            do
+            {
+                currentBranches = repositoryClient.SelectBranches(pageNumber, 30);
+                foreach (var branch in currentBranches)
+                {
+                    if (branch.Merged || branch.Commit.Committed_date < deadline)
+                    {
+                        result.Add(branch);
+                    }
+                }
+                pageNumber++;
+            } while (currentBranches.Length > 0);
+
+            return result.ToArray();
+        }
+
         public ReleasedBranch[] SelectBranchesMergedToReleaseCandidate()
         {
             var pageNumber = 0;
@@ -35,7 +57,7 @@ namespace TaskManagerClient.Repository
             Commit releaseCandidateBranchedCommit = null;
             while (releaseCandidateBranchedCommit == null)
             {
-                var repoCommits = repositoryClient.SelectLastBranchCommits(repositorySettings.ReleaseCandidateBranchName, pageNumber++, 100);
+                var repoCommits = repositoryClient.SelectLastCommits(repositorySettings.ReleaseCandidateBranchName, pageNumber++, 100);
                 foreach (var repoCommit in repoCommits)
                 {
                     if (!repoCommit.IsMerge())
@@ -86,7 +108,7 @@ namespace TaskManagerClient.Repository
 
             while (true)
             {
-                var commits = repositoryClient.SelectLastBranchCommits(repositorySettings.ReleaseBranchName, pageNumber++, 100)
+                var commits = repositoryClient.SelectLastCommits(repositorySettings.ReleaseBranchName, pageNumber++, 100)
                               .Where(c => c.Created_at > lastCommitDate)
                               .ToArray();
                 foreach (var commit in commits)

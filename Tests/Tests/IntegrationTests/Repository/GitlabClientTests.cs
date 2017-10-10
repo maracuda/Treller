@@ -32,7 +32,7 @@ namespace Tests.Tests.IntegrationTests.Repository
         [Fact]
         public void TestLastCommitAtBranch()
         {
-            var lastCommits = gitlabClient.SelectLastBranchCommits("release", 1, 100);
+            var lastCommits = gitlabClient.SelectLastCommits("release", 1, 100);
             Assert.True(lastCommits.Length == 100);
             var lastCommit = lastCommits.First();
             Assert.IsNotNull(lastCommit.Id);
