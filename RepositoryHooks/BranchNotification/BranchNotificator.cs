@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Infrastructure.Common;
 using MessageBroker;
 using TaskManagerClient.Repository;
@@ -33,8 +34,12 @@ namespace RepositoryHooks.BranchNotification
             
             foreach (var commiterEmail in branchesClassificator.GetCommitersEmail)
             {
-                var message = repositoryNotificationBuilder.Build(commiterEmail, branchesClassificator.GetMergedBranchesBy(commiterEmail), branchesClassificator.GetOldBranchesBy(commiterEmail));
-                messageProducer.Publish(message);
+                var branchesPerCommiter = branchesClassificator.GetOldBranchesBy(commiterEmail);
+                if (branchesPerCommiter.Any())
+                {
+                    var message = repositoryNotificationBuilder.Build(commiterEmail, branchesPerCommiter);
+                    messageProducer.Publish(message);
+                }
             }
         }
     }

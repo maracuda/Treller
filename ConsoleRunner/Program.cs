@@ -29,7 +29,7 @@ namespace ConsoleRunner
                 serviceType = Type.GetType($"{args[1]}, {args[0]}");
                 Console.WriteLine($"Service type parsed as {serviceType}.");
                 serviceInstance = container.Get<IProcessStatsService>();
-                //serviceInstance = container.Get<IBranchNotificator>();
+                serviceInstance = container.Get<IBranchNotificator>();
                 serviceInstance = container.Get(serviceType);
             }
             catch (Exception e)
