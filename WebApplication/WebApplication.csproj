@@ -30,8 +30,6 @@
     <ProjectReference Include="..\Logger\Logger.csproj" />
     <ProjectReference Include="..\MessageBroker\MessageBroker.csproj" />
     <ProjectReference Include="..\OperationalService\OperationalService.csproj" />
-    <ProjectReference Include="..\ProcessStats\ProcessStats.csproj" />
-    <ProjectReference Include="..\RepositoryHooks\RepositoryHooks.csproj" />
     <ProjectReference Include="..\Storage\Storage.csproj" />
     <ProjectReference Include="..\TaskManagerClient\TaskManagerClient.csproj" />
   </ItemGroup>

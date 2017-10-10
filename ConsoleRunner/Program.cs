@@ -20,7 +20,6 @@ namespace ConsoleRunner
                 return;
             }
 
-
             var container = ConfigureContainer();
 
             Type serviceType;

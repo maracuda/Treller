@@ -10,7 +10,6 @@ using Logger;
 using MessageBroker;
 using OperationalService;
 using OperationalService.Operations;
-using RepositoryHooks.BranchNotification;
 using WebApplication.Implementation.Infrastructure.Credentials;
 using WebApplication.Implementation.Services.News;
 using WebApplication.Implementation.Services.News.NewsFeed;
@@ -82,10 +81,6 @@ namespace WebApplication
             operationalService.Register(
                 operationsFactory.Create("AgingNewsActualizator", () => container.Get<INewsFeed>().Refresh()),
                 ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));
-            operationalService.Register(
-                operationsFactory.Create("MergerBranchesNotificator",
-                    () => container.Get<IBranchNotificator>().NotifyCommitersAboutMergedBranches(TimeSpan.FromDays(15))),
-                ScheduleParams.CreateAnytime(TimeSpan.FromHours(24)));
         }
 
         protected void Application_End()
