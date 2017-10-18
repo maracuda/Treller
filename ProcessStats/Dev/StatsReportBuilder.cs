@@ -39,12 +39,12 @@ namespace ProcessStats.Dev
             return reportsList.ToArray();
         }
 
-        public ReportModel BuildForDirection(BoardList doneList)
+        public ReportModel BuildForDirection(BoardList doneList, BoardList additionalDoneList = null)
         {
             var lists = taskManagerClient.GetBoardLists(doneList.BoardId);
             var listNames = lists.Select(l => l.Name).ToArray();
             var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
-            var aggregation = cardsAggregator.Aggregate(doneList);
+            var aggregation = cardsAggregator.Aggregate(doneList, additionalDoneList);
             var content = Build(aggregation, listNames, listNameToIdIndex);
             return new ReportModel($"{doneList.BoardId}.csv", content);
         }
@@ -104,7 +104,7 @@ namespace ProcessStats.Dev
 
         private static string FormatTimeSpan(TimeSpan timeSpan)
         {
-            return $"{timeSpan.Days}";
+            return $"{timeSpan.Days},{Math.Round((double)timeSpan.Hours / 24 * 10).ToString().First()}";
         }
     }
 }

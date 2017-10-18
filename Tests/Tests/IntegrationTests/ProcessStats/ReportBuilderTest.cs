@@ -35,13 +35,25 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
             foreach (var doneList in doneLists)
             {
                 var reportModel = statsReportBuilder.BuildForDirection(doneList);
-                var reportPath = $"{reportModel.Name}.csv";
+                var reportPath = $"{reportModel.Name}";
                 if (File.Exists(reportPath))
                 {
                     File.Delete(reportPath);
                 }
                 File.WriteAllBytes(reportPath, reportModel.Content);
             }
+        }
+
+        [Fact]
+        public void BuildReportForServiceTeamBoard()
+        {
+            var reportModel = statsReportBuilder.BuildForDirection(KnownLists.ServiceTeamDone, KnownLists.ServiceTeamDoneLongAgo);
+            var reportPath = $"{reportModel.Name}";
+            if (File.Exists(reportPath))
+            {
+                File.Delete(reportPath);
+            }
+            File.WriteAllBytes(reportPath, reportModel.Content);
         }
     }
 }

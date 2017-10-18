@@ -5,6 +5,6 @@ namespace ProcessStats.Dev
     public interface IStatsReportBuilder
     {
         ReportModel[] BuildForBillingDelivery();
-        ReportModel BuildForDirection(BoardList doneList);
+        ReportModel BuildForDirection(BoardList doneList, BoardList additionalDoneList = null);
     }
 }
