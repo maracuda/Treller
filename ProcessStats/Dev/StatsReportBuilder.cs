@@ -32,7 +32,7 @@ namespace ProcessStats.Dev
             {
                 new ReportModel("full.csv", Build(aggregation, listNames, listNameToIdIndex)),
                 new ReportModel("product.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("crm.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("crm.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.CrmQueueLabel), listNames, listNameToIdIndex)),
                 new ReportModel("infractructure.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.InfrastructureQueueLabel), listNames, listNameToIdIndex)),
                 new ReportModel("support.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.SupportQueueLabel), listNames, listNameToIdIndex))
             };

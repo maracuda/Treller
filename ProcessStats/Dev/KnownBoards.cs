@@ -21,6 +21,6 @@ namespace ProcessStats.Dev
         public static readonly BoardList MarketDone = new BoardList("595b48ae0cf6ee288bcba874", KnownBoards.Market.Id, "Готово");
         public static readonly BoardList DiscountsDone = new BoardList("59ad1c5344878b519796fa37", KnownBoards.Discounts.Id, "Готово");
         public static readonly BoardList ServiceTeamDone = new BoardList("5927c7194bb22deb57e43925", KnownBoards.ServiceTeam.Id, "То что сделали");
-        public static readonly BoardList ServiceTeamDoneLongAgo = new BoardList("5927c7194bb22deb57e43925", KnownBoards.ServiceTeam.Id, "То что сделали давно");
+        public static readonly BoardList ServiceTeamDoneLongAgo = new BoardList("5927c6dbb2e1640ccd228304", KnownBoards.ServiceTeam.Id, "То что сделали давно");
     }
 }
