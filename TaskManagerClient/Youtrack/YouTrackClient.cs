@@ -23,9 +23,8 @@ namespace TaskManagerClient.Youtrack
         public YouTrackClient(IHttpClient httpClient, IYouTrackCredentialService youTrackCredentialService)
         {
             this.httpClient = httpClient;
-            var credential = youTrackCredentialService.GetYouTrackCredentials();
-            youTrackDefaultUrl = credential.DefaultUrl;
-            authCookies = new Lazy<IEnumerable<Cookie>>(() => GetAuthCookies(credential, httpClient));
+            youTrackDefaultUrl = youTrackCredentialService.YouTrackCredentials.DefaultUrl;
+            authCookies = new Lazy<IEnumerable<Cookie>>(() => GetAuthCookies(youTrackCredentialService.YouTrackCredentials, httpClient));
         }
 
         public Issue[] GetFiltered(string filter)

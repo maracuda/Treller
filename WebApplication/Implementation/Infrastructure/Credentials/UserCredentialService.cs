@@ -37,16 +37,12 @@ namespace WebApplication.Implementation.Infrastructure.Credentials
             return credentials.Value.GitLabClientCredentials;
         }
 
-        public YouTrackCredential GetYouTrackCredentials()
-        {
-            return credentials.Value.YouTrackCredentials;
-        }
-
         public WikiCredential GetWikiCredentials()
         {
             return credentials.Value.WikiCredentials;
         }
 
         public DomainCredentials MessageBrokerCredentials => credentials.Value.NotificationCredentials;
+        public YouTrackCredential YouTrackCredentials => credentials.Value.YouTrackCredentials;
     }
 }

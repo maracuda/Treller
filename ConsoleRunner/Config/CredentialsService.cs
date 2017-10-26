@@ -28,11 +28,7 @@ namespace ConsoleRunner.Config
         {
             return Credentials.GitLabClientCredentials;
         }
-
-        public YouTrackCredential GetYouTrackCredentials()
-        {
-            return Credentials.YouTrackCredentials;
-        }
+        public YouTrackCredential YouTrackCredentials => Credentials.YouTrackCredentials;
     }
 
     public class Credentials
