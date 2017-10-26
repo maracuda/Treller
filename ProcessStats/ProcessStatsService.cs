@@ -1,19 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MessageBroker;
+using ProcessStats.Battles;
 using ProcessStats.Dev;
+using ProcessStats.SpreadsheetProducer;
 
 namespace ProcessStats
 {
     public class ProcessStatsService : IProcessStatsService
     {
         private readonly IStatsReportBuilder statsReportBuilder;
+        private readonly IBattlesStatsService battlesStatsService;
+        private readonly ISpreadsheetProducer spreadsheetProducer;
         private readonly IMessageProducer messageProducer;
 
         public ProcessStatsService(
             IStatsReportBuilder statsReportBuilder,
+            IBattlesStatsService battlesStatsService,
+            ISpreadsheetProducer spreadsheetProducer,
             IMessageProducer messageProducer)
         {
             this.statsReportBuilder = statsReportBuilder;
+            this.battlesStatsService = battlesStatsService;
+            this.spreadsheetProducer = spreadsheetProducer;
             this.messageProducer = messageProducer;
         }
         public void BuildAllAndDeliverToManagers()
@@ -42,6 +51,12 @@ namespace ProcessStats
         public void BuildInfractructureStatsAndDeliverToGuild()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void CrawlAndPublishBattlesStats()
+        {
+            var battlesStats = battlesStatsService.GetStats(DateTime.Now.AddDays(-1).Date);
+            spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 724378477, "Батлы", new[] { battlesStats.Date.ToString("yyyy-MM-dd"), battlesStats.CreatedCount.ToString(), battlesStats.ReopenCount.ToString(), battlesStats.FixedCount.ToString() });
         }
 
         private static void AppendAsAttachment(List<Attachment> attachments, ReportModel[] reportModels)

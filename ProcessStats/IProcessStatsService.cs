@@ -4,5 +4,6 @@
     {
         void BuildAllAndDeliverToManagers();
         void BuildInfractructureStatsAndDeliverToGuild();
+        void CrawlAndPublishBattlesStats();
     }
 }

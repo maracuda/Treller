@@ -8,7 +8,7 @@ using TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace ConsoleRunner.Config
 {
-    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService
+    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, ISpreadsheetsCredentialService
     {
         private readonly string logInFilePath;
 
@@ -29,6 +29,7 @@ namespace ConsoleRunner.Config
             return Credentials.GitLabClientCredentials;
         }
         public YouTrackCredential YouTrackCredentials => Credentials.YouTrackCredentials;
+        public string ClientSecret => Credentials.GoogleSpreadsheetsCredentials;
     }
 
     public class Credentials
@@ -37,5 +38,6 @@ namespace ConsoleRunner.Config
         public GitLabCredential GitLabClientCredentials { get; set; }
         public YouTrackCredential YouTrackCredentials { get; set; }
         public DomainCredentials NotificationCredentials { get; set; }
+        public string GoogleSpreadsheetsCredentials { get; set; }
     }
 }

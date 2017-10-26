@@ -1,4 +1,5 @@
-﻿using ProcessStats.SpreadsheetProducer;
+﻿using ProcessStats;
+using ProcessStats.SpreadsheetProducer;
 using Xunit;
 
 namespace Tests.Tests.IntegrationTests.ProcessStats
@@ -16,6 +17,12 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
         public void AbleToAppendRowToTestDocument()
         {
             spreadsheetProducer.Publish("1-WJBhjaJpr3qb0_P88995q1MWcGumKy6xgvoT5dSm4k", 0, "Sheet1", new []{"1", "2", "3"} );
+        }
+
+        [Fact]
+        public void Able()
+        {
+            container.Get<IProcessStatsService>().CrawlAndPublishBattlesStats();
         }
     }
 }
