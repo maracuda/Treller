@@ -4,10 +4,11 @@ using Storage;
 using TaskManagerClient.CredentialServiceAbstractions;
 using TaskManagerClient.Repository.Clients.GitLab;
 using TaskManagerClient.Trello.BusinessObjects;
+using TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace Tests.Tests.IntegrationTests.Configuration
 {
-    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService
+    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService
     {
         private readonly string logInFilePath;
 
@@ -28,5 +29,9 @@ namespace Tests.Tests.IntegrationTests.Configuration
         }
 
         public DomainCredentials MessageBrokerCredentials => Credentials.NotificationCredentials;
+        public YouTrackCredential GetYouTrackCredentials()
+        {
+            return Credentials.YouTrackCredentials;
+        }
     }
 }

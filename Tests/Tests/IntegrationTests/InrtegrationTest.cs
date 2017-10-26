@@ -18,6 +18,7 @@ namespace Tests.Tests.IntegrationTests
             var credentialsService = container.Create<CredentialService>();
             container.RegisterInstance<ITrelloUserCredentialService>(credentialsService);
             container.RegisterInstance<IGitLabCredentialService>(credentialsService);
+            container.RegisterInstance<IYouTrackCredentialService>(credentialsService);
 
             var mbCredentials = credentialsService.MessageBrokerCredentials;
             var emailMessageProducer = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);

@@ -16,11 +16,9 @@ namespace TaskManagerClient.Youtrack
     {
         private readonly IHttpClient httpClient;
         private readonly string youTrackDefaultUrl;
-        private const string BugsIssueStartsString = "issue";
-        private const string BugsIssueRestStartsString = "rest/issue";
-        private const string BugsSprintStartsString = "rest/agile/";
-        private const string UserLoginString = "rest/user/login";
-        private Lazy<IEnumerable<Cookie>> authCookies;
+        private const string bugsIssueRestStartsString = "rest/issue";
+        private const string userLoginString = "rest/user/login";
+        private readonly Lazy<IEnumerable<Cookie>> authCookies;
 
         public YouTrackClient(IHttpClient httpClient, IYouTrackCredentialService youTrackCredentialService)
         {
@@ -37,7 +35,7 @@ namespace TaskManagerClient.Youtrack
                                      {"filter", filter},
                                      {"max", "1000"}
                                  };
-            var result = httpClient.SendGetAsync<YouTrackIssues>(BuildUrl(BugsIssueRestStartsString), parameters, authCookies.Value).Result;
+            var result = httpClient.SendGetAsync<YouTrackIssues>(BuildUrl(bugsIssueRestStartsString), parameters, authCookies.Value).Result;
             return result.Issue.Select(x =>
                                            {
                                                var lastComment = x.Comment.LastOrDefault();
@@ -47,7 +45,7 @@ namespace TaskManagerClient.Youtrack
                                                            {
                                                                Id = x.Id,
                                                                CommentsCount = x.Comment.Length,
-                                                               LastComment = lastComment != null ? lastComment.Text : null,
+                                                               LastComment = lastComment?.Text,
                                                                Created = created ?? DateTime.Now,
                                                                Updated = updated ?? DateTime.Now,
                                                                Description = x.SafeGet<string>("description"),
@@ -68,7 +66,7 @@ namespace TaskManagerClient.Youtrack
             var timer = Stopwatch.StartNew();
             while (true)
             {
-                var countResult = httpClient.SendGetAsync<EntityCount>(BuildUrl(BugsIssueRestStartsString + "/count"), parameters, authCookies.Value).Result;
+                var countResult = httpClient.SendGetAsync<EntityCount>(BuildUrl(bugsIssueRestStartsString + "/count"), parameters, authCookies.Value).Result;
                 if (countResult.Value >= 0)
                 {
                     timer.Stop();
@@ -85,32 +83,6 @@ namespace TaskManagerClient.Youtrack
             }
         }
 
-        public Issue[] GetSprintInfo(string sprintName)
-        {
-            var sprintFilter = string.Format("Fix versions:{{{0}}}", sprintName);
-            return GetFiltered(sprintFilter);
-        }
-
-        public string GetIssueUrl()
-        {
-            return BuildUrl(BugsIssueStartsString) + "/";
-        }
-
-        public string GetSprintUrl()
-        {
-            return BuildUrl(BugsSprintStartsString);
-        }
-
-        public string GetStrintUrlEndWord()
-        {
-            return "/sprint/";
-        }
-
-        public string GetBaseUrl()
-        {
-            return youTrackDefaultUrl;
-        }
-
         public BugTrackerIssueAttachment[] GetAttachments(string issueId)
         {
             var url = BuildUrl($"rest/issue/{issueId}/attachment");
@@ -125,19 +97,19 @@ namespace TaskManagerClient.Youtrack
 
         public BugTrackerIssueComment[] GetComments(string issueId)
         {
-            var url = BuildUrl(string.Format("rest/issue/{0}/comment", issueId));
+            var url = BuildUrl($"rest/issue/{issueId}/comment");
             return httpClient.SendGet<BugTrackerIssueComment[]>(url, null, authCookies.Value);
         }
 
         public void DeleteAttachment(string issueId, string attachmentId)
         {
-            var url = BuildUrl(string.Format("rest/issue/{0}/attachment/{1}", issueId, attachmentId));
+            var url = BuildUrl($"rest/issue/{issueId}/attachment/{attachmentId}");
             httpClient.SendDelete(url, null, authCookies.Value);
         }
 
         public void DeleteComment(string issueId, string commentId, bool permanently)
         {
-            var url = BuildUrl(string.Format("rest/issue/{0}/comment/{1}", issueId, commentId));
+            var url = BuildUrl($"rest/issue/{issueId}/comment/{commentId}");
             httpClient.SendDelete(url, new Dictionary<string, string> { { "permanently", permanently.ToString().ToLower() } }, authCookies.Value);
         }
 
@@ -149,7 +121,7 @@ namespace TaskManagerClient.Youtrack
                                       {"password", credential.Password},
                                   };
 
-            return httpClient.SendEncodedFormPostAsync(BuildUrl(UserLoginString), credentials)
+            return httpClient.SendEncodedFormPostAsync(BuildUrl(userLoginString), credentials)
                              .Result
                              .OfType<Cookie>()
                              .Where(x => x != null)
@@ -158,7 +130,7 @@ namespace TaskManagerClient.Youtrack
 
         private string BuildUrl(string queryPart)
         {
-            return string.Format("{0}/{1}", youTrackDefaultUrl, queryPart);
+            return $"{youTrackDefaultUrl}/{queryPart}";
         }
     }
 }

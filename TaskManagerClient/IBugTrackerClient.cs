@@ -7,11 +7,6 @@ namespace TaskManagerClient
     {
         Issue[] GetFiltered(string filter);
         int GetFilteredCount(string filter);
-        Issue[] GetSprintInfo(string sprintName);
-        string GetIssueUrl();
-        string GetSprintUrl();
-        string GetStrintUrlEndWord();
-        string GetBaseUrl();
 
         BugTrackerIssueAttachment[] GetAttachments(string issueId);
         BugTrackerIssueComment[] GetComments(string issueId);
