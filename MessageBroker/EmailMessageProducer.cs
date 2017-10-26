@@ -11,7 +11,7 @@ namespace MessageBroker
         private readonly string domain;
         private readonly string smtpHost;
         private readonly int smtpPort;
-        private readonly string senderEmail;
+        private readonly string fromEmail;
 
         public EmailMessageProducer(
             string login,
@@ -25,17 +25,21 @@ namespace MessageBroker
             this.domain = domain;
             this.smtpHost = smtpHost;
             this.smtpPort = smtpPort;
-            senderEmail = $"{login}@skbkontur.ru";
+            fromEmail = $"{login}@skbkontur.ru";
         }
 
         public void Publish(Message message)
         {
-            if (string.IsNullOrEmpty(message.Recipient))
+            if (message.Recipients == null || message.Recipients.Length < 1)
                 return;
 
             using (var smtpClient = CreateClient())
             {
-                var mailMessage = new MailMessage(senderEmail, message.Recipient, message.Title, message.Body);
+                var mailMessage = new MailMessage(fromEmail, message.Recipients[0], message.Title, message.Body);
+                for (var i = 1; i < message.Recipients.Length; i++)
+                {
+                    mailMessage.To.Add(message.Recipients[i]);
+                }
                 foreach (var attachment in message.Attachments)
                 {
                     mailMessage.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment.Content), attachment.Name));

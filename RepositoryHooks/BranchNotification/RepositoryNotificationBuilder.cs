@@ -24,7 +24,7 @@ namespace RepositoryHooks.BranchNotification
 
             return new Message
             {
-                Recipient = commiterEmail,
+                Recipients = new []{ commiterEmail },
                 Title = "Уведомление о зарелизенных ветках",
                 Body = bodyBuilder.ToString(),
                 CopyTo = "hvorost@skbkontur.ru"

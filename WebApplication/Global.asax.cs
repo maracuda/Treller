@@ -9,10 +9,7 @@ using IoCContainer;
 using Logger;
 using MessageBroker;
 using OperationalService;
-using OperationalService.Operations;
 using WebApplication.Implementation.Infrastructure.Credentials;
-using WebApplication.Implementation.Services.News;
-using WebApplication.Implementation.Services.News.NewsFeed;
 using WebApplication.Implementation.VirtualMachines.Runspaces;
 
 namespace WebApplication
@@ -33,7 +30,6 @@ namespace WebApplication
 
             runspacePool = container.Get<IVirtualMachinesRunspacePool>();
             operationalService = container.Get<IOperationalService>();
-            RunRegularOperations();
         }
 
         private static void PrepareWebApplication()
@@ -65,22 +61,10 @@ namespace WebApplication
 
             container.Get<IMessageProducer>().Publish(new Message
             {
-                Recipient = "hvorost@skbkontur.ru",
+                Recipients = new []{ "hvorost@skbkontur.ru" },
                 Title = args.Message,
                 Body = messageBuilder.ToString()
             });
-        }
-
-        private void RunRegularOperations()
-        {
-            var operationsFactory = container.Get<IRegularOperationsFactory>();
-
-            operationalService.Register(
-                operationsFactory.Create("TaskManagerReporter", () => { container.Get<IBillingTimes>().LookForNews(); }),
-                ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(10)));
-            operationalService.Register(
-                operationsFactory.Create("AgingNewsActualizator", () => container.Get<INewsFeed>().Refresh()),
-                ScheduleParams.CreateAnytime(TimeSpan.FromMinutes(60)));
         }
 
         protected void Application_End()

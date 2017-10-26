@@ -32,7 +32,7 @@ namespace ProcessStats
             var message = new Message
             {
                 Title = "Статистика работы команды Биллинга",
-                Recipient = "manager.billing@skbkontur.ru",
+                Recipients = new []{ "manager.billing@skbkontur.ru", "nesterenko@skbkontur.ru" },
                 Body = body,
                 Attachments = attachments.ToArray()
             };
