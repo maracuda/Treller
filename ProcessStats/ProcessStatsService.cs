@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MessageBroker;
 using ProcessStats.Battles;
 using ProcessStats.Dev;
+using ProcessStats.Incidents;
 using ProcessStats.SpreadsheetProducer;
 
 namespace ProcessStats
@@ -10,18 +11,21 @@ namespace ProcessStats
     public class ProcessStatsService : IProcessStatsService
     {
         private readonly IStatsReportBuilder statsReportBuilder;
-        private readonly IBattlesStatsService battlesStatsService;
+        private readonly IBattlesStatsCrawler battlesStatsCrawler;
+        private readonly IIncidentsStatsCrawler incidentsStatsCrawler;
         private readonly ISpreadsheetProducer spreadsheetProducer;
         private readonly IMessageProducer messageProducer;
 
         public ProcessStatsService(
             IStatsReportBuilder statsReportBuilder,
-            IBattlesStatsService battlesStatsService,
+            IBattlesStatsCrawler battlesStatsCrawler,
+            IIncidentsStatsCrawler incidentsStatsCrawler,
             ISpreadsheetProducer spreadsheetProducer,
             IMessageProducer messageProducer)
         {
             this.statsReportBuilder = statsReportBuilder;
-            this.battlesStatsService = battlesStatsService;
+            this.battlesStatsCrawler = battlesStatsCrawler;
+            this.incidentsStatsCrawler = incidentsStatsCrawler;
             this.spreadsheetProducer = spreadsheetProducer;
             this.messageProducer = messageProducer;
         }
@@ -53,10 +57,16 @@ namespace ProcessStats
             throw new System.NotImplementedException();
         }
 
-        public void CrawlAndPublishBattlesStats()
+        public void CollectAndPublishBattlesStats()
         {
-            var battlesStats = battlesStatsService.GetStats(DateTime.Now.AddDays(-1).Date);
+            var battlesStats = battlesStatsCrawler.Collect(DateTime.Now.AddDays(-1).Date);
             spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 724378477, "Батлы", new[] { battlesStats.Date.ToString("yyyy-MM-dd"), battlesStats.CreatedCount.ToString(), battlesStats.ReopenCount.ToString(), battlesStats.FixedCount.ToString() });
+        }
+
+        public void CollectAndPublishIncidentsStats()
+        {
+            var incidentsStats = incidentsStatsCrawler.Collect(DateTime.Now.Date);
+            spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 0, "Инциденты", new[] { incidentsStats.Date.ToString("yyyy-MM-dd"), incidentsStats.IncomingCount.ToString(), incidentsStats.FixedCount.ToString() });
         }
 
         private static void AppendAsAttachment(List<Attachment> attachments, ReportModel[] reportModels)

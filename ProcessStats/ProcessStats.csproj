@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Apis.Sheets.v4" Version="1.29.2.1022" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.6.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.33.0" />
   </ItemGroup>
 
   <ItemGroup>

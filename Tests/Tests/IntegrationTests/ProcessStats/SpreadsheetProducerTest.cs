@@ -22,7 +22,7 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
         [Fact]
         public void Able()
         {
-            container.Get<IProcessStatsService>().CrawlAndPublishBattlesStats();
+            container.Get<IProcessStatsService>().CollectAndPublishBattlesStats();
         }
     }
 }

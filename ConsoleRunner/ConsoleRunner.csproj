@@ -18,6 +18,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.33.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\IoCContainer\IoCContainer.csproj" />
     <ProjectReference Include="..\MessageBroker\MessageBroker.csproj" />
     <ProjectReference Include="..\ProcessStats\ProcessStats.csproj" />

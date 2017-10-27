@@ -3,16 +3,16 @@ using TaskManagerClient;
 
 namespace ProcessStats.Battles
 {
-    public class BattlesStatsService : IBattlesStatsService
+    public class BattlesStatsCrawler : IBattlesStatsCrawler
     {
         private readonly IBugTrackerClient bugTrackerClient;
 
-        public BattlesStatsService(IBugTrackerClient bugTrackerClient)
+        public BattlesStatsCrawler(IBugTrackerClient bugTrackerClient)
         {
             this.bugTrackerClient = bugTrackerClient;
         }
 
-        public BattlesStats GetStats(DateTime date)
+        public BattlesStats Collect(DateTime date)
         {
             var createdCount = bugTrackerClient.GetFilteredCount($"project: Billy Type: Battle created: {date:yyyy-MM-dd}");
             var fixedCount = bugTrackerClient.GetFilteredCount($"project: Billy Type: Battle resolved date: {date:yyyy-MM-dd}");

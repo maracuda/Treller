@@ -49,8 +49,9 @@ namespace ConsoleRunner
                 return;
             }
 
+            Console.WriteLine($"begin method {method.Name} invocation.");
             method.Invoke(serviceInstance, new object[0]);
-            Console.WriteLine("done");
+            Console.WriteLine("end");
         }
 
         private static IContainer ConfigureContainer()
