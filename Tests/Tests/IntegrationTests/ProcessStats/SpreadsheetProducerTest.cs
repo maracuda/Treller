@@ -1,4 +1,5 @@
-﻿using ProcessStats;
+﻿using System;
+using ProcessStats;
 using ProcessStats.SpreadsheetProducer;
 using Xunit;
 
@@ -16,7 +17,8 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
         [Fact]
         public void AbleToAppendRowToTestDocument()
         {
-            spreadsheetProducer.Publish("1-WJBhjaJpr3qb0_P88995q1MWcGumKy6xgvoT5dSm4k", 0, "Sheet1", new []{"1", "2", "3"} );
+            var date = new DateTime(2017, 10, 31);
+            spreadsheetProducer.Publish("1-WJBhjaJpr3qb0_P88995q1MWcGumKy6xgvoT5dSm4k", 0, new object[] {1, 2, 3, "zzzzz", date} );
         }
 
         [Fact]

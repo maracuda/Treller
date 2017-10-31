@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace ProcessStats.SpreadsheetProducer
             this.spreadsheetsCredentialService = spreadsheetsCredentialService;
         }
 
-        public void Publish(string spreadsheetId, int sheetId, string sheetName, string[] rowData)
+        public void Publish(string spreadsheetId, int sheetId, IEnumerable<object> rowData)
         {
             SheetsService sheetsService;
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(spreadsheetsCredentialService.ClientSecret)))
@@ -37,39 +38,71 @@ namespace ProcessStats.SpreadsheetProducer
                 });
             }
 
-            AppendRow(sheetsService, spreadsheetId, sheetId, sheetName, rowData);
+            AppendRow(sheetsService, spreadsheetId, sheetId, rowData);
         }
 
-        private static void AppendRow(SheetsService service, string spreadSheetId, int sheetId, string sheetName, IEnumerable<string> rowData)
+        private static void AppendRow(SheetsService service, string spreadSheetId, int sheetId, IEnumerable<object> rowData)
         {
-            var rowIndex = service.Spreadsheets.Values.Get(spreadSheetId, $"'{sheetName}'!A:A").Execute().Values?.Count ?? 0;
             var updateRequest = new Request
             {
-                UpdateCells = new UpdateCellsRequest
+                AppendCells = new AppendCellsRequest
                 {
-                    Start = new GridCoordinate
-                    {
-                        SheetId = sheetId,
-                        RowIndex = rowIndex,
-                        ColumnIndex = 0
-                    },
+                    Fields = "*",
                     Rows = new List<RowData>
                     {
                         new RowData
                         {
-                            Values = rowData.Select(value => new CellData
-                            {
-                                UserEnteredValue = new ExtendedValue
-                                {
-                                    StringValue = value
-                                }
-                            }).ToList()
+                            Values = rowData.Select(ConvertToCellData).ToList()
                         }
                     },
-                    Fields = "userEnteredValue"
+                    SheetId = sheetId
                 }
             };
             service.Spreadsheets.BatchUpdate(new BatchUpdateSpreadsheetRequest { Requests = new List<Request> {updateRequest} }, spreadSheetId).Execute();
+        }
+
+        private static CellData ConvertToCellData(object value)
+        {
+            if (value is int intValue)
+            {
+                return new CellData
+                {
+                    UserEnteredValue = new ExtendedValue
+                    {
+                        NumberValue = intValue
+                    }
+                };
+            }
+
+            //TODO: try to find another way to post dates (without magic dates)
+            if (value is DateTime date)
+            {
+                var magicDate = new DateTime(1899, 12, 30);
+                var numberOfDaysSinceMagicDate = date.Subtract(magicDate).Days;
+                return new CellData
+                {
+
+                    UserEnteredValue = new ExtendedValue
+                    {
+                        NumberValue = numberOfDaysSinceMagicDate
+                    },
+                    UserEnteredFormat = new CellFormat
+                    {
+                        NumberFormat = new NumberFormat
+                        {
+                            Type = "DATE"
+                        }
+                    }
+                };
+            }
+
+            return new CellData
+            {
+                UserEnteredValue = new ExtendedValue
+                {
+                    StringValue = value.ToString()
+                }
+            };
         }
     }
 }

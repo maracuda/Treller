@@ -60,13 +60,13 @@ namespace ProcessStats
         public void CollectAndPublishBattlesStats()
         {
             var battlesStats = battlesStatsCrawler.Collect(DateTime.Now.AddDays(-1).Date);
-            spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 724378477, "Батлы", new[] { battlesStats.Date.ToString("yyyy-MM-dd"), battlesStats.CreatedCount.ToString(), battlesStats.ReopenCount.ToString(), battlesStats.FixedCount.ToString() });
+            spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 724378477, new object[] { battlesStats.Date, battlesStats.CreatedCount, battlesStats.ReopenCount, battlesStats.FixedCount });
         }
 
         public void CollectAndPublishIncidentsStats()
         {
             var incidentsStats = incidentsStatsCrawler.Collect(DateTime.Now.Date);
-            spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 0, "Инциденты", new[] { incidentsStats.Date.ToString("yyyy-MM-dd"), incidentsStats.IncomingCount.ToString(), incidentsStats.FixedCount.ToString() });
+            spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 0, new object[] { incidentsStats.Date, incidentsStats.IncomingCount, incidentsStats.FixedCount });
         }
 
         private static void AppendAsAttachment(List<Attachment> attachments, ReportModel[] reportModels)
