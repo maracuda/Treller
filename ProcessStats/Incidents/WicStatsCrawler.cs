@@ -31,7 +31,7 @@ namespace ProcessStats.Incidents
                 try
                 {
                     return WicReportPage.Create(driver, url)
-                                        .InputBeginDate(date.AddDays(-1))
+                                        .InputBeginDate(date)
                                         .InputEndDate(date)
                                         .ClickSearchButton()
                                         .GetTotalCount();

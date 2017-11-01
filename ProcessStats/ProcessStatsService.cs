@@ -65,7 +65,7 @@ namespace ProcessStats
 
         public void CollectAndPublishIncidentsStats()
         {
-            var incidentsStats = incidentsStatsCrawler.Collect(DateTime.Now.Date);
+            var incidentsStats = incidentsStatsCrawler.Collect(DateTime.Now.AddDays(-1).Date);
             spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 0, new object[] { incidentsStats.Date, incidentsStats.IncomingCount, incidentsStats.FixedCount });
         }
 
