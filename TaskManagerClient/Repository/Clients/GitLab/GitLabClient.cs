@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Threading.Tasks;
 using HttpInfrastructure.Clients;
 using TaskManagerClient.Repository.BusinessObjects;
 
@@ -50,18 +49,28 @@ namespace TaskManagerClient.Repository.Clients.GitLab
         {
             var parameters = new Dictionary<string, string>(credentialParameters)
                                  {
-                                     {"per_page", "1000"},
+                                     {"per_page", "1000"}
                                  };
             return httpClient.SendGet<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
         }
 
-        public Task<Branch[]> SelectAllBranchesAsync()
+        public Branch CreateBranch(string newBranchName, string refBranchName)
         {
             var parameters = new Dictionary<string, string>(credentialParameters)
-                                 {
-                                     {"per_page", "1000"},
-                                 };
-            return httpClient.SendGetAsync<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
+            {
+                {"branch_name", newBranchName},
+                {"ref", refBranchName}
+            };
+            return httpClient.SendPost<Branch>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
+        }
+
+        public void DeleteBranch(string branchName)
+        {
+            var parameters = new Dictionary<string, string>(credentialParameters)
+            {
+                //{"branch", branchName}
+            };
+            httpClient.SendDelete($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches/{branchName}", parameters);
         }
     }
 }

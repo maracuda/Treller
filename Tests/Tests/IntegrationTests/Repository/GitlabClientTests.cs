@@ -9,13 +9,13 @@ namespace Tests.Tests.IntegrationTests.Repository
     {
         private readonly IRepositoryClient gitlabClient;
 
-        public GitlabClientTests() : base()
+        public GitlabClientTests()
         {
             gitlabClient = container.Get<IRepositoryClientFactory>().CreateGitLabClient("584");
         }
 
         [Fact]
-        public void TestBranches()
+        public void AbleToSelectBranches()
         {
             var allBranches = gitlabClient.SelectAllBranches();
             Assert.True(allBranches.Length > 2);
@@ -30,7 +30,7 @@ namespace Tests.Tests.IntegrationTests.Repository
         }
 
         [Fact]
-        public void TestLastCommitAtBranch()
+        public void AbleToFindLastCommitAtBranch()
         {
             var lastCommits = gitlabClient.SelectLastCommits("release", 1, 100);
             Assert.True(lastCommits.Length == 100);
@@ -42,6 +42,20 @@ namespace Tests.Tests.IntegrationTests.Repository
             Assert.IsNotNull(lastCommit.Author_email);
             Assert.IsNotNull(lastCommit.Author_name);
             Assert.IsNotNull(lastCommit.Created_at);
+        }
+
+        [Fact]
+        public void AbleToCrateAndDeleteBranch()
+        {
+            const string testBranchName = "testFeature";
+            var newBranch = gitlabClient.CreateBranch(testBranchName, "release");
+            Assert.IsNotNull(newBranch);
+            Assert.AreEqual(newBranch.Name, testBranchName);
+
+            gitlabClient.DeleteBranch(testBranchName);
+            var actualBranches = gitlabClient.SelectAllBranches();
+            Assert.AreEqual(0, actualBranches.Count(b => b.Name.Equals(testBranchName)));
+
         }
     }
 }

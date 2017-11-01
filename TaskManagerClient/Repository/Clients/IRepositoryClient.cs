@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using TaskManagerClient.Repository.BusinessObjects;
+﻿using TaskManagerClient.Repository.BusinessObjects;
 
 namespace TaskManagerClient.Repository.Clients
 {
@@ -8,6 +7,8 @@ namespace TaskManagerClient.Repository.Clients
         Commit[] SelectLastCommits(string branchName, int pageNumber, int pageSize);
         Branch[] SelectBranches(int pageNumber, int pageSize);
         Branch[] SelectAllBranches();
-        Task<Branch[]> SelectAllBranchesAsync();
+        Branch CreateBranch(string newBranchName, string refBranchName);
+        void DeleteBranch(string branchName);
+
     }
 }

@@ -78,6 +78,24 @@ namespace HttpInfrastructure.Clients
             }
         }
 
+        public T SendPost<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
+        {
+            return AsyncHelpers.RunSync(() => SendPostAsync<T>(url, queryParameters, cookies));
+        }
+
+        public async Task<T> SendPostAsync<T>(string url, Dictionary<string, string> queryParameters = null, IEnumerable<Cookie> cookies = null)
+        {
+            using (var client = CreateHttpClient(CreateCookieContainer(cookies)))
+            {
+                using (var response = client.PostAsync(GetFullUrl(url, queryParameters), new StringContent(string.Empty)).Result)
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw HttpClientException.Create(response);
+                    return await response.Content.ReadAsAsync<T>().ConfigureAwait(false);
+                }
+            }
+        }
+
         private static CookieContainer CreateCookieContainer(IEnumerable<Cookie> cookies)
         {
             CookieContainer cookieContainer = null;
