@@ -14,10 +14,10 @@ namespace ProcessStats.Dev
 
     public class CardSizeParser
     {
-        private static readonly CardLabel S = new CardLabel { Color = CardLabelColor.Black, Name = "S" };
-        private static readonly CardLabel M = new CardLabel { Color = CardLabelColor.Black, Name = "M" };
-        private static readonly CardLabel L = new CardLabel { Color = CardLabelColor.Black, Name = "L" };
-        private static readonly CardLabel XL = new CardLabel { Color = CardLabelColor.Black, Name = "XL" };
+        private static readonly CardLabel S = new CardLabel { Name = "S" };
+        private static readonly CardLabel M = new CardLabel { Name = "M" };
+        private static readonly CardLabel L = new CardLabel { Name = "L" };
+        private static readonly CardLabel XL = new CardLabel { Name = "XL" };
 
         public static CardSize TryParse(HashSet<CardLabel> labelsSet)
         {

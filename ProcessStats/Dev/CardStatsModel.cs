@@ -17,6 +17,7 @@ namespace ProcessStats.Dev
 
         public string Id { get; set; }
         public string Name { get; set; }
+        public DateTime LastActivity { get; set; }
         public CardSize Size { get; set; }
 
         public Dictionary<string, TimeSpan> ListStats { get; }

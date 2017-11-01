@@ -23,15 +23,15 @@ namespace ProcessStats.Dev
 
         public static CardsAggregationModel Create(CardStatsModel[] cardStats)
         {
-            var filteredCardStats = cardStats.Where(c => c.CycleTime.Ticks > 0).OrderBy(c => c.Size).ToArray();
+            var filteredCardStats = cardStats.Where(c => c.CycleTime.Ticks > 0).OrderByDescending(c => c.LastActivity).ToArray();
             return new CardsAggregationModel
             {
                 CardsStats = filteredCardStats,
                 FullAggregationStats = AggregationTimeStats.Create(filteredCardStats),
-                SAggregationStats = AggregationTimeStats.Create(filteredCardStats.Where(c => c.Size == CardSize.S)),
-                MAggregationStats = AggregationTimeStats.Create(filteredCardStats.Where(c => c.Size == CardSize.M)),
-                LAggregationStats = AggregationTimeStats.Create(filteredCardStats.Where(c => c.Size == CardSize.L)),
-                XLAggregationStats = AggregationTimeStats.Create(filteredCardStats.Where(c => c.Size == CardSize.XL))
+                SAggregationStats = AggregationTimeStats.Create(filteredCardStats.Where(c => c.Size == CardSize.S).OrderByDescending(c => c.LastActivity)),
+                MAggregationStats = AggregationTimeStats.Create(filteredCardStats.Where(c => c.Size == CardSize.M).OrderByDescending(c => c.LastActivity)),
+                LAggregationStats = AggregationTimeStats.Create(filteredCardStats.Where(c => c.Size == CardSize.L).OrderByDescending(c => c.LastActivity)),
+                XLAggregationStats = AggregationTimeStats.Create(filteredCardStats.Where(c => c.Size == CardSize.XL).OrderByDescending(c => c.LastActivity))
             };
         }
     }

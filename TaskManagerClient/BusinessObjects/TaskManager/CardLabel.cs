@@ -7,7 +7,7 @@ namespace TaskManagerClient.BusinessObjects.TaskManager
 
         protected bool Equals(CardLabel other)
         {
-            return string.Equals(Name, other.Name) && Color == other.Color;
+            return string.Equals(Name, other.Name);
         }
 
         public override bool Equals(object obj)
@@ -20,10 +20,7 @@ namespace TaskManagerClient.BusinessObjects.TaskManager
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (int) Color;
-            }
+            return (Name != null ? Name.GetHashCode() : 0);
         }
     }
 }

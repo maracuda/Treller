@@ -72,9 +72,9 @@ namespace ProcessStats.Dev
                 return;
 
             strBuilder.AppendLine($"{header};");
-            strBuilder.AppendLine($"Average cycle time;{FormatTimeSpan(cardsAggregationStats.AverageTime)}");
-            strBuilder.AppendLine($"Longest cycle time;{FormatTimeSpan(cardsAggregationStats.LongestTimeCard.CycleTime)}, cardName {cardsAggregationStats.LongestTimeCard.Name};");
-            strBuilder.AppendLine($"Shortest cycle time;{FormatTimeSpan(cardsAggregationStats.ShortestTimeCard.CycleTime)}, cardName {cardsAggregationStats.ShortestTimeCard.Name};");
+            strBuilder.AppendLine($"Average cycle time;{FormatTimeSpan(cardsAggregationStats.AverageTime)};");
+            strBuilder.AppendLine($"Longest cycle time;{FormatTimeSpan(cardsAggregationStats.LongestTimeCard.CycleTime)};cardName {cardsAggregationStats.LongestTimeCard.Name};");
+            strBuilder.AppendLine($"Shortest cycle time;{FormatTimeSpan(cardsAggregationStats.ShortestTimeCard.CycleTime)};cardName {cardsAggregationStats.ShortestTimeCard.Name};");
         }
 
         private static void AppendCardStats(StringBuilder strBuilder, CardStatsModel cardStats, string[] listNames, Dictionary<string, string> listNameToIdIndex)

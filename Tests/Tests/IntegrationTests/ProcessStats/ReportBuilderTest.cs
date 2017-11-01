@@ -19,7 +19,7 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
             var reportsModels = statsReportBuilder.BuildForBillingDelivery();
             foreach (var reportModel in reportsModels)
             {
-                var reportPath = $"{reportModel.Name}.csv";
+                var reportPath = $"{reportModel.Name}";
                 if (File.Exists(reportPath))
                 {
                     File.Delete(reportPath);

@@ -29,7 +29,8 @@ namespace ProcessStats.Dev
             var result = new CardStatsModel
             {
                 Id = cardId,
-                Name = card.Name
+                Name = card.Name,
+                LastActivity = card.LastActivity
             };
 
             result.SetLabels(card.Labels);
