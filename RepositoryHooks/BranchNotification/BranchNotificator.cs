@@ -12,18 +12,18 @@ namespace RepositoryHooks.BranchNotification
 
         private readonly IRepository repository;
         private readonly IRepositoryNotificationBuilder repositoryNotificationBuilder;
-        private readonly IMessageProducer messageProducer;
+        private readonly IEmailMessageProducer emailMessageProducer;
         private readonly IDateTimeFactory dateTimeFactory;
 
         public BranchNotificator(
             IRepository repository,
             IRepositoryNotificationBuilder repositoryNotificationBuilder,
-            IMessageProducer messageProducer,
+            IEmailMessageProducer emailMessageProducer,
             IDateTimeFactory dateTimeFactory)
         {
             this.repository = repository;
             this.repositoryNotificationBuilder = repositoryNotificationBuilder;
-            this.messageProducer = messageProducer;
+            this.emailMessageProducer = emailMessageProducer;
             this.dateTimeFactory = dateTimeFactory;
         }
 
@@ -38,7 +38,7 @@ namespace RepositoryHooks.BranchNotification
                 if (branchesPerCommiter.Any())
                 {
                     var message = repositoryNotificationBuilder.Build(commiterEmail, branchesPerCommiter);
-                    messageProducer.Publish(message);
+                    emailMessageProducer.Publish(message);
                 }
             }
         }

@@ -5,23 +5,23 @@ namespace Tests.Tests.IntegrationTests.MessageBroker
 {
     public class EmailMessageProducerTest : IntegrationTest
     {
-        private IMessageProducer messageProducer;
+        private IEmailMessageProducer emailMessageProducer;
 
         public EmailMessageProducerTest()
         {
-            messageProducer = container.Get<IMessageProducer>();
+            emailMessageProducer = container.Get<IEmailMessageProducer>();
         }
 
         [Fact]
         public void TestMessageWithSeveralRecipients()
         {
-            var message = new Message
+            var message = new EmailMessage
             {
                 Title = "test message",
                 Recipients = new []{ "hvorost@skbkontur.ru", "jaamal@mail.ru" },
                 Body = "test content"
             };
-            messageProducer.Publish(message);
+            emailMessageProducer.Publish(message);
         }
     }
 }

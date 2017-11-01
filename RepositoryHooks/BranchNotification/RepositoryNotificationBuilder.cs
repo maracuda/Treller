@@ -8,7 +8,7 @@ namespace RepositoryHooks.BranchNotification
 {
     public class RepositoryNotificationBuilder : IRepositoryNotificationBuilder
     {
-        public Message Build(string commiterEmail, IEnumerable<string> oldBranches)
+        public EmailMessage Build(string commiterEmail, IEnumerable<string> oldBranches)
         {
             if (!oldBranches.Any())
                 throw new ArgumentException($"Fail to build message for {commiterEmail} with empty list of branches.");
@@ -22,7 +22,7 @@ namespace RepositoryHooks.BranchNotification
             bodyBuilder.AppendLine();
             bodyBuilder.AppendLine("С любовью твой автоматический уведомлятор.");
 
-            return new Message
+            return new EmailMessage
             {
                 Recipients = new []{ commiterEmail },
                 Title = "Уведомление о зарелизенных ветках",

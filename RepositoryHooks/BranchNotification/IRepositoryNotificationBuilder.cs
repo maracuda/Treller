@@ -5,6 +5,6 @@ namespace RepositoryHooks.BranchNotification
 {
     public interface IRepositoryNotificationBuilder
     {
-        Message Build(string commiterEmail, IEnumerable<string> oldBranches);
+        EmailMessage Build(string commiterEmail, IEnumerable<string> oldBranches);
     }
 }

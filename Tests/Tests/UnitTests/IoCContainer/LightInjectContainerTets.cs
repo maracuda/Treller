@@ -10,10 +10,10 @@ namespace Tests.Tests.UnitTests.IoCContainer
         public void CanRegisterCustomImplementationToContainer()
         {
             var container = ContainerFactory.CreateMvc();
-            var emailMessageProducer = new EmailMessageProducer("login", "password", "kontur", "localhost", 25);
-            container.RegisterInstance<IMessageProducer>(emailMessageProducer);
+            var emailMessageProducer = new KonturEmailMessageProducer("login", "password", "kontur", "localhost", 25);
+            container.RegisterInstance<IEmailMessageProducer>(emailMessageProducer);
 
-            var result = container.Get<IMessageProducer>();
+            var result = container.Get<IEmailMessageProducer>();
             Assert.NotNull(result);
         }
     }

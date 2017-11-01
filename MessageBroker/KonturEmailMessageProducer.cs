@@ -4,7 +4,7 @@ using System.Net.Mail;
 
 namespace MessageBroker
 {
-    public class EmailMessageProducer : IMessageProducer
+    public class KonturEmailMessageProducer : IEmailMessageProducer
     {
         private readonly string login;
         private readonly string password;
@@ -13,7 +13,7 @@ namespace MessageBroker
         private readonly int smtpPort;
         private readonly string fromEmail;
 
-        public EmailMessageProducer(
+        public KonturEmailMessageProducer(
             string login,
             string password,
             string domain,
@@ -28,7 +28,7 @@ namespace MessageBroker
             fromEmail = $"{login}@skbkontur.ru";
         }
 
-        public void Publish(Message message)
+        public void Publish(EmailMessage message)
         {
             if (message.Recipients == null || message.Recipients.Length < 1)
                 return;
@@ -40,7 +40,7 @@ namespace MessageBroker
                 {
                     mailMessage.To.Add(message.Recipients[i]);
                 }
-                foreach (var attachment in message.Attachments)
+                foreach (var attachment in message.EmailAttachments)
                 {
                     mailMessage.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment.Content), attachment.Name));
                 }

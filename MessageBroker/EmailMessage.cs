@@ -1,10 +1,10 @@
 ﻿namespace MessageBroker
 {
-    public class Message
+    public class EmailMessage
     {
-        public Message()
+        public EmailMessage()
         {
-            Attachments = new Attachment[0];
+            EmailAttachments = new EmailAttachment[0];
         }
 
         public string Title { get; set; }
@@ -12,10 +12,10 @@
         public string[] Recipients { get; set; }
         public string ReplyTo { get; set; }
         public string CopyTo { get; set; }
-        public Attachment[] Attachments { get; set; }
+        public EmailAttachment[] EmailAttachments { get; set; }
     }
 
-    public class Attachment
+    public class EmailAttachment
     {
         public string Name { get; set; }
         public byte[] Content { get; set; }

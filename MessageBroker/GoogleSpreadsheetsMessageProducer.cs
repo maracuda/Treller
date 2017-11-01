@@ -8,23 +8,22 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
-using TaskManagerClient.CredentialServiceAbstractions;
 
-namespace ProcessStats.SpreadsheetProducer
+namespace MessageBroker
 {
-    public class SpreadsheetProducer : ISpreadsheetProducer
+    public class GoogleSpreadsheetsMessageProducer : ISpreadsheetsMessageProducer
     {
-        private readonly ISpreadsheetsCredentialService spreadsheetsCredentialService;
+        private readonly string clientSecret;
 
-        public SpreadsheetProducer(ISpreadsheetsCredentialService spreadsheetsCredentialService)
+        public GoogleSpreadsheetsMessageProducer(string clientSecret)
         {
-            this.spreadsheetsCredentialService = spreadsheetsCredentialService;
+            this.clientSecret = clientSecret;
         }
 
         public void Publish(string spreadsheetId, int sheetId, IEnumerable<object> rowData)
         {
             SheetsService sheetsService;
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(spreadsheetsCredentialService.ClientSecret)))
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(clientSecret)))
             {
                 var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,

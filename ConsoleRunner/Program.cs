@@ -60,11 +60,13 @@ namespace ConsoleRunner
             var credentialsService = container.Create<CredentialService>();
             container.RegisterInstance<ITrelloUserCredentialService>(credentialsService);
             container.RegisterInstance<IYouTrackCredentialService>(credentialsService);
-            container.RegisterInstance<ISpreadsheetsCredentialService>(credentialsService);
 
             var mbCredentials = credentialsService.MessageBrokerCredentials;
-            var emailMessageProducer = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
-            container.RegisterInstance<IMessageProducer>(emailMessageProducer);
+            var emailMessageProducer = new KonturEmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            container.RegisterInstance<IEmailMessageProducer>(emailMessageProducer);
+
+            var spreadsheetsMessageProducer = new GoogleSpreadsheetsMessageProducer(credentialsService.ClientSecret);
+            container.RegisterInstance<ISpreadsheetsMessageProducer>(spreadsheetsMessageProducer);
 
             return container;
         }

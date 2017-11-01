@@ -15,4 +15,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.30.0.1022" />
+  </ItemGroup>
+
 </Project>

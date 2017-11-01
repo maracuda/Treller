@@ -48,8 +48,8 @@ namespace WebApplication
         {
             var credentialService = container.Get<ICredentialService>();
             var mbCredentials = credentialService.MessageBrokerCredentials;
-            var emailMessageProducer = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
-            container.RegisterInstance<IMessageProducer>(emailMessageProducer);
+            var emailMessageProducer = new KonturEmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            container.RegisterInstance<IEmailMessageProducer>(emailMessageProducer);
         }
 
         private void HandleError(object sender, ErrorEventArgs args)
@@ -59,7 +59,7 @@ namespace WebApplication
                 messageBuilder.Append($"{Environment.NewLine}{args.Exception}{Environment.NewLine}{args.Exception.StackTrace}");
             messageBuilder.Append($"{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}Occured at {Environment.MachineName}.");
 
-            container.Get<IMessageProducer>().Publish(new Message
+            container.Get<IEmailMessageProducer>().Publish(new EmailMessage
             {
                 Recipients = new []{ "hvorost@skbkontur.ru" },
                 Title = args.Message,

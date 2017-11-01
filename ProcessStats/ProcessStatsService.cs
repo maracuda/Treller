@@ -4,7 +4,6 @@ using MessageBroker;
 using ProcessStats.Battles;
 using ProcessStats.Dev;
 using ProcessStats.Incidents;
-using ProcessStats.SpreadsheetProducer;
 
 namespace ProcessStats
 {
@@ -13,25 +12,25 @@ namespace ProcessStats
         private readonly IStatsReportBuilder statsReportBuilder;
         private readonly IBattlesStatsCrawler battlesStatsCrawler;
         private readonly IIncidentsStatsCrawler incidentsStatsCrawler;
-        private readonly ISpreadsheetProducer spreadsheetProducer;
-        private readonly IMessageProducer messageProducer;
+        private readonly ISpreadsheetsMessageProducer spreadsheetsMessageProducer;
+        private readonly IEmailMessageProducer emailMessageProducer;
 
         public ProcessStatsService(
             IStatsReportBuilder statsReportBuilder,
             IBattlesStatsCrawler battlesStatsCrawler,
             IIncidentsStatsCrawler incidentsStatsCrawler,
-            ISpreadsheetProducer spreadsheetProducer,
-            IMessageProducer messageProducer)
+            ISpreadsheetsMessageProducer spreadsheetsMessageProducer,
+            IEmailMessageProducer emailMessageProducer)
         {
             this.statsReportBuilder = statsReportBuilder;
             this.battlesStatsCrawler = battlesStatsCrawler;
             this.incidentsStatsCrawler = incidentsStatsCrawler;
-            this.spreadsheetProducer = spreadsheetProducer;
-            this.messageProducer = messageProducer;
+            this.spreadsheetsMessageProducer = spreadsheetsMessageProducer;
+            this.emailMessageProducer = emailMessageProducer;
         }
         public void BuildAllAndDeliverToManagers()
         {
-            var attachments = new List<Attachment>();
+            var attachments = new List<EmailAttachment>();
             AppendAsAttachment(attachments, statsReportBuilder.BuildForBillingDelivery());
             AppendAsAttachment(attachments, statsReportBuilder.BuildForDirection(KnownLists.MotocycleDone));
             AppendAsAttachment(attachments, statsReportBuilder.BuildForDirection(KnownLists.PortalAuthDone));
@@ -42,14 +41,14 @@ namespace ProcessStats
                                 "Спешу сообщить тебе актуальную статистику по работе команды.\r\n" +
                                 "Пожалуйста, посмотри как ей можно воспользоваться чтобы улучшить работу команды.\r\n\r\n" +
                                 "С любовью, твой автоматический уведомлятор.\r\n";
-            var message = new Message
+            var message = new EmailMessage
             {
                 Title = "Статистика работы команды Биллинга",
                 Recipients = new []{ "manager.billing@skbkontur.ru", "nesterenko@skbkontur.ru" },
                 Body = body,
-                Attachments = attachments.ToArray()
+                EmailAttachments = attachments.ToArray()
             };
-            messageProducer.Publish(message);
+            emailMessageProducer.Publish(message);
         }
 
         public void BuildInfractructureStatsAndDeliverToGuild()
@@ -60,16 +59,16 @@ namespace ProcessStats
         public void CollectAndPublishBattlesStats()
         {
             var battlesStats = battlesStatsCrawler.Collect(DateTime.Now.AddDays(-1).Date);
-            spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 724378477, new object[] { battlesStats.Date, battlesStats.CreatedCount, battlesStats.ReopenCount, battlesStats.FixedCount });
+            spreadsheetsMessageProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 724378477, new object[] { battlesStats.Date, battlesStats.CreatedCount, battlesStats.ReopenCount, battlesStats.FixedCount });
         }
 
         public void CollectAndPublishIncidentsStats()
         {
             var incidentsStats = incidentsStatsCrawler.Collect(DateTime.Now.AddDays(-1).Date);
-            spreadsheetProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 0, new object[] { incidentsStats.Date, incidentsStats.IncomingCount, incidentsStats.FixedCount });
+            spreadsheetsMessageProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 0, new object[] { incidentsStats.Date, incidentsStats.IncomingCount, incidentsStats.FixedCount });
         }
 
-        private static void AppendAsAttachment(List<Attachment> attachments, ReportModel[] reportModels)
+        private static void AppendAsAttachment(List<EmailAttachment> attachments, ReportModel[] reportModels)
         {
             foreach (var reportModel in reportModels)
             {
@@ -77,9 +76,9 @@ namespace ProcessStats
             }
         }
 
-        private static void AppendAsAttachment(List<Attachment> attachments, ReportModel reportModel)
+        private static void AppendAsAttachment(List<EmailAttachment> attachments, ReportModel reportModel)
         {
-            attachments.Add(new Attachment
+            attachments.Add(new EmailAttachment
             {
                 Name = reportModel.Name,
                 Content = reportModel.Content

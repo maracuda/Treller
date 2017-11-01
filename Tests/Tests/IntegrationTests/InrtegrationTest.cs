@@ -22,8 +22,8 @@ namespace Tests.Tests.IntegrationTests
             container.RegisterInstance<ISpreadsheetsCredentialService>(credentialsService);
 
             var mbCredentials = credentialsService.MessageBrokerCredentials;
-            var emailMessageProducer = new EmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
-            container.RegisterInstance<IMessageProducer>(emailMessageProducer);
+            var emailMessageProducer = new KonturEmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            container.RegisterInstance<IEmailMessageProducer>(emailMessageProducer);
         }
     }
 }

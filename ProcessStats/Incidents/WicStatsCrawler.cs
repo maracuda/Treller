@@ -20,7 +20,7 @@ namespace ProcessStats.Incidents
             {
                 IncomingCount = incomingCount,
                 FixedCount = fixedCount,
-                Date = date.AddDays(-1)
+                Date = date
             };
         }
 

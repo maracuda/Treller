@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace ProcessStats.SpreadsheetProducer
+namespace MessageBroker
 {
     //TODO: move to messagebroker (extend message broker to process different types of messages)
-    public interface ISpreadsheetProducer
+    public interface ISpreadsheetsMessageProducer
     {
         void Publish(string spreadsheetId, int sheetId, IEnumerable<object> rowData);
     }
