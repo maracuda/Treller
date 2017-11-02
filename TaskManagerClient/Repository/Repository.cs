@@ -24,67 +24,6 @@ namespace TaskManagerClient.Repository
             repositoryClient = repositoryClientFactory.CreateGitLabClient(repositorySettings.RepositoryId);
         }
 
-        public int BranchesNumber => repositoryClient.SelectAllBranches().Length;
-
-        public Branch[] SelectMergedOrOldBranches(TimeSpan olderThan)
-        {
-            var result = new List<Branch>();
-            var deadline = dateTimeFactory.Now.Subtract(olderThan);
-            var pageNumber = 1;
-            Branch[] currentBranches;
-            do
-            {
-                currentBranches = repositoryClient.SelectBranches(pageNumber, 30);
-                foreach (var branch in currentBranches)
-                {
-                    if (branch.Merged || branch.Commit.Committed_date < deadline)
-                    {
-                        result.Add(branch);
-                    }
-                }
-                pageNumber++;
-            } while (currentBranches.Length > 0);
-
-            return result.ToArray();
-        }
-
-        public ReleasedBranch[] SelectBranchesMergedToReleaseCandidate()
-        {
-            var pageNumber = 0;
-            var result = new Dictionary<string, ReleasedBranch>(StringComparer.OrdinalIgnoreCase);
-            var branches = repositoryClient.SelectAllBranches().Select(x => x.Name).ToArray();
-
-            Commit releaseCandidateBranchedCommit = null;
-            while (releaseCandidateBranchedCommit == null)
-            {
-                var repoCommits = repositoryClient.SelectLastCommits(repositorySettings.ReleaseCandidateBranchName, pageNumber++, 100);
-                foreach (var repoCommit in repoCommits)
-                {
-                    if (!repoCommit.IsMerge())
-                    {
-                        continue;
-                    }
-
-                    if (repoCommit.IsMerge(repositorySettings.ReleaseCandidateBranchName, repositorySettings.ReleaseBranchName))
-                    {
-                        releaseCandidateBranchedCommit = repoCommit;
-                        break;
-                    }
-
-                    var mergedBranch = branches.FirstOrDefault(branch => repoCommit.IsMerge(branch, repositorySettings.ReleaseCandidateBranchName));
-                    if (mergedBranch != null && !result.ContainsKey(mergedBranch))
-                    {
-                        result.Add(mergedBranch, new ReleasedBranch
-                                                     {
-                                                         Name = mergedBranch,
-                                                         LastCommit = repoCommit
-                                                     });
-                    }
-                }
-            }
-            return result.Select(x => x.Value).Where(x => !repositorySettings.NotTrackedBrancheNames.Contains(x.Name)).ToArray();
-        }
-
         public Branch[] SearchForOldBranches(TimeSpan olderThan, TimeSpan? notOlderThan = null)
         {
             if (notOlderThan.HasValue && notOlderThan.Value < olderThan)
@@ -96,52 +35,6 @@ namespace TaskManagerClient.Repository
             return SelectAllBranchesExceptNotTracked()
                     .Where(x => maxLastActivityDate < x.Commit.Committed_date && x.Commit.Committed_date < minLastActivityDate)
                     .ToArray();
-        }
-
-        public ReleasedBranch[] SearchForMergedToReleaseBranches(TimeSpan notOlderThan)
-        {
-            var lastCommitDate = dateTimeFactory.Now.Subtract(notOlderThan);
-            var branchNames = SelectAllBranchesExceptNotTracked().Select(x => x.Name).ToArray();
-
-            var pageNumber = 0;
-            var result = new List<ReleasedBranch>();
-
-            while (true)
-            {
-                var commits = repositoryClient.SelectLastCommits(repositorySettings.ReleaseBranchName, pageNumber++, 100)
-                              .Where(c => c.Created_at > lastCommitDate)
-                              .ToArray();
-                foreach (var commit in commits)
-                {
-                    if (!commit.IsMerge())
-                        continue;
-
-                    if (commit.IsMerge(repositorySettings.ReleaseBranchName))
-                    {
-                        var branchName = commit.ParseFromBranchName();
-                        if (branchName.HasNoValue)
-                        {
-                            //TODO: hande this case
-                            continue;
-                        }
-
-                        if (branchNames.Contains(branchName.Value, StringComparer.OrdinalIgnoreCase))
-                        {
-                            result.Add(new ReleasedBranch
-                            {
-                                Name = branchName.Value,
-                                LastCommit = commit,
-                                IsReleased = true
-                            });
-                        }
-                    }
-                }
-
-                if (commits.Length < 100)
-                {
-                    return result.ToArray();
-                }
-            }
         }
 
         private IEnumerable<Branch> SelectAllBranchesExceptNotTracked()

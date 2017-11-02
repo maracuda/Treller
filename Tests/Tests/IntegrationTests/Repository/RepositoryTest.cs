@@ -6,9 +6,9 @@ namespace Tests.Tests.IntegrationTests.Repository
 {
     public class RepositoryTest : IntegrationTest
     {
-        private IRepository repository;
+        private readonly IRepository repository;
 
-        public RepositoryTest() : base()
+        public RepositoryTest()
         {
             repository = container.Get<IRepository>();
         }
@@ -18,13 +18,6 @@ namespace Tests.Tests.IntegrationTests.Repository
         {
             var actual = repository.SearchForOldBranches(TimeSpan.FromDays(1));
             Assert.True(actual.Length > 10);
-        }
-
-        [Fact]
-        public void TestSearchForMergedBranches()
-        {
-            var actual = repository.SearchForMergedToReleaseBranches(TimeSpan.FromDays(10));
-            Assert.True(actual.Length > 0);
         }
     }
 }
