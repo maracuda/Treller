@@ -3,5 +3,6 @@
     public interface IBranchNotificator
     {
         void NotifyCommitersAboutOldBranches();
+        void DeleteMergedBranchesAndNotifyCommiters();
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TaskManagerClient.Repository.BusinessObjects;
 
@@ -6,18 +5,16 @@ namespace RepositoryHooks.BranchNotification
 {
     public class BranchClassificator
     {
-        private readonly DateTime branchDeadlineDate;
         private readonly Dictionary<string, HashSet<string>> index;
 
-        private BranchClassificator(DateTime branchDeadlineDate)
+        private BranchClassificator()
         {
-            this.branchDeadlineDate = branchDeadlineDate;
             index = new Dictionary<string, HashSet<string>>();
         }
 
-        public static BranchClassificator Create(DateTime branchDeadlineDate, Branch[] branches)
+        public static BranchClassificator Create(Branch[] branches)
         {
-            var result = new BranchClassificator(branchDeadlineDate);
+            var result = new BranchClassificator();
             foreach (var branch in branches)
             {
                 result.Classify(branch);
@@ -31,18 +28,10 @@ namespace RepositoryHooks.BranchNotification
             {
                 index.Add(branch.Commit.Committer_email, new HashSet<string>());
             }
-
-            if (branch.Merged)
-            {
-                index[branch.Commit.Committer_email].Add(branch.Name);
-            }
-            if (branch.Commit.Committed_date < branchDeadlineDate)
-            {
-                index[branch.Commit.Committer_email].Add(branch.Name);
-            }
+            index[branch.Commit.Committer_email].Add(branch.Name);
         }
 
-        public IEnumerable<string> GetCommitersEmail => index.Keys;
+        public IEnumerable<string> CommiterEmails => index.Keys;
 
         public IEnumerable<string> GetOldBranchesBy(string commiterEmail)
         {

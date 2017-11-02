@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Infrastructure.Common;
 using MessageBroker;
 using TaskManagerClient.Repository;
 
@@ -9,37 +8,48 @@ namespace RepositoryHooks.BranchNotification
     public class BranchNotificator : IBranchNotificator
     {
         private static readonly TimeSpan branchDeadlinePeriod = TimeSpan.FromDays(90);
+        private static readonly TimeSpan mergedBranchDeadlinePeriod = TimeSpan.FromDays(3);
 
         private readonly IRepository repository;
-        private readonly IRepositoryNotificationBuilder repositoryNotificationBuilder;
+        private readonly IRepositoryMessageBuilder repositoryMessageBuilder;
         private readonly IEmailMessageProducer emailMessageProducer;
-        private readonly IDateTimeFactory dateTimeFactory;
 
         public BranchNotificator(
             IRepository repository,
-            IRepositoryNotificationBuilder repositoryNotificationBuilder,
-            IEmailMessageProducer emailMessageProducer,
-            IDateTimeFactory dateTimeFactory)
+            IRepositoryMessageBuilder repositoryMessageBuilder,
+            IEmailMessageProducer emailMessageProducer)
         {
             this.repository = repository;
-            this.repositoryNotificationBuilder = repositoryNotificationBuilder;
+            this.repositoryMessageBuilder = repositoryMessageBuilder;
             this.emailMessageProducer = emailMessageProducer;
-            this.dateTimeFactory = dateTimeFactory;
         }
 
         public void NotifyCommitersAboutOldBranches()
         {
-            var branches = repository.SearchForOldBranches(branchDeadlinePeriod);
-            var branchesClassificator = BranchClassificator.Create(dateTimeFactory.Now.Subtract(branchDeadlinePeriod), branches);
+            var oldBranches = repository.SearchForOldBranches(branchDeadlinePeriod)
+                                     .Where(b => !b.Merged)
+                                     .ToArray();
+            var branchesClassificator = BranchClassificator.Create(oldBranches);
             
-            foreach (var commiterEmail in branchesClassificator.GetCommitersEmail)
+            foreach (var commiterEmail in branchesClassificator.CommiterEmails)
             {
                 var branchesPerCommiter = branchesClassificator.GetOldBranchesBy(commiterEmail);
                 if (branchesPerCommiter.Any())
                 {
-                    var message = repositoryNotificationBuilder.Build(commiterEmail, branchesPerCommiter);
+                    var message = repositoryMessageBuilder.CreateOldBranchesMessage(commiterEmail, branchesPerCommiter);
                     emailMessageProducer.Publish(message);
                 }
+            }
+        }
+
+        public void DeleteMergedBranchesAndNotifyCommiters()
+        {
+            var branchesToDelete = repository.SearchForOldBranches(mergedBranchDeadlinePeriod).Where(b => b.Merged).ToArray();
+            foreach (var branch in branchesToDelete)
+            {
+                repository.DeleteBranch(branch.Name);
+                var message = repositoryMessageBuilder.CreateBranchDeletedMessage(branch.Commit.Committer_email, branch.Name);
+                emailMessageProducer.Publish(message);
             }
         }
     }

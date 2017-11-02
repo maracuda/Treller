@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.Common;
 using TaskManagerClient.Repository.BusinessObjects;
@@ -32,15 +31,16 @@ namespace TaskManagerClient.Repository
             var now = dateTimeFactory.Now;
             var minLastActivityDate = now.Subtract(olderThan);
             var maxLastActivityDate = notOlderThan.HasValue ? now.Subtract(notOlderThan.Value) : DateTime.MinValue;
-            return SelectAllBranchesExceptNotTracked()
-                    .Where(x => maxLastActivityDate < x.Commit.Committed_date && x.Commit.Committed_date < minLastActivityDate)
-                    .ToArray();
+            //TODO: use batch method for selecting branches
+            return repositoryClient.SelectAllBranches()
+                                   .Where(x => !repositorySettings.NotTrackedBrancheNames.Contains(x.Name))
+                                   .Where(x => maxLastActivityDate < x.Commit.Committed_date && x.Commit.Committed_date < minLastActivityDate)
+                                   .ToArray();
         }
 
-        private IEnumerable<Branch> SelectAllBranchesExceptNotTracked()
+        public void DeleteBranch(string branchName)
         {
-            return repositoryClient.SelectAllBranches()
-                                   .Where(x => !repositorySettings.NotTrackedBrancheNames.Contains(x.Name));
+            repositoryClient.DeleteBranch(branchName);
         }
     }
 }

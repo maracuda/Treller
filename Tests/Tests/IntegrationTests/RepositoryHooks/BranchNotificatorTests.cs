@@ -13,9 +13,15 @@ namespace Tests.Tests.IntegrationTests.RepositoryHooks
         }
 
         [Fact]
-        public void SendNotifications()
+        public void SendNotificationsAboutOldBranches()
         {
             branchNotificator.NotifyCommitersAboutOldBranches();
+        }
+
+        [Fact]
+        public void DeleteMergedBranches()
+        {
+            branchNotificator.DeleteMergedBranchesAndNotifyCommiters();
         }
     }
 }
