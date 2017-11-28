@@ -56,15 +56,23 @@ namespace ProcessStats
             throw new System.NotImplementedException();
         }
 
-        public void CollectAndPublishBattlesStats()
+        public void CollectAndPublishBattlesStats(DateTime? date = null)
         {
-            var battlesStats = battlesStatsCrawler.Collect(DateTime.Now.AddDays(-1).Date);
+            if (!date.HasValue)
+            {
+                date = DateTime.Now.AddDays(-1).Date;
+            }
+            var battlesStats = battlesStatsCrawler.Collect(date.Value);
             spreadsheetsMessageProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 724378477, new object[] { battlesStats.Date, battlesStats.CreatedCount, battlesStats.ReopenCount, battlesStats.FixedCount });
         }
 
-        public void CollectAndPublishIncidentsStats()
+        public void CollectAndPublishIncidentsStats(DateTime? date = null)
         {
-            var incidentsStats = incidentsStatsCrawler.Collect(DateTime.Now.AddDays(-1).Date);
+            if (!date.HasValue)
+            {
+                date = DateTime.Now.AddDays(-1).Date;
+            }
+            var incidentsStats = incidentsStatsCrawler.Collect(date.Value);
             spreadsheetsMessageProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 0, new object[] { incidentsStats.Date, incidentsStats.IncomingCount, incidentsStats.FixedCount });
         }
 
