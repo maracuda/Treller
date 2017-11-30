@@ -16,11 +16,17 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
         [Fact]
         public void CollectIncidentsAndBattles()
         {
-            var dates = new[] { new DateTime(2017, 11, 17) };
+            var dates = new[] { new DateTime(2017, 11, 29) };
             foreach (var dateTime in dates)
             {
                 processStatsService.CollectAndPublishIncidentsStats(dateTime);
             }
+        }
+
+        [Fact]
+        public void CollectProjectStats()
+        {
+            processStatsService.BuildAllAndDeliverToManagers();
         }
     }
 }

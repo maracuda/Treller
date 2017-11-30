@@ -20,88 +20,81 @@ namespace MessageBroker
             this.clientSecret = clientSecret;
         }
 
-        public void Publish(string spreadsheetId, int sheetId, IEnumerable<object> rowData)
+        public void Append(string spreadsheetId, string sheetName, DataRow dataRow)
         {
-            SheetsService sheetsService;
+            ExecuteCommands(spreadsheetId, sheetsService =>
+            {
+                var sheetId = ReadSheetId(sheetsService, spreadsheetId, sheetName);
+                return new List<Request>
+                {
+                    RequestFactory.CreateAppendRowRequest(sheetId, dataRow.Values)
+                };
+            });
+        }
+
+        public void Rewrite(string spreadsheetId, string sheetName, DataRow[] dataRows)
+        {
+            ExecuteCommands(spreadsheetId, sheetsService =>
+            {
+                var result = new List<Request>();
+
+                var sheet = sheetsService.Spreadsheets.Get(spreadsheetId).Execute().Sheets.FirstOrDefault(s => s.Properties.Title.Equals(sheetName));
+                if (sheet != null)
+                {
+                    result.Add(RequestFactory.CreateCleanSheetRequest(sheet.Properties.SheetId.Value));
+                }
+                else
+                {
+                    sheetsService.Spreadsheets.BatchUpdate(new BatchUpdateSpreadsheetRequest
+                    {
+                        Requests = new List<Request> { RequestFactory.RequestCreateCreateSheetRequest(sheetName) }
+
+                    }, spreadsheetId).Execute();
+                    sheet = sheetsService.Spreadsheets.Get(spreadsheetId).Execute().Sheets.First(s => s.Properties.Title.Equals(sheetName));
+                }
+
+                foreach (var dataRow in dataRows)
+                {
+                    result.Add(RequestFactory.CreateAppendRowRequest(sheet.Properties.SheetId.Value, dataRow.Values));
+                }
+
+                return result;
+            });
+        }
+
+        private void ExecuteCommands(string spreadsheetId, Func<SheetsService, IList<Request>> command)
+        {
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(clientSecret)))
             {
                 var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
-                    new[] {SheetsService.Scope.Spreadsheets},
+                    new[] { SheetsService.Scope.Spreadsheets },
                     "user",
                     CancellationToken.None).Result;
-                sheetsService = new SheetsService(new BaseClientService.Initializer
+
+                using (var sheetsService = new SheetsService(new BaseClientService.Initializer
                 {
                     HttpClientInitializer = credential,
                     ApplicationName = "Treller"
-                });
+                }))
+                {
+                    var requests = command(sheetsService);
+                    sheetsService.Spreadsheets.BatchUpdate(new BatchUpdateSpreadsheetRequest { Requests = requests }, spreadsheetId).Execute();
+                }
             }
-
-            AppendRow(sheetsService, spreadsheetId, sheetId, rowData);
         }
 
-        private static void AppendRow(SheetsService service, string spreadSheetId, int sheetId, IEnumerable<object> rowData)
+        private static IList<Sheet> ListSheets(SheetsService service, string spreadsheetId)
         {
-            var updateRequest = new Request
-            {
-                AppendCells = new AppendCellsRequest
-                {
-                    Fields = "*",
-                    Rows = new List<RowData>
-                    {
-                        new RowData
-                        {
-                            Values = rowData.Select(ConvertToCellData).ToList()
-                        }
-                    },
-                    SheetId = sheetId
-                }
-            };
-            service.Spreadsheets.BatchUpdate(new BatchUpdateSpreadsheetRequest { Requests = new List<Request> {updateRequest} }, spreadSheetId).Execute();
+            return service.Spreadsheets.Get(spreadsheetId).Execute().Sheets;
         }
 
-        private static CellData ConvertToCellData(object value)
+        private int ReadSheetId(SheetsService service, string spreadsheetId, string sheetName)
         {
-            if (value is int intValue)
-            {
-                return new CellData
-                {
-                    UserEnteredValue = new ExtendedValue
-                    {
-                        NumberValue = intValue
-                    }
-                };
-            }
-
-            //TODO: try to find another way to post dates (without magic dates)
-            if (value is DateTime date)
-            {
-                var magicDate = new DateTime(1899, 12, 30);
-                var numberOfDaysSinceMagicDate = date.Subtract(magicDate).Days;
-                return new CellData
-                {
-
-                    UserEnteredValue = new ExtendedValue
-                    {
-                        NumberValue = numberOfDaysSinceMagicDate
-                    },
-                    UserEnteredFormat = new CellFormat
-                    {
-                        NumberFormat = new NumberFormat
-                        {
-                            Type = "DATE"
-                        }
-                    }
-                };
-            }
-
-            return new CellData
-            {
-                UserEnteredValue = new ExtendedValue
-                {
-                    StringValue = value.ToString()
-                }
-            };
+            var sheet = ListSheets(service, spreadsheetId).FirstOrDefault(s => s.Properties.Title.Equals(sheetName, StringComparison.OrdinalIgnoreCase));
+            if (sheet?.Properties.SheetId == null)
+                throw new Exception($"Fail to find sheet with name {sheetName} at spreadsheet with id {spreadsheetId}");
+            return sheet.Properties.SheetId.Value;
         }
     }
 }

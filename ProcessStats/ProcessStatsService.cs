@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MessageBroker;
 using ProcessStats.Battles;
 using ProcessStats.Dev;
@@ -13,42 +14,31 @@ namespace ProcessStats
         private readonly IBattlesStatsCrawler battlesStatsCrawler;
         private readonly IIncidentsStatsCrawler incidentsStatsCrawler;
         private readonly ISpreadsheetsMessageProducer spreadsheetsMessageProducer;
-        private readonly IEmailMessageProducer emailMessageProducer;
 
         public ProcessStatsService(
             IStatsReportBuilder statsReportBuilder,
             IBattlesStatsCrawler battlesStatsCrawler,
             IIncidentsStatsCrawler incidentsStatsCrawler,
-            ISpreadsheetsMessageProducer spreadsheetsMessageProducer,
-            IEmailMessageProducer emailMessageProducer)
+            ISpreadsheetsMessageProducer spreadsheetsMessageProducer)
         {
             this.statsReportBuilder = statsReportBuilder;
             this.battlesStatsCrawler = battlesStatsCrawler;
             this.incidentsStatsCrawler = incidentsStatsCrawler;
             this.spreadsheetsMessageProducer = spreadsheetsMessageProducer;
-            this.emailMessageProducer = emailMessageProducer;
         }
         public void BuildAllAndDeliverToManagers()
         {
-            var attachments = new List<EmailAttachment>();
-            AppendAsAttachment(attachments, statsReportBuilder.BuildForBillingDelivery());
-            AppendAsAttachment(attachments, statsReportBuilder.BuildForDirection(KnownLists.MotocycleDone));
-            AppendAsAttachment(attachments, statsReportBuilder.BuildForDirection(KnownLists.PortalAuthDone));
-            AppendAsAttachment(attachments, statsReportBuilder.BuildForDirection(KnownLists.MarketDone));
-            AppendAsAttachment(attachments, statsReportBuilder.BuildForDirection(KnownLists.DiscountsDone));
+            var reportsList = new List<ReportModel>();
+            reportsList.AddRange(statsReportBuilder.BuildForBillingDelivery());
+            reportsList.Add(statsReportBuilder.BuildForDirection(KnownLists.MotocycleDone));
+            reportsList.Add(statsReportBuilder.BuildForDirection(KnownLists.PortalAuthDone));
+            reportsList.Add(statsReportBuilder.BuildForDirection(KnownLists.MarketDone));
+            reportsList.Add(statsReportBuilder.BuildForDirection(KnownLists.DiscountsDone));
 
-            const string body = "Дорогой менеджер!\r\n\r\n" +
-                                "Спешу сообщить тебе актуальную статистику по работе команды.\r\n" +
-                                "Пожалуйста, посмотри как ей можно воспользоваться чтобы улучшить работу команды.\r\n\r\n" +
-                                "С любовью, твой автоматический уведомлятор.\r\n";
-            var message = new EmailMessage
+            foreach (var reportModel in reportsList)
             {
-                Title = "Статистика работы команды Биллинга",
-                Recipients = new []{ "manager.billing@skbkontur.ru", "nesterenko@skbkontur.ru" },
-                Body = body,
-                EmailAttachments = attachments.ToArray()
-            };
-            emailMessageProducer.Publish(message);
+                spreadsheetsMessageProducer.Rewrite("1HxfCoYYQsyevahb1qnHqjTgxVvA_zw_a8nM0ijE5Bm0", reportModel.Name, reportModel.Rows.Select(r => DataRow.Create(r.Values)).ToArray());
+            }
         }
 
         public void BuildInfractructureStatsAndDeliverToGuild()
@@ -63,7 +53,8 @@ namespace ProcessStats
                 date = DateTime.Now.AddDays(-1).Date;
             }
             var battlesStats = battlesStatsCrawler.Collect(date.Value);
-            spreadsheetsMessageProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 724378477, new object[] { battlesStats.Date, battlesStats.CreatedCount, battlesStats.ReopenCount, battlesStats.FixedCount });
+            var dataRow = DataRow.Create(battlesStats.Date, battlesStats.CreatedCount, battlesStats.ReopenCount, battlesStats.FixedCount);
+            spreadsheetsMessageProducer.Append("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", "Батлы", dataRow);
         }
 
         public void CollectAndPublishIncidentsStats(DateTime? date = null)
@@ -73,24 +64,8 @@ namespace ProcessStats
                 date = DateTime.Now.AddDays(-1).Date;
             }
             var incidentsStats = incidentsStatsCrawler.Collect(date.Value);
-            spreadsheetsMessageProducer.Publish("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", 0, new object[] { incidentsStats.Date, incidentsStats.IncomingCount, incidentsStats.FixedCount });
-        }
-
-        private static void AppendAsAttachment(List<EmailAttachment> attachments, ReportModel[] reportModels)
-        {
-            foreach (var reportModel in reportModels)
-            {
-                AppendAsAttachment(attachments, reportModel);
-            }
-        }
-
-        private static void AppendAsAttachment(List<EmailAttachment> attachments, ReportModel reportModel)
-        {
-            attachments.Add(new EmailAttachment
-            {
-                Name = reportModel.Name,
-                Content = reportModel.Content
-            });
+            var dataRow = DataRow.Create(incidentsStats.Date, incidentsStats.IncomingCount, incidentsStats.FixedCount);
+            spreadsheetsMessageProducer.Append("1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE", "Инциденты", dataRow);
         }
     }
 }

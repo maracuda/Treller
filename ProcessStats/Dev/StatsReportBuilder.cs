@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TaskManagerClient;
 using TaskManagerClient.BusinessObjects.TaskManager;
 
@@ -9,7 +8,6 @@ namespace ProcessStats.Dev
 {
     public class StatsReportBuilder : IStatsReportBuilder
     {
-        private static readonly Encoding defaultReportEncoding = Encoding.GetEncoding("windows-1251");
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardsAggregator cardsAggregator;
 
@@ -30,11 +28,11 @@ namespace ProcessStats.Dev
 
             var reportsList = new List<ReportModel>
             {
-                new ReportModel("full.csv", Build(aggregation, listNames, listNameToIdIndex)),
-                new ReportModel("product.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("crm.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.CrmQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("infractructure.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.InfrastructureQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("support.csv", Build(aggregation.FilterBy(KnownTaskQueuesLabels.SupportQueueLabel), listNames, listNameToIdIndex))
+                new ReportModel("full", Build(aggregation, listNames, listNameToIdIndex)),
+                new ReportModel("product", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("crm", Build(aggregation.FilterBy(KnownTaskQueuesLabels.CrmQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("infractructure", Build(aggregation.FilterBy(KnownTaskQueuesLabels.InfrastructureQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("support", Build(aggregation.FilterBy(KnownTaskQueuesLabels.SupportQueueLabel), listNames, listNameToIdIndex))
             };
             return reportsList.ToArray();
         }
@@ -46,60 +44,62 @@ namespace ProcessStats.Dev
             var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
             var aggregation = cardsAggregator.Aggregate(doneList, additionalDoneList);
             var content = Build(aggregation, listNames, listNameToIdIndex);
-            return new ReportModel($"{doneList.BoardId}.csv", content);
+            return new ReportModel(doneList.BoardId, content);
         }
 
-        private static byte[] Build(CardsAggregationModel cardsAggregation, string[] listNames, Dictionary<string, string> listNameToIdIndex)
+        private static IList<ReportRow> Build(CardsAggregationModel cardsAggregation, string[] listNames, Dictionary<string, string> listNameToIdIndex)
         {
-            var strBuilder = new StringBuilder();
-            AppendReportHeader(strBuilder, listNames);
+            var rowsList = new List<ReportRow> {BuildHeader(listNames)};
             foreach (var cardStats in cardsAggregation.CardsStats)
             {
-                AppendCardStats(strBuilder, cardStats, listNames, listNameToIdIndex);
+                rowsList.Add(BuildCardStats(cardStats, listNames, listNameToIdIndex));
             }
-            strBuilder.AppendLine(string.Empty);
-            AppendAgregationStats(strBuilder, "Full aggregation stats", cardsAggregation.FullAggregationStats);
-            AppendAgregationStats(strBuilder, "S tasks aggregation stats", cardsAggregation.SAggregationStats);
-            AppendAgregationStats(strBuilder, "M tasks aggregation stats", cardsAggregation.MAggregationStats);
-            AppendAgregationStats(strBuilder, "L tasks aggregation stats", cardsAggregation.LAggregationStats);
-            AppendAgregationStats(strBuilder, "XL tasks aggregation stats", cardsAggregation.XLAggregationStats);
-            return defaultReportEncoding.GetBytes(strBuilder.ToString());
+            rowsList.Add(ReportRow.Empty);
+            rowsList.AddRange(BuildAgregationStats("Full aggregation stats", cardsAggregation.FullAggregationStats));
+            rowsList.AddRange(BuildAgregationStats("S tasks aggregation stats", cardsAggregation.SAggregationStats));
+            rowsList.AddRange(BuildAgregationStats("M tasks aggregation stats", cardsAggregation.MAggregationStats));
+            rowsList.AddRange(BuildAgregationStats("L tasks aggregation stats", cardsAggregation.LAggregationStats));
+            rowsList.AddRange(BuildAgregationStats("XL tasks aggregation stats", cardsAggregation.XLAggregationStats));
+
+            return rowsList;
         }
 
-        private static void AppendAgregationStats(StringBuilder strBuilder, string header, AggregationTimeStats cardsAggregationStats)
+        private static ReportRow[] BuildAgregationStats(string header, AggregationTimeStats cardsAggregationStats)
         {
             if (cardsAggregationStats.AreEmpty())
-                return;
+                return new ReportRow[0];
 
-            strBuilder.AppendLine($"{header};");
-            strBuilder.AppendLine($"Average cycle time;{FormatTimeSpan(cardsAggregationStats.AverageTime)};");
-            strBuilder.AppendLine($"Longest cycle time;{FormatTimeSpan(cardsAggregationStats.LongestTimeCard.CycleTime)};cardName {cardsAggregationStats.LongestTimeCard.Name};");
-            strBuilder.AppendLine($"Shortest cycle time;{FormatTimeSpan(cardsAggregationStats.ShortestTimeCard.CycleTime)};cardName {cardsAggregationStats.ShortestTimeCard.Name};");
+            return new[]
+            {
+                ReportRow.Create(header),
+                ReportRow.Create("Average cycle time", FormatTimeSpan(cardsAggregationStats.AverageTime)),
+                ReportRow.Create("Longest cycle time", FormatTimeSpan(cardsAggregationStats.LongestTimeCard.CycleTime), $"cardName {cardsAggregationStats.LongestTimeCard.Name}"), 
+                ReportRow.Create("Shortest cycle time", FormatTimeSpan(cardsAggregationStats.ShortestTimeCard.CycleTime), $"cardName {cardsAggregationStats.ShortestTimeCard.Name}"), 
+            };
         }
 
-        private static void AppendCardStats(StringBuilder strBuilder, CardStatsModel cardStats, string[] listNames, Dictionary<string, string> listNameToIdIndex)
+        private static ReportRow BuildCardStats(CardStatsModel cardStats, string[] listNames, Dictionary<string, string> listNameToIdIndex)
         {
-            strBuilder.Append($"{cardStats.Name};{cardStats.Size};{FormatTimeSpan(cardStats.CycleTime)};");
+            var reportRow = ReportRow.Create(cardStats.Name, cardStats.Size, FormatTimeSpan(cardStats.CycleTime));
             foreach (var listName in listNames)
             {
                 var listId = listNameToIdIndex[listName];
                 if (cardStats.ListStats.ContainsKey(listId))
                 {
-                    strBuilder.Append($"{FormatTimeSpan(cardStats.ListStats[listId])}");
+                    reportRow.Append(FormatTimeSpan(cardStats.ListStats[listId]));
                 }
-                strBuilder.Append(";");
             }
-            strBuilder.AppendLine();
+            return reportRow;
         }
 
-        private static void AppendReportHeader(StringBuilder strBuilder, string[] listNames)
+        private static ReportRow BuildHeader(string[] listNames)
         {
-            strBuilder.Append("Name;Size;CycleTime;");
+            var reportRow = ReportRow.Create("Name", "Size", "CycleTime");
             foreach (var listName in listNames)
             {
-                strBuilder.Append($"{listName};");
+                reportRow.Append(listName);
             }
-            strBuilder.AppendLine();
+            return reportRow;
         }
 
         private static string FormatTimeSpan(TimeSpan timeSpan)

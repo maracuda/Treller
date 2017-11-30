@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace MessageBroker
+﻿namespace MessageBroker
 {
-    //TODO: move to messagebroker (extend message broker to process different types of messages)
     public interface ISpreadsheetsMessageProducer
     {
-        void Publish(string spreadsheetId, int sheetId, IEnumerable<object> rowData);
+        void Append(string spreadsheetId, string sheetName, DataRow dataRow);
+        void Rewrite(string spreadsheetId, string sheetName, DataRow[] dataRows);
     }
 }

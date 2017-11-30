@@ -42,7 +42,7 @@ namespace RepositoryHooks.BranchNotification
             return new EmailMessage
             {
                 Recipients = new[] { commiterEmail },
-                Title = "Уведомление об удаленной ветки",
+                Title = "Уведомление об удаленной ветке",
                 Body = bodyBuilder.ToString(),
                 CopyTo = "hvorost@skbkontur.ru"
             };

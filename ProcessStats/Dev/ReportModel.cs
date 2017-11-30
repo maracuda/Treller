@@ -1,14 +1,17 @@
+using System.Collections.Generic;
+
 namespace ProcessStats.Dev
 {
     public class ReportModel
     {
-        public ReportModel(string name, byte[] content)
+        public ReportModel(string name, IEnumerable<ReportRow> reportRows)
         {
             Name = name;
-            Content = content;
+            Rows = reportRows;
         }
 
         public string Name { get; }
-        public byte[] Content { get; }
+
+        public IEnumerable<ReportRow> Rows { get; }
     }
 }
