@@ -50,7 +50,9 @@ namespace ConsoleRunner
             }
 
             Console.WriteLine($"begin method {method.Name} invocation.");
-            method.Invoke(serviceInstance, new object[0]);
+            var parametersCount = method.GetParameters().Length;
+            var parameters = new object[parametersCount];
+            method.Invoke(serviceInstance, parameters);
             Console.WriteLine("end");
         }
 
