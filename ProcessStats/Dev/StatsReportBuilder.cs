@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaskManagerClient;
-using TaskManagerClient.BusinessObjects.TaskManager;
 
 namespace ProcessStats.Dev
 {
     public class StatsReportBuilder : IStatsReportBuilder
     {
+        private const string organizationName = "konturbilling";
         private readonly ITaskManagerClient taskManagerClient;
         private readonly ICardsAggregator cardsAggregator;
 
@@ -21,30 +21,36 @@ namespace ProcessStats.Dev
 
         public ReportModel[] BuildForBillingDelivery()
         {
-            var lists = taskManagerClient.GetBoardLists(KnownBoards.BillingDelivery.Id);
+            var lists = taskManagerClient.GetBoardLists("58d22275df59d0815216e1f0");
             var listNames = lists.Select(l => l.Name).ToArray();
+            var doneList = lists.First(l => l.Name.Contains("Готово"));
             var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
-            var aggregation = cardsAggregator.Aggregate(KnownLists.BillingDeliveryDone, KnownLists.BillingDeliveryFeedback);
+            var aggregation = cardsAggregator.Aggregate(doneList);
 
             var reportsList = new List<ReportModel>
             {
-                new ReportModel("full", Build(aggregation, listNames, listNameToIdIndex)),
-                new ReportModel("product", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("crm", Build(aggregation.FilterBy(KnownTaskQueuesLabels.CrmQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("infractructure", Build(aggregation.FilterBy(KnownTaskQueuesLabels.InfrastructureQueueLabel), listNames, listNameToIdIndex)),
-                new ReportModel("support", Build(aggregation.FilterBy(KnownTaskQueuesLabels.SupportQueueLabel), listNames, listNameToIdIndex))
+                new ReportModel("БД", Build(aggregation, listNames, listNameToIdIndex)),
+                new ReportModel("БД.Продукты", Build(aggregation.FilterBy(KnownTaskQueuesLabels.ProductQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("БД.CRM", Build(aggregation.FilterBy(KnownTaskQueuesLabels.CrmQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("БД.Инфраструктура", Build(aggregation.FilterBy(KnownTaskQueuesLabels.InfrastructureQueueLabel), listNames, listNameToIdIndex)),
+                new ReportModel("БД.Эксплуатация", Build(aggregation.FilterBy(KnownTaskQueuesLabels.SupportQueueLabel), listNames, listNameToIdIndex))
             };
             return reportsList.ToArray();
         }
 
-        public ReportModel BuildForDirection(BoardList doneList, BoardList additionalDoneList = null)
+        public IEnumerable<ReportModel> BuildForDirections()
         {
-            var lists = taskManagerClient.GetBoardLists(doneList.BoardId);
-            var listNames = lists.Select(l => l.Name).ToArray();
-            var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
-            var aggregation = cardsAggregator.Aggregate(doneList, additionalDoneList);
-            var content = Build(aggregation, listNames, listNameToIdIndex);
-            return new ReportModel(doneList.BoardId, content);
+            var boards = taskManagerClient.GetAllBoards(organizationName).ToArray();
+            var directionBoards = boards.Where(b => b.Name.StartsWith("[Н]") && b.IsClosed == false);
+            foreach (var directionBoard in directionBoards)
+            {
+                var lists = taskManagerClient.GetBoardLists(directionBoard.Id);
+                var doneList = lists.FirstOrDefault(l => l.Name.Contains("Готово")) ?? lists.Last();
+                var listNames = lists.Select(l => l.Name).ToArray();
+                var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
+                var aggregation = cardsAggregator.Aggregate(doneList);
+                yield return new ReportModel(directionBoard.Name, Build(aggregation, listNames, listNameToIdIndex));
+            }
         }
 
         private static IList<ReportRow> Build(CardsAggregationModel cardsAggregation, string[] listNames, Dictionary<string, string> listNameToIdIndex)

@@ -30,10 +30,7 @@ namespace ProcessStats
         {
             var reportsList = new List<ReportModel>();
             reportsList.AddRange(statsReportBuilder.BuildForBillingDelivery());
-            reportsList.Add(statsReportBuilder.BuildForDirection(KnownLists.MotocycleDone));
-            reportsList.Add(statsReportBuilder.BuildForDirection(KnownLists.PortalAuthDone));
-            reportsList.Add(statsReportBuilder.BuildForDirection(KnownLists.MarketDone));
-            reportsList.Add(statsReportBuilder.BuildForDirection(KnownLists.DiscountsDone));
+            reportsList.AddRange(statsReportBuilder.BuildForDirections());
 
             foreach (var reportModel in reportsList)
             {

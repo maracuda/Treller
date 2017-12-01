@@ -14,13 +14,19 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
         }
 
         [Fact]
-        public void CollectIncidentsAndBattles()
+        public void CollectIncidents()
         {
             var dates = new[] { new DateTime(2017, 11, 29) };
             foreach (var dateTime in dates)
             {
                 processStatsService.CollectAndPublishIncidentsStats(dateTime);
             }
+        }
+
+        [Fact]
+        void CollectBattles()
+        {
+            processStatsService.CollectAndPublishBattlesStats();
         }
 
         [Fact]

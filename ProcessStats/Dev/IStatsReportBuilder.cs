@@ -1,10 +1,10 @@
-using TaskManagerClient.BusinessObjects.TaskManager;
+using System.Collections.Generic;
 
 namespace ProcessStats.Dev
 {
     public interface IStatsReportBuilder
     {
         ReportModel[] BuildForBillingDelivery();
-        ReportModel BuildForDirection(BoardList doneList, BoardList additionalDoneList = null);
+        IEnumerable<ReportModel> BuildForDirections();
     }
 }
