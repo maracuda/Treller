@@ -67,7 +67,7 @@ namespace ConsoleRunner
             var emailMessageProducer = new KonturEmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
             container.RegisterInstance<IEmailMessageProducer>(emailMessageProducer);
 
-            var spreadsheetsMessageProducer = new GoogleSpreadsheetsMessageProducer(credentialsService.ClientSecret);
+            var spreadsheetsMessageProducer = new GoogleSpreadsheetsMessageProducer(credentialsService.GoogleClientSecret);
             container.RegisterInstance<ISpreadsheetsMessageProducer>(spreadsheetsMessageProducer);
 
             return container;

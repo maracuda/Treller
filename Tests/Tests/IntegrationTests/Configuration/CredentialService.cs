@@ -8,7 +8,7 @@ using TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace Tests.Tests.IntegrationTests.Configuration
 {
-    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, ISpreadsheetsCredentialService
+    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, ISpreadsheetsCredentialService, IGoogleApiCredentialService
     {
         private readonly string logInFilePath;
 
@@ -30,6 +30,7 @@ namespace Tests.Tests.IntegrationTests.Configuration
 
         public DomainCredentials MessageBrokerCredentials => Credentials.NotificationCredentials;
         public YouTrackCredential YouTrackCredentials => Credentials.YouTrackCredentials;
-        public string ClientSecret => Credentials.GoogleSpreadsheetsCredentials;
+        public string GoogleClientSecret => Credentials.GoogleSpreadsheetsCredentials;
+        public string GoogleApiKey => Credentials.GoogleApiKey;
     }
 }

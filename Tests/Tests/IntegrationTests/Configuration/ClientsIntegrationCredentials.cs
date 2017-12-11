@@ -15,5 +15,6 @@ namespace Tests.Tests.IntegrationTests.Configuration
 
         public YouTrackCredential YouTrackCredentials { get; set; }
         public string GoogleSpreadsheetsCredentials { get; set; }
+        public string GoogleApiKey { get; set; }
     }
 }
