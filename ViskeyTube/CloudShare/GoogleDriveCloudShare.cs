@@ -4,7 +4,7 @@ using Google.Apis.Services;
 
 namespace ViskeyTube.CloudShare
 {
-    public class GoogleDriveCloudShare
+    public class GoogleDriveCloudShare : ICloudShare
     {
         private readonly string apiKey;
 
