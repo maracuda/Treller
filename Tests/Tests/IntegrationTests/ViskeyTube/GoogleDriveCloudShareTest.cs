@@ -11,7 +11,8 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
 
         public GoogleDriveCloudShareTest()
         {
-            googleDriveCloudShare = new GoogleDriveCloudShare(container.Get<IGoogleApiCredentialService>().GoogleApiKey);
+            var driveQueryBuilderFactory = container.Get<IDriveQueryBuilderFactory>();
+            googleDriveCloudShare = new GoogleDriveCloudShare(container.Get<IGoogleApiCredentialService>().GoogleApiKey, driveQueryBuilderFactory);
         }
 
         [Fact]
@@ -20,6 +21,13 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
             var bytes = googleDriveCloudShare.DownloadFile("1XNz2OF6xYiKPObWvBpczLx13Xossk6kR");
             Assert.True(bytes.Length > 0);
             File.WriteAllBytes("downloadResult.png", bytes);
+        }
+
+        [Fact]
+        public void AbleToGetFilesFromFolder()
+        {
+            var fileNames = googleDriveCloudShare.GetFiles("17K6Nj556UL2ylNYzh2lXPpYzq7Bif8tl");
+            Assert.True(fileNames.Length > 0);
         }
     }
 }
