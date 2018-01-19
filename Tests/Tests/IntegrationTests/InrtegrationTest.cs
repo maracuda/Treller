@@ -22,6 +22,7 @@ namespace Tests.Tests.IntegrationTests
             container.RegisterInstance<IYouTrackCredentialService>(credentialsService);
             container.RegisterInstance<ISpreadsheetsCredentialService>(credentialsService);
             container.RegisterInstance<IGoogleApiCredentialService>(credentialsService);
+            container.RegisterInstance<IYouTubeCredentialService>(credentialsService);
 
             var mbCredentials = credentialsService.MessageBrokerCredentials;
             var emailMessageProducer = new KonturEmailBot(container.Get<IMessenger>(),
