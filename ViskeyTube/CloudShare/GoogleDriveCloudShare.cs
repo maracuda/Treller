@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,7 +36,7 @@ namespace ViskeyTube.CloudShare
                     new[] { YouTubeService.Scope.YoutubeUpload },
                     "user",
                     CancellationToken.None
-                ).Result; 
+                ).Result;
             }
 
             return new YouTubeService(new BaseClientService.Initializer
@@ -84,7 +86,7 @@ namespace ViskeyTube.CloudShare
             }
         }
 
-        public string MoveToYouTube(string fileId)
+        public UploadResult MoveToYouTube(string fileId)
         {
             using (var driveService = NewDriveService())
             using (var youTubeService = NewYouTubeService())
@@ -119,14 +121,18 @@ namespace ViskeyTube.CloudShare
                     var request = youTubeService.Videos.Insert(video, "snippet,status", memoryStream, "video/*");
                     request.ProgressChanged += videosInsertRequest_ProgressChanged;
                     request.ResponseReceived += videosInsertRequest_ResponseReceived;
-                    request.Upload();
+                    var progress = request.Upload();
 
-                    return request.Path;
+                    return new UploadResult
+                    {
+                        Exception = progress.Exception,
+                        Success = progress.Status == UploadStatus.Completed
+                    };
                 }
             }
         }
 
-        void videosInsertRequest_ProgressChanged(Google.Apis.Upload.IUploadProgress progress)
+        void videosInsertRequest_ProgressChanged(IUploadProgress progress)
         {
             switch (progress.Status)
             {
