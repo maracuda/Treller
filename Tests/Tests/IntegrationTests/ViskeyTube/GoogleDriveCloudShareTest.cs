@@ -40,7 +40,7 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
             var files = googleDriveCloudShare.GetFiles("17K6Nj556UL2ylNYzh2lXPpYzq7Bif8tl");
             var videoFile = files.Single(x => x.Name.Contains("29 декабря 2017"));
             var result = googleDriveCloudShare.MoveToYouTube(videoFile.FileId);
-            Assert.True(result.Success, result.Exception.Message);
+            Assert.True(result.Success, result.Exception?.Message);
         }
     }
 }
