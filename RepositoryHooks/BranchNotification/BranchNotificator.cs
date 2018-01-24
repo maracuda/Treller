@@ -7,7 +7,7 @@ namespace RepositoryHooks.BranchNotification
 {
     public class BranchNotificator : IBranchNotificator
     {
-        private static readonly TimeSpan branchDeadlinePeriod = TimeSpan.FromDays(90);
+        private static readonly TimeSpan branchDeadlinePeriod = TimeSpan.FromDays(50);
         private static readonly TimeSpan mergedBranchDeadlinePeriod = TimeSpan.FromDays(3);
 
         private readonly IRepository repository;
