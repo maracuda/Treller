@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using TaskManagerClient.CredentialServiceAbstractions;
 using ViskeyTube.CloudShare;
 using Xunit;
 
@@ -12,11 +11,9 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
 
         public GoogleDriveCloudShareTest()
         {
-            var driveQueryBuilderFactory = container.Get<IDriveQueryBuilderFactory>();
-            googleDriveCloudShare = new GoogleDriveCloudShare(
-                container.Get<IGoogleApiCredentialService>().GoogleApiKey,
-                container.Get<IYouTubeCredentialService>().GoogleClientSecret,
-                driveQueryBuilderFactory);
+            googleDriveCloudShare = new GoogleDriveCloudShare(credentialsService.GoogleApiKey, 
+                                                              credentialsService.GoogleClientSecret, 
+                                                              container.Get<IDriveQueryBuilderFactory>());
         }
 
         [Fact]

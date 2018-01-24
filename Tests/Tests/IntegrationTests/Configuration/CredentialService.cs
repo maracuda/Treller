@@ -8,7 +8,7 @@ using TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace Tests.Tests.IntegrationTests.Configuration
 {
-    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, ISpreadsheetsCredentialService, IGoogleApiCredentialService, IYouTubeCredentialService
+    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService
     {
         private readonly string logInFilePath;
 

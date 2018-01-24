@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,21 +18,32 @@ namespace ViskeyTube.CloudShare
         private readonly string clientSecret;
         private readonly IDriveQueryBuilderFactory driveQueryBuilderFactory;
 
-        private DriveService NewDriveService() => new DriveService(new BaseClientService.Initializer
+        public GoogleDriveCloudShare(
+            string apiKey,
+            string clientSecret,
+            IDriveQueryBuilderFactory driveQueryBuilderFactory
+        )
+        {
+            this.apiKey = apiKey;
+            this.clientSecret = clientSecret;
+            this.driveQueryBuilderFactory = driveQueryBuilderFactory;
+        }
+
+        private DriveService CreateDriveService() => new DriveService(new BaseClientService.Initializer
         {
             ApplicationName = "Treller",
             ApiKey = apiKey
         });
 
-        private YouTubeService NewYouTubeService()
+        private YouTubeService CreateYouTubeService()
         {
             UserCredential credential;
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(clientSecret)))
             {
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
-                    new[] { YouTubeService.Scope.YoutubeUpload },
-                    "user",
+                    new[] { YouTubeService.Scope.YoutubeUpload, "https://www.googleapis.com/auth/plus.login" },
+                    "billing.kontur",
                     CancellationToken.None
                 ).Result;
             }
@@ -46,20 +55,9 @@ namespace ViskeyTube.CloudShare
             });
         }
 
-        public GoogleDriveCloudShare(
-            string apiKey,
-            string clientSecret,
-            IDriveQueryBuilderFactory driveQueryBuilderFactory
-            )
-        {
-            this.apiKey = apiKey;
-            this.clientSecret = clientSecret;
-            this.driveQueryBuilderFactory = driveQueryBuilderFactory;
-        }
-
         public byte[] DownloadFile(string fileId)
         {
-            using (var driveService = NewDriveService())
+            using (var driveService = CreateDriveService())
             {
                 using (var memoryStream = new MemoryStream())
                 {
@@ -71,7 +69,7 @@ namespace ViskeyTube.CloudShare
 
         public DriveFile[] GetFiles(string folderId)
         {
-            using (var driveService = NewDriveService())
+            using (var driveService = CreateDriveService())
             {
                 var request = driveService.Files.List();
                 request.Q = driveQueryBuilderFactory.Create().InFolder(folderId).ToQueryString();
@@ -88,8 +86,8 @@ namespace ViskeyTube.CloudShare
 
         public UploadResult MoveToYouTube(string fileId)
         {
-            using (var driveService = NewDriveService())
-            using (var youTubeService = NewYouTubeService())
+            using (var driveService = CreateDriveService())
+            using (var youTubeService = CreateYouTubeService())
             {
                 var file = driveService.Files.Get(fileId);
 
