@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using ViskeyTube.CloudShare;
 using Xunit;
@@ -11,8 +12,8 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
 
         public GoogleDriveCloudShareTest()
         {
-            googleDriveCloudShare = new GoogleDriveCloudShare(credentialsService.GoogleApiKey, 
-                                                              credentialsService.GoogleClientSecret, 
+            googleDriveCloudShare = new GoogleDriveCloudShare(credentialsService.GoogleApiKey,
+                                                              credentialsService.GoogleClientSecret,
                                                               container.Get<IDriveQueryBuilderFactory>());
         }
 
@@ -36,7 +37,15 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
         {
             var files = googleDriveCloudShare.GetFiles("17K6Nj556UL2ylNYzh2lXPpYzq7Bif8tl");
             var videoFile = files.Single(x => x.Name.Contains("29 декабря 2017"));
+            var result = googleDriveCloudShare.MoveToYouTube(videoFile.FileId, "UCiGKUGNeK8-KHPpRqxZoYcw");
             Assert.True(result.Success, result.Exception?.Message);
+        }
+
+        [Fact]
+        public void AbleToGetMyChannels()
+        {
+            var files = googleDriveCloudShare.GetMyChannels();
+            Assert.True(files.Length > 0);
         }
     }
 }

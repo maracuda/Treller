@@ -78,7 +78,8 @@ namespace ViskeyTube.CloudShare
                     .Select(x => new DriveFile
                     {
                         Name = x.Name,
-                        FileId = x.Id
+                        FileId = x.Id,
+                        CreatedTime = x.CreatedTime
                     })
                     .ToArray();
             }
@@ -105,7 +106,7 @@ namespace ViskeyTube.CloudShare
                     Status = new VideoStatus
                     {
                         PrivacyStatus = "public" // or "private" or "public"
-                    }
+                    },
                 };
 
                 byte[] bytes;
@@ -118,36 +119,29 @@ namespace ViskeyTube.CloudShare
                 using (var memoryStream = new MemoryStream(bytes))
                 {
                     var request = youTubeService.Videos.Insert(video, "snippet,status", memoryStream, "video/*");
-                    request.ProgressChanged += videosInsertRequest_ProgressChanged;
-                    request.ResponseReceived += videosInsertRequest_ResponseReceived;
+
+                    string videoId = null;
+                    request.ResponseReceived += x => videoId = x.Id;
                     var progress = request.Upload();
 
                     return new UploadResult
                     {
                         Exception = progress.Exception,
-                        Success = progress.Status == UploadStatus.Completed
+                        Success = progress.Status == UploadStatus.Completed,
+                        VideoId = videoId
                     };
                 }
             }
         }
 
-        void videosInsertRequest_ProgressChanged(IUploadProgress progress)
+        public string[] GetMyChannels()
         {
-            switch (progress.Status)
+            using (var youTubeService = CreateYouTubeService())
             {
-                case UploadStatus.Uploading:
-                    Console.WriteLine("{0} bytes sent.", progress.BytesSent);
-                    break;
-
-                case UploadStatus.Failed:
-                    Console.WriteLine("An error prevented the upload from completing.\n{0}", progress.Exception);
-                    break;
+                var channelsRequest = youTubeService.Channels.List("snippet");
+                var channels = channelsRequest.Mine().Execute().Items.ToArray();
+                return channels.Select(x => x.Id).ToArray();
             }
-        }
-
-        void videosInsertRequest_ResponseReceived(Video video)
-        {
-            Console.WriteLine("Video id '{0}' was successfully uploaded.", video.Id);
         }
     }
 }

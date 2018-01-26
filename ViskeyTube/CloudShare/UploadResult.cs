@@ -6,5 +6,6 @@ namespace ViskeyTube.CloudShare
     {
         public bool Success { get; set; }
         public Exception Exception { get; set; }
+        public string VideoId { get; set; }
     }
 }
