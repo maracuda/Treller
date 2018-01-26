@@ -4,5 +4,6 @@
     {
         byte[] DownloadFile(string fileId);
         DriveFile[] GetFiles(string folderId);
+        UploadResult MoveToYouTube(string fileId, string channelId);
     }
 }

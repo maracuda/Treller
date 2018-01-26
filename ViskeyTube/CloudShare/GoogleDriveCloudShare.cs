@@ -84,7 +84,7 @@ namespace ViskeyTube.CloudShare
             }
         }
 
-        public UploadResult MoveToYouTube(string fileId)
+        public UploadResult MoveToYouTube(string fileId, string channelId)
         {
             using (var driveService = CreateDriveService())
             using (var youTubeService = CreateYouTubeService())
@@ -99,7 +99,8 @@ namespace ViskeyTube.CloudShare
                         Title = fileInfo.Name,
                         Description = "Night Whiskey",
                         Tags = new[] { "nightwhiskey", "whiskeytube", "konturbilling" },
-                        CategoryId = "22" // See https://developers.google.com/youtube/v3/docs/videoCategories/list
+                        ChannelId = channelId,
+                        CategoryId = "22", // See https://developers.google.com/youtube/v3/docs/videoCategories/list
                     },
                     Status = new VideoStatus
                     {
