@@ -42,7 +42,7 @@ namespace ViskeyTube.CloudShare
             {
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
-                    new[] { YouTubeService.Scope.YoutubeUpload, "https://www.googleapis.com/auth/plus.login" },
+                    new[] { YouTubeService.Scope.Youtube, "https://www.googleapis.com/auth/plus.login" },
                     "billing.kontur",
                     CancellationToken.None
                 ).Result;
@@ -131,6 +131,27 @@ namespace ViskeyTube.CloudShare
                         VideoId = videoId
                     };
                 }
+            }
+        }
+
+        public void AddVideoToPlayList(string videoId, string playlistId)
+        {
+            using (var youTubeService = CreateYouTubeService())
+            {
+                var playListItem = new PlaylistItem
+                {
+                    Snippet = new PlaylistItemSnippet
+                    {
+                        ResourceId = new ResourceId
+                        {
+                            Kind = "youtube#video",
+                            VideoId = videoId
+                        }
+                    }
+                };
+
+                var request = youTubeService.PlaylistItems.Insert(playListItem, "snippet");
+                var response = request.Execute();
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using ViskeyTube.CloudShare;
 using Xunit;
@@ -39,6 +38,12 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
             var videoFile = files.Single(x => x.Name.Contains("29 декабря 2017"));
             var result = googleDriveCloudShare.MoveToYouTube(videoFile.FileId, "UCiGKUGNeK8-KHPpRqxZoYcw");
             Assert.True(result.Success, result.Exception?.Message);
+        }
+
+        [Fact]
+        public void AbleToMoveVideoToPlaylist()
+        {
+            googleDriveCloudShare.AddVideoToPlayList("MmBhsdxoCYE", "PLsUe9ECHg2WapJxV0CQVUCw_dy9oWomSX");
         }
 
         [Fact]
