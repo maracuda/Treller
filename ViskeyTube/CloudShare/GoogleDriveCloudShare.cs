@@ -42,7 +42,8 @@ namespace ViskeyTube.CloudShare
             {
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
-                    new[] { YouTubeService.Scope.Youtube, "https://www.googleapis.com/auth/plus.login" },
+                    new[] { YouTubeService.Scope.Youtube, YouTubeService.Scope.YoutubeUpload, YouTubeService.Scope.YoutubeForceSsl,
+                        YouTubeService.Scope.Youtubepartner, "https://www.googleapis.com/auth/plus.login" },
                     "billing.kontur",
                     CancellationToken.None
                 ).Result;
@@ -79,11 +80,15 @@ namespace ViskeyTube.CloudShare
                     {
                         Name = x.Name,
                         FileId = x.Id,
-                        CreatedTime = x.CreatedTime
+                        CreatedTime = x.CreatedTime,
+                        Size = x.Size
                     })
                     .ToArray();
             }
         }
+
+        private const string YoutubeVideoResourceKind = "youtube#video";
+        private const string YoutubeSnippetPart = "snippet";
 
         public UploadResult MoveToYouTube(string fileId, string channelId)
         {
@@ -144,14 +149,14 @@ namespace ViskeyTube.CloudShare
                     {
                         ResourceId = new ResourceId
                         {
-                            Kind = "youtube#video",
+                            Kind = YoutubeVideoResourceKind,
                             VideoId = videoId
                         }
                     }
                 };
 
-                var request = youTubeService.PlaylistItems.Insert(playListItem, "snippet");
-                var response = request.Execute();
+                var request = youTubeService.PlaylistItems.Insert(playListItem, YoutubeSnippetPart);
+                request.Execute();
             }
         }
 
@@ -159,10 +164,38 @@ namespace ViskeyTube.CloudShare
         {
             using (var youTubeService = CreateYouTubeService())
             {
-                var channelsRequest = youTubeService.Channels.List("snippet");
+                var channelsRequest = youTubeService.Channels.List(YoutubeSnippetPart);
                 var channels = channelsRequest.Mine().Execute().Items.ToArray();
                 return channels.Select(x => x.Id).ToArray();
             }
+        }
+
+
+
+        public YoutubeVideo[] GetVideos(string channelId)
+        {
+            using (var youTubeService = CreateYouTubeService())
+            {
+                var request = youTubeService.Videos.List("snippet,fileDetails");
+                var response = request.Execute();
+                return response.Items
+                    .Where(x => x.Snippet.ChannelId == channelId)
+                    .Where(x => x.FileDetails.FileSize.HasValue)
+                    .Select(x => new YoutubeVideo
+                    {
+                        VideoId = x.Id,
+                        Name = x.Snippet.Title,
+                        PublishTime = x.Snippet.PublishedAt,
+                        FileSize = UnsafeConvertFromULong(x.FileDetails.FileSize.Value),
+                        FileName = x.FileDetails.FileName,
+                    })
+                    .ToArray();
+            }
+        }
+
+        private static long UnsafeConvertFromULong(ulong u)
+        {
+            return u > long.MaxValue ? throw new Exception($"Cant convert ulong {u} to long") : (long)u;
         }
     }
 }

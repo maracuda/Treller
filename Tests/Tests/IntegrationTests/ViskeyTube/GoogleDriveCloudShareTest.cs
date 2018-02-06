@@ -9,6 +9,9 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
     {
         private readonly GoogleDriveCloudShare googleDriveCloudShare;
 
+        private const string BillingChannelId = "UCiGKUGNeK8-KHPpRqxZoYcw";
+        private const string BillingGooglePhotoFolderId = "17K6Nj556UL2ylNYzh2lXPpYzq7Bif8tl";
+
         public GoogleDriveCloudShareTest()
         {
             googleDriveCloudShare = new GoogleDriveCloudShare(credentialsService.GoogleApiKey,
@@ -27,17 +30,25 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
         [Fact]
         public void AbleToGetFilesFromFolder()
         {
-            var fileNames = googleDriveCloudShare.GetFiles("17K6Nj556UL2ylNYzh2lXPpYzq7Bif8tl");
+            var fileNames = googleDriveCloudShare.GetFiles(BillingGooglePhotoFolderId);
             Assert.True(fileNames.Length > 0);
         }
 
         [Fact]
         public void AbleToMoveFileToYouTube()
         {
-            var files = googleDriveCloudShare.GetFiles("17K6Nj556UL2ylNYzh2lXPpYzq7Bif8tl");
+            var files = googleDriveCloudShare.GetFiles(BillingGooglePhotoFolderId);
             var videoFile = files.Single(x => x.Name.Contains("29 декабря 2017"));
-            var result = googleDriveCloudShare.MoveToYouTube(videoFile.FileId, "UCiGKUGNeK8-KHPpRqxZoYcw");
+            var result = googleDriveCloudShare.MoveToYouTube(videoFile.FileId, BillingChannelId);
             Assert.True(result.Success, result.Exception?.Message);
+        }
+
+        [Fact]
+        public void AbleToGetMyVideos()
+        {
+            var videos = googleDriveCloudShare.GetVideos(BillingChannelId);
+            var files = googleDriveCloudShare.GetFiles(BillingGooglePhotoFolderId);
+            Assert.True(videos.Any(v => files.Any(f => v.IsProbablyTheSameAs(f.Name, f.Size))));
         }
 
         [Fact]

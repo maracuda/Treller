@@ -7,5 +7,6 @@ namespace ViskeyTube.CloudShare
         public string Name { get; set; }
         public string FileId { get; set; }
         public DateTime? CreatedTime { get; set; }
+        public long? Size { get; set; }
     }
 }
