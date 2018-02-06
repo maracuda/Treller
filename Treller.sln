@@ -36,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleRunner", "ConsoleRun
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViskeyTube", "ViskeyTube\ViskeyTube.csproj", "{9EB3E7C4-336C-41B8-ACC5-C86D81DD78A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectMap", "ProjectMap\ProjectMap.csproj", "{BDB81EE6-419D-4547-9DE9-B1AE3CBB6E38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +100,10 @@ Global
 		{9EB3E7C4-336C-41B8-ACC5-C86D81DD78A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EB3E7C4-336C-41B8-ACC5-C86D81DD78A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EB3E7C4-336C-41B8-ACC5-C86D81DD78A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDB81EE6-419D-4547-9DE9-B1AE3CBB6E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB81EE6-419D-4547-9DE9-B1AE3CBB6E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB81EE6-419D-4547-9DE9-B1AE3CBB6E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB81EE6-419D-4547-9DE9-B1AE3CBB6E38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
