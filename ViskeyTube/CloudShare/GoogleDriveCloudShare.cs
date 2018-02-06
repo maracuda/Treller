@@ -90,20 +90,16 @@ namespace ViskeyTube.CloudShare
         private const string YoutubeVideoResourceKind = "youtube#video";
         private const string YoutubeSnippetPart = "snippet";
 
-        public UploadResult MoveToYouTube(string fileId, string channelId)
+        public UploadResult UploadToYouTube(byte[] fileBytes, VideoToUpload videoToUpload, string channelId)
         {
-            using (var driveService = CreateDriveService())
             using (var youTubeService = CreateYouTubeService())
             {
-                var file = driveService.Files.Get(fileId);
-
-                var fileInfo = file.Execute();
                 var video = new Video
                 {
                     Snippet = new VideoSnippet
                     {
-                        Title = fileInfo.Name,
-                        Description = "Night Whiskey",
+                        Title = videoToUpload.Title,
+                        Description = videoToUpload.Description,
                         Tags = new[] { "nightwhiskey", "whiskeytube", "konturbilling" },
                         ChannelId = channelId,
                         CategoryId = "22", // See https://developers.google.com/youtube/v3/docs/videoCategories/list
@@ -114,14 +110,7 @@ namespace ViskeyTube.CloudShare
                     },
                 };
 
-                byte[] bytes;
-                using (var memoryStream = new MemoryStream())
-                {
-                    file.Download(memoryStream);
-                    bytes = memoryStream.ToArray();
-                }
-
-                using (var memoryStream = new MemoryStream(bytes))
+                using (var memoryStream = new MemoryStream(fileBytes))
                 {
                     var request = youTubeService.Videos.Insert(video, "snippet,status", memoryStream, "video/*");
 
