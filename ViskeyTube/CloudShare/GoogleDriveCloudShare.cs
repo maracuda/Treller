@@ -110,7 +110,7 @@ namespace ViskeyTube.CloudShare
                     },
                     Status = new VideoStatus
                     {
-                        PrivacyStatus = "public" // or "private" or "public"
+                        PrivacyStatus = "public", // or "private" or "public"
                     },
                 };
 
