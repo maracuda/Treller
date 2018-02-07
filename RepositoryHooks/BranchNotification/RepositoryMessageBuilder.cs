@@ -17,7 +17,7 @@ namespace RepositoryHooks.BranchNotification
             bodyBuilder.AppendLine("Дорогой разработчик!");
             bodyBuilder.AppendLine();
             bodyBuilder.AppendLine($"Спешу обратить твое внимание на старые ветки в репозитории: {string.Join(", ", oldBranchNames)}");
-            bodyBuilder.AppendLine("Пожалуйста, посмотри нельзя ли завершить работу с этими ветками (репозиторию очень тяжело).");
+            bodyBuilder.AppendLine("В них давно не ведется никакой работы, это похоже на разбитое окно. Пожалуйста, подумай какая ценность есть в этих ветках и как эту ценность доставить.");
             bodyBuilder.AppendLine();
             bodyBuilder.AppendLine("С любовью, твой автоматический уведомлятор.");
 
