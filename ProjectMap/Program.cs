@@ -13,7 +13,9 @@ namespace SKBKontur.Tolltech.ProjectMap
                 Log4NetFileName = "",
                 ProjectNameFilter = x => x.Contains("BillingService"),
                 RootNamespaceForNinjectConfiguring = "SKBKontur.Tolltech",
-                SolutionPath = "D:/billy/Billing/Services/BillingServices.sln"
+                SolutionPath = "D:/billy/Billing/Services/BillingServices.sln",
+                VisualStudioInstallationPath = @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional",
+                VisualStudioVersion = @"15.0"
             });
         }
     }
