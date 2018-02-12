@@ -19,4 +19,8 @@
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.31.1.1058" />
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.32.0.1079" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Serialization\Serialization.csproj" />
+  </ItemGroup>
 </Project>

@@ -4,11 +4,12 @@ using Storage;
 using TaskManagerClient.CredentialServiceAbstractions;
 using TaskManagerClient.Repository.Clients.GitLab;
 using TaskManagerClient.Trello.BusinessObjects;
+using TaskManagerClient.Wiki.BusinessObjects;
 using TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace Tests.Tests.IntegrationTests.Configuration
 {
-    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService
+    public class CredentialService : ITrelloUserCredentialService, IGitLabCredentialService, IYouTrackCredentialService, IWikiCredentialService
     {
         private readonly string logInFilePath;
 
@@ -32,5 +33,10 @@ namespace Tests.Tests.IntegrationTests.Configuration
         public YouTrackCredential YouTrackCredentials => Credentials.YouTrackCredentials;
         public string GoogleClientSecret => Credentials.GoogleSpreadsheetsCredentials;
         public string GoogleApiKey => Credentials.GoogleApiKey;
+
+        public WikiCredential GetWikiCredentials()
+        {
+            return Credentials.WikiCredentials;
+        }
     }
 }

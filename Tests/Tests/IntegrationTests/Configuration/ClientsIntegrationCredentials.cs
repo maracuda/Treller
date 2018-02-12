@@ -1,6 +1,7 @@
 using TaskManagerClient.CredentialServiceAbstractions;
 using TaskManagerClient.Repository.Clients.GitLab;
 using TaskManagerClient.Trello.BusinessObjects;
+using TaskManagerClient.Wiki.BusinessObjects;
 using TaskManagerClient.Youtrack.BusinessObjects;
 
 namespace Tests.Tests.IntegrationTests.Configuration
@@ -13,8 +14,10 @@ namespace Tests.Tests.IntegrationTests.Configuration
 
         public DomainCredentials NotificationCredentials { get; set; }
 
-        public YouTrackCredential YouTrackCredentials { get; set; }
+        public YouTrackCredential YouTrackCredentials { get; set; }        
         public string GoogleSpreadsheetsCredentials { get; set; }
         public string GoogleApiKey { get; set; }
+
+        public WikiCredential WikiCredentials { get; set; }
     }
 }
