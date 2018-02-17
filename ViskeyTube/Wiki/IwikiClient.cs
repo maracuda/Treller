@@ -2,6 +2,6 @@
 {
     public interface IWikiClient
     {
-        string GetPage(string pageId);
+        WikiPage GetPage(string pageId);
     }
 }

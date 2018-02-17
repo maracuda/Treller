@@ -22,14 +22,14 @@ namespace ViskeyTube.Wiki
             this.authHeader = authHeader;
         }
 
-        public string GetPage(string pageId)
+        public WikiPage GetPage(string pageId)
         {
-            return Execute($"https://wiki.skbkontur.ru/rest/api/content/{pageId}?type=page");
+            return Execute<WikiPage>($"https://wiki.skbkontur.ru/rest/api/content/{pageId}?type=page&expand=body.storage");
         }
 
         private T Execute<T>(string url)
         {
-            return jsonSerializer.Deserialize<T>("");
+            return jsonSerializer.Deserialize<T>(Execute(url));
         }
 
         private string Execute(string url)
@@ -37,8 +37,19 @@ namespace ViskeyTube.Wiki
             using (var client = new WebClient())
             {
                 client.Headers.Add("Authorization", $"Basic {authHeader}");
-                return client.DownloadString(url);
+                return ConvertFrom1251(client.DownloadString(url));
             }
+        }
+
+        private static string ConvertFrom1251(string src)
+        {
+            var utf8 = Encoding.UTF8;
+            var win1251 = Encoding.GetEncoding("Windows-1251");
+
+            var utf8Bytes = win1251.GetBytes(src);
+            var win1251Bytes = Encoding.Convert(utf8, win1251, utf8Bytes);
+
+            return win1251.GetString(win1251Bytes);
         }
     }
 }

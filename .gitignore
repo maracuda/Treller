@@ -31,3 +31,4 @@ node_modules/
 **/Content/bundle/
 *.log
 ConsoleRunner/Properties/launchSettings.json
+/TrellerData/LogIn.zip
