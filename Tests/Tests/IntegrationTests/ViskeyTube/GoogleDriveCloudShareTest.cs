@@ -7,10 +7,10 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
 {
     public class GoogleDriveCloudShareTest : IntegrationTest
     {
-        private readonly GoogleDriveCloudShare googleDriveCloudShare;
+        protected readonly GoogleDriveCloudShare googleDriveCloudShare;
 
-        private const string BillingChannelId = "UCiGKUGNeK8-KHPpRqxZoYcw";
-        private const string BillingGooglePhotoFolderId = "17K6Nj556UL2ylNYzh2lXPpYzq7Bif8tl";
+        protected const string BillingChannelId = "UCiGKUGNeK8-KHPpRqxZoYcw";
+        protected const string BillingGooglePhotoFolderId = "17K6Nj556UL2ylNYzh2lXPpYzq7Bif8tl";
 
         public GoogleDriveCloudShareTest()
         {
@@ -32,23 +32,6 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
         {
             var fileNames = googleDriveCloudShare.GetFiles(BillingGooglePhotoFolderId);
             Assert.True(fileNames.Length > 0);
-        }
-
-        [Fact]
-        public void AbleToMoveFileToYouTube()
-        {
-            var files = googleDriveCloudShare.GetFiles(BillingGooglePhotoFolderId);
-            var videoFile = files.Single(x => x.Name.Contains("29 декабря 2017"));
-            var bytes = googleDriveCloudShare.DownloadFile(videoFile.FileId);
-
-            var videoToUpload = new VideoToUpload
-            {
-                Title = "TEST - " + videoFile.Name,
-                Description = "Test NightWhiskey"
-            };
-
-            var result = googleDriveCloudShare.UploadToYouTube(bytes, videoToUpload, BillingChannelId);
-            Assert.True(result.Success, result.Exception?.Message);
         }
 
         [Fact]
