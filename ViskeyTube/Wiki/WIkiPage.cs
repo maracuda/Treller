@@ -1,9 +1,14 @@
 ﻿namespace ViskeyTube.Wiki
 {
-    public class WikiPage
+    public class WikiPage : WikiPageLight
+    {
+        public WikiPageBody Body { get; set; }
+    }
+
+    public class WikiPageLight
     {
         public string Id { get; set; }
-        public WikiPageBody Body { get; set; }
+        public string Title { get; set; }
     }
 
     public class WikiPageBody
@@ -14,5 +19,10 @@
     public class WikiPageBodyStorage
     {
         public string Value { get; set; }
+    }
+
+    public class WikiPageSearchResult
+    {
+        public WikiPageLight[] Results { get; set; }
     }
 }

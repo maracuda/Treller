@@ -22,14 +22,27 @@ namespace ViskeyTube.Wiki
             this.authHeader = authHeader;
         }
 
+        private const string ContentUrlPrefix = "https://wiki.skbkontur.ru/rest/api/content/";
+
+        private static string BuildContentUrl(string url)
+        {
+            return $"{ContentUrlPrefix}{url}";
+        }
+
         public WikiPage GetPage(string pageId)
         {
-            return Execute<WikiPage>($"https://wiki.skbkontur.ru/rest/api/content/{pageId}?type=page&expand=body.storage");
+            return Execute<WikiPage>(BuildContentUrl($"{pageId}?type=page&expand=body.storage,children"));
+        }
+
+        public WikiPageLight[] GetChildren(string pageId)
+        {
+            return Execute<WikiPageSearchResult>(BuildContentUrl($"search?cql=parent={pageId}")).Results;
         }
 
         private T Execute<T>(string url)
         {
-            return jsonSerializer.Deserialize<T>(Execute(url));
+            var result = Execute(url);
+            return jsonSerializer.Deserialize<T>(result);
         }
 
         private string Execute(string url)
