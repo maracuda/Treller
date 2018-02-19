@@ -42,8 +42,8 @@ namespace ViskeyTube.CloudShare
             {
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
-                    new[] { YouTubeService.Scope.Youtube, YouTubeService.Scope.YoutubeUpload, YouTubeService.Scope.YoutubeForceSsl,
-                        YouTubeService.Scope.Youtubepartner, "https://www.googleapis.com/auth/plus.login" },
+                    new[] { YouTubeService.Scope.Youtube, YouTubeService.Scope.YoutubeUpload, 
+                        YouTubeService.Scope.Youtubepartner, "https://www.googleapis.com/auth/plus.login", "https://www.googleapis.com/auth/userinfo.email" },
                     "billing.kontur",
                     CancellationToken.None
                 ).Result;

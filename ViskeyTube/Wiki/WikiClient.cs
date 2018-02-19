@@ -39,18 +39,30 @@ namespace ViskeyTube.Wiki
             return Execute<WikiPageSearchResult>(BuildContentUrl($"search?cql=parent={pageId}")).Results;
         }
 
-        private T Execute<T>(string url)
+        private T Execute<T>(string url) where T : class 
         {
             var result = Execute(url);
-            return jsonSerializer.Deserialize<T>(result);
+            return result != null ? jsonSerializer.Deserialize<T>(result) : null;
         }
 
         private string Execute(string url)
         {
-            using (var client = new WebClient())
+            try
             {
-                client.Headers.Add("Authorization", $"Basic {authHeader}");
-                return ConvertFrom1251(client.DownloadString(url));
+                using (var client = new WebClient())
+                {
+                    client.Headers.Add("Authorization", $"Basic {authHeader}");
+                    return ConvertFrom1251(client.DownloadString(url));
+                }
+            }
+            catch (WebException e)
+            {
+                if ((e.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+
+                throw;
             }
         }
 
