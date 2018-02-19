@@ -19,7 +19,7 @@ namespace ViskeyTube.CloudShare
             var files = cloudShare.GetFiles(folderId);
             var existedVideos = cloudShare.GetVideos(channelId);
             //todo: равенство скорее всего не работает
-            var newVideoFiles = files.Where(f => existedVideos.All(v => !v.IsProbablyTheSameAs(f.Name, f.Size))).ToArray();
+            var newVideoFiles = files.Where(f => existedVideos.All(v => !v.IsProbablyTheSameAs(f.Name))).ToArray();
 
             return UploadNewVideos(newVideoFiles, channelId, playlistId).ToArray();
         }

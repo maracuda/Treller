@@ -75,13 +75,12 @@ namespace ViskeyTube.CloudShare
                 var request = driveService.Files.List();
                 request.Q = driveQueryBuilderFactory.Create().InFolder(folderId).ToQueryString();
                 var result = request.Execute();
+                request.Fields = "createdTime";
                 return result.Files
                     .Select(x => new DriveFile
                     {
                         Name = x.Name,
-                        FileId = x.Id,
-                        CreatedTime = x.CreatedTime,
-                        Size = x.Size
+                        FileId = x.Id
                     })
                     .ToArray();
             }
@@ -174,9 +173,9 @@ namespace ViskeyTube.CloudShare
                     {
                         VideoId = x.Id,
                         Name = x.Snippet.Title,
-                        PublishTime = x.Snippet.PublishedAt,
-                        FileSize = UnsafeConvertFromULong(x.FileDetails.FileSize.Value),
-                        FileName = x.FileDetails.FileName,
+                        //PublishTime = x.Snippet.PublishedAt,
+                        //FileSize = UnsafeConvertFromULong(x.FileDetails.FileSize.Value),
+                        //FileName = x.FileDetails.FileName,
                     })
                     .ToArray();
             }

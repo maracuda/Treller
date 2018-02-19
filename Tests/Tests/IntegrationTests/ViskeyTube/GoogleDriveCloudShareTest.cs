@@ -39,7 +39,7 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
         {
             var videos = googleDriveCloudShare.GetVideos(BillingChannelId);
             var files = googleDriveCloudShare.GetFiles(BillingGooglePhotoFolderId);
-            Assert.True(videos.Any(v => files.Any(f => v.IsProbablyTheSameAs(f.Name, f.Size))));
+            Assert.True(videos.Any(v => files.Any(f => v.IsProbablyTheSameAs(f.Name))));
         }
 
         [Fact]
