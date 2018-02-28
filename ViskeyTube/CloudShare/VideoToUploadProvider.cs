@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Linq;
 using ViskeyTube.Common;
 using ViskeyTube.Wiki;
 
@@ -15,9 +14,7 @@ namespace ViskeyTube.CloudShare
         {
             this.wikiClient = wikiClient;
         }
-
        
-
         public VideoToUpload GetVideoToUpload(DriveFile driveFile)
         {
             var videoToUpload = new VideoToUpload
@@ -27,11 +24,23 @@ namespace ViskeyTube.CloudShare
             };
 
             var date = DateTimeHelpers.ExtractRussianDateTime(videoToUpload.Title);
+            if (!date.HasValue)
+                return videoToUpload;
 
             var whiskeyPages = wikiClient.GetChildren(ArchieveWhiskeyPageId);
+            var suitablePage = whiskeyPages.FirstOrDefault(x => x.Title.StartsWith($"{date.Value:yyyy-MM-dd}"));
+            if (suitablePage == null)
+                return videoToUpload;
 
+            var pageWithBody = wikiClient.GetPage(suitablePage.Id);
+            if (pageWithBody == null)
+                return videoToUpload;            
 
-            return videoToUpload;
+            return new VideoToUpload
+            {
+                Title = pageWithBody.Title,
+                Description = pageWithBody.Body.Storage.Value
+            };
         }
     }
 }
