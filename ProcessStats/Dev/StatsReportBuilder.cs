@@ -45,7 +45,7 @@ namespace ProcessStats.Dev
             foreach (var directionBoard in directionBoards)
             {
                 var lists = taskManagerClient.GetBoardLists(directionBoard.Id);
-                var doneList = lists.FirstOrDefault(l => l.Name.Contains("Готово")) ?? lists.Last();
+                var doneList = lists.Count(l => l.Name.Contains("Готово")) == 1 ? lists.First(l => l.Name.Contains("Готово")) : lists.Last();
                 var listNames = lists.Select(l => l.Name).ToArray();
                 var listNameToIdIndex = lists.ToDictionary(l => l.Name, l => l.Id);
                 var aggregation = cardsAggregator.Aggregate(doneList);
