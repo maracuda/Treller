@@ -1,7 +1,11 @@
-﻿namespace ViskeyTube.CloudShare
+﻿using System;
+
+namespace ViskeyTube.CloudShare
 {
     public interface IWhiskeyTubeService
     {
-        UploadResult[] Sync(string folderId, string channelId, string playlistId);
+        UploadResult[] SyncByGoogleDrive(string folderId, string channelId, string playlistId);
+
+        UploadResult[] SyncByWiki(DateTime inclusiveFromDate, DateTime inclusiveEndDate, string wikiArchivePageId, string driveFolderId, string youtubeChannelId);
     }
 }
