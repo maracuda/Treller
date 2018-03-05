@@ -15,6 +15,14 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
         }
 
         [Fact]
+        public void AbleToWikiGetPageSource()
+        {
+            var wikiClient = new WikiClient(new JsonSerializer(), credentialsService.GetWikiCredentials().AuthHeader);
+            var page = wikiClient.GetPageSource("156696999");
+            Assert.NotEmpty(page);
+        }
+
+        [Fact]
         public void AbleToWikiGetChildren()
         {
             var wikiClient = new WikiClient(new JsonSerializer(), credentialsService.GetWikiCredentials().AuthHeader);

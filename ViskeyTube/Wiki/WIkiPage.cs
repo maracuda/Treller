@@ -14,6 +14,8 @@
     public class WikiPageBody
     {
         public WikiPageBodyStorage Storage { get; set; }
+        public WikiPageBodyStorage View { get; set; }
+        public WikiPageBodyStorage Styled_View { get; set; }
     }
 
     public class WikiPageBodyStorage

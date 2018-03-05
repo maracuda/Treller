@@ -39,7 +39,7 @@ namespace ViskeyTube.CloudShare
             return new VideoToUpload
             {
                 Title = pageWithBody.Title,
-                Description = pageWithBody.Body.Storage.Value.FromHtml()
+                Description = pageWithBody.Body.View.Value.FromHtml()
             };
         }
     }

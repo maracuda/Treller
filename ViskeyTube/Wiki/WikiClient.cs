@@ -31,7 +31,12 @@ namespace ViskeyTube.Wiki
 
         public WikiPage GetPage(string pageId)
         {
-            return Execute<WikiPage>(BuildContentUrl($"{pageId}?type=page&expand=body.storage,children"));
+            return Execute<WikiPage>(BuildContentUrl($"{pageId}?type=page&expand=body.storage,children,body.view,body.styled_view"));
+        }
+
+        public string GetPageSource(string pageId)
+        {
+            return Execute(BuildContentUrl($"{pageId}?type=page&expand=body.storage,children,body.view,body.styled_view"));
         }
 
         public WikiPageLight[] GetChildren(string pageId)

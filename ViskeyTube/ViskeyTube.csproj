@@ -18,9 +18,14 @@
   <ItemGroup>
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.31.1.1058" />
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.32.0.1079" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.7.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Serialization\Serialization.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>
