@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ViskeyTube.Common;
 using ViskeyTube.Wiki;
 
@@ -14,7 +15,7 @@ namespace ViskeyTube.CloudShare
         {
             this.wikiClient = wikiClient;
         }
-       
+
         public VideoToUpload GetVideoToUpload(DriveFile driveFile)
         {
             var videoToUpload = new VideoToUpload
@@ -27,6 +28,8 @@ namespace ViskeyTube.CloudShare
             if (!date.HasValue)
                 return videoToUpload;
 
+            videoToUpload.Title = $"{date.Value:yyyy-MM-dd} Empty bottle of Whiskey";
+
             var whiskeyPages = wikiClient.GetChildren(ArchieveWhiskeyPageId);
             var suitablePage = whiskeyPages.FirstOrDefault(x => x.Title.StartsWith($"{date.Value:yyyy-MM-dd}"));
             if (suitablePage == null)
@@ -34,12 +37,12 @@ namespace ViskeyTube.CloudShare
 
             var pageWithBody = wikiClient.GetPage(suitablePage.Id);
             if (pageWithBody == null)
-                return videoToUpload;            
+                return videoToUpload;
 
             return new VideoToUpload
             {
-                Title = pageWithBody.Title,
-                Description = pageWithBody.Body.View.Value.FromHtml()
+                Title = pageWithBody.Title.Substring(0, Math.Min(100, pageWithBody.Title.Length)),
+                Description = $"{pageWithBody.Title}\r\n\r\n{pageWithBody.Body.View.Value.FromHtml()}"
             };
         }
     }
