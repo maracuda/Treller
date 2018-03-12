@@ -1,4 +1,5 @@
-﻿using Serialization;
+﻿using System;
+using Serialization;
 using ViskeyTube.Wiki;
 using Xunit;
 
@@ -12,6 +13,29 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
             var wikiClient = new WikiClient(new JsonSerializer(), credentialsService.GetWikiCredentials().AuthHeader);
             var page = wikiClient.GetPage("156696999");
             Assert.NotEmpty(page.Body.Storage.Value);
+            Assert.InRange(page.Version.Number, 1, int.MaxValue);
+            Assert.NotEmpty(page.Title);
+            Assert.NotEmpty(page.Space.Key);
+            Assert.NotEmpty(page.Type);
+        }
+
+        [Fact]
+        public void AbleToUpdateWikiGetPageTitle()
+        {
+            var wikiClient = new WikiClient(new JsonSerializer(), credentialsService.GetWikiCredentials().AuthHeader);
+
+            var pageId = "156697011";
+
+            var oldPage = wikiClient.GetPage(pageId);
+
+            var newTitle =$"Запись на встречи. Сюда прилетало нло {DateTime.UtcNow}";
+
+            var page = wikiClient.UpdateTitleAndGetNewPage(pageId, newTitle);
+
+            Assert.NotEqual(oldPage.Version.Number, page.Version.Number);
+            Assert.Equal(newTitle, page.Title);
+
+            wikiClient.UpdateTitleAndGetNewPage(pageId, oldPage.Title);
         }
 
         [Fact]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Text;
 using Serialization;
@@ -7,6 +8,12 @@ namespace ViskeyTube.Wiki
 {
     public class WikiClient : IWikiClient
     {
+        private enum HttpMehtod
+        {
+            Get = 0,
+            Put = 1
+        }
+
         private readonly IJsonSerializer jsonSerializer;
         private readonly string authHeader;
 
@@ -29,14 +36,19 @@ namespace ViskeyTube.Wiki
             return $"{ContentUrlPrefix}{url}";
         }
 
+        private static string BuildExpandedContentUrl(string pageId)
+        {
+            return BuildContentUrl($"{pageId}?type=page&expand=body.storage,children,body.view,body.styled_view,version,space");
+        }
+
         public WikiPage GetPage(string pageId)
         {
-            return Execute<WikiPage>(BuildContentUrl($"{pageId}?type=page&expand=body.storage,children,body.view,body.styled_view"));
+            return Execute<WikiPage>(BuildExpandedContentUrl(pageId));
         }
 
         public string GetPageSource(string pageId)
         {
-            return Execute(BuildContentUrl($"{pageId}?type=page&expand=body.storage,children,body.view,body.styled_view"));
+            return Execute(BuildExpandedContentUrl(pageId));
         }
 
         public WikiPageLight[] GetChildren(string pageId)
@@ -44,20 +56,49 @@ namespace ViskeyTube.Wiki
             return Execute<WikiPageSearchResult>(BuildContentUrl($"search?cql=parent={pageId}")).Results;
         }
 
-        private T Execute<T>(string url) where T : class 
+        public WikiPage UpdateTitleAndGetNewPage(string pageId, string newTitle)
         {
-            var result = Execute(url);
+            var page = Execute<WikiPageLight>(BuildExpandedContentUrl(pageId));
+            if (page == null)
+                throw new Exception($"Cant find page {pageId}");
+
+            if (page.Title == newTitle)
+                return GetPage(pageId);
+
+            page.Title = newTitle;
+            page.Version.Number++;
+
+            return Execute<WikiPage>(BuildExpandedContentUrl(pageId), HttpMehtod.Put, jsonSerializer.Serialize(page));
+        }
+
+        private T Execute<T>(string url, HttpMehtod httpMehtod = HttpMehtod.Get, string data = null) where T : class
+        {
+            var result = Execute(url, httpMehtod, data);
             return result != null ? jsonSerializer.Deserialize<T>(result) : null;
         }
 
-        private string Execute(string url)
+        private string Execute(string url, HttpMehtod httpMehtod = HttpMehtod.Get, string data = null)
         {
             try
             {
-                using (var client = new WebClient())
+                var webRequest = WebRequest.Create(url);
+                webRequest.Headers.Add("Authorization", $"Basic {authHeader}");
+                webRequest.ContentType = "application/json";
+                webRequest.Method = httpMehtod.ToString();
+
+                if (!string.IsNullOrWhiteSpace(data))
                 {
-                    client.Headers.Add("Authorization", $"Basic {authHeader}");
-                    return ConvertFrom1251(client.DownloadString(url));
+                    using (var streamWriter = new StreamWriter(webRequest.GetRequestStream()))
+                    {
+                        streamWriter.Write(data);
+                    }
+                }
+
+                var response = webRequest.GetResponse();
+
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    return streamReader.ReadToEnd();
                 }
             }
             catch (WebException e)
@@ -69,17 +110,6 @@ namespace ViskeyTube.Wiki
 
                 throw;
             }
-        }
-
-        private static string ConvertFrom1251(string src)
-        {
-            var utf8 = Encoding.UTF8;
-            var win1251 = Encoding.GetEncoding("Windows-1251");
-
-            var utf8Bytes = win1251.GetBytes(src);
-            var win1251Bytes = Encoding.Convert(utf8, win1251, utf8Bytes);
-
-            return win1251.GetString(win1251Bytes);
         }
     }
 }
