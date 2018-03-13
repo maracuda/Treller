@@ -30,7 +30,6 @@
     <ProjectReference Include="..\RepositoryHooks\RepositoryHooks.csproj" />
     <ProjectReference Include="..\TaskManagerClient\TaskManagerClient.csproj" />
     <ProjectReference Include="..\ViskeyTube\ViskeyTube.csproj" />
-    <ProjectReference Include="..\WebApplication\WebApplication.csproj" />
   </ItemGroup>
 
   <ItemGroup>

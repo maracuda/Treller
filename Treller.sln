@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F574830C-1205-46AB-9E70-45270DD97FE3}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,8 +15,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagerClient", "TaskManagerClient\TaskManagerClient.csproj", "{5E0E8B08-1EE2-4EBE-993F-458F3AB23D23}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{2725C660-62A4-4D1C-80E6-23EC741FA037}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication", "WebApplication\WebApplication.csproj", "{1A829648-4110-49D0-84E3-177CBEF84840}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization", "Serialization\Serialization.csproj", "{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}"
 EndProject
@@ -36,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProcessStats", "ProcessStat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleRunner", "ConsoleRunner\ConsoleRunner.csproj", "{F3E4C311-E86E-40AF-9FBF-99648BEEF68A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViskeyTube", "ViskeyTube\ViskeyTube.csproj", "{9EB3E7C4-336C-41B8-ACC5-C86D81DD78A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViskeyTube", "ViskeyTube\ViskeyTube.csproj", "{9EB3E7C4-336C-41B8-ACC5-C86D81DD78A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,10 +58,6 @@ Global
 		{2725C660-62A4-4D1C-80E6-23EC741FA037}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2725C660-62A4-4D1C-80E6-23EC741FA037}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2725C660-62A4-4D1C-80E6-23EC741FA037}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A829648-4110-49D0-84E3-177CBEF84840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A829648-4110-49D0-84E3-177CBEF84840}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A829648-4110-49D0-84E3-177CBEF84840}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A829648-4110-49D0-84E3-177CBEF84840}.Release|Any CPU.Build.0 = Release|Any CPU
 		{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41CD40F1-6AD1-4EDD-9C0A-FD666570AF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
