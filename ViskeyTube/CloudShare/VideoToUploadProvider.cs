@@ -41,7 +41,7 @@ namespace ViskeyTube.CloudShare
 
             return new VideoToUpload
             {
-                Title = pageWithBody.Title.Substring(0, Math.Min(100, pageWithBody.Title.Length)),
+                Title = pageWithBody.Title.SafeSubString(0, 100),
                 Description = $"{pageWithBody.Title}\r\n\r\n{pageWithBody.Body.View.Value.FromHtml()}"
             };
         }

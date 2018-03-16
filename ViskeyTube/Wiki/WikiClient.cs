@@ -53,7 +53,7 @@ namespace ViskeyTube.Wiki
 
         public WikiPageLight[] GetChildren(string pageId)
         {
-            return Execute<WikiPageSearchResult>(BuildContentUrl($"search?cql=parent={pageId}")).Results;
+            return Execute<WikiPageSearchResult>(BuildContentUrl($"search?cql=parent={pageId}&limit=10000")).Results;
         }
 
         public WikiPage UpdateTitleAndGetNewPage(string pageId, string newTitle)
