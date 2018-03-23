@@ -9,8 +9,9 @@ using Google.Apis.Services;
 using Google.Apis.Upload;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
+using ViskeyTube.CloudShare;
 
-namespace ViskeyTube.CloudShare
+namespace ViskeyTube.RepositoryLayer.Google
 {
     public class GoogleDriveCloudShare : ICloudShare
     {

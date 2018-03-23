@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ViskeyTube.CloudShare
+namespace ViskeyTube.RepositoryLayer.Google
 {
     public class DriveQueryBuilder : IDriveQueryBuilder
     {

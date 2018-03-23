@@ -28,4 +28,8 @@
   <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DomainLayer\" />
+  </ItemGroup>
 </Project>

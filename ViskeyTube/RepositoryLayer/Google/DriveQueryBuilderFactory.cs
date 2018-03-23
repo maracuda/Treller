@@ -1,4 +1,4 @@
-﻿namespace ViskeyTube.CloudShare
+﻿namespace ViskeyTube.RepositoryLayer.Google
 {
     public class DriveQueryBuilderFactory : IDriveQueryBuilderFactory
     {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net;
 using Google;
-using ViskeyTube.CloudShare;
+using ViskeyTube.RepositoryLayer.Google;
 using Xunit;
 
 namespace Tests.Tests.IntegrationTests.ViskeyTube

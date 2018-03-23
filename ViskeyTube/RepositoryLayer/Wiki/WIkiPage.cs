@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ViskeyTube.Wiki
+namespace ViskeyTube.RepositoryLayer.Wiki
 {
     public class WikiPage : WikiPageLight
     {

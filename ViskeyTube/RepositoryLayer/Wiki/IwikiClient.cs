@@ -1,4 +1,4 @@
-﻿namespace ViskeyTube.Wiki
+﻿namespace ViskeyTube.RepositoryLayer.Wiki
 {
     public interface IWikiClient
     {

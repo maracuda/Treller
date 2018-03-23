@@ -1,6 +1,6 @@
 ﻿using Google.Apis.YouTube.v3;
 
-namespace ViskeyTube.CloudShare
+namespace ViskeyTube.RepositoryLayer.Google
 {
     public static class RequestExtensions
     {

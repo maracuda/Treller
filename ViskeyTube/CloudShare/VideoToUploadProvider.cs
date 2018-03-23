@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using ViskeyTube.Common;
-using ViskeyTube.Wiki;
+using ViskeyTube.RepositoryLayer;
+using ViskeyTube.RepositoryLayer.Google;
+using ViskeyTube.RepositoryLayer.Wiki;
 
 namespace ViskeyTube.CloudShare
 {

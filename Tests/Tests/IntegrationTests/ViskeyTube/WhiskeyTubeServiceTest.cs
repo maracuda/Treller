@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Serialization;
 using ViskeyTube.CloudShare;
-using ViskeyTube.Wiki;
+using ViskeyTube.RepositoryLayer.Wiki;
 using Xunit;
 
 namespace Tests.Tests.IntegrationTests.ViskeyTube

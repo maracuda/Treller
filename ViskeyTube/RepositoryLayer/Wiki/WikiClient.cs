@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using Serialization;
 
-namespace ViskeyTube.Wiki
+namespace ViskeyTube.RepositoryLayer.Wiki
 {
     public class WikiClient : IWikiClient
     {

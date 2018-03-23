@@ -1,6 +1,6 @@
 ﻿using System;
 using Serialization;
-using ViskeyTube.Wiki;
+using ViskeyTube.RepositoryLayer.Wiki;
 using Xunit;
 
 namespace Tests.Tests.IntegrationTests.ViskeyTube

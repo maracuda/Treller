@@ -1,6 +1,7 @@
 ﻿using System;
+using ViskeyTube.CloudShare;
 
-namespace ViskeyTube.CloudShare
+namespace ViskeyTube.RepositoryLayer.Google
 {
     public interface ICloudShare
     {

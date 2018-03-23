@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ViskeyTube.CloudShare
+﻿namespace ViskeyTube.RepositoryLayer.Google
 {
     public class DriveFile
     {

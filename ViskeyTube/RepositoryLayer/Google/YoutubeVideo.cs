@@ -1,4 +1,4 @@
-﻿namespace ViskeyTube.CloudShare
+﻿namespace ViskeyTube.RepositoryLayer
 {
     public class YoutubeVideo
     {
