@@ -69,7 +69,7 @@ namespace ViskeyTube.RepositoryLayer.Google
             }
         }
 
-        public DriveFile[] GetFiles(string folderId)
+        public DriveFileDto[] GetFiles(string folderId)
         {
             using (var driveService = CreateDriveService())
             {
@@ -78,7 +78,7 @@ namespace ViskeyTube.RepositoryLayer.Google
                 var result = request.Execute();
                 request.Fields = "createdTime";
                 return result.Files
-                    .Select(x => new DriveFile
+                    .Select(x => new DriveFileDto
                     {
                         Name = x.Name,
                         FileId = x.Id
@@ -90,7 +90,7 @@ namespace ViskeyTube.RepositoryLayer.Google
         private const string YoutubeVideoResourceKind = "youtube#video";
         private const string YoutubeSnippetPart = "snippet";
 
-        public UploadResult UploadToYouTube(byte[] fileBytes, VideoToUpload videoToUpload, string channelId)
+        public UploadResultDto UploadToYouTube(byte[] fileBytes, VideoToUpload videoToUpload, string channelId)
         {
             using (var youTubeService = CreateYouTubeService())
             {
@@ -118,7 +118,7 @@ namespace ViskeyTube.RepositoryLayer.Google
                     request.ResponseReceived += x => videoId = x.Id;
                     var progress = request.Upload();
 
-                    return new UploadResult
+                    return new UploadResultDto
                     {
                         Exception = progress.Exception,
                         Success = progress.Status == UploadStatus.Completed,
@@ -161,7 +161,7 @@ namespace ViskeyTube.RepositoryLayer.Google
 
 
 
-        public YoutubeVideo[] GetVideos(string channelId)
+        public YoutubeVideoDto[] GetVideos(string channelId)
         {
             using (var youTubeService = CreateYouTubeService())
             {
@@ -170,7 +170,7 @@ namespace ViskeyTube.RepositoryLayer.Google
                 return response.Items
                     .Where(x => x.Snippet.ChannelId == channelId)
                     .Where(x => x.FileDetails.FileSize.HasValue)
-                    .Select(x => new YoutubeVideo
+                    .Select(x => new YoutubeVideoDto
                     {
                         VideoId = x.Id,
                         Name = x.Snippet.Title,

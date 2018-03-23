@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ViskeyTube.Common;
-using ViskeyTube.RepositoryLayer;
+using ViskeyTube.CloudShare;
+using ViskeyTube.DomainLayer.Common;
 using ViskeyTube.RepositoryLayer.Google;
 using ViskeyTube.RepositoryLayer.Wiki;
 
-namespace ViskeyTube.CloudShare
+namespace ViskeyTube.ApplicationLayer
 {
     public class WhiskeyTubeService : IWhiskeyTubeService
     {
@@ -21,7 +21,7 @@ namespace ViskeyTube.CloudShare
             this.wikiClient = wikiClient;
         }
 
-        public UploadResult[] SyncByGoogleDrive(string folderId, string channelId, string playlistId)
+        public UploadResultDto[] SyncByGoogleDrive(string folderId, string channelId, string playlistId)
         {
             var files = cloudShare.GetFiles(folderId);
             var existedVideos = cloudShare.GetVideos(channelId);
@@ -31,7 +31,7 @@ namespace ViskeyTube.CloudShare
             return newVideoFiles.Select(x => UploadNewVideos(x, channelId, playlistId)).ToArray();
         }
 
-        public UploadResult[] SyncByGoogleDrive(DateTime inclusiveFromDate, DateTime inclusiveEndDate,
+        public UploadResultDto[] SyncByGoogleDrive(DateTime inclusiveFromDate, DateTime inclusiveEndDate,
             string wikiArchivePageId, string driveFolderId, string youtubeChannelId)
         {
             var files = cloudShare.GetFiles(driveFolderId)
@@ -48,7 +48,7 @@ namespace ViskeyTube.CloudShare
             return files.Select(x => UploadNewVideos(x, youtubeChannelId)).ToArray();
         }
 
-        public UploadResult[] SyncByWiki(DateTime inclusiveFromDate, DateTime inclusiveEndDate, string wikiArchivePageId, string driveFolderId, string youtubeChannelId)
+        public UploadResultDto[] SyncByWiki(DateTime inclusiveFromDate, DateTime inclusiveEndDate, string wikiArchivePageId, string driveFolderId, string youtubeChannelId)
         {
             var pages = wikiClient.GetChildren(wikiArchivePageId);
             var pagesWithDate = pages
@@ -78,7 +78,7 @@ namespace ViskeyTube.CloudShare
                 .Where(x => x.Date.Value >= inclusiveFromDate && x.Date.Value <= inclusiveEndDate)
                 .ToArray();
 
-            var results = new List<UploadResult>();
+            var results = new List<UploadResultDto>();
             foreach (var page in pagesWithDate)
             {
                 var file = files.FirstOrDefault(x => x.Date.Value == page.Date);
@@ -97,10 +97,10 @@ namespace ViskeyTube.CloudShare
             return results.ToArray();
         }
 
-        private UploadResult UploadNewVideos(DriveFile file, string channelId, string playlistId = null)
+        private UploadResultDto UploadNewVideos(DriveFileDto fileDto, string channelId, string playlistId = null)
         {
-            var bytes = cloudShare.DownloadFile(file.FileId);
-            var videoToUpload = videoToUploadProvider.GetVideoToUpload(file);
+            var bytes = cloudShare.DownloadFile(fileDto.FileId);
+            var videoToUpload = videoToUploadProvider.GetVideoToUpload(fileDto);
             var uploadResult = cloudShare.UploadToYouTube(bytes, videoToUpload, channelId);
 
             if (uploadResult.Success && !string.IsNullOrWhiteSpace(playlistId))

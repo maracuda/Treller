@@ -2,7 +2,7 @@
 
 namespace ViskeyTube.CloudShare
 {
-    public class UploadResult
+    public class UploadResultDto
     {
         public bool Success { get; set; }
         public Exception Exception { get; set; }

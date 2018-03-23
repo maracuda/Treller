@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ViskeyTube.Common
+namespace ViskeyTube.DomainLayer.Common
 {
     public static class StringExtensions
     {

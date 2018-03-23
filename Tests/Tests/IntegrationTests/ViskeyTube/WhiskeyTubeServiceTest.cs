@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Serialization;
+using ViskeyTube.ApplicationLayer;
 using ViskeyTube.CloudShare;
 using ViskeyTube.RepositoryLayer.Wiki;
 using Xunit;

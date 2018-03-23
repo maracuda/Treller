@@ -1,6 +1,6 @@
 ﻿namespace ViskeyTube.RepositoryLayer
 {
-    public class YoutubeVideo
+    public class YoutubeVideoDto
     {
         public string Name { get; set; }
         public string VideoId { get; set; }

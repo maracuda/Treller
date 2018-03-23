@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using HtmlAgilityPack;
 
-namespace ViskeyTube.Common
+namespace ViskeyTube.DomainLayer.Common
 {
     public static class HtmlStringHelpers
     {

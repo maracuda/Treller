@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace ViskeyTube.Common
+namespace ViskeyTube.DomainLayer.Common
 {
     public static class DateTimeHelpers
     {

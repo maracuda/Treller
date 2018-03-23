@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ViskeyTube.Common;
+using ViskeyTube.DomainLayer.Common;
 using ViskeyTube.RepositoryLayer;
 using ViskeyTube.RepositoryLayer.Google;
 using ViskeyTube.RepositoryLayer.Wiki;
@@ -18,11 +18,11 @@ namespace ViskeyTube.CloudShare
             this.wikiClient = wikiClient;
         }
 
-        public VideoToUpload GetVideoToUpload(DriveFile driveFile)
+        public VideoToUpload GetVideoToUpload(DriveFileDto driveFileDto)
         {
             var videoToUpload = new VideoToUpload
             {
-                Title = driveFile.Name,
+                Title = driveFileDto.Name,
                 Description = $"Night Whiskey"
             };
 

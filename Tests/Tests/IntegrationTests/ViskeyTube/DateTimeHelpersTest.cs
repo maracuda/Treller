@@ -1,5 +1,5 @@
 ﻿using System;
-using ViskeyTube.Common;
+using ViskeyTube.DomainLayer.Common;
 using Xunit;
 
 namespace Tests.Tests.IntegrationTests.ViskeyTube
