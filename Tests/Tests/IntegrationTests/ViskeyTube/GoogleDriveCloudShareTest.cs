@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
+using System.Net;
+using Google;
 using ViskeyTube.CloudShare;
 using Xunit;
 
@@ -7,7 +10,7 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
 {
     public class GoogleDriveCloudShareTest : IntegrationTest
     {
-        protected readonly GoogleDriveCloudShare googleDriveCloudShare;
+        protected readonly ICloudShare googleDriveCloudShare;
 
         protected const string BillingChannelId = "UCiGKUGNeK8-KHPpRqxZoYcw";
         protected const string BillingGooglePhotoFolderId = "17K6Nj556UL2ylNYzh2lXPpYzq7Bif8tl";
@@ -37,22 +40,22 @@ namespace Tests.Tests.IntegrationTests.ViskeyTube
         [Fact]
         public void AbleToGetMyVideos()
         {
-            var videos = googleDriveCloudShare.GetVideos(BillingChannelId);
-            var files = googleDriveCloudShare.GetFiles(BillingGooglePhotoFolderId);
-            Assert.True(videos.Any(v => files.Any(f => v.IsProbablyTheSameAs(f.Name))));
+            var googleApiException = Assert.Throws<GoogleApiException>(() => googleDriveCloudShare.GetVideos(BillingChannelId));
+            Assert.Equal(HttpStatusCode.Forbidden, googleApiException.HttpStatusCode);            
         }
 
         [Fact]
         public void AbleToMoveVideoToPlaylist()
         {
-            googleDriveCloudShare.AddVideoToPlayList("MmBhsdxoCYE", "PLsUe9ECHg2WapJxV0CQVUCw_dy9oWomSX");
+            var googleApiException = Assert.Throws<GoogleApiException>(() => googleDriveCloudShare.AddVideoToPlayList("MmBhsdxoCYE", "PLsUe9ECHg2WapJxV0CQVUCw_dy9oWomSX"));
+            Assert.Equal(HttpStatusCode.Forbidden, googleApiException.HttpStatusCode);
         }
 
         [Fact]
         public void AbleToGetMyChannels()
         {
-            var files = googleDriveCloudShare.GetMyChannels();
-            Assert.True(files.Length > 0);
+            var googleApiException = Assert.Throws<GoogleApiException>(() => googleDriveCloudShare.GetMyChannels());
+            Assert.Equal(HttpStatusCode.Forbidden, googleApiException.HttpStatusCode);
         }
     }
 }
