@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace MessageBroker
+namespace MessageBroker.Messages
 {
     public class DataRow
     {

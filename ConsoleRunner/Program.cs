@@ -3,6 +3,7 @@ using System.Reflection;
 using ConsoleRunner.Config;
 using IoCContainer;
 using MessageBroker;
+using MessageBroker.Bots;
 using TaskManagerClient.CredentialServiceAbstractions;
 using ProcessStats;
 using RepositoryHooks.BranchNotification;
@@ -64,11 +65,12 @@ namespace ConsoleRunner
             container.RegisterInstance<IYouTrackCredentialService>(credentialsService);
 
             var mbCredentials = credentialsService.MessageBrokerCredentials;
-            var emailMessageProducer = new KonturEmailMessageProducer(mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
-            container.RegisterInstance<IEmailMessageProducer>(emailMessageProducer);
+            var emailMessageProducer = new KonturEmailBot(container.Get<IMessenger>(),
+                                                          mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            container.RegisterInstance<IEmailBot>(emailMessageProducer);
 
-            var spreadsheetsMessageProducer = new GoogleSpreadsheetsMessageProducer(credentialsService.GoogleClientSecret);
-            container.RegisterInstance<ISpreadsheetsMessageProducer>(spreadsheetsMessageProducer);
+            var spreadsheetsMessageProducer = new GoogleSpreadsheetsBot(container.Get<IMessenger>(), credentialsService.GoogleClientSecret);
+            container.RegisterInstance<ISpreadsheetsBot>(spreadsheetsMessageProducer);
 
             return container;
         }

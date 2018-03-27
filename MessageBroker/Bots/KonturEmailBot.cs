@@ -1,11 +1,12 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
+using MessageBroker.Messages;
 
-namespace MessageBroker
+namespace MessageBroker.Bots
 {
-    public class KonturEmailMessageProducer : IEmailMessageProducer
+    public class KonturEmailBot : IEmailBot
     {
+        private readonly Member me;
         private readonly string login;
         private readonly string password;
         private readonly string domain;
@@ -13,13 +14,16 @@ namespace MessageBroker
         private readonly int smtpPort;
         private readonly string fromEmail;
 
-        public KonturEmailMessageProducer(
+        public KonturEmailBot(
+            IMessenger messenger,
             string login,
             string password,
             string domain,
             string smtpHost,
             int smtpPort)
         {
+            messenger.ChatRegistred += OnChatRegistred;
+            me = messenger.RegisterBotMember(GetType());
             this.login = login;
             this.password = password;
             this.domain = domain;
@@ -28,7 +32,34 @@ namespace MessageBroker
             fromEmail = $"{login}@skbkontur.ru";
         }
 
-        public void Publish(EmailMessage message)
+        private SmtpClient CreateClient()
+        {
+            return new SmtpClient(smtpHost, smtpPort)
+            {
+                UseDefaultCredentials = false,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new NetworkCredential(login, password, domain)
+            };
+        }
+
+        private void OnChatRegistred(object sender, NewChatEventArgs eventArgs)
+        {
+            eventArgs.Chat.NewMessagePosted += FilterEmailAndHandle;
+        }
+
+        private void FilterEmailAndHandle(object sender, MessageEventArgs eventArgs)
+        {
+            if (eventArgs.Message is Email email)
+            {
+                Publish(email);
+                if (sender is IChat chat)
+                {
+                    chat.Post(me, $"Опубликовано: {email}.");
+                }
+            }
+        }
+
+        public void Publish(Email message)
         {
             if (message.Recipients == null || message.Recipients.Length < 1)
                 return;
@@ -40,10 +71,6 @@ namespace MessageBroker
                 {
                     mailMessage.To.Add(message.Recipients[i]);
                 }
-                foreach (var attachment in message.EmailAttachments)
-                {
-                    mailMessage.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment.Content), attachment.Name));
-                }
                 if (!string.IsNullOrEmpty(message.ReplyTo))
                 {
                     mailMessage.ReplyToList.Add(new MailAddress(message.ReplyTo));
@@ -54,16 +81,6 @@ namespace MessageBroker
                 }
                 smtpClient.Send(mailMessage);
             }
-        }
-
-        private SmtpClient CreateClient()
-        {
-            return new SmtpClient(smtpHost, smtpPort)
-            {
-                UseDefaultCredentials = false,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new NetworkCredential(login, password, domain)
-            };
         }
     }
 }

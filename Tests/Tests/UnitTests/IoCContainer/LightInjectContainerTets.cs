@@ -1,5 +1,6 @@
 ﻿using IoCContainer;
 using MessageBroker;
+using MessageBroker.Bots;
 using Xunit;
 
 namespace Tests.Tests.UnitTests.IoCContainer
@@ -10,10 +11,11 @@ namespace Tests.Tests.UnitTests.IoCContainer
         public void CanRegisterCustomImplementationToContainer()
         {
             var container = ContainerFactory.CreateMvc();
-            var emailMessageProducer = new KonturEmailMessageProducer("login", "password", "kontur", "localhost", 25);
-            container.RegisterInstance<IEmailMessageProducer>(emailMessageProducer);
+            var emailMessageProducer = new KonturEmailBot(container.Get<IMessenger>(), 
+                                                                      "login", "password", "kontur", "localhost", 25);
+            container.RegisterInstance<IEmailBot>(emailMessageProducer);
 
-            var result = container.Get<IEmailMessageProducer>();
+            var result = container.Get<IEmailBot>();
             Assert.NotNull(result);
         }
     }

@@ -1,22 +1,29 @@
 ﻿using System;
-using MessageBroker;
+using MessageBroker.Bots;
+using MessageBroker.Messages;
 using Xunit;
 
 namespace Tests.Tests.IntegrationTests.ProcessStats
 {
     public class SpreadsheetProducerTest : IntegrationTest
     {
-        private readonly ISpreadsheetsMessageProducer spreadsheetProducer;
+        private readonly ISpreadsheetsBot spreadsheetProducer;
 
         public SpreadsheetProducerTest()
         {
-            spreadsheetProducer = container.Get<ISpreadsheetsMessageProducer>();
+            spreadsheetProducer = container.Get<ISpreadsheetsBot>();
         }
 
         [Fact]
         public void AbleToAppendRowToTestDocument()
         {
-            spreadsheetProducer.Append("1-WJBhjaJpr3qb0_P88995q1MWcGumKy6xgvoT5dSm4k", "Sheet1", GenerageDataRow());
+            spreadsheetProducer.Publish(new Report
+            {
+                SpreadsheetId = "1-WJBhjaJpr3qb0_P88995q1MWcGumKy6xgvoT5dSm4k",
+                SheetName = "Sheet1",
+                DataRows = new []{ GenerageDataRow() },
+                Type = ReportType.Diff
+            });
         }
 
         [Fact]
@@ -26,7 +33,13 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
             {
                 GenerageDataRow(), GenerageDataRow(), GenerageDataRow()
             };
-            spreadsheetProducer.Rewrite("1-WJBhjaJpr3qb0_P88995q1MWcGumKy6xgvoT5dSm4k", "Sheet1", dataRows);
+            spreadsheetProducer.Publish(new Report
+            {
+                SpreadsheetId = "1-WJBhjaJpr3qb0_P88995q1MWcGumKy6xgvoT5dSm4k",
+                SheetName = "Sheet1",
+                DataRows = dataRows,
+                Type = ReportType.Full
+            });
         }
 
         private static DataRow GenerageDataRow()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Google.Apis.Sheets.v4.Data;
 
-namespace MessageBroker
+namespace MessageBroker.Bots
 {
     public static class RequestFactory
     {
@@ -47,7 +47,7 @@ namespace MessageBroker
                     {
                         new RowData
                         {
-                            Values = rowData.Select(ConvertToCellData).ToList()
+                            Values = rowData.Select(ConvertToCellData).ToList<CellData>()
                         }
                     },
                     SheetId = sheetId
