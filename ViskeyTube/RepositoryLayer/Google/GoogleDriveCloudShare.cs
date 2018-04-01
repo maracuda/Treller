@@ -90,7 +90,7 @@ namespace ViskeyTube.RepositoryLayer.Google
         private const string YoutubeVideoResourceKind = "youtube#video";
         private const string YoutubeSnippetPart = "snippet";
 
-        public UploadResultDto UploadToYouTube(byte[] fileBytes, VideoToUpload videoToUpload, string channelId)
+        public UploadResultDto UploadToYouTube(byte[] fileBytes, VideoMeta videoMeta, string channelId)
         {
             using (var youTubeService = CreateYouTubeService())
             {
@@ -98,8 +98,8 @@ namespace ViskeyTube.RepositoryLayer.Google
                 {
                     Snippet = new VideoSnippet
                     {
-                        Title = videoToUpload.Title,
-                        Description = videoToUpload.Description,
+                        Title = videoMeta.Title,
+                        Description = videoMeta.Description,
                         Tags = new[] { "nightwhiskey", "whiskeytube", "konturbilling" },
                         ChannelId = channelId,
                         CategoryId = "22", // See https://developers.google.com/youtube/v3/docs/videoCategories/list

@@ -7,7 +7,7 @@ namespace ViskeyTube.RepositoryLayer.Google
     {
         byte[] DownloadFile(string fileId);
         DriveFileDto[] GetFiles(string folderId);
-        UploadResultDto UploadToYouTube(byte[] fileBytes, VideoToUpload videoToUpload, string channelId);
+        UploadResultDto UploadToYouTube(byte[] fileBytes, VideoMeta videoMeta, string channelId);
         [Obsolete("Не работает из-за ошибки доступа к гуглу")]
         void AddVideoToPlayList(string videoId, string playlistId);
         [Obsolete("Не работает из-за ошибки доступа к гуглу")]
