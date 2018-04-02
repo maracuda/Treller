@@ -40,7 +40,7 @@ namespace RepositoryHooks.BranchNotification
                     var bodyBuilder = new StringBuilder();
                     bodyBuilder.AppendLine("ƒорогой разработчик!");
                     bodyBuilder.AppendLine();
-                    bodyBuilder.AppendLine($"—пешу обратить твое внимание на старые ветки в репозитории: {string.Join(", ", branchesPerCommiter)}");
+                    bodyBuilder.AppendLine($"—пешу обратить твое внимание на старые ветки в репозитории: {string.Join(", ", branchesPerCommiter.Select(x => x.ToString()))}");
                     bodyBuilder.AppendLine("¬ них давно не ведетс€ никакой работы, это похоже на разбитое окно. ѕожалуйста, подумай кака€ ценность есть в этих ветках и как эту ценность доставить.");
                     bodyBuilder.AppendLine();
                     bodyBuilder.AppendLine("— любовью, твой автоматический уведомл€тор.");
