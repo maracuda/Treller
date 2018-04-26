@@ -61,7 +61,7 @@ namespace MessageBroker.Bots
             {
                 var result = new List<Request>();
 
-                var sheet = Enumerable.FirstOrDefault<Sheet>(sheetsService.Spreadsheets.Get(spreadsheetId).Execute().Sheets, s => s.Properties.Title.Equals(sheetName));
+                var sheet = sheetsService.Spreadsheets.Get(spreadsheetId).Execute().Sheets.FirstOrDefault(s => s.Properties.Title.Equals(sheetName));
                 if (sheet != null)
                 {
                     result.Add(RequestFactory.CreateCleanSheetRequest(sheet.Properties.SheetId.Value));
@@ -73,7 +73,7 @@ namespace MessageBroker.Bots
                         Requests = new List<Request> { RequestFactory.RequestCreateCreateSheetRequest(sheetName) }
 
                     }, spreadsheetId).Execute();
-                    sheet = Enumerable.First<Sheet>(sheetsService.Spreadsheets.Get(spreadsheetId).Execute().Sheets, s => s.Properties.Title.Equals(sheetName));
+                    sheet = sheetsService.Spreadsheets.Get(spreadsheetId).Execute().Sheets.First(s => s.Properties.Title.Equals(sheetName));
                 }
 
                 foreach (var dataRow in dataRows)
@@ -134,10 +134,14 @@ namespace MessageBroker.Bots
 
         private int ReadSheetId(SheetsService service, string spreadsheetId, string sheetName)
         {
-            var sheet = Enumerable.FirstOrDefault<Sheet>(ListSheets(service, spreadsheetId), s => s.Properties.Title.Equals(sheetName, StringComparison.OrdinalIgnoreCase));
+            var sheet = ListSheets(service, spreadsheetId).FirstOrDefault(s => s.Properties.Title.Equals(sheetName, StringComparison.OrdinalIgnoreCase));
             if (sheet?.Properties.SheetId == null)
                 throw new Exception($"Fail to find sheet with name {sheetName} at spreadsheet with id {spreadsheetId}");
             return sheet.Properties.SheetId.Value;
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

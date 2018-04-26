@@ -61,21 +61,9 @@ namespace ProcessStats
                 date = DateTime.Now.AddDays(-1).Date;
             }
             var battlesStats = battlesStatsCrawler.Collect(date.Value);
-            var dataRow = DataRow.Create(battlesStats.Date, battlesStats.CreatedCount, battlesStats.ReopenCount, battlesStats.FixedCount);
-            processStatsChat.Post(me, new Report
-            {
-                SpreadsheetId = "1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE",
-                SheetName = "Батлы",
-                Type = ReportType.Diff,
-                DataRows = new []{ dataRow }
-            });
-
-            processStatsChat.Post(me, new Email
-            {
-                Recipients = new[] { "hvorost@skbkontur.ru" },
-                Title = "Отчет о сборе батлов",
-                Body = $"Дорогой менеджер, роботы успешно обновили статистику по баттлам: {date.Value:dd.MM.yyyy}, открыто {battlesStats.CreatedCount}, переоткрыто {battlesStats.ReopenCount}, исправлено {battlesStats.FixedCount}."
-            });
+            processStatsChat.Post(me, new Metric { Name = "Battles.Created", Value = battlesStats.CreatedCount});
+            processStatsChat.Post(me, new Metric { Name = "Battles.Reopen", Value = battlesStats.ReopenCount});
+            processStatsChat.Post(me, new Metric { Name = "Battles.Fixed", Value = battlesStats.FixedCount});
         }
 
         public void CollectAndPublishIncidentsStats(DateTime? date = null)
@@ -85,14 +73,8 @@ namespace ProcessStats
                 date = DateTime.Now.AddDays(-1).Date;
             }
             var incidentsStats = incidentsStatsCrawler.Collect(date.Value);
-            var dataRow = DataRow.Create(incidentsStats.Date, incidentsStats.IncomingCount, incidentsStats.FixedCount);
-            processStatsChat.Post(me, new Report
-            {
-                SpreadsheetId = "1FVrVCLPDiXgWwq2nGOabeMlT27Muxtm3_OTZQn82SAE",
-                SheetName = "Инциденты",
-                Type = ReportType.Diff,
-                DataRows = new[] { dataRow }
-            });
+            processStatsChat.Post(me, new Metric { Name = "Incidents.Incoming", Value = incidentsStats.IncomingCount});
+            processStatsChat.Post(me, new Metric { Name = "Incidents.Fixed", Value = incidentsStats.FixedCount});
 
             processStatsChat.Post(me, new Email
             {

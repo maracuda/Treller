@@ -2,7 +2,7 @@
   "profiles": {
     "ConsoleRunner": {
       "commandName": "Project",
-      "commandLineArgs": "SKBKontur.Treller.ProcessStats ProcessStats.IProcessStatsService BuildAllAndDeliverToManagers"
+      "commandLineArgs": "SKBKontur.Treller.ProcessStats ProcessStats.IProcessStatsService CollectAndPublishBattlesStats"
     }
   }
 }

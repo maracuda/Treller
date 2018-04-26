@@ -2,7 +2,7 @@
 
 namespace MessageBroker.Bots
 {
-    public interface IEmailBot
+    public interface IEmailBot : IBot
     {
         void Publish(Email email);
     }

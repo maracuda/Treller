@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Apis.Sheets.v4" Version="1.30.0.1022" />
+    <PackageReference Include="Metrics.NET" Version="0.5.5" />
+    <PackageReference Include="Metrics.NET.Graphite" Version="0.5.0" />
   </ItemGroup>
 
 </Project>

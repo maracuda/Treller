@@ -72,7 +72,7 @@ namespace TaskManagerClient.Youtrack
                     return countResult.Value;
                 }
 
-                if (timer.ElapsedMilliseconds > 3000)
+                if (timer.ElapsedMilliseconds > 5000)
                 {
                     timer.Stop();
                     return -1;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using ConsoleRunner.Config;
 using IoCContainer;
@@ -21,7 +22,11 @@ namespace ConsoleRunner
                 return;
             }
 
-            var container = ConfigureContainer();
+            var container = CreateContainer();
+            var armyOfBots = CreateArmyOfBots(container);
+            //NOTE: add this starange code to fail fast bacause I got problems with container at execution stage. 
+            container.Get<IProcessStatsService>();
+            container.Get<IBranchNotificator>();
 
             Type serviceType;
             object serviceInstance;
@@ -29,8 +34,6 @@ namespace ConsoleRunner
             {
                 serviceType = Type.GetType($"{args[1]}, {args[0]}");
                 Console.WriteLine($"Service type parsed as {serviceType}.");
-                serviceInstance = container.Get<IProcessStatsService>();
-                serviceInstance = container.Get<IBranchNotificator>();
                 serviceInstance = container.Get(serviceType);
             }
             catch (Exception e)
@@ -54,25 +57,44 @@ namespace ConsoleRunner
             var parametersCount = method.GetParameters().Length;
             var parameters = new object[parametersCount];
             method.Invoke(serviceInstance, parameters);
+
+            DestroyArmyOfBots(armyOfBots);
+
             Console.WriteLine("end");
         }
 
-        private static IContainer ConfigureContainer()
+        private static IContainer CreateContainer()
         {
             var container = ContainerFactory.Create();
             var credentialsService = container.Create<CredentialService>();
             container.RegisterInstance<ITrelloUserCredentialService>(credentialsService);
             container.RegisterInstance<IYouTrackCredentialService>(credentialsService);
+            return container;
+        }
+
+        private static IEnumerable<IBot> CreateArmyOfBots(IContainer container)
+        {
+            var credentialsService = container.Create<CredentialService>();
+            var armyOfBots = new List<IBot>();
 
             var mbCredentials = credentialsService.MessageBrokerCredentials;
-            var emailMessageProducer = new KonturEmailBot(container.Get<IMessenger>(),
-                                                          mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
-            container.RegisterInstance<IEmailBot>(emailMessageProducer);
+            var emailBot = new KonturEmailBot(container.Get<IMessenger>(),
+                mbCredentials.Login, mbCredentials.Password, mbCredentials.Domain, "dag3.kontur", 25);
+            container.RegisterInstance<IEmailBot>(emailBot);
+            armyOfBots.Add(emailBot);
 
-            var spreadsheetsMessageProducer = new GoogleSpreadsheetsBot(container.Get<IMessenger>(), credentialsService.GoogleClientSecret);
-            container.RegisterInstance<ISpreadsheetsBot>(spreadsheetsMessageProducer);
+            var spreadsheetsBot = new GoogleSpreadsheetsBot(container.Get<IMessenger>(), credentialsService.GoogleClientSecret);
+            container.RegisterInstance<ISpreadsheetsBot>(spreadsheetsBot);
+            armyOfBots.Add(spreadsheetsBot);
+            return armyOfBots;
+        }
 
-            return container;
+        private static void DestroyArmyOfBots(IEnumerable<IBot> armyOfBots)
+        {
+            foreach (var armyOfBot in armyOfBots)
+            {
+                armyOfBot.Dispose();
+            }
         }
     }
 }

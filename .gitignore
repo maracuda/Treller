@@ -30,3 +30,4 @@ TrellerData/*.json
 node_modules/
 **/Content/bundle/
 *.log
+ConsoleRunner/Properties/launchSettings.json

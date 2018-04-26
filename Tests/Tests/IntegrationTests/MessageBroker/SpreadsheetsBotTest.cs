@@ -3,13 +3,13 @@ using MessageBroker.Bots;
 using MessageBroker.Messages;
 using Xunit;
 
-namespace Tests.Tests.IntegrationTests.ProcessStats
+namespace Tests.Tests.IntegrationTests.MessageBroker
 {
-    public class SpreadsheetProducerTest : IntegrationTest
+    public class SpreadsheetsBotTest : IntegrationTest
     {
         private readonly ISpreadsheetsBot spreadsheetProducer;
 
-        public SpreadsheetProducerTest()
+        public SpreadsheetsBotTest()
         {
             spreadsheetProducer = container.Get<ISpreadsheetsBot>();
         }

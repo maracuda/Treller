@@ -2,7 +2,7 @@
 
 namespace MessageBroker.Bots
 {
-    public interface ISpreadsheetsBot
+    public interface ISpreadsheetsBot : IBot
     {
         void Publish(Report report);
     }

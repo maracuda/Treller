@@ -82,5 +82,9 @@ namespace MessageBroker.Bots
                 smtpClient.Send(mailMessage);
             }
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Tests.Tests.IntegrationTests.MessageBroker
 {
-    public class EmailMessageProducerTest : IntegrationTest
+    public class EmailBotTest : IntegrationTest
     {
         private readonly IEmailBot emailBot;
 
-        public EmailMessageProducerTest()
+        public EmailBotTest()
         {
             emailBot = container.Get<IEmailBot>();
         }
