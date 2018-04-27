@@ -6,26 +6,21 @@ namespace Logger.Log4Net
     public class Log4NetLogger : ILogger
     {
         private readonly ILog log;
-        private readonly ILogService logService;
 
         public Log4NetLogger(
-            ILog log,
-            ILogService logService)
+            ILog log)
         {
             this.log = log;
-            this.logService = logService;
         }
 
         public void LogError(string message)
         {
             log.Error(message);
-            logService.RegisterError(message);
         }
 
         public void LogError(string message, Exception e)
         {
             log.Error(message, e);
-            logService.RegisterError(message, e);
         }
 
         public void LogInfo(string message)

@@ -7,7 +7,7 @@
 
         public override string ToString()
         {
-            return $"Metric {Name} value of {Value}.";
+            return $"Metric {Name} value of {Value}";
         }
     }
 }

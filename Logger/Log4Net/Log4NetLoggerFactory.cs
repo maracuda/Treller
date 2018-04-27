@@ -12,14 +12,7 @@ namespace Logger.Log4Net
     {
         private static readonly object configLock = new object();
         private static bool isConfigured;
-        private readonly ILogService logService;
         private readonly ConcurrentDictionary<Type, ILogger> loggersMap = new ConcurrentDictionary<Type, ILogger>();
-
-        public Log4NetLoggerFactory(ILogService logService)
-        {
-            this.logService = logService;
-
-        }
 
         public ILogger Get<T>()
         {
@@ -35,7 +28,7 @@ namespace Logger.Log4Net
                 }
             }
 
-            return loggersMap.GetOrAdd(typeof(T), type => new Log4NetLogger(LogManager.GetLogger(typeof(T)), logService));
+            return loggersMap.GetOrAdd(typeof(T), type => new Log4NetLogger(LogManager.GetLogger(typeof(T))));
         }
 
         private static void Configure()

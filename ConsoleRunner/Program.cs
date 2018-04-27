@@ -86,6 +86,9 @@ namespace ConsoleRunner
             var spreadsheetsBot = new GoogleSpreadsheetsBot(container.Get<IMessenger>(), credentialsService.GoogleClientSecret);
             container.RegisterInstance<ISpreadsheetsBot>(spreadsheetsBot);
             armyOfBots.Add(spreadsheetsBot);
+
+            armyOfBots.Add(container.Get<IMetricsBot>());
+            armyOfBots.Add(container.Get<ILogBot>());
             return armyOfBots;
         }
 

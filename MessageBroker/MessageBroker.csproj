@@ -21,4 +21,8 @@
     <PackageReference Include="Metrics.NET.Graphite" Version="0.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Logger\Logger.csproj" />
+  </ItemGroup>
+
 </Project>
