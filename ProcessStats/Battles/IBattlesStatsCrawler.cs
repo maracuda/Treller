@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace ProcessStats.Battles
+﻿namespace ProcessStats.Battles
 {
     public interface IBattlesStatsCrawler
     {
-        BattlesStats Collect(DateTime date);
+        BattlesStats Collect();
     }
 }

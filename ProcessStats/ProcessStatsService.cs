@@ -56,14 +56,14 @@ namespace ProcessStats
 
         public void CollectAndPublishBattlesStats(DateTime? date = null)
         {
-            if (!date.HasValue)
+            var battlesStats = battlesStatsCrawler.Collect();
+            processStatsChat.Post(me, new Metric { Name = "Battles.Unassigned", Value = battlesStats.UnassignedCount});
+            processStatsChat.Post(me, new Email
             {
-                date = DateTime.Now.AddDays(-1).Date;
-            }
-            var battlesStats = battlesStatsCrawler.Collect(date.Value);
-            processStatsChat.Post(me, new Metric { Name = "Battles.Created", Value = battlesStats.CreatedCount});
-            processStatsChat.Post(me, new Metric { Name = "Battles.Reopen", Value = battlesStats.ReopenCount});
-            processStatsChat.Post(me, new Metric { Name = "Battles.Fixed", Value = battlesStats.FixedCount});
+                Recipients = new[] { "hvorost@skbkontur.ru" },
+                Title = "Отчет о сборе батлов",
+                Body = $"{battlesStats.UnassignedCount}"
+            });
         }
 
         public void CollectAndPublishIncidentsStats(DateTime? date = null)

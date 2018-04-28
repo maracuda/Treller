@@ -1,5 +1,4 @@
-﻿using System;
-using TaskManagerClient;
+﻿using TaskManagerClient;
 
 namespace ProcessStats.Battles
 {
@@ -12,18 +11,12 @@ namespace ProcessStats.Battles
             this.bugTrackerClient = bugTrackerClient;
         }
 
-        public BattlesStats Collect(DateTime date)
+        public BattlesStats Collect()
         {
-            var createdCount = bugTrackerClient.GetFilteredCount($"project: Billy Type: Battle created: {date:yyyy-MM-dd}");
-            var fixedCount = bugTrackerClient.GetFilteredCount($"project: Billy Type: Battle resolved date: {date:yyyy-MM-dd}");
-            var reopenCount = bugTrackerClient.GetFilteredCount($"project: Billy Type: Battle Регулярность: Периодически,Постоянно updated: {date:yyyy-MM-dd}");
-
+            var unassignedCount = bugTrackerClient.GetFilteredCount("#Billy #Battle State: -Resolved Assignee: Unassigned");
             return new BattlesStats
             {
-                Date = date,
-                CreatedCount = createdCount,
-                ReopenCount = reopenCount,
-                FixedCount = fixedCount
+                UnassignedCount = unassignedCount
             };
         }
     }

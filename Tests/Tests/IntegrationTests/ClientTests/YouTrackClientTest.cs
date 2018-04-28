@@ -21,5 +21,13 @@ namespace Tests.Tests.IntegrationTests.ClientTests
             Assert.NotEmpty(actualIssues);
             Assert.Equal(actualIssues.Length, actualIssuesCount);
         }
+
+        [Fact]
+        public void AbleToFilterWithShortcuts()
+        {
+            const string filter = "#Billy #Battle State: -Resolved Assignee: Unassigned";
+            var actualIssuesCount = bugTrackerClient.GetFilteredCount(filter);
+            Assert.True(actualIssuesCount >= 0);
+        }
     }
 }
