@@ -58,12 +58,6 @@ namespace ProcessStats
         {
             var battlesStats = battlesStatsCrawler.Collect();
             processStatsChat.Post(me, new Metric { Name = "Battles.Unassigned", Value = battlesStats.UnassignedCount});
-            processStatsChat.Post(me, new Email
-            {
-                Recipients = new[] { "hvorost@skbkontur.ru" },
-                Title = "Отчет о сборе батлов",
-                Body = $"{battlesStats.UnassignedCount}"
-            });
         }
 
         public void CollectAndPublishIncidentsStats(DateTime? date = null)
