@@ -6,22 +6,22 @@ namespace ViskeyTube.DomainLayer
 {
     public class WhiskeyDriveFile
     {
+        private readonly Func<byte[]> getBody;
         public DateTime? Date { get; }
 
-        private readonly string Id;
         private readonly string Title;
         private byte[] Body;
 
-        public WhiskeyDriveFile(DriveFileDto driveFileDto)
+        public WhiskeyDriveFile(DriveFileDto driveFileDto, Func<byte[]> getBody)
         {
-            Id = driveFileDto.FileId;
+            this.getBody = getBody;
             Title = driveFileDto.Name;
             Date = DateTimeHelpers.ExtractRussianDateTime(Title);
         }
 
-        public byte[] GetFileBody(ICloudShare cloudShare)
+        public byte[] GetFileBody()
         {
-            return Body ?? (Body = cloudShare.DownloadFile(Id));
+            return Body ?? (Body = getBody());
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using ViskeyTube.CloudShare;
-using ViskeyTube.DomainLayer.Common;
-using ViskeyTube.RepositoryLayer.Google;
-using ViskeyTube.RepositoryLayer.Wiki;
+﻿using System;
 
 namespace ViskeyTube.DomainLayer
 {
@@ -9,42 +6,25 @@ namespace ViskeyTube.DomainLayer
     {
         private readonly WhiskeyDriveFile driveFile;
         private readonly WhiskeyWikiPage wikiPage;
-        private readonly ICloudShare cloudShare;
-        private readonly IWikiClient wikiClient;
+        private readonly Func<WhiskeyWikiPage, string> getPageBody;
 
-        public WhiskeyVideo(WhiskeyDriveFile driveFile, WhiskeyWikiPage wikiPage, ICloudShare cloudShare, IWikiClient wikiClient)
+
+        public WhiskeyVideo(WhiskeyDriveFile driveFile, WhiskeyWikiPage wikiPage)
         {
             this.driveFile = driveFile;
             this.wikiPage = wikiPage;
-            this.cloudShare = cloudShare;
-            this.wikiClient = wikiClient;
         }
 
         public bool ReadyToUpload => driveFile != null && wikiPage != null && !wikiPage.HasUploadedLabel;
 
-        public UploadResultDto Upload(string channelId, string playlistId = null)
+
+        public string Description => wikiPage.GetBody();    
+        public string Title => wikiPage.Title;
+        public byte[] VideoBytes => driveFile.GetFileBody();
+
+        public WhiskeyWikiPage MarkUploaded()
         {
-            var pageBody = wikiPage.GetPageBody(wikiClient);
-            var videoMeta = new VideoMeta
-            {
-                Title = wikiPage.Title.SafeSubString(0, 100),
-                Description = $"{wikiPage.Title}\r\n\r\n{pageBody}"
-            };
-
-            var videoBytes = driveFile.GetFileBody(cloudShare);
-            var uploadResult = cloudShare.UploadToYouTube(videoBytes, videoMeta, channelId);
-
-            if (uploadResult.Success && !string.IsNullOrWhiteSpace(playlistId))
-            {
-                cloudShare.AddVideoToPlayList(uploadResult.VideoId, playlistId);
-            }
-
-            if (uploadResult.Success)
-            {
-                wikiPage.MarkUploaded(wikiClient);
-            }
-
-            return uploadResult;
+            return wikiPage.MarkUploaded();
         }
     }
 }

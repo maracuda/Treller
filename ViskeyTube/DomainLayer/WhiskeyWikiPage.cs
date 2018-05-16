@@ -6,31 +6,41 @@ namespace ViskeyTube.DomainLayer
 {
     public class WhiskeyWikiPage
     {
+        private readonly Func<string> getPageBody;
         private const string UploadedLabel = "[uploaded]";
 
         public DateTime? Date { get; }
         public bool HasUploadedLabel => Title.Contains(UploadedLabel);
 
         public readonly string Title;
-        private readonly string Id;
-        private string Body;
+        public readonly string Id;
+        private string PageBody { get; set; }
 
-        public WhiskeyWikiPage(WikiPageLight wikiPage)
+        private WhiskeyWikiPage(string title, string id)
         {
+            Title = title;
+            Id = id;
+        }
+
+        public WhiskeyWikiPage(WikiPageLight wikiPage, Func<string> getPageBody)
+        {
+            this.getPageBody = getPageBody;
             Id = wikiPage.Id;
             Title = wikiPage.Title;
             Date = DateTime.TryParse(Title.Trim().SafeSubString(0, 10), out var parsedDate) ? (DateTime?)parsedDate : null;
-
         }
 
-        public string GetPageBody(IWikiClient wikiClient)
+        public string GetBody()
         {
-            return Body ?? (Body = wikiClient.GetPage(Id).Body.View.Value.FromHtml());
+            return PageBody ?? (PageBody = getPageBody());
         }
 
-        public void MarkUploaded(IWikiClient wikiClient)
+        public WhiskeyWikiPage MarkUploaded()
         {
-            wikiClient.UpdateTitleAndGetNewPage(Id, $"{Title} {UploadedLabel}");
+            return new WhiskeyWikiPage($"{Title} {UploadedLabel}", Id)
+            {
+                PageBody = this.PageBody
+            };
         }
     }
 }
