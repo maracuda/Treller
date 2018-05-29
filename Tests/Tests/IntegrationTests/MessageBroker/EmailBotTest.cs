@@ -21,7 +21,7 @@ namespace Tests.Tests.IntegrationTests.MessageBroker
             {
                 Title = "test message",
                 Recipients = new []{ "hvorost@skbkontur.ru", "jaamal@mail.ru" },
-                Body = "test content"
+                Body = "test content <b>sdslksdklsdkl</b> <a href=\"https://google.com\">{branchName}</a>"
             };
             emailBot.Publish(message);
         }

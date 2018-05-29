@@ -64,7 +64,8 @@ namespace RepositoryHooks.BranchNotification
 
         private static string BuildBranchHref(string branchName)
         {
-            return $"https://git.skbkontur.ru/billy/billy/branches/all?search={HttpUtility.UrlEncode(branchName)}";
+            var url = $"https://git.skbkontur.ru/billy/billy/branches/all?search={HttpUtility.UrlEncode(branchName)}";
+            return $"<a href=\"{url}\">{branchName}</a>";
         }
 
         public void DeleteMergedBranchesAndNotifyCommiters()
