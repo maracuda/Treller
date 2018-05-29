@@ -37,7 +37,7 @@ namespace RepositoryHooks.BranchNotification
             {
                 var branchesPerCommiter = branchesClassificator
                     .GetOldBranchesBy(commiterEmail)
-                    .Select(MakeBranchHref)
+                    .Select(BuildBranchHref)
                     .ToArray();
                     
                 if (branchesPerCommiter.Any())
@@ -62,10 +62,9 @@ namespace RepositoryHooks.BranchNotification
             }
         }
 
-        private string MakeBranchHref(string branchName)
+        private static string BuildBranchHref(string branchName)
         {
-            var url = $"https://git.skbkontur.ru/billy/billy/branches/all?search={HttpUtility.UrlEncode(branchName)}";
-            return $"<a href=\"{url}\">{branchName}</a>";
+            return $"https://git.skbkontur.ru/billy/billy/branches/all?search={HttpUtility.UrlEncode(branchName)}";
         }
 
         public void DeleteMergedBranchesAndNotifyCommiters()
