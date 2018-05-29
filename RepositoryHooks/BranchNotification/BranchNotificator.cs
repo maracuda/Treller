@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using System.Web;
 using MessageBroker;
 using MessageBroker.Messages;
 using TaskManagerClient.Repository;
@@ -21,7 +22,7 @@ namespace RepositoryHooks.BranchNotification
             IMessenger messenger)
         {
             this.repository = repository;
-            repoNotificationChat = messenger.RegisterChat("Уведовления о репозитории", "Уведовления о состоянии репозитория проекта для разработчиков (например, об автоматическом удалении ветки).");
+            repoNotificationChat = messenger.RegisterChat("РЈРІРµРґРѕРІР»РµРЅРёСЏ Рѕ СЂРµРїРѕР·РёС‚РѕСЂРёРё", "РЈРІРµРґРѕРІР»РµРЅРёСЏ Рѕ СЃРѕСЃС‚РѕСЏРЅРёРё СЂРµРїРѕР·РёС‚РѕСЂРёСЏ РїСЂРѕРµРєС‚Р° РґР»СЏ СЂР°Р·СЂР°Р±РѕС‚С‡РёРєРѕРІ (РЅР°РїСЂРёРјРµСЂ, РѕР± Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРј СѓРґР°Р»РµРЅРёРё РІРµС‚РєРё).");
             me = messenger.RegisterBotMember(GetType());
         }
 
@@ -34,27 +35,37 @@ namespace RepositoryHooks.BranchNotification
             
             foreach (var commiterEmail in branchesClassificator.CommiterEmails)
             {
-                var branchesPerCommiter = branchesClassificator.GetOldBranchesBy(commiterEmail);
+                var branchesPerCommiter = branchesClassificator
+                    .GetOldBranchesBy(commiterEmail)
+                    .Select(MakeBranchHref)
+                    .ToArray();
+                    
                 if (branchesPerCommiter.Any())
                 {
                     var bodyBuilder = new StringBuilder();
-                    bodyBuilder.AppendLine("Дорогой разработчик!");
+                    bodyBuilder.AppendLine("Р”РѕСЂРѕРіРѕР№ СЂР°Р·СЂР°Р±РѕС‚С‡РёРє!");
                     bodyBuilder.AppendLine();
-                    bodyBuilder.AppendLine($"Спешу обратить твое внимание на старые ветки в репозитории: {string.Join(", ", branchesPerCommiter)}");
-                    bodyBuilder.AppendLine("В них давно не ведется никакой работы, это похоже на разбитое окно. Пожалуйста, подумай какая ценность есть в этих ветках и как эту ценность доставить.");
+                    bodyBuilder.AppendLine($"РЎРїРµС€Сѓ РѕР±СЂР°С‚РёС‚СЊ С‚РІРѕРµ РІРЅРёРјР°РЅРёРµ РЅР° СЃС‚Р°СЂС‹Рµ РІРµС‚РєРё РІ СЂРµРїРѕР·РёС‚РѕСЂРёРё: {string.Join(", ", branchesPerCommiter)}");
+                    bodyBuilder.AppendLine("Р’ РЅРёС… РґР°РІРЅРѕ РЅРµ РІРµРґРµС‚СЃСЏ РЅРёРєР°РєРѕР№ СЂР°Р±РѕС‚С‹, СЌС‚Рѕ РїРѕС…РѕР¶Рµ РЅР° СЂР°Р·Р±РёС‚РѕРµ РѕРєРЅРѕ. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕРґСѓРјР°Р№ РєР°РєР°СЏ С†РµРЅРЅРѕСЃС‚СЊ РµСЃС‚СЊ РІ СЌС‚РёС… РІРµС‚РєР°С… Рё РєР°Рє СЌС‚Сѓ С†РµРЅРЅРѕСЃС‚СЊ РґРѕСЃС‚Р°РІРёС‚СЊ.");
                     bodyBuilder.AppendLine();
-                    bodyBuilder.AppendLine("С любовью, твой автоматический уведомлятор.");
+                    bodyBuilder.AppendLine("РЎ Р»СЋР±РѕРІСЊСЋ, С‚РІРѕР№ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ СѓРІРµРґРѕРјР»СЏС‚РѕСЂ.");
 
                     var message = new Email
                     {
                         Recipients = new[] {commiterEmail},
-                        Title = "Уведомление о старых ветках",
+                        Title = "РЈРІРµРґРѕРјР»РµРЅРёРµ Рѕ СЃС‚Р°СЂС‹С… РІРµС‚РєР°С…",
                         Body = bodyBuilder.ToString(),
                         CopyTo = "hvorost@skbkontur.ru"
                     };
                     repoNotificationChat.Post(me, message);
                 }
             }
+        }
+
+        private string MakeBranchHref(string branchName)
+        {
+            var url = $"https://git.skbkontur.ru/billy/billy/branches/all?search={HttpUtility.UrlEncode(branchName)}";
+            return $"<a href=\"{url}\">{branchName}</a>";
         }
 
         public void DeleteMergedBranchesAndNotifyCommiters()
@@ -64,16 +75,16 @@ namespace RepositoryHooks.BranchNotification
             {
                 repository.DeleteBranch(branch.Name);
                 var bodyBuilder = new StringBuilder();
-                bodyBuilder.AppendLine("Дорогой разработчик!");
+                bodyBuilder.AppendLine("Р”РѕСЂРѕРіРѕР№ СЂР°Р·СЂР°Р±РѕС‚С‡РёРє!");
                 bodyBuilder.AppendLine();
-                bodyBuilder.AppendLine($"Спешу обратить твое внимание, что я удалил ветку {branch.Name}, потому что она была влита в релиз и прошло больше 3-х дней с момента последнего коммита в нее.");
+                bodyBuilder.AppendLine($"РЎРїРµС€Сѓ РѕР±СЂР°С‚РёС‚СЊ С‚РІРѕРµ РІРЅРёРјР°РЅРёРµ, С‡С‚Рѕ СЏ СѓРґР°Р»РёР» РІРµС‚РєСѓ {branch.Name}, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РѕРЅР° Р±С‹Р»Р° РІР»РёС‚Р° РІ СЂРµР»РёР· Рё РїСЂРѕС€Р»Рѕ Р±РѕР»СЊС€Рµ 3-С… РґРЅРµР№ СЃ РјРѕРјРµРЅС‚Р° РїРѕСЃР»РµРґРЅРµРіРѕ РєРѕРјРјРёС‚Р° РІ РЅРµРµ.");
                 bodyBuilder.AppendLine();
-                bodyBuilder.AppendLine("С любовью, твой автоматический уведомлятор.");
+                bodyBuilder.AppendLine("РЎ Р»СЋР±РѕРІСЊСЋ, С‚РІРѕР№ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ СѓРІРµРґРѕРјР»СЏС‚РѕСЂ.");
 
                 var message = new Email
                 {
                     Recipients = new[] { branch.Commit.Committer_email },
-                    Title = "Уведомление об удаленной ветке",
+                    Title = "РЈРІРµРґРѕРјР»РµРЅРёРµ РѕР± СѓРґР°Р»РµРЅРЅРѕР№ РІРµС‚РєРµ",
                     Body = bodyBuilder.ToString(),
                     CopyTo = "hvorost@skbkontur.ru"
                 };
