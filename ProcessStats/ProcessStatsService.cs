@@ -58,6 +58,11 @@ namespace ProcessStats
         {
             var battlesStats = battlesStatsCrawler.Collect();
             processStatsChat.Post(me, new Metric { Name = "Battles.Unassigned", Value = battlesStats.UnassignedCount});
+            foreach (var subProductStats in battlesStats.SubProducStats)
+            {
+                processStatsChat.Post(me, new Metric { Name = $"Battles.{subProductStats.SubProductId}.Unassigned", Value = subProductStats.UnassignedCount });
+                processStatsChat.Post(me, new Metric { Name = $"Battles.{subProductStats.SubProductId}.Total", Value = subProductStats.TotalCount});
+            }
         }
 
         public void CollectAndPublishIncidentsStats(DateTime? date = null)

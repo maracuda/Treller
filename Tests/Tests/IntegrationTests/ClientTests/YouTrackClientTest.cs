@@ -23,6 +23,17 @@ namespace Tests.Tests.IntegrationTests.ClientTests
         }
 
         [Fact]
+        public void AbleToFilterBattlesBySubProduct()
+        {
+            const string productName = "Тарификация и доставка";
+            var filter = $"project: Billing Type: Battle State: Open, Reopened Подпродукт: {{{productName}}}";
+            var actualIssues = bugTrackerClient.GetFiltered(filter);
+            var actualIssuesCount = bugTrackerClient.GetFilteredCount(filter);
+            Assert.NotEmpty(actualIssues);
+            Assert.Equal(actualIssues.Length, actualIssuesCount);
+        }
+
+        [Fact]
         public void AbleToFilterWithShortcuts()
         {
             const string filter = "#Billy #Battle State: -Resolved Assignee: Unassigned";
