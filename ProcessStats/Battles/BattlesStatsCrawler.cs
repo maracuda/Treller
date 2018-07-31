@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using TaskManagerClient;
 
 namespace ProcessStats.Battles
@@ -35,10 +34,20 @@ namespace ProcessStats.Battles
                 });
             }
 
+            var fuckupsOrdersTotalCount = bugTrackerClient.GetFilteredCount("project: fuckups Teams: Billing.Orders");
+
             return new BattlesStats
             {
                 UnassignedCount = unassignedCount,
-                SubProducStats = subProductsStatsList.ToArray()
+                SubProducStats = subProductsStatsList.ToArray(),
+                SubProductsStats = new []
+                {
+                    new SubProductFuckupStats
+                    {
+                        SubProductId = "Orders",
+                        TotalCount = fuckupsOrdersTotalCount
+                    }
+                }
             };
         }
     }

@@ -40,5 +40,13 @@ namespace Tests.Tests.IntegrationTests.ClientTests
             var actualIssuesCount = bugTrackerClient.GetFilteredCount(filter);
             Assert.True(actualIssuesCount >= 0);
         }
+
+        [Fact]
+        public void AbleToFilterFuckupsProj()
+        {
+            var actualCount = bugTrackerClient.GetFilteredCount("project: fuckups Teams: Billing.Orders");
+            Assert.True(actualCount > 0);
+
+        }
     }
 }
