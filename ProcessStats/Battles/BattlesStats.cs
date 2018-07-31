@@ -4,6 +4,6 @@
     {
         public int UnassignedCount { get; set; }
         public SubProductBattleStats[] SubProducStats { get; set; }
-        public SubProductFuckupStats[] SubProductsStats { get; set; }
+        public SubProductFuckupStats[] SubProductFuckups { get; set; }
     }
 }

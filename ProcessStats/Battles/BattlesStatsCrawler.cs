@@ -40,7 +40,7 @@ namespace ProcessStats.Battles
             {
                 UnassignedCount = unassignedCount,
                 SubProducStats = subProductsStatsList.ToArray(),
-                SubProductsStats = new []
+                SubProductFuckups = new []
                 {
                     new SubProductFuckupStats
                     {
