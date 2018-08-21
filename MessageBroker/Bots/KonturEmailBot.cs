@@ -66,7 +66,10 @@ namespace MessageBroker.Bots
 
             using (var smtpClient = CreateClient())
             {
-                var mailMessage = new MailMessage(fromEmail, message.Recipients[0], message.Title, message.Body);
+                var mailMessage = new MailMessage(fromEmail, message.Recipients[0], message.Title, message.Body)
+                {
+                    IsBodyHtml = true
+                };
                 for (var i = 1; i < message.Recipients.Length; i++)
                 {
                     mailMessage.To.Add(message.Recipients[i]);

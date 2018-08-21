@@ -26,11 +26,7 @@ namespace Tests.Tests.IntegrationTests.ProcessStats
         [Fact]
         void CollectBattles()
         {
-            var dates = new[] { new DateTime(2018, 4, 27) };
-            foreach (var dateTime in dates)
-            {
-                processStatsService.CollectAndPublishBattlesStats(dateTime);
-            }
+            processStatsService.CollectAndPublishBattlesStats();
         }
 
         [Fact]

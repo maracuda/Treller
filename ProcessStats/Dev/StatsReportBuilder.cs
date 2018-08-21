@@ -41,7 +41,7 @@ namespace ProcessStats.Dev
         public IEnumerable<ReportModel> BuildForDirections()
         {
             var boards = taskManagerClient.GetAllBoards(organizationName).ToArray();
-            var directionBoards = boards.Where(b => b.Name.StartsWith("[Í]") && b.IsClosed == false);
+            var directionBoards = boards.Where(b => b.Name.StartsWith("[Ê]") && b.IsClosed == false);
             foreach (var directionBoard in directionBoards)
             {
                 var lists = taskManagerClient.GetBoardLists(directionBoard.Id);

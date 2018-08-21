@@ -21,7 +21,19 @@ namespace Tests.Tests.IntegrationTests.MessageBroker
             {
                 Title = "test message",
                 Recipients = new []{ "hvorost@skbkontur.ru", "jaamal@mail.ru" },
-                Body = "test content"
+                Body = "test content <b>sdslksdklsdkl</b> <a href=\"https://google.com\">google</a>"
+            };
+            emailBot.Publish(message);
+        }
+
+        [Fact]
+        public void TestMessageWithHtml()
+        {
+            var message = new Email
+            {
+                Title = "test message",
+                Recipients = new[] { "hvorost@skbkontur.ru" },
+                Body = "test content <b>sdslksdklsdkl</b> <a href=\"https://google.com\">google</a>"
             };
             emailBot.Publish(message);
         }

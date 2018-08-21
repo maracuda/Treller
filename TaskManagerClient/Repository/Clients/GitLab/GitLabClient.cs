@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using HttpInfrastructure.Clients;
 using TaskManagerClient.Repository.BusinessObjects;
@@ -7,6 +8,7 @@ namespace TaskManagerClient.Repository.Clients.GitLab
 {
     public class GitLabClient : IRepositoryClient
     {
+        private const string apiVersion = "v4";
         private readonly string repoId;
         private readonly IHttpClient httpClient;
         private readonly Dictionary<string, string> credentialParameters;
@@ -32,7 +34,7 @@ namespace TaskManagerClient.Repository.Clients.GitLab
                                      {"page", pageNumber.ToString(CultureInfo.InvariantCulture)},
                                      {"per_page", pageSize.ToString(CultureInfo.InvariantCulture)},
                                  };
-            return httpClient.SendGet<Commit[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/commits", parameters);
+            return httpClient.SendGet<Commit[]>($"{gitLabDefaultUrl}/api/{apiVersion}/projects/{repoId}/repository/commits", parameters);
         }
 
         public Branch[] SelectBranches(int pageNumber, int pageSize)
@@ -42,7 +44,7 @@ namespace TaskManagerClient.Repository.Clients.GitLab
                                     {"page", pageNumber.ToString(CultureInfo.InvariantCulture)},
                                     {"per_page", pageSize.ToString(CultureInfo.InvariantCulture)},
                                 };
-            return httpClient.SendGet<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
+            return httpClient.SendGet<Branch[]>($"{gitLabDefaultUrl}/api/{apiVersion}/projects/{repoId}/repository/branches", parameters);
         }
 
         public Branch[] SelectAllBranches()
@@ -51,26 +53,24 @@ namespace TaskManagerClient.Repository.Clients.GitLab
                                  {
                                      {"per_page", "1000"}
                                  };
-            return httpClient.SendGet<Branch[]>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
+            return httpClient.SendGet<Branch[]>($"{gitLabDefaultUrl}/api/{apiVersion}/projects/{repoId}/repository/branches", parameters);
         }
 
         public Branch CreateBranch(string newBranchName, string refBranchName)
         {
             var parameters = new Dictionary<string, string>(credentialParameters)
             {
-                {"branch_name", newBranchName},
+                {"branch", newBranchName},
                 {"ref", refBranchName}
             };
-            return httpClient.SendPost<Branch>($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches", parameters);
+            return httpClient.SendPost<Branch>($"{gitLabDefaultUrl}/api/{apiVersion}/projects/{repoId}/repository/branches", parameters);
         }
 
         public void DeleteBranch(string branchName)
         {
-            var parameters = new Dictionary<string, string>(credentialParameters)
-            {
-                //{"branch", branchName}
-            };
-            httpClient.SendDelete($"{gitLabDefaultUrl}/api/v3/projects/{repoId}/repository/branches/{branchName}", parameters);
+            var parameters = new Dictionary<string, string>(credentialParameters);
+            var escapedBranchName = Uri.EscapeDataString(branchName);
+            httpClient.SendDelete($"{gitLabDefaultUrl}/api/{apiVersion}/projects/{repoId}/repository/branches/{escapedBranchName}", parameters);
         }
     }
 }

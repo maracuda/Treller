@@ -47,7 +47,7 @@ namespace Tests.Tests.IntegrationTests.Repository
         [Fact]
         public void AbleToCrateAndDeleteBranch()
         {
-            const string testBranchName = "testFeature";
+            const string testBranchName = "subproduct/testFeature";
             var newBranch = gitlabClient.CreateBranch(testBranchName, "release");
             Assert.IsNotNull(newBranch);
             Assert.AreEqual(newBranch.Name, testBranchName);
@@ -55,7 +55,6 @@ namespace Tests.Tests.IntegrationTests.Repository
             gitlabClient.DeleteBranch(testBranchName);
             var actualBranches = gitlabClient.SelectAllBranches();
             Assert.AreEqual(0, actualBranches.Count(b => b.Name.Equals(testBranchName)));
-
         }
     }
 }

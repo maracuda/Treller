@@ -23,11 +23,30 @@ namespace Tests.Tests.IntegrationTests.ClientTests
         }
 
         [Fact]
+        public void AbleToFilterBattlesBySubProduct()
+        {
+            const string productName = "Тарификация и доставка";
+            var filter = $"project: Billing Type: Battle State: Open, Reopened Подпродукт: {{{productName}}}";
+            var actualIssues = bugTrackerClient.GetFiltered(filter);
+            var actualIssuesCount = bugTrackerClient.GetFilteredCount(filter);
+            Assert.NotEmpty(actualIssues);
+            Assert.Equal(actualIssues.Length, actualIssuesCount);
+        }
+
+        [Fact]
         public void AbleToFilterWithShortcuts()
         {
             const string filter = "#Billy #Battle State: -Resolved Assignee: Unassigned";
             var actualIssuesCount = bugTrackerClient.GetFilteredCount(filter);
             Assert.True(actualIssuesCount >= 0);
+        }
+
+        [Fact]
+        public void AbleToFilterFuckupsProj()
+        {
+            var actualCount = bugTrackerClient.GetFilteredCount("project: fuckups Teams: Billing.Orders");
+            Assert.True(actualCount > 0);
+
         }
     }
 }
