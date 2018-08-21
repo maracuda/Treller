@@ -7,12 +7,13 @@ namespace ProcessStats.Battles
     {
         private static readonly Dictionary<string, string> subProductsCache = new Dictionary<string, string>
         {
-            {"ProspectiveSales", "Потенциальные продаж"},
-            {"Orders", "Потенциальные продаж"},
+            {"ProspectiveSales", "Потенциальные продажи"},
+            {"Orders", "Заказы"},
             {"Documents", "Документы"},
             {"TarrificationAndDelivery", "Тарификация и доставка"},
             {"Infrastructure", "Инфраструктура"},
             {"Support", "Команда АРМов"},
+            {"Payments", "Платежи"},
         };
 
         public string[] GetSubproductIds()
